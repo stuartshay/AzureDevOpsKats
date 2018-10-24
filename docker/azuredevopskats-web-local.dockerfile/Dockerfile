@@ -7,7 +7,7 @@ ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 COPY src /app/src
-COPY scripts /
+# COPY scripts /
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 COPY NuGet.config /app/NuGet.config
 
