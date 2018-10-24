@@ -1,5 +1,7 @@
 # AzureDevOpsKats
 
+[![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1)
+
 ## Instalation & Run Instructions
 
 ```
