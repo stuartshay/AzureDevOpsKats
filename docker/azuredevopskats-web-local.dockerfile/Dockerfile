@@ -22,7 +22,7 @@ FROM microsoft/dotnet:2.1-aspnetcore-runtime
 
 RUN cat /etc/os-release
 
-COPY --from=build-env /*.sh /
+# COPY --from=build-env /*.sh /
 
 RUN apt-get update && apt-get install -y \
         curl \
