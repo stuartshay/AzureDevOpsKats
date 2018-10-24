@@ -2,7 +2,6 @@
 using System.Linq;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
-using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Test.Fixture;
 using Xunit;
 using Xunit.Abstractions;
