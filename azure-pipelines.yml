@@ -1,6 +1,10 @@
 trigger:
 - master
 
+variables:
+  buildConfiguration: 'Release'
+
+
 jobs:
 
 - job: Linux
