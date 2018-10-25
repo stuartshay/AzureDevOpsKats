@@ -16,7 +16,7 @@ docker build -f docker/azuredevopskats-web-windows.dockerfile/Dockerfile -t stua
 docker push stuartshay/azuredevopskats:win
 
 # Run Container
-docker run -it stuartshay/azuredevopskats:win 
+docker run -it -p 5000:5000 stuartshay/azuredevopskats:win
 
 # Container IP
 docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" <CONTAINER_ID>
