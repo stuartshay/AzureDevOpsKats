@@ -31,7 +31,7 @@ jobs:
 
 - job: Windows
   pool:
-    vmImage: 'xcode9-macos10.13'
+    vmImage: 'vs2017-win2016'
   steps:
   - script: dotnet build --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
