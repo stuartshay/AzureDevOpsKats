@@ -7,7 +7,7 @@ ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 COPY src /app/src
-COPY scripts /
+# COPY scripts /
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 COPY NuGet.config /app/NuGet.config
 
@@ -22,7 +22,7 @@ FROM microsoft/dotnet:2.1-aspnetcore-runtime
 
 RUN cat /etc/os-release
 
-COPY --from=build-env /*.sh /
+# COPY --from=build-env /*.sh /
 
 RUN apt-get update && apt-get install -y \
         curl \
