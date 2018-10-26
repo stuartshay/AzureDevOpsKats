@@ -10,6 +10,7 @@ function getCats() {
     $("#cat-list").empty();
     $.get("/api/Cats", function( data ) {
         $.each(data, function(index, d) {
+            
             var html = `<div class="col-sm-12 col-md-4">
                     <div class="card mt-3 mb-3">
                         <img class="card-img-top" src="${d.photo}" alt="Card image">
@@ -21,6 +22,7 @@ function getCats() {
                         </div>
                     </div>
                 </div>`;
+
             $("#cat-list").append(html);
             $(".card-img-top").height($(".card-img-top").width() * .7 + "px");
         });
