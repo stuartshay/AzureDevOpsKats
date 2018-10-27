@@ -1,0 +1,14 @@
+**/docker/**/*
+**/docker/
+
+.dockerignore
+
+**/Properties/**/*
+**/Properties/
+
+
+**/*.md
+
+**/Jenkinsfile-base
+**/Jenkinsfile
+**/Dockerfile

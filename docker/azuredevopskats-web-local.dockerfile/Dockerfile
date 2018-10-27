@@ -43,5 +43,5 @@ ENV ASPNETCORE_URLS http://*:5000
 ENV ASPNETCORE_ENVIRONMENT Staging
 
 # Open up port
-EXPOSE 8150 3333
+EXPOSE 5000 3333
 ENTRYPOINT ["dotnet", "AzureDevOpsKats.Web.dll"]
