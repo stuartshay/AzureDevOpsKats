@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
@@ -44,16 +45,7 @@ namespace AzureDevOpsKats.Web
             services.AddScoped<ICatService, CatService>();
 
             // Swagger
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Info
-                {
-                    Title = "BTIG.Cats.Web",
-                    Description = "BTIG.Cats.Web",
-                    Version = "v1",
-                    TermsOfService = "None",
-                });
-            });
+            services.AddCustomSwagger(Configuration);
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                 .AllowAnyMethod()
@@ -81,11 +73,26 @@ namespace AzureDevOpsKats.Web
                 app.UseExceptionHandler("/Error");
             }
 
+            ConfigureSwagger(app);
+            ConfigureFileBrowser(app);
+
+            app.UseCookiePolicy();
+            app.UseMvc();
+        }
+
+        private void ConfigureSwagger(IApplicationBuilder app)
+        {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "AzureDevOpsKats.Web V1");
             });
+
+        }
+
+        private void ConfigureFileBrowser(IApplicationBuilder app)
+        {
+            var config = Configuration.Get<ApplicationOptions>();
 
             DefaultFilesOptions options = new DefaultFilesOptions();
             options.DefaultFileNames.Clear();
@@ -99,9 +106,41 @@ namespace AzureDevOpsKats.Web
                 RequestPath = config.FileStorage.RequestPath
             });
 
-
-            app.UseCookiePolicy();
-            app.UseMvc();
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info
+                {
+                    Title = "BTIG.Cats.Web",
+                    Description = "BTIG.Cats.Web",
+                    Version = "v1",
+                    TermsOfService = "None",
+                });
+                options.IncludeXmlComments(GetXmlCommentsPath());
+            });
+
+            return services;
+        }
+
+
+        private static string GetXmlCommentsPath()
+        {
+            var basePath = AppContext.BaseDirectory;
+            var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+            var fileName = Path.GetFileName(assemblyName + ".xml");
+
+            return Path.Combine(basePath, fileName);
+        }
+    }
+
 }
