@@ -1,0 +1,19 @@
+jobs:
+
+- job: ${{ parameters.name }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  steps:
+ 
+  - task: NodeTool@0
+    inputs:
+      versionSpec: ${{ parameters.buildConfiguration }}
+      displayName: 'Build Application  '
+
+  - script: >
+      dotnet build --configuration $(buildConfiguration)
+    displayName: 'dotnet build $(buildConfiguration)'
+
+
+
+
