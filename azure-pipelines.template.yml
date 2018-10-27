@@ -4,16 +4,11 @@ jobs:
   pool:
     vmImage: ${{ parameters.vmImage }}
   steps:
- 
   - task: NodeTool@0
     inputs:
-      versionSpec: ${{ parameters.buildConfiguration }}
-      displayName: 'Build Application  '
+      versionSpec: ${{ parameters.node_version }}
+    displayName: 'Install Node.js'
 
   - script: >
       dotnet build --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
-
-
-
-
