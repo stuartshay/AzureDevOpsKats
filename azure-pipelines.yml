@@ -20,7 +20,7 @@ jobs:
     node_version: 9.x
 
 
-- job: Linux Docker 
+- job: Linux 
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
