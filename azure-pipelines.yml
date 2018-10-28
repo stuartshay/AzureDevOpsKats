@@ -32,7 +32,7 @@ jobs:
   #    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   #    DOTNET_CLI_TELEMETRY_OPTOUT: 1
   - script: |
-      docker login -u $(dockerLogin) -p $(dockerPassword)
+      docker login -u navigatordatastore -p NavigatorDataStore2016
     #  docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
 
 
