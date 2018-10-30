@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "HostingPlanName": {
-        "value": "AzureDevOpsKats-Dev-Plan"
+        "value": "AzureDevOpsKats-Plan"
       },
       "WebsiteName": {
-        "value": "AzureDevOpsKats-Web-DEV"
+        "value": "AzureDevOpsKats-Web"
       }
     }
   }
