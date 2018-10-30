@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CFD68816-A4C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AD0F6198-B88D-4F94-8795-EC285BCE6755}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDevOpsKats.Data", "src\AzureDevOpsKats.Data\AzureDevOpsKats.Data.csproj", "{AA6038E5-49EC-4EC8-9A18-344EA7FFF994}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOpsKats.Data", "src\AzureDevOpsKats.Data\AzureDevOpsKats.Data.csproj", "{AA6038E5-49EC-4EC8-9A18-344EA7FFF994}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDevOpsKats.Service", "src\AzureDevOpsKats.Service\AzureDevOpsKats.Service.csproj", "{28651399-8B0E-47AF-A871-39B17BA6187B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOpsKats.Service", "src\AzureDevOpsKats.Service\AzureDevOpsKats.Service.csproj", "{28651399-8B0E-47AF-A871-39B17BA6187B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDevOpsKats.Web", "src\AzureDevOpsKats.Web\AzureDevOpsKats.Web.csproj", "{E7416C7C-91B7-4E4D-AAE7-9A6FAF4058B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOpsKats.Web", "src\AzureDevOpsKats.Web\AzureDevOpsKats.Web.csproj", "{E7416C7C-91B7-4E4D-AAE7-9A6FAF4058B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDevOpsKats.Test", "test\AzureDevOpsKats.Test\AzureDevOpsKats.Test.csproj", "{8DF74D69-2F32-48B7-8624-EFFEB2677704}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOpsKats.Test", "test\AzureDevOpsKats.Test\AzureDevOpsKats.Test.csproj", "{8DF74D69-2F32-48B7-8624-EFFEB2677704}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
