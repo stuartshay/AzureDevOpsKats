@@ -17,7 +17,7 @@
         "apiVersion": "2014-06-01",
         "tags": {
           "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('HostingPlanName'))]": "Resource",
-          "displayName": "FastTrack-CP-UI-DEV"
+          "displayName": "AzureDevOpsKats-Web"
         },
         "properties": {
           "name": "[parameters('WebsiteName')]",
