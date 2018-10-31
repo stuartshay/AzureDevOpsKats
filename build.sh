@@ -27,7 +27,7 @@ if [[ $(dotnet tool list -g) != *"cake.tool"* ]]; then
 fi
 
 if $SHOW_VERSION; then
-    dotnet-Cake --version
+    dotnet Cake --version
 else
-    dotnet-cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+    dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
 fi
