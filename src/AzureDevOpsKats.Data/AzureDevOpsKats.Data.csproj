@@ -9,6 +9,22 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
+    <CodeAnalysisRuleSet>$(SolutionDir)/_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+    <AdditionalFiles Include="$(SolutionDir)/_stylecop/stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT'">
+    <CodeAnalysisRuleSet>$(SolutionDir)../../_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 
 </Project>

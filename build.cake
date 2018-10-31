@@ -1,8 +1,7 @@
 var target = Argument("Target", "Default");
 var configuration = Argument("configuration", "Release");
+var artifactsDirectory = Directory("./artifacts");
 
-// A directory path to an Artifacts directory.
-var artifactsDirectory = Directory("./Artifacts");
 
 // Deletes the contents of the Artifacts folder if it should contain anything from a previous build.
 Task("Clean")

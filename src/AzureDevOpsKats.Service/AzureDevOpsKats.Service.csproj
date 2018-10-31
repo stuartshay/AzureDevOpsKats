@@ -10,6 +10,10 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
@@ -17,5 +21,17 @@
   <ItemGroup>
     <ProjectReference Include="..\AzureDevOpsKats.Data\AzureDevOpsKats.Data.csproj" />
   </ItemGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
+    <CodeAnalysisRuleSet>$(SolutionDir)/_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+    <AdditionalFiles Include="$(SolutionDir)/_stylecop/stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT'">
+    <CodeAnalysisRuleSet>$(SolutionDir)../../_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 
 </Project>
