@@ -29,5 +29,5 @@ if (-Not (& dotnet tool list -g | Select-String "cake.tool")) {
 }
 
 Write-Host -f Yellow "Running build script..."
-& dotnet %USERPROFILE%.dotnet\tools\cake $Script --nuget_useinprocessclient=true --target=$Target --configuration=$Configuration --verbosity=$Verbosity $UseDryRun $ScriptArgs
+& %USERPROFILE%.dotnet\tools\dotnet-cake $Script --nuget_useinprocessclient=true --target=$Target --configuration=$Configuration --verbosity=$Verbosity $UseDryRun $ScriptArgs
 exit $LASTEXITCODE
