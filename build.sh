@@ -26,8 +26,10 @@ if [[ $(dotnet tool list -g) != *"cake.tool"* ]]; then
     dotnet tool install --tool-path . Cake.Tool
 fi
 
-if $SHOW_VERSION; then
-    dotnet Cake --version
-else
-    dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
-fi
+dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+
+# if $SHOW_VERSION; then
+#     dotnet Cake --version
+# else
+#     dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+# fi
