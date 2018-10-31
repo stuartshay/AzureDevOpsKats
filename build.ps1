@@ -25,9 +25,9 @@ if($WhatIf.IsPresent)
 
 Write-Host -f Yellow "Looking for Cake.Tool..."
 if (-Not (& dotnet tool list -g | Select-String "cake.tool")) {
-    & dotnet tool install -g Cake.Tool
+    & dotnet tool install  --tool-path . Cake.Tool
 }
 
 Write-Host -f Yellow "Running build script..."
-& dotnet cake $Script --nuget_useinprocessclient=true --target=$Target --configuration=$Configuration --verbosity=$Verbosity $UseDryRun $ScriptArgs
+& .\dotnet-cake $Script --nuget_useinprocessclient=true --target=$Target --configuration=$Configuration --verbosity=$Verbosity $UseDryRun $ScriptArgs
 exit $LASTEXITCODE
