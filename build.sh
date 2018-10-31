@@ -8,29 +8,26 @@ DRYRUN=
 SHOW_VERSION=false
 SCRIPT_ARGUMENTS=()
 
-# for i in "$@"; do
-#     case $1 in
-#         -s|--script) SCRIPT="$2"; shift ;;
-#         -t|--target) TARGET="$2"; shift ;;
-#         -c|--configuration) CONFIGURATION="$2"; shift ;;
-#         -v|--verbosity) VERBOSITY="$2"; shift ;;
-#         -d|--dryrun) DRYRUN="-dryrun" ;;
-#         --version) SHOW_VERSION=true ;;
-#         --) shift; SCRIPT_ARGUMENTS+=("$@"); break ;;
-#         *) SCRIPT_ARGUMENTS+=("$1") ;;
-#     esac
-#     shift
-# done
+for i in "$@"; do
+    case $1 in
+        -s|--script) SCRIPT="$2"; shift ;;
+        -t|--target) TARGET="$2"; shift ;;
+        -c|--configuration) CONFIGURATION="$2"; shift ;;
+        -v|--verbosity) VERBOSITY="$2"; shift ;;
+        -d|--dryrun) DRYRUN="-dryrun" ;;
+        --version) SHOW_VERSION=true ;;
+        --) shift; SCRIPT_ARGUMENTS+=("$@"); break ;;
+        *) SCRIPT_ARGUMENTS+=("$1") ;;
+    esac
+    shift
+done
 
-# if [[ $(dotnet tool list -g) != *"cake.tool"* ]]; then
-#     dotnet tool install --tool-path . Cake.Tool
-# fi
+if [[ $(dotnet tool list -g) != *"cake.tool"* ]]; then
+    dotnet tool install --tool-path . Cake.Tool
+fi
 
-dotnet tool install --tool-path . Cake.Tool
-dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY
-
-# if $SHOW_VERSION; then
-#     dotnet Cake --version
-# else
-#     dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
-# fi
+if $SHOW_VERSION; then
+    dotnet Cake --version
+else
+    dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+fi
