@@ -4,7 +4,7 @@ using System.IO;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
-using BTIG.Cats.Web.Helpers;
+using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +12,9 @@ using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Route("api/[controller]")]
     [EnableCors("AllowAll")]
     [ApiController]
@@ -21,17 +24,23 @@ namespace AzureDevOpsKats.Web.Controllers
 
         private readonly IFileService _fileService;
 
-        private ApplicationOptions ApplicationSettings { get; set; }
-
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="catService"></param>
+        /// <param name="fileService"></param>
+        /// <param name="settings"></param>
         public CatsController(ICatService catService, IFileService fileService, IOptions<ApplicationOptions> settings)
         {
-            _catService = catService;
-            _fileService = fileService;
+            _catService = catService ?? throw new ArgumentNullException(nameof(catService));
+            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
             ApplicationSettings = settings.Value;
         }
 
+        private ApplicationOptions ApplicationSettings { get; set; }
+
         /// <summary>
-        /// Get List of Cats 
+        /// Get List of Cats
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -43,7 +52,7 @@ namespace AzureDevOpsKats.Web.Controllers
         }
 
         /// <summary>
-        /// Get Cat 
+        /// Get Cat
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -62,6 +71,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// Delete Cat
         /// </summary>
         /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -76,9 +86,11 @@ namespace AzureDevOpsKats.Web.Controllers
         }
 
         /// <summary>
-        ///  Create Cat 
+        ///  Create Cat
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
         [HttpPost]
         [Consumes("application/json", "multipart/form-data")]
         public IActionResult Post([FromBody] CatCreateModel value, IFormFile file)
@@ -108,10 +120,11 @@ namespace AzureDevOpsKats.Web.Controllers
         }
 
         /// <summary>
-        /// Update Cat Properties 
+        /// Update Cat Properties
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] CatUpdateModel value)
         {

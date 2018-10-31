@@ -110,7 +110,7 @@ namespace AzureDevOpsKats.Data.Repository
                     command.Parameters.Add(new SqliteParameter("@param1", id));
                     command.ExecuteNonQuery();
                 }
-            };
+            }
         }
 
         public void Open()

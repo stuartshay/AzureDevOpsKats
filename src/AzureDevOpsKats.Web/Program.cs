@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace AzureDevOpsKats.Web
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class Program
     {
         /// <summary>
@@ -17,6 +20,11 @@ namespace AzureDevOpsKats.Web
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development"}.json", optional: true)
             .Build();
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static int Main(string[] args)
         {
             try
@@ -30,6 +38,11 @@ namespace AzureDevOpsKats.Web
             }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(Configuration)

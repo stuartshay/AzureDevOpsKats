@@ -29,6 +29,5 @@ namespace AzureDevOpsKats.Service.Service
         public void Dispose()
         {
         }
-
     }
 }

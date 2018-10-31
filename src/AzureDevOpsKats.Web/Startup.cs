@@ -16,15 +16,29 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace AzureDevOpsKats.Web
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuration
@@ -60,6 +74,11 @@ namespace AzureDevOpsKats.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             var config = Configuration.Get<ApplicationOptions>();
@@ -87,7 +106,6 @@ namespace AzureDevOpsKats.Web
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "AzureDevOpsKats.Web V1");
             });
-
         }
 
         private void ConfigureFileBrowser(IApplicationBuilder app)
@@ -105,14 +123,13 @@ namespace AzureDevOpsKats.Web
                     Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath)),
                 RequestPath = config.FileStorage.RequestPath
             });
-
         }
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    static class ServiceCollectionExtensions
+    internal static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services,
             IConfiguration configuration)
@@ -121,17 +138,17 @@ namespace AzureDevOpsKats.Web
             {
                 options.SwaggerDoc("v1", new Info
                 {
-                    Title = "BTIG.Cats.Web",
-                    Description = "BTIG.Cats.Web",
+                    Title = "AzureDevOpsKats.Web",
+                    Description = "AzureDevOpsKats.Web",
                     Version = "v1",
                     TermsOfService = "None",
                 });
+
                 options.IncludeXmlComments(GetXmlCommentsPath());
             });
 
             return services;
         }
-
 
         private static string GetXmlCommentsPath()
         {
@@ -142,5 +159,4 @@ namespace AzureDevOpsKats.Web
             return Path.Combine(basePath, fileName);
         }
     }
-
 }

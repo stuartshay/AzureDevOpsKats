@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace BTIG.Cats.Web.Helpers
+namespace AzureDevOpsKats.Web.Helpers
 {
     public static class ConsoleExtensions
     {
