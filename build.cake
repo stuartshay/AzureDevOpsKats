@@ -1,5 +1,4 @@
 var target = Argument("Target", "Default");
-
 var configuration = Argument("configuration", "Release");
 
 // A directory path to an Artifacts directory.
@@ -47,6 +46,7 @@ Task("Test")
         {
             DotNetCoreTest(
                 project.GetDirectory().FullPath,
+                
                 new DotNetCoreTestSettings()
                 {
                     Configuration = configuration,
