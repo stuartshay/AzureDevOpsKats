@@ -23,11 +23,11 @@ for i in "$@"; do
 done
 
 if [[ $(dotnet tool list -g) != *"cake.tool"* ]]; then
-    dotnet tool install --tool-path . Cake.Tool
+    dotnet tool install -g Cake.Tool
 fi
 
 if $SHOW_VERSION; then
-    dotnet cake --version
+    dotnet %USERPROFILE%.dotnet\tools\cake --version
 else
-    dotnet cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+    dotnet %USERPROFILE%.dotnet\tools\cake $SCRIPT --nuget_useinprocessclient=true --settings_skipverification=true --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
 fi

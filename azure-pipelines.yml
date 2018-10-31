@@ -23,7 +23,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - bash: ./build.sh
+  - bash: chmod +x ./build.sh
   - script: |
       docker login -u navigatordatastore -p NavigatorDataStore2016
       docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
@@ -38,7 +38,7 @@ jobs:
   pool:
     vmImage: 'xcode9-macos10.13'
   steps:
-  - bash: ./build.sh
+  - bash: chmod +x ./build.sh
     displayName: 'Cake Build'
     env:
       COREHOST_TRACE: 0
