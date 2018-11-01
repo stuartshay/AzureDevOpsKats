@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RuntimeFrameworkVersion>2.1.4</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>2.1.5</RuntimeFrameworkVersion>
     <RuntimeIdentifiers>win10-x64;debian.9-x64;debian.8-x64;ubuntu.16.04-x64;osx.10.12-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
