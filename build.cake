@@ -49,7 +49,7 @@ Task("Test")
                 new DotNetCoreTestSettings()
                 {
                     Configuration = configuration,
-                    NoBuild = true
+                    ArgumentCustomization = args => args.Append($"--no-restore")
                 });
         }
     });
