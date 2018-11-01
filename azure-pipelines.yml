@@ -25,7 +25,7 @@ jobs:
   steps:
   - bash: chmod +x ./build.sh
   - script: |
-      docker login -u navigatordatastore -p NavigatorDataStore2016
+      docker login -u $dockerLogin -p $dockerPassword
       docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
       docker push stuartshay/azuredevopskats:devops 
     displayName: 'Cake Build'
