@@ -1,0 +1,15 @@
+language: csharp
+env:
+  global:
+    - Configuration=Release
+    - ASPNETCORE_ENVIRONMENT=Staging
+dotnet: 2.1.402
+branches:
+  only:
+  - master
+  - /^release\/.*$/
+  - develop
+script:
+ - set -e
+ - export PATH="$PATH:/home/travis/.dotnet/tools"
+ - ./build.sh

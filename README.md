@@ -27,6 +27,23 @@ cd src\AzureDevOpsKats.Web\
 dotnet run
 ```
 
+### Cake
+
+Windows 
+
+```
+set-executionpolicy unrestricted
+
+./build.ps1
+```
+
+Linux/Mac
+```
+chmod +x build.sh
+
+./build.sh
+```
+
 ## Web Site
 
 The Site can be accesed at the following url
