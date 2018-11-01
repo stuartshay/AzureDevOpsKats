@@ -49,7 +49,7 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - powershell: .\build.ps1
+  - powershell: .\build.ps1 -BuildEnvironment "cloud"
     displayName: 'Cake Build'
     env:
       COREHOST_TRACE: 0
