@@ -3,13 +3,20 @@ image:
 - Visual Studio 2017
 - Ubuntu
 configuration: Release
+
+cache:
+  - packages -> **\packages.config, nuget.config
+
 environment:
   ASPNETCORE_ENVIRONMENT: Staging
+
 nuget:
   project_feed: true
   disable_publish_on_pr: true
+
 artifacts:
 - path: build\artifacts\*.nupkg
+
 deploy: off
 branches:
   only:
@@ -29,7 +36,7 @@ for:
         - image: Visual Studio 2017
     build_script:
       - ps: >-
-          .\build.ps1 -target CalculateCoverage --settings_skipverification=true
+          .\build.ps1 
         
   -
     matrix:
