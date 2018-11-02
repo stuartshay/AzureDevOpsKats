@@ -36,7 +36,7 @@ for:
         - image: Visual Studio 2017
     build_script:
       - ps: >-
-          dotnet info
+          dotnet --info
           .\build.ps1 
         
   -
