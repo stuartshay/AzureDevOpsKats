@@ -47,6 +47,8 @@ az group deployment create \
   --parameters "@arm_release/KeyVaultTemplate.parameters.json"
 ```
 
+* Create & Deploy Azure Container Services
+
 ```
 az ad sp create-for-rbac --role="Contributor" \
   --scopes="/subscriptions/4ffc998e-322d-4b70-9e93-1515eed562c6/resourceGroups/AzureDevOpsKatsGroup"
