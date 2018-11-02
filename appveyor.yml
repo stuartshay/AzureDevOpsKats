@@ -46,5 +46,8 @@ for:
       only:
         - image: Ubuntu
     build_script:
+      - export PATH="$PATH:/home/appveyor/.dotnet/tools"
+      - dotnet tool install -g Cake.Tool
+      - dotnet tool list  -g
       - chmod +x build.sh
       - ./build.sh
