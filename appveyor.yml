@@ -5,6 +5,7 @@ image:
 configuration: Release
 
 cache:
+  - tools -> build.cake
   - packages -> **\packages.config, nuget.config
 
 environment:
@@ -34,9 +35,11 @@ for:
     matrix:
       only:
         - image: Visual Studio 2017
+    before_build:
+      - choco install opencover.portable
+      - choco install codecov    
     build_script:
       - ps: >-
-          dotnet --info
           .\build.ps1 
         
   -
