@@ -36,7 +36,6 @@ for:
       only:
         - image: Visual Studio 2017
     before_build:
-      - choco install opencover.portable
       - choco install codecov    
     build_script:
       - ps: >-
