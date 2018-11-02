@@ -3,13 +3,21 @@ image:
 - Visual Studio 2017
 - Ubuntu
 configuration: Release
+
+cache:
+  - tools -> build.cake
+  - packages -> **\packages.config, nuget.config
+
 environment:
   ASPNETCORE_ENVIRONMENT: Staging
+
 nuget:
   project_feed: true
   disable_publish_on_pr: true
+
 artifacts:
 - path: build\artifacts\*.nupkg
+
 deploy: off
 branches:
   only:
@@ -27,14 +35,19 @@ for:
     matrix:
       only:
         - image: Visual Studio 2017
+    before_build:
+      - choco install codecov    
     build_script:
       - ps: >-
-          .\build.ps1 -target CalculateCoverage --settings_skipverification=true
+          .\build.ps1 -BuildEnvironment "cloud"
         
   -
     matrix:
       only:
         - image: Ubuntu
     build_script:
-      - sh: >-
-          ./build.sh
+      - export PATH="$PATH:/home/appveyor/.dotnet/tools"
+      - dotnet tool install -g Cake.Tool
+      - dotnet tool list  -g
+      - chmod +x build.sh
+      - ./build.sh
