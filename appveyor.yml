@@ -36,7 +36,7 @@ for:
         - image: Visual Studio 2017
     build_script:
       - ps: >-
-           dotnet --info
+          dotnet info
           .\build.ps1 
         
   -
@@ -45,5 +45,4 @@ for:
         - image: Ubuntu
     build_script:
       - sh: >-
-           dotnet --info
           ./build.sh
