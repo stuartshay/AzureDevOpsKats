@@ -7,7 +7,7 @@
     <NoWarn>$(NoWarn),1701;1702;1705</NoWarn>
     <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
     <AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
-    <Version>$(Version)</Version>
+    <Version>2.2.0</Version>
     <FileVersion>$(FileVersion)</FileVersion>
     <Description />
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>

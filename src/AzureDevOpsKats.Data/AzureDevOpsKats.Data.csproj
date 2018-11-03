@@ -8,9 +8,9 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn),1701;1702;1705</NoWarn>
     <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
-    <AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
-    <Version>$(Version)</Version>
-    <FileVersion>$(FileVersion)</FileVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <Version>2.2.0</Version>
+    <FileVersion>2.2.0.0</FileVersion>
     <Description />
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
