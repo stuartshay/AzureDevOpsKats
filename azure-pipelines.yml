@@ -38,7 +38,7 @@ jobs:
   pool:
     vmImage: 'xcode9-macos10.13'
   steps:
-  - bash: chmod +x ./build-mac.sh
+  - bash: ./build-mac.sh
     displayName: 'Cake Build'
     env:
       COREHOST_TRACE: 0
