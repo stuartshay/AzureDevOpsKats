@@ -9,8 +9,8 @@
 # Define directories.
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
-ADDINS_DIR=$TOOLS_DIR/Addins
-MODULES_DIR=$TOOLS_DIR/Modules
+ADDINS_DIR=$TOOLS_DIR/addins
+MODULES_DIR=$TOOLS_DIR/modules
 NUGET_EXE=$TOOLS_DIR/nuget.exe
 CAKE_EXE=$TOOLS_DIR/Cake/Cake.exe
 PACKAGES_CONFIG=$TOOLS_DIR/packages.config
@@ -28,14 +28,24 @@ fi
 
 # Define default arguments.
 SCRIPT="build.cake"
-CAKE_ARGUMENTS=()
+TARGET="Default"
+CONFIGURATION="Release"
+VERBOSITY="verbose"
+DRYRUN=
+SHOW_VERSION=false
+SCRIPT_ARGUMENTS=()
 
 # Parse arguments.
 for i in "$@"; do
     case $1 in
         -s|--script) SCRIPT="$2"; shift ;;
-        --) shift; CAKE_ARGUMENTS+=("$@"); break ;;
-        *) CAKE_ARGUMENTS+=("$1") ;;
+        -t|--target) TARGET="$2"; shift ;;
+        -c|--configuration) CONFIGURATION="$2"; shift ;;
+        -v|--verbosity) VERBOSITY="$2"; shift ;;
+        -d|--dryrun) DRYRUN="-dryrun" ;;
+        --version) SHOW_VERSION=true ;;
+        --) shift; SCRIPT_ARGUMENTS+=("$@"); break ;;
+        *) SCRIPT_ARGUMENTS+=("$1") ;;
     esac
     shift
 done
@@ -48,9 +58,9 @@ fi
 # Make sure that packages.config exist.
 if [ ! -f "$TOOLS_DIR/packages.config" ]; then
     echo "Downloading packages.config..."
-    curl -Lsfo "$TOOLS_DIR/packages.config" https://cakebuild.net/download/bootstrapper/packages
+    curl -Lsfo "$TOOLS_DIR/packages.config" http://cakebuild.net/download/bootstrapper/packages
     if [ $? -ne 0 ]; then
-        echo "An error occurred while downloading packages.config."
+        echo "An error occured while downloading packages.config."
         exit 1
     fi
 fi
@@ -60,7 +70,7 @@ if [ ! -f "$NUGET_EXE" ]; then
     echo "Downloading NuGet..."
     curl -Lsfo "$NUGET_EXE" https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
     if [ $? -ne 0 ]; then
-        echo "An error occurred while downloading nuget.exe."
+        echo "An error occured while downloading nuget.exe."
         exit 1
     fi
 fi
@@ -68,7 +78,7 @@ fi
 # Restore tools from NuGet.
 pushd "$TOOLS_DIR" >/dev/null
 if [ ! -f "$PACKAGES_CONFIG_MD5" ] || [ "$( cat "$PACKAGES_CONFIG_MD5" | sed 's/\r$//' )" != "$( $MD5_EXE "$PACKAGES_CONFIG" | awk '{ print $1 }' )" ]; then
-    find . -type d ! -name . ! -name 'Cake.Bakery' | xargs rm -rf
+    find . -type d ! -name . | xargs rm -rf
 fi
 
 mono "$NUGET_EXE" install -ExcludeVersion
@@ -114,4 +124,8 @@ if [ ! -f "$CAKE_EXE" ]; then
 fi
 
 # Start Cake
-exec mono "$CAKE_EXE" $SCRIPT "${CAKE_ARGUMENTS[@]}"
+if $SHOW_VERSION; then
+    exec mono "$CAKE_EXE" -version
+else
+    exec mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+fi
