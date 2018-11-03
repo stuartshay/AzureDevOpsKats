@@ -8,6 +8,7 @@ ENV BUILD_NUMBER ${BUILD_NUMBER}
 COPY src /app/src
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 COPY NuGet.config /app/NuGet.config
+COPY common.props /app/common.props
 
 WORKDIR /app
 RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
