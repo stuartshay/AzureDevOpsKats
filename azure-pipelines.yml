@@ -39,7 +39,7 @@ jobs:
     vmImage: 'xcode9-macos10.13'
   steps:
   - bash: 
-      chmod +x build-mac.sh
+      chmod u+x build-mac.sh
       ./build-mac.sh
     displayName: 'Cake Build'
     env:
