@@ -1,6 +1,6 @@
 <Project>
   
-  <PropertyGroup>
+  <PropertyGroup Label="Build">
     <RuntimeFrameworkVersion>2.1.4</RuntimeFrameworkVersion>
   </PropertyGroup>
 
@@ -11,6 +11,7 @@
     <RepositoryUrl>https://github.com/stuartshay/AzureDevOpsKats</RepositoryUrl>
     <Company>Stuart Shay</Company>
     <Product>AzureDevOpsKats</Product>
+    <Copyright>Copyright © Stuart Shay. All rights Reserved</Copyright>
   </PropertyGroup>
 
 </Project>
