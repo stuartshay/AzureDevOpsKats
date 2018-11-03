@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
-    <CodeAnalysisRuleSet>$(SolutionDir)/_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)/_stylecop/StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT'">
-    <CodeAnalysisRuleSet>$(SolutionDir)../../_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)../../_stylecop/StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
 </Project>

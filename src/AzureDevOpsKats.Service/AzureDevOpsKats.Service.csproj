@@ -6,7 +6,7 @@
     <AssemblyVersion>2.1.0.0</AssemblyVersion>
     <Version>2.1.0</Version>
     <FileVersion>2.1.0.0</FileVersion>
-    <CodeAnalysisRuleSet>StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn),1701;1702;1705</NoWarn>
   </PropertyGroup>
@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
-    <CodeAnalysisRuleSet>$(SolutionDir)/_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)/_stylecop/StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT'">
-    <CodeAnalysisRuleSet>$(SolutionDir)../../_stylecop/StyleCopeRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)../../_stylecop/StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
 </Project>
