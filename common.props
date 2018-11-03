@@ -6,8 +6,8 @@
 
   <PropertyGroup Label="Package">
     <AssemblyVersion>2.1.0.1</AssemblyVersion>
-    <VersionPrefix>2.1.0</VersionPrefix>
-    <FileVersion>2.1.1.1</FileVersion>
+    <VersionPrefix>2.1.1</VersionPrefix>
+    <FileVersion>2.1.2.1</FileVersion>
     <RepositoryUrl>https://github.com/stuartshay/AzureDevOpsKats</RepositoryUrl>
     <Company>Stuart Shay</Company>
     <Product>AzureDevOpsKats</Product>
