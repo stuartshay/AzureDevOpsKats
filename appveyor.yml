@@ -48,10 +48,10 @@ for:
     before_build:
       - export PATH="$PATH:/home/appveyor/.dotnet/tools"
       - wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
-      - dpkg -i packages-microsoft-prod.deb
-      - apt-get install apt-transport-https
-      - apt-get update
-      - apt-get install dotnet-sdk-2.1
+      - sudo dpkg -i packages-microsoft-prod.deb
+      - sudo apt-get install apt-transport-https
+      - sudo apt-get update
+      - sudo apt-get install dotnet-sdk-2.1
       - dotnet tool install -g Cake.Tool
       - dotnet tool list -g 
       - chmod +x build.sh
