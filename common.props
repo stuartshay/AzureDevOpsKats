@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <AssemblyVersion>2.1.3.1</AssemblyVersion>
-    <VersionPrefix>2.1.3</VersionPrefix>
-    <FileVersion>2.1.3.1</FileVersion>
+    <AssemblyVersion>2.1.4.1</AssemblyVersion>
+    <VersionPrefix>2.1.4</VersionPrefix>
+    <FileVersion>2.1.4.1</FileVersion>
     <RepositoryUrl>https://github.com/stuartshay/AzureDevOpsKats</RepositoryUrl>
     <Company>Stuart Shay</Company>
     <Product>AzureDevOpsKats</Product>
