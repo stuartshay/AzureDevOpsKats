@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##########################################################################
 # This is the Cake bootstrapper script for Linux and OS X.
