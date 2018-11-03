@@ -1,12 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\common.props" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <Version>2.1.0</Version>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn),1701;1702;1705</NoWarn>
+    <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
+    <AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
+    <Version>$(Version)</Version>
+    <FileVersion>$(FileVersion)</FileVersion>
+    <Description />
+    <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
+    <Company>$(Company)</Company>
+    <Product>$(Product)</Product>
+    <Copyright>$(Copyright)</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
