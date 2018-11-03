@@ -10,6 +10,9 @@ cache:
 
 environment:
   ASPNETCORE_ENVIRONMENT: Staging
+  COREHOST_TRACE: 0
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
 nuget:
   project_feed: true
@@ -29,7 +32,7 @@ skip_commits:
   - LICENSE
   - README.md
   - .travis.yml
-  - WebInfrastructure.sln.DotSettings
+
 for:
   -
     matrix:
