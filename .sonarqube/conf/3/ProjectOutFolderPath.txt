@@ -1,1 +1,0 @@
-D:\Build\AzureDevOpsKats\.sonarqube\out\3

@@ -3,6 +3,7 @@
 
 # Cake 
 .dotnet/
+.sonarqube/
 cli/
 tools/
 
