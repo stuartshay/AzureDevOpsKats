@@ -1,0 +1,12 @@
+a
+XD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Configuration\ApplicationOptions.csutf-8Z
+QD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Configuration\FileStorage.csutf-8V
+MD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Interface\ICatService.csutf-8W
+ND:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Interface\IFileService.csutf-8a
+XD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Mappings\AutoMapperConfiguration.csutf-8V
+MD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Models\CatCreateModel.csutf-8V
+MD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Models\CatInsertModel.csutf-8P
+GD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Models\CatModel.csutf-8V
+MD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Models\CatUpdateModel.csutf-8S
+JD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Service\CatService.csutf-8T
+KD:\Build\AzureDevOpsKats\src\AzureDevOpsKats.Service\Service\FileService.csutf-8

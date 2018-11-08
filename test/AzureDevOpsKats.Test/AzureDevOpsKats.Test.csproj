@@ -21,6 +21,11 @@
     <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <!-- Mark the project as being a test project -->
+    <SonarQubeTestProject>true</SonarQubeTestProject>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\AzureDevOpsKats.Data\AzureDevOpsKats.Data.csproj" />
     <ProjectReference Include="..\..\src\AzureDevOpsKats.Service\AzureDevOpsKats.Service.csproj" />

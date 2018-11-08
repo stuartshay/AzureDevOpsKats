@@ -1,0 +1,6 @@
+projectKey=9c944632fe7a37d24b533680dac1e45b5b34fea7
+serverUrl=http://sonar.navigatorglass.com:9000
+serverVersion=7.1.0.11001
+dashboardUrl=http://sonar.navigatorglass.com:9000/dashboard/index/9c944632fe7a37d24b533680dac1e45b5b34fea7
+ceTaskId=AWbxuOA6y-JIjNPU3EeT
+ceTaskUrl=http://sonar.navigatorglass.com:9000/api/ce/task?id=AWbxuOA6y-JIjNPU3EeT
