@@ -2,10 +2,10 @@
 
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
 
-[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=AzureDevOpsKats&metric=alert_status)](http://sonar.navigatorglass.com:9000/dashboard?id=AzureDevOpsKats)
-[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=AzureDevOpsKatst&metric=reliability_rating)](http://sonar.navigatorglass.com:9000/dashboard?id=AzureDevOpsKats)
-[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=AzureDevOpsKats&metric=security_rating)](http://sonar.navigatorglass.com:9000/dashboard?id=AzureDevOpsKats)
-[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=AzureDevOpsKats&metric=sqale_rating)](http://sonar.navigatorglass.com:9000/dashboard?id=AzureDevOpsKats)
+[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=9c944632fe7a37d24b533680dac1e45b5b34fea7&metric=alert_status)](http://sonar.navigatorglass.com:9000/dashboard?id=9c944632fe7a37d24b533680dac1e45b5b34fea7)
+[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=9c944632fe7a37d24b533680dac1e45b5b34fea7s&metric=reliability_rating)](http://sonar.navigatorglass.com:9000/dashboard?id=9c944632fe7a37d24b533680dac1e45b5b34fea7)
+[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=9c944632fe7a37d24b533680dac1e45b5b34fea7&metric=security_rating)](http://sonar.navigatorglass.com:9000/dashboard?id=9c944632fe7a37d24b533680dac1e45b5b34fea7)
+[![SonarCloud](http://sonar.navigatorglass.com:9000/api/project_badges/measure?project=9c944632fe7a37d24b533680dac1e45b5b34fea7&metric=sqale_rating)](http://sonar.navigatorglass.com:9000/dashboard?id=9c944632fe7a37d24b533680dac1e45b5b34fea7)
 
 
 [![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1)
