@@ -4,6 +4,7 @@
 # Cake 
 .dotnet/
 .sonarqube/
+.test-results
 cli/
 tools/
 

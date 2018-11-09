@@ -1,6 +1,18 @@
+#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+#addin nuget:?package=Cake.Sonar
+
 var target = Argument("Target", "Default");
 var configuration = Argument("configuration", "Release");
+var login = Argument<String>("login", null);
+
 var artifactsDirectory = Directory("./artifacts");
+var testResultsDirectory = Directory("./.test-results");
+
+var settings = new SonarBeginSettings{
+  Url = "http://sonar.navigatorglass.com:9000",
+  Key = "9c944632fe7a37d24b533680dac1e45b5b34fea7",
+  Name = "AzureDevOpsKats"
+};
 
 
 // Deletes the contents of the Artifacts folder if it should contain anything from a previous build.
@@ -43,14 +55,15 @@ Task("Test")
         var projects = GetFiles("./test/**/*.csproj");
         foreach(var project in projects)
         {
-            DotNetCoreTest(
-                project.GetDirectory().FullPath,
-                
-                new DotNetCoreTestSettings()
-                {
-                    Configuration = configuration,
-                    ArgumentCustomization = args => args.Append($"--no-restore")
-                });
+           Information("Testing project " + project);  
+           DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+           {
+               Configuration = configuration,
+               NoBuild = true,
+               Logger = "trx",
+               ResultsDirectory = testResultsDirectory,
+               ArgumentCustomization = args => args.Append($"--no-restore")
+           });
         }
     });
 	
@@ -70,6 +83,7 @@ Task("Pack")
                 });
         }
     });
+
     
 // The default task to run if none is explicitly specified. In this case, we want
 // to run everything starting from Clean, all the way up to Pack.
