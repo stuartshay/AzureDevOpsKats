@@ -42,7 +42,7 @@ Windows
 ```
 set-executionpolicy unrestricted
 
-./build.ps1
+.\build.ps1
 ```
 
 Linux/Mac

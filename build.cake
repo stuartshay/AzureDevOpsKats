@@ -1,3 +1,5 @@
+#tool nuget:?package=xunit.runner.console&version=2.2.0
+#tool nuget:?package=xunit.runner.visualstudio&version=2.2.0
 #tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #addin nuget:?package=Cake.Sonar
 
@@ -20,6 +22,7 @@ Task("Clean")
     .Does(() =>
     {
         CleanDirectory(artifactsDirectory);
+        CleanDirectory(testResultsDirectory);
     });
 
 // Run dotnet restore to restore all package references.
@@ -60,7 +63,7 @@ Task("Test")
            {
                Configuration = configuration,
                NoBuild = true,
-               Logger = "trx",
+               Logger = "trx;LogFileName=UnitTestResults.trx",
                ResultsDirectory = testResultsDirectory,
                ArgumentCustomization = args => args.Append($"--no-restore")
            });
