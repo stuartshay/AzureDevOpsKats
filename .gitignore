@@ -4,9 +4,11 @@
 # Cake 
 .dotnet/
 .sonarqube/
+coverage-html/
 .test-results
 cli/
 tools/
+coverage*.*
 
 # User-specific files
 *.suo

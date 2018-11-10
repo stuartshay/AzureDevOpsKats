@@ -1,7 +1,16 @@
+#addin "nuget:?package=Cake.MiniCover&version=0.29.0-next20180721071547&prerelease"
+
 #tool nuget:?package=xunit.runner.console&version=2.2.0
 #tool nuget:?package=xunit.runner.visualstudio&version=2.2.0
+
 #tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #addin nuget:?package=Cake.Sonar
+
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
+SetMiniCoverToolsProject("./tools/tools.csproj");
+
 
 var target = Argument("Target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -9,6 +18,8 @@ var login = Argument<String>("login", null);
 
 var artifactsDirectory = Directory("./artifacts");
 var testResultsDirectory = Directory("./.test-results");
+var coverageResultsDirectory = Directory("./coverage-html");
+
 
 var settings = new SonarBeginSettings{
   Url = "http://sonar.navigatorglass.com:9000",
@@ -17,15 +28,20 @@ var settings = new SonarBeginSettings{
 };
 
 
-// Deletes the contents of the Artifacts folder if it should contain anything from a previous build.
+//////////////////////////////////////////////////////////////////////
+// TASKS
+//////////////////////////////////////////////////////////////////////
+
 Task("Clean")
     .Does(() =>
     {
         CleanDirectory(artifactsDirectory);
         CleanDirectory(testResultsDirectory);
+        CleanDirectory(coverageResultsDirectory);
+        DeleteFiles("./coverage*.*");
     });
 
-// Run dotnet restore to restore all package references.
+
 Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
@@ -33,7 +49,7 @@ Task("Restore")
         DotNetCoreRestore();
     });
 
-// Find all csproj projects and build them using the build configuration specified as an argument.
+
  Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
@@ -50,7 +66,6 @@ Task("Restore")
         }
     });
 
-// Look under a 'Test' folder and run dotnet test against all of those projects.
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
@@ -69,10 +84,34 @@ Task("Test")
            });
         }
     });
-	
-// Run dotnet pack to produce NuGet packages from our projects. Versions the package
+
+Task("Coverage")
+   .IsDependentOn("Test").Does(() => 
+   {
+        Information("Code Coverage");  
+        MiniCover(tool => 
+        {
+            foreach(var project in GetFiles("./test/**/*.csproj"))
+            {
+                DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+                {
+                    Configuration = configuration,
+                    NoRestore = true,
+                    NoBuild = true
+                });
+            }
+        },
+        new MiniCoverSettings()
+            .WithAssembliesMatching("./test/**/*.dll")
+            .WithSourcesMatching("./src/**/*.cs")
+            .WithNonFatalThreshold()
+            .GenerateReport(ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
+        );
+   });
+
+
 Task("Pack")
-    .IsDependentOn("Test")
+    .IsDependentOn("Coverage")
     .Does(() =>
     {
         foreach (var project in GetFiles("./src/**/*.csproj"))
@@ -88,9 +127,14 @@ Task("Pack")
     });
 
     
-// The default task to run if none is explicitly specified. In this case, we want
-// to run everything starting from Clean, all the way up to Pack.
+//////////////////////////////////////////////////////////////////////
+// TASK TARGETS
+//////////////////////////////////////////////////////////////////////
+
 Task("Default")
     .IsDependentOn("Pack");
-// Executes the task specified in the target argument.
+
+//////////////////////////////////////////////////////////////////////
+// EXECUTION
+//////////////////////////////////////////////////////////////////////
 RunTarget(target);
