@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cake.Sonar</name>
+    </assembly>
+    <members>
+        <member name="T:Cake.Sonar.SonarBeginSettings">
+            <summary>
+            Required prior to Sonar 6.1:
+             - Name
+             - Version
+            Required from Sonar 6.1
+             - Key
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Url">
+            <summary>
+            The url of the used sonar instance. When omitted, http://localhost:9000 is used.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.SettingsFile">
+            <summary>
+            Path to alternative SonarQube.Analysis.xml
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Key">
+            <summary>
+            Key of the project. Required for Sonar 6.1 and up.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Organization">
+            <summary>
+            Organization name for sonar cloud versions.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Name">
+            <summary>
+            Name of the project.
+            Required prior to Sonar 6.1
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Branch">
+            <summary>
+            The name of the current branch. Specifying a branch will cause Sonar to analyse different branches as different Sonar projects.
+            This allows one to use sonar to compare branches on a pull review.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Exclusions">
+            <summary>
+            Use exclusion to analyze everything but the specified files
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Inclusions">
+            <summary>
+            Comma-delimited list of file path patterns to be included in analysis. When set, only files matching the paths set here will be included in analysis.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.DuplicationExclusions">
+            <summary>
+            Comma-delimited list of file path patterns to be excluded from duplication detection
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.TestExclusions">
+            <summary>
+            Comma-delimited list of test file path patterns to be excluded from analysis.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.TestInclusions">
+            <summary>
+            Comma-delimited list of test file path patterns to be included in analysis. When set, only test files matching the paths set here will be included in analysis.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Version">
+            <summary>
+            A version indicator, e.g. a semantic version or git revision hash.
+            Required prior to Sonar 6.1
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.CoverageExclusions">
+            <summary>
+            Comma-delimited list of file path patterns to be excluded from coverage calculations
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.JavascriptCoverageReportsPath">
+            <summary>
+            comma-separated list of paths to LCOV coverage report files
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.TypescriptCoverageReportsPath">
+            <summary>
+            comma-separated list of paths to LCOV coverage report files
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.TSLintReportPaths">
+            <summary>
+            This property accepts one or more JSON TSLint reports,
+            paths to report files should be absolute or relative to the project base directory.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.PullRequestProvider">
+            <summary>
+            Gets or sets the pull request provider used by sonarcloud. github or vsts.
+            See: https://docs.sonarqube.org/display/SONAR/Pull+Request+Analysis 
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.PullRequestBranch">
+            <summary>
+            Gets or sets the branch name in case of a pull request validation
+            See https://docs.sonarqube.org/display/SONAR/Pull+Request+Analysis
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.PullRequestKey">
+            <summary>
+            Gets or sets the pullrequest key in case of a pull request validation
+            See https://docs.sonarqube.org/display/SONAR/Pull+Request+Analysis
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.PullRequestBase">
+            <summary>
+            Gets or sets the base branch in which the pull request will be merged in case of a pull request validation
+            See https://docs.sonarqube.org/display/SONAR/Pull+Request+Analysis
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.PullRequestGithubEndpoint">
+            <summary>
+            Gets or sets the github endpoint url.
+            See: https://docs.sonarqube.org/display/SONAR/Pull+Request+Analysis 
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.PullRequestGithubRepository">
+            <summary>
+            Gets or sets the github repository for which the pull request should be validated. Typical github format CompanyOrUser/RepositoryName
+            See: https://docs.sonarqube.org/display/SONAR/Pull+Request+Analysis
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarBeginSettings.Verbose">
+            <summary>
+            Print verbose output during the analysis.
+            </summary>
+        </member>
+        <member name="T:Cake.Sonar.SonarCakeAliases">
+            <summary>
+            <para>
+            Contains functionality for running a Sonar analysis on a c# project using the MSBuild SonarQube Runner.
+            </para>
+            <para>
+            In order to use the commands for this addin, include the following in your build.cake file to download and
+            reference from NuGet.org:
+            <code>
+                #addin "nuget:?package=Cake.Sonar"
+                #tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
+            </code>
+            </para>
+            </summary>
+            <example>
+            Analysis is done in three phases. 
+            In the first phase, init, msbuild targets are added for collecting information.
+            In the second phase, you build your projects and optionally a create a test- and coverage-report.
+            In the third phasesonar will analyse the collectived files and process the passed reports.
+            
+            You can wrap the init and analysis phase around your existing tasks using dependencies with <see cref="M:Cake.Sonar.SonarCakeAliases.SonarBegin(Cake.Core.ICakeContext,Cake.Sonar.SonarBeginSettings)"/> and <see cref="M:Cake.Sonar.SonarCakeAliases.SonarEnd(Cake.Core.ICakeContext)"/>:
+            
+            <code>
+            Task("Sonar")
+              .IsDependentOn("Sonar-Init") // should call SonarBegin()
+              .IsDependentOn("Build")
+              .IsDependentOn("Run-Unit-Test")
+              .IsDependentOn("Sonar-Analyse"); // should call SonarEnd()
+            </code>
+            
+            Or you can use a dedicated task that executed msbuild itself <see cref="M:Cake.Sonar.SonarCakeAliases.Sonar(Cake.Core.ICakeContext,System.Action{Cake.Core.ICakeContext},Cake.Sonar.SonarBeginSettings)"/>.
+            
+            Tip: local testing of analysis can be done using sonarqube running in a docker container: 
+            <code>
+            docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
+            </code>
+            </example>
+        </member>
+        <member name="M:Cake.Sonar.SonarCakeAliases.SonarBegin(Cake.Core.ICakeContext,Cake.Sonar.SonarBeginSettings)">
+            <summary>
+            Initialise msbuild for sonar analysis.
+            </summary>
+            <example>
+            <code>
+            Task("Initialise-Sonar")
+               .Does(() => {
+                  SonarBegin(new SonarBeginSettings{
+                     Name = "My.Project",
+                     Key = "MP",
+                     Url = "http://localhost:9000"     
+                  });
+              });
+            </code>
+            </example>
+            <param name="context"></param>
+            <param name="settings">A required settings object.</param>
+        </member>
+        <member name="M:Cake.Sonar.SonarCakeAliases.SonarEnd(Cake.Core.ICakeContext,Cake.Sonar.SonarEndSettings)">
+            <summary>
+            Run the actual sonar analysis and push them to sonar. 
+            This call should follow after a SonarBegin and MSBuild.
+            </summary>
+            <example>
+            <code>
+            Task("Sonar-Analyse")
+              .Does(() => {
+                  var user = EnvironmentVariable("SONAR_USER");
+                  var pass = EnvironmentVariable("SONAR_PASS");
+                  SonarEnd(new SonarEndSettings { Login = user, Password = pass });
+              });
+            </code>
+            </example>
+            <param name="context"></param>
+            <param name="settings">A settings object containing credentials.</param>
+        </member>
+        <member name="M:Cake.Sonar.SonarCakeAliases.SonarEnd(Cake.Core.ICakeContext)">
+            <summary>
+            Run the actual sonar analysis (no credentials given).
+            </summary>
+            <example>
+            <code>
+            Task("Sonar-Analyse")
+              .Does(() => {
+                  SonarEnd();
+              });
+            </code>
+            </example>
+            <param name="context"></param>
+        </member>
+        <member name="M:Cake.Sonar.SonarCakeAliases.Sonar(Cake.Core.ICakeContext,System.Action{Cake.Core.ICakeContext},Cake.Sonar.SonarBeginSettings)">
+            <summary>
+            Run a self-contained analysis for the specified action. 
+            The action should run msbuild.
+            </summary>
+            <example>
+            <code>
+            Task("Sonar")
+              .Does(() => {
+                 var settings = new SonarBeginSettings() {
+                     ...
+                 };
+                 Sonar(ctx => ctx.MsBuild(solution), settings);
+              });
+            </code>
+            </example>
+            <param name="context">The cake context</param>
+            <param name="action"></param>
+            <param name="settings"></param>
+        </member>
+        <member name="P:Cake.Sonar.SonarSettings.Silent">
+            <summary>
+            Suppress standard output from the sonar runner.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarSettings.Login">
+            <summary>
+            Login to use for connecting to sonar.
+            </summary>
+        </member>
+        <member name="P:Cake.Sonar.SonarSettings.Password">
+            <summary>
+            Password to use for connecting to sonar.
+            </summary>
+        </member>
+    </members>
+</doc>

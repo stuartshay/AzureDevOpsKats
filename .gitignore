@@ -7,8 +7,8 @@
 coverage-html/
 .test-results
 cli/
-tools/
 coverage*.*
+tools/
 
 # User-specific files
 *.suo
@@ -26,7 +26,6 @@ coverage*.*
 [Rr]eleases/
 x64/
 x86/
-build/
 bld/
 [Bb]in/
 [Oo]bj/
