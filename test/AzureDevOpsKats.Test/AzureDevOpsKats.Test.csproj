@@ -41,4 +41,11 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+ <PropertyGroup>
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{8DF74D69-2F32-48B7-8624-EFFEB2677704}</ProjectGuid>
+  </PropertyGroup>
+
+
+
 </Project>

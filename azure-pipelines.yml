@@ -38,6 +38,7 @@ jobs:
   pool:
     vmImage: 'xcode9-macos10.13'
   steps:
+  - bash: echo "export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
   - bash: chmod +x ./build-mac.sh
     displayName: 'Cake Build'
     env:

@@ -1,6 +1,7 @@
 //build.cake
 //  .\build.ps1 -t Coverage
 
+#load build/settings.cake
 
 //////////////////////////////////////////////////////////////////////
 // TOOLS
@@ -33,21 +34,16 @@ var login = Argument<String>("login", null);
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
-var projectName = "AzureDevOpsKats.Web";
+var x = Settings.ProjectName;
+
+var projectName = Settings.ProjectName;
 var projectDirectory =  Directory(".") +  Directory("src") +  Directory(projectName);
 
 var artifactsDirectory = Directory("./artifacts");
+var sonarDirectory = Directory("./.sonarqube");
 var testResultsDirectory = Directory("./.test-results");
 var coverageResultsDirectory = Directory("./coverage-html");
 var publishirectory = Directory(".") + Directory("publish") + Directory(configuration);
-
-
-var settings = new SonarBeginSettings{
-  Url = "http://sonar.navigatorglass.com:9000",
-  Key = "9c944632fe7a37d24b533680dac1e45b5b34fea7",
-  Name = "AzureDevOpsKats"
-};
-
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -60,6 +56,7 @@ Task("Clean")
         CleanDirectory(publishirectory);
         CleanDirectory(testResultsDirectory);
         CleanDirectory(coverageResultsDirectory);
+        //DeleteDirectory(sonarDirectory);
         DeleteFiles("./coverage*.*");
     });
 
@@ -145,7 +142,23 @@ Task("Publish")
         });
 });
 
+Task("Sonar")
+  .IsDependentOn("SonarBegin")
+  .IsDependentOn("Build")
+  .IsDependentOn("SonarEnd");
 
+Task("SonarBegin")
+    .Does(() => { SonarBegin(new SonarBeginSettings {
+        Url = Settings.SonarUrl,
+        Key = Settings.SonarKey,
+        Name = Settings.SonarName
+        });
+    });
+  
+Task("SonarEnd")
+    .Does(() => { 
+        SonarEnd(new SonarEndSettings{});
+    });
 
 Task("Pack")
     .IsDependentOn("Coverage")
