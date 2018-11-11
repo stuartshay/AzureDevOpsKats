@@ -29,12 +29,9 @@ var target = Argument("Target", "Default");
 var configuration = Argument("configuration", "Release");
 var login = Argument<String>("login", null);
 
-
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
-
-var x = Settings.ProjectName;
 
 var projectName = Settings.ProjectName;
 var projectDirectory =  Directory(".") +  Directory("src") +  Directory(projectName);
