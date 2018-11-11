@@ -1,24 +1,45 @@
-#addin "nuget:?package=Cake.MiniCover&version=0.29.0-next20180721071547&prerelease"
+//build.cake
+//  .\build.ps1 -t Coverage
 
+
+//////////////////////////////////////////////////////////////////////
+// TOOLS
+//////////////////////////////////////////////////////////////////////
+
+#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #tool nuget:?package=xunit.runner.console&version=2.2.0
 #tool nuget:?package=xunit.runner.visualstudio&version=2.2.0
 
-#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+//////////////////////////////////////////////////////////////////////
+// ADDINS
+//////////////////////////////////////////////////////////////////////
+
+#addin nuget:?package=Cake.MiniCover&version=0.29.0-next20180721071547&prerelease
+// #addin nuget:?package=Cake.NSwag.Console
 #addin nuget:?package=Cake.Sonar
+
+SetMiniCoverToolsProject("./build/tools.csproj");
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
-SetMiniCoverToolsProject("./build/tools.csproj");
-
 
 var target = Argument("Target", "Default");
 var configuration = Argument("configuration", "Release");
 var login = Argument<String>("login", null);
 
+
+//////////////////////////////////////////////////////////////////////
+// PREPARATION
+//////////////////////////////////////////////////////////////////////
+
+var projectName = "AzureDevOpsKats.Web";
+var projectDirectory =  Directory(".") +  Directory("src") +  Directory(projectName);
+
 var artifactsDirectory = Directory("./artifacts");
 var testResultsDirectory = Directory("./.test-results");
 var coverageResultsDirectory = Directory("./coverage-html");
+var publishirectory = Directory(".") + Directory("publish") + Directory(configuration);
 
 
 var settings = new SonarBeginSettings{
@@ -36,6 +57,7 @@ Task("Clean")
     .Does(() =>
     {
         CleanDirectory(artifactsDirectory);
+        CleanDirectory(publishirectory);
         CleanDirectory(testResultsDirectory);
         CleanDirectory(coverageResultsDirectory);
         DeleteFiles("./coverage*.*");
@@ -108,6 +130,21 @@ Task("Coverage")
             .GenerateReport(ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
         );
    });
+
+
+Task("Publish")
+    .IsDependentOn("Test")
+    .Does(() =>
+{
+    DotNetCorePublish(
+        projectDirectory,
+        new DotNetCorePublishSettings()
+        {
+            Configuration = configuration,
+            OutputDirectory = publishirectory
+        });
+});
+
 
 
 Task("Pack")
