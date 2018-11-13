@@ -8,7 +8,7 @@ COPY _stylecop /app/_stylecop
 COPY NuGet.config /app/NuGet.config
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 
-WORKDIR /app/src/AzureDevOpsKats
+WORKDIR /app/src/AzureDevOpsKats.Web
 
 ## TODO - Install Global Tool
 #RUN dotnet setversion 2.1.2.${BUILD_NUMBER};
