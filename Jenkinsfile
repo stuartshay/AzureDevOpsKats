@@ -5,13 +5,13 @@ node('docker') {
     }
 
     stage('Docker build image') {
-         sh '''mv docker/imagegallery-api-build.dockerfile/.dockerignore .dockerignore
-         docker build -f docker/imagegallery-api-build.dockerfile/Dockerfile --build-arg BUILD_NUMBER=${BUILD_NUMBER} -t stuartshay/imagegallery-api:2.1.9-build .'''
+         sh '''mv docker/azuredevopskats-web-build.dockerfile/.dockerignore .dockerignore
+         docker build -f docker/azuredevopskats-web-build.dockerfile/Dockerfile --build-arg BUILD_NUMBER=${BUILD_NUMBER} -t stuartshay/azuredevopskats:2.1.9-build .'''
          
          withCredentials([usernamePassword(credentialsId: 'docker-hub-navigatordatastore', usernameVariable: 'DOCKER_HUB_LOGIN', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
             sh "docker login -u ${DOCKER_HUB_LOGIN} -p ${DOCKER_HUB_PASSWORD}"
         }
-        sh '''docker push stuartshay/imagegallery-api:2.1.9-build'''
+        sh '''docker push stuartshay/azuredevopskats:2.1.9-build'''
     }
 
     stage ('Deploy Stack') {
