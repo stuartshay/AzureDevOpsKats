@@ -5,11 +5,12 @@ ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 COPY src /app/src
 COPY _stylecop /app/_stylecop
-COPY NuGet.Config /app/NuGet.Config
+COPY NuGet.config /app/NuGet.config
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 
 WORKDIR /app/src/AzureDevOpsKats
 
+## TODO - Install Global Tool
 #RUN dotnet setversion 2.1.2.${BUILD_NUMBER};
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r debian.9-x64
 
