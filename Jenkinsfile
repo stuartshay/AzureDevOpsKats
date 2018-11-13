@@ -1,7 +1,7 @@
 node('docker') {
 
     stage('Git checkout') {
-        git branch: 'master', credentialsId: 'gihub-key', url: 'git@github.com:stuartshay/ImageGallery.API.git'
+        git branch: 'master', credentialsId: 'gihub-key', url: 'git@github.com:stuartshay/AzureDevOpsKats.git'
     }
 
     stage('Docker build image') {
