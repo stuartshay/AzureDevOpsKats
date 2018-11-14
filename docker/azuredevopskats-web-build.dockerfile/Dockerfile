@@ -5,12 +5,14 @@ ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 COPY src /app/src
 COPY _stylecop /app/_stylecop
+COPY common.props /app/common.props
 COPY NuGet.config /app/NuGet.config
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 
 WORKDIR /app/src/AzureDevOpsKats.Web
 
 RUN dotnet tool install -g dotnet-setversion
+RUN echo "export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
 RUN dotnet setversion 2.1.9.${BUILD_NUMBER};
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r debian.9-x64
 
