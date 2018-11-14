@@ -10,8 +10,8 @@ COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 
 WORKDIR /app/src/AzureDevOpsKats.Web
 
-## TODO - Install Global Tool
-#RUN dotnet setversion 2.1.2.${BUILD_NUMBER};
+RUN dotnet tool install -g dotnet-setversion
+RUN dotnet setversion 2.1.9.${BUILD_NUMBER};
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r debian.9-x64
 
 # Runtime Image Stage
