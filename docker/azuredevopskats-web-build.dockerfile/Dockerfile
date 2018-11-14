@@ -12,7 +12,7 @@ COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 WORKDIR /app/src/AzureDevOpsKats.Web
 
 RUN dotnet tool list -g
-RUN setversion 2.1.9  
+RUN dotnet setversion 2.1.9  
 ##.${BUILD_NUMBER} AzureDevOpsKats.Web.csproj
 
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r debian.9-x64
