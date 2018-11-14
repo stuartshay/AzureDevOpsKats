@@ -8,6 +8,7 @@ using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Web.Controllers
@@ -24,16 +25,19 @@ namespace AzureDevOpsKats.Web.Controllers
 
         private readonly IFileService _fileService;
 
+        private readonly ILogger<CatsController> _logger;
+
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="CatsController"/> class.
         /// </summary>
         /// <param name="catService"></param>
         /// <param name="fileService"></param>
         /// <param name="settings"></param>
-        public CatsController(ICatService catService, IFileService fileService, IOptions<ApplicationOptions> settings)
+        public CatsController(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IOptions<ApplicationOptions> settings)
         {
             _catService = catService ?? throw new ArgumentNullException(nameof(catService));
             _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ApplicationSettings = settings.Value;
         }
 

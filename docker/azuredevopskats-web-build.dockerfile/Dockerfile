@@ -17,6 +17,11 @@ RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r debian.9-x64
 # Runtime Image Stage
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
 
+ARG VCS_REF
+
+LABEL org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="e.g. https://github.com/microscaling/microscaling"
+
 RUN apt-get update && apt-get install -y \
         curl \
     && rm -rf /var/lib/apt/lists/* \

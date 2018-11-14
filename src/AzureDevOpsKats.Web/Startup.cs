@@ -81,8 +81,6 @@ namespace AzureDevOpsKats.Web
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            var config = Configuration.Get<ApplicationOptions>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

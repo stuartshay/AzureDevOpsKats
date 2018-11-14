@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace AzureDevOpsKats.Web
 {
@@ -27,14 +28,23 @@ namespace AzureDevOpsKats.Web
         /// <returns></returns>
         public static int Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
+
             try
             {
+                Log.Information("Init:AzureDevOpsKats.Web");
                 CreateWebHostBuilder(args).Build().Run();
                 return 0;
             }
             catch (Exception)
             {
                 return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
             }
         }
 
@@ -46,6 +56,7 @@ namespace AzureDevOpsKats.Web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(Configuration)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .UseSerilog();
     }
 }
