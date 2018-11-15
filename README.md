@@ -17,20 +17,25 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats) [![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats)
 
-[![MyGet][data-myget-badge]][data-myget]
-[![MyGet][service-myget-badge]][service-myget]
 
-
-|                          |               |
-| ------------------------ | ------------- |
-| AzureDevOpsKats.Data     | | [![AzureDevOpsKats.Data package in AzureDevOpsKats feed in Azure Artifacts](https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178/Packages/8dc9496f-5db5-4e61-8894-250d291c94ac/Badge)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178&package=8dc9496f-5db5-4e61-8894-250d291c94ac&preferRelease=true)  |
-| AzureDevOpsKats.Service  | |[![AzureDevOpsKats.Service package in AzureDevOpsKats@Local feed in Azure Artifacts](https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3/Packages/ba6134fb-0db5-4ffb-a27f-be12b753c8d3/Badge)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3&package=ba6134fb-0db5-4ffb-a27f-be12b753c8d3&preferRelease=true) |
+|                             |                                          |                                                         |
+| --------------------------- | -----------------------------------------|---------------------------------------------------------|
+| AzureDevOpsKats.Data        | [![MyGet][data-nuget-badge]][data-nuget] | [![MyGet][data-myget-badge]][data-myget]                |
+| AzureDevOpsKats.Service     | [![MyGet][service-nuget-badge]][service-nuget] | [![MyGet][service-myget-badge]][service-myget]    |
 
 
 [data-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Data
 [data-myget-badge]: https://img.shields.io/myget/azuredevopskats/v/AzureDevOpsKats.Data.svg?label=AzureDevOpsKats.Data
+
+[data-nuget]: https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3&package=ba6134fb-0db5-4ffb-a27f-be12b753c8d3&preferRelease=true
+[data-nuget-badge]: https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3/Packages/ba6134fb-0db5-4ffb-a27f-be12b753c8d3/Badge
+
+
 [service-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Service
 [service-myget-badge]: https://img.shields.io/myget/azuredevopskats/v/AzureDevOpsKats.Service.svg?label=AzureDevOpsKats.Service
+
+[service-nuget]: https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178&package=ba6134fb-0db5-4ffb-a27f-be12b753c8d3&preferRelease=true
+[service-nuget-badge]: https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178/Packages/ba6134fb-0db5-4ffb-a27f-be12b753c8d3/Badge
 
 ## Instalation & Run Instructions
 
