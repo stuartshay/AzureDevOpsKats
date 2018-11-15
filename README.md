@@ -20,7 +20,7 @@
 [![MyGet][data-myget-badge]][data-myget]
 [![MyGet][service-myget-badge]][service-myget]
 
-AzureDevOpsKats.Data | [![AzureDevOpsKats.Data package in AzureDevOpsKats feed in Azure Artifacts](https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/04242077-0c74-450d-965b-16340c216eb0/Packages/61ed70e8-ee43-433f-a32c-d8e350022ae6/Badge)](https://dev.azure.com/AzureDevOpsKats/_Packaging?feed=04242077-0c74-450d-965b-16340c216eb0&package=61ed70e8-ee43-433f-a32c-d8e350022ae6&preferRelease=true&_a=package)
+AzureDevOpsKats.Data | [![AzureDevOpsKats.Data package in AzureDevOpsKats feed in Azure Artifacts](https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178/Packages/8dc9496f-5db5-4e61-8894-250d291c94ac/Badge)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178&package=8dc9496f-5db5-4e61-8894-250d291c94ac&preferRelease=true)
 
 
 
