@@ -20,16 +20,11 @@
 [![MyGet][data-myget-badge]][data-myget]
 [![MyGet][service-myget-badge]][service-myget]
 
-AzureDevOpsKats.Data | [![AzureDevOpsKats.Data package in AzureDevOpsKats feed in Azure Artifacts](https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178/Packages/8dc9496f-5db5-4e61-8894-250d291c94ac/Badge)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178&package=8dc9496f-5db5-4e61-8894-250d291c94ac&preferRelease=true)
 
-
-
-
-
-
-
-
-
+|                          |               |
+| ------------------------ | ------------- |
+| AzureDevOpsKats.Data     | | [![AzureDevOpsKats.Data package in AzureDevOpsKats feed in Azure Artifacts](https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178/Packages/8dc9496f-5db5-4e61-8894-250d291c94ac/Badge)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178&package=8dc9496f-5db5-4e61-8894-250d291c94ac&preferRelease=true)  |
+| AzureDevOpsKats.Service  | |[![AzureDevOpsKats.Service package in AzureDevOpsKats@Local feed in Azure Artifacts](https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3/Packages/ba6134fb-0db5-4ffb-a27f-be12b753c8d3/Badge)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3&package=ba6134fb-0db5-4ffb-a27f-be12b753c8d3&preferRelease=true) |
 
 
 [data-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Data
