@@ -1,11 +1,11 @@
 <Project>
   
   <PropertyGroup Label="Build">
-    <RuntimeFrameworkVersion>2.1.4</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>2.1.6</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <AssemblyVersion>2.1.4.1</AssemblyVersion>
+    <AssemblyVersion>2.1.6.1</AssemblyVersion>
     <VersionPrefix>2.1.4</VersionPrefix>
     <FileVersion>2.1.4.1</FileVersion>
     <RepositoryUrl>https://github.com/stuartshay/AzureDevOpsKats</RepositoryUrl>

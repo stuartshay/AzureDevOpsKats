@@ -2,7 +2,7 @@
 {
     public interface IFileService
     {
-        void DeleteFile(string filePath);
+        void DeleteFile(string fileName);
 
         void SaveFile(string filePath, byte[] bytes);
     }

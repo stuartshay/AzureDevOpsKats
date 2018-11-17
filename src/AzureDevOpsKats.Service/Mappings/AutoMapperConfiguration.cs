@@ -4,7 +4,7 @@ using AzureDevOpsKats.Service.Models;
 
 namespace AzureDevOpsKats.Service.Mappings
 {
-    public class AutoMapperConfiguration
+    public static class AutoMapperConfiguration
     {
         private static bool _isMappinginitialized;
 
@@ -20,4 +20,3 @@ namespace AzureDevOpsKats.Service.Mappings
         });
     }
 }
-

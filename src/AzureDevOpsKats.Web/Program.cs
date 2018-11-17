@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace AzureDevOpsKats.Web
@@ -55,8 +56,14 @@ namespace AzureDevOpsKats.Web
         /// <returns></returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseConfiguration(Configuration)
                 .UseStartup<Startup>()
-                .UseSerilog();
+                .ConfigureLogging((hostingContext, logging) =>
+                 {
+                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                     logging.AddConsole();
+                     logging.AddDebug();
+                 })
+                //.UseSerilog()
+                ;
     }
 }

@@ -10,14 +10,17 @@
 #tool nuget:?package=MSBuild.SonarQube.Runner.Tool
 #tool nuget:?package=xunit.runner.console&version=2.2.0
 #tool nuget:?package=xunit.runner.visualstudio&version=2.2.0
+#tool nuget:?package=DocFx.Console
+#tool "nuget:?package=GitVersion.CommandLine"
 
 //////////////////////////////////////////////////////////////////////
 // ADDINS
 //////////////////////////////////////////////////////////////////////
 
 #addin nuget:?package=Cake.MiniCover&version=0.29.0-next20180721071547&prerelease
-// #addin nuget:?package=Cake.NSwag.Console
+//#addin nuget:?package=Cake.NSwag.Console&version=0.2.0-unstable0000
 #addin nuget:?package=Cake.Sonar
+#addin nuget:?package=Cake.DocFx
 
 SetMiniCoverToolsProject("./build/tools.csproj");
 
@@ -33,6 +36,8 @@ var login = Argument<String>("login", null);
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
+GitVersion versionInfo = null;
+
 var projectName = Settings.ProjectName;
 var projectDirectory =  Directory(".") +  Directory("src") +  Directory(projectName);
 
@@ -41,6 +46,26 @@ var sonarDirectory = Directory("./.sonarqube");
 var testResultsDirectory = Directory("./.test-results");
 var coverageResultsDirectory = Directory("./coverage-html");
 var publishirectory = Directory(".") + Directory("publish") + Directory(configuration);
+
+
+///////////////////////////////////////////////////////////////////////
+// SETUP / TEARDOWN
+///////////////////////////////////////////////////////////////////////
+
+Setup(ctx =>
+{
+	// Executed BEFORE the first task.
+	Information("Running tasks...");
+	versionInfo = GitVersion();
+	Information("Building for version {0}", versionInfo.FullSemVer);
+});
+
+
+Teardown(ctx =>
+{
+	// Executed AFTER the last task.
+	Information("Finished running tasks.");
+});
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -53,7 +78,7 @@ Task("Clean")
         CleanDirectory(publishirectory);
         CleanDirectory(testResultsDirectory);
         CleanDirectory(coverageResultsDirectory);
-        //DeleteDirectory(sonarDirectory);
+
         DeleteFiles("./coverage*.*");
     });
 
@@ -102,7 +127,8 @@ Task("Test")
     });
 
 Task("Coverage")
-   .IsDependentOn("Test").Does(() => 
+   .IsDependentOn("Test")
+   .Does(() => 
    {
         Information("Code Coverage");  
         MiniCover(tool => 
@@ -139,7 +165,25 @@ Task("Publish")
         });
 });
 
+
+Task("Generate-Docs")
+    .IsDependentOn("Build")
+    .Does(() => 
+    {
+        DocFxBuild("./docfx/docfx.json");
+       // Zip("./docfx/_site/", artifactsDirectory + "/docfx.zip");
+     });
+
+Task("Clean-Sonarqube")
+  .WithCriteria(BuildSystem.IsLocalBuild)
+  .Does(()=>{
+    CleanDirectory(sonarDirectory);
+}); 
+
+//https://github.com/AdaskoTheBeAsT/netcoretypewriterrecipes/tree/76652692d4dd1acc6d4149df44cd302a3575ae77
+
 Task("Sonar")
+  .IsDependentOn("Clean-Sonarqube")
   .IsDependentOn("SonarBegin")
   .IsDependentOn("Build")
   .IsDependentOn("SonarEnd");

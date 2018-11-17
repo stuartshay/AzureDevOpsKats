@@ -32,6 +32,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// </summary>
         /// <param name="catService"></param>
         /// <param name="fileService"></param>
+        /// <param name="logger"></param>
         /// <param name="settings"></param>
         public CatsController(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IOptions<ApplicationOptions> settings)
         {
@@ -51,6 +52,8 @@ namespace AzureDevOpsKats.Web.Controllers
         [Produces("application/json", Type = typeof(IEnumerable<CatModel>))]
         public IActionResult Get()
         {
+            _logger.LogWarning("Get All Cats");
+
             var results = _catService.GetCats();
             return Ok(results);
         }
@@ -117,8 +120,8 @@ namespace AzureDevOpsKats.Web.Controllers
                 Photo = fileName,
             };
 
-            //_fileService.SaveFile(filePath, value.Bytes);
-            // _catService.CreateCat(catModel);
+            _fileService.SaveFile(filePath, value.Bytes);
+            _catService.CreateCat(catModel);
 
             return Ok();
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using AzureDevOpsKats.Data.Entities;
 using Microsoft.Data.Sqlite;
@@ -120,6 +121,12 @@ namespace AzureDevOpsKats.Data.Repository
         }
 
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
         {
             _dbConnection.Close();
             _dbConnection.Dispose();

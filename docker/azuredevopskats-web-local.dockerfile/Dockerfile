@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1.402-sdk AS build-env
+FROM microsoft/dotnet:2.1.500-sdk AS build-env
 
 RUN dotnet --version
 RUN cat /etc/os-release
@@ -19,7 +19,7 @@ WORKDIR /app/src/AzureDevOpsKats.Web
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r debian.9-x64
 
 # Runtime Image Stage
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM microsoft/dotnet:2.1.6-aspnetcore-runtime
 
 RUN cat /etc/os-release
 

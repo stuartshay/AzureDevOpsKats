@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using AzureDevOpsKats.Service.Interface;
 
 namespace AzureDevOpsKats.Service.Service
 {
-    public class FileService : IFileService
+    public class FileService : IFileService, IDisposable
     {
         private readonly string _applicationPath;
 
@@ -27,6 +28,12 @@ namespace AzureDevOpsKats.Service.Service
         }
 
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
         {
         }
     }

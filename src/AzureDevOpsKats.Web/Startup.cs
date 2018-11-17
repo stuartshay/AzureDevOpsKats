@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace AzureDevOpsKats.Web
@@ -22,18 +23,22 @@ namespace AzureDevOpsKats.Web
     public class Startup
     {
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
+        /// <param name="logger"></param>
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         /// <summary>
         ///
         /// </summary>
         public IConfiguration Configuration { get; }
+
+        private readonly ILogger _logger;
 
         /// <summary>
         ///
@@ -79,16 +84,20 @@ namespace AzureDevOpsKats.Web
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
+                _logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            loggerFactory.AddConsole();
+            loggerFactory.AddEventSourceLogger();
 
             ConfigureSwagger(app);
             ConfigureFileBrowser(app);
@@ -102,7 +111,9 @@ namespace AzureDevOpsKats.Web
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "AzureDevOpsKats.Web V1");
+                var endpoint = $"/swagger/v1/swagger.json";
+                var endpointName = $"AzureDevOpsKats.Web V1";
+                c.SwaggerEndpoint(endpoint, endpointName);
             });
         }
 
@@ -129,7 +140,8 @@ namespace AzureDevOpsKats.Web
     /// </summary>
     internal static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCustomSwagger(this IServiceCollection services,
+        public static IServiceCollection AddCustomSwagger(
+            this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>
