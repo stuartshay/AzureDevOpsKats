@@ -1,7 +1,7 @@
 <Project>
   
   <PropertyGroup Label="Build">
-    <RuntimeFrameworkVersion>2.1.6</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>2.1.5</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
