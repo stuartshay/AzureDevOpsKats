@@ -7,7 +7,6 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn),1701;1702;1705</NoWarn>
-    <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
     <AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
     <Version>$(Version)</Version>
     <FileVersion>$(FileVersion)</FileVersion>
