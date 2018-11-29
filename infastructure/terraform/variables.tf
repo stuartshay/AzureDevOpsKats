@@ -17,9 +17,6 @@ variable "pipeline" {
 variable "ssh_public_key" {
 }
 
-variable "backend_key" {
-}
-
 variable "service_principal_client_id" {
 }
 
