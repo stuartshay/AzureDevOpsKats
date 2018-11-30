@@ -57,7 +57,8 @@ jobs:
       version: '2.1.500'
  
   - task:  CakeBuild@1
-    powershell: .\build.ps1 -BuildEnvironment "cloud" -Verbosity Diagnostic
+    - powershell: | 
+      .\build.ps1 -BuildEnvironment "cloud" -Verbosity Diagnostic
     displayName: 'Cake Build'
 
   env:
