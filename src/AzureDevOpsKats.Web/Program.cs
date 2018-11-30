@@ -63,7 +63,7 @@ namespace AzureDevOpsKats.Web
                      logging.AddConsole();
                      logging.AddDebug();
                  })
-                //.UseSerilog()
+                // .UseSerilog()
                 ;
     }
 }

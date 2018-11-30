@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
-using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Service.Service
 {
@@ -12,26 +12,23 @@ namespace AzureDevOpsKats.Service.Service
     {
         private readonly ICatRepository _catRepository;
 
-        //private readonly ILogger<CatService> _logger;
-
-        public CatService(ICatRepository catRepository) //, ILogger<CatService> logger)
+        public CatService(ICatRepository catRepository)
         {
             this._catRepository = catRepository;
-            //this._logger = logger;
         }
 
         public IEnumerable<CatModel> GetCats()
         {
-            //_logger.LogWarning("Get All Cats in Service");
-
             var cats = _catRepository.GetCats();
             var results = Mapper.Map<IEnumerable<CatModel>>(cats);
-            foreach (var result in results)
+
+            var catModels = results as CatModel[] ?? results.ToArray();
+            foreach (var result in catModels)
             {
                 result.Photo = @"\images\" + result.Photo;
             }
 
-            return results;
+            return catModels;
         }
 
         public CatModel GetCat(int id)

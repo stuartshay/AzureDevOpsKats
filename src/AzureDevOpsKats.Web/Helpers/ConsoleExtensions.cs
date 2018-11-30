@@ -3,6 +3,9 @@ using System.Diagnostics;
 
 namespace AzureDevOpsKats.Web.Helpers
 {
+    /// <summary>
+    ///
+    /// </summary>
     public static class ConsoleExtensions
     {
         /// <summary>

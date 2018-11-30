@@ -33,12 +33,12 @@ namespace AzureDevOpsKats.Web
             _logger = logger;
         }
 
+        private readonly ILogger _logger;
+
         /// <summary>
         ///
         /// </summary>
         public IConfiguration Configuration { get; }
-
-        private readonly ILogger _logger;
 
         /// <summary>
         ///
@@ -63,19 +63,10 @@ namespace AzureDevOpsKats.Web
             services.AddSingleton<ICatRepository>(new CatRepository(connection));
             services.AddScoped<ICatService, CatService>();
 
-            // Swagger
+            // Services Configuration
             services.AddCustomSwagger(Configuration);
-
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()));
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
+            services.AddCustomCors(Configuration);
+            services.AddCustomCookiePolicy(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -155,6 +146,30 @@ namespace AzureDevOpsKats.Web
                 });
 
                 options.IncludeXmlComments(GetXmlCommentsPath());
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomCors(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()));
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomCookiePolicy(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             return services;

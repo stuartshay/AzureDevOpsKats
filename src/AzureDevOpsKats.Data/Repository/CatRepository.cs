@@ -51,7 +51,9 @@ namespace AzureDevOpsKats.Data.Repository
 
                 var result = command.ExecuteReader();
                 if (result == null)
+                {
                     return null;
+                }
 
                 result.Read();
                 var cat = new Cat
@@ -117,7 +119,10 @@ namespace AzureDevOpsKats.Data.Repository
         public void Open()
         {
             if (_dbConnection.State == ConnectionState.Closed)
+            {
                 _dbConnection.OpenAsync();
+            }
+
         }
 
         public void Dispose()
