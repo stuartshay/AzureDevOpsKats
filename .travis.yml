@@ -14,7 +14,6 @@ branches:
 before_install:
   - chmod +x build.sh
 script:
-  - curl -Lsfo ./dotnet-install.sh https://dot.net/v1/dotnet-install.sh ./dotnet-install.sh --verbose --version 2.1.4
   - dotnet --info
   - export PATH="$PATH:/home/travis/.dotnet/tools"
   - dotnet tool install -g Cake.Tool
