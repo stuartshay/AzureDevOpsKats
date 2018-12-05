@@ -23,3 +23,5 @@ variable "service_principal_client_id" {
 variable "service_principal_client_secret" {
 }
 
+variable "domain_name" { default = "azuredevopskats.com"}
+variable "subdomain" {}
