@@ -233,3 +233,4 @@ ModelManifest.xml
 # .tfstate files
 *.tfstate
 *.tfstate.*
+.helm
