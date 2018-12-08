@@ -40,13 +40,42 @@ spec:
 
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: sshay@yahoo.com
+
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-production
+
+    # ACME DNS-01 provider configurations
+    dns01:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      providers:
+        - name: production-azuredns
+          azuredns:
+            clientID: f97b00ec-0bce-420f-9506-81b84bbfa97a # appID shown above.
+            clientSecretSecretRef:
+              key: client-secret
+              name: azuredns-config
+            subscriptionID: "4ffc998e-322d-4b70-9e93-1515eed562c6"
+            tenantID: "06fee10c-9769-4d50-a173-1f8d2d14f9dc"
+            resourceGroupName: AzureDNS
+            hostedZoneName: azuredevopskats.com
+
+---
+apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
   name: azuredevopskats-com
 spec:
   secretName: azuredevopskats-com-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
   commonName: 'azuredevopskats.com'
   dnsNames:
     - 'azuredevopskats.com'
@@ -54,7 +83,7 @@ spec:
   acme:
     config:
       - dns01:
-          provider: staging-azuredns
+          provider: production-azuredns
         domains:
           - 'azuredevopskats.com'
           - '*.azuredevopskats.com'
