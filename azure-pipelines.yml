@@ -37,11 +37,15 @@ jobs:
 - job: macOS
   pool:
     vmImage: 'xcode9-macos10.13'
+ 
   steps:
-  - bash: echo "export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
-  - bash: dotnet tool install -g Cake.Tool
-  - bash: dotnet tool list -g
-  - bash: chmod +x ./build-mac.sh 
+  
+  - bash:  |
+      echo "export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
+      dotnet --info
+      dotnet tool install -g Cake.Tool
+      dotnet tool list -g
+      chmod +x ./build-mac.sh 
     displayName: 'Cake Build'
     env:
       COREHOST_TRACE: 0
