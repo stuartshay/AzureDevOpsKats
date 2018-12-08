@@ -7,5 +7,9 @@ output "admin_host" {
 }
 
 output "ingress_host" {
-  value = "${dnsimple_record.test.hostname}"
+  value = "${var.subdomain}.${var.domain_name}"
 }
+
+#output "ingress_ip_address" {
+#  value = "${azurerm_public_ip.nginx_ingress.ip_address}"
+#}

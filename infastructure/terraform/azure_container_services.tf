@@ -28,16 +28,12 @@ resource "azurerm_kubernetes_cluster" "mod" {
   tags {
     Environment = "${var.env_name}"
   }
-
-  depends_on = [
-    "azurerm_public_ip.nginx_ingress"
-  ]
 }
 
 # Create Static Public IP Address to be used by Nginx Ingress
-resource "azurerm_public_ip" "nginx_ingress" {
-  name                         = "nginx-ingress-pip"
-  location                     = "${azurerm_resource_group.mod.location}"
-  resource_group_name          = "${azurerm_resource_group.mod.name}"
-  public_ip_address_allocation = "static"
-}
+#resource "azurerm_public_ip" "nginx_ingress" {
+#  name                         = "nginx-ingress-pip"
+#  location                     = "${azurerm_kubernetes_cluster.mod.location}"
+#  resource_group_name          = "${azurerm_kubernetes_cluster.mod.node_resource_group}"
+#  public_ip_address_allocation = "static"
+#}
