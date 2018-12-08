@@ -11,7 +11,7 @@
 #tool nuget:?package=xunit.runner.console&version=2.2.0
 #tool nuget:?package=xunit.runner.visualstudio&version=2.2.0
 #tool nuget:?package=DocFx.Console
-#tool "nuget:?package=GitVersion.CommandLine"
+//#tool "nuget:?package=GitVersion.CommandLine"
 
 //////////////////////////////////////////////////////////////////////
 // ADDINS
@@ -36,7 +36,7 @@ var login = Argument<String>("login", null);
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
-GitVersion versionInfo = null;
+//GitVersion versionInfo = null;
 
 var projectName = Settings.ProjectName;
 var projectDirectory =  Directory(".") +  Directory("src") +  Directory(projectName);
@@ -56,8 +56,8 @@ Setup(ctx =>
 {
 	// Executed BEFORE the first task.
 	Information("Running tasks...");
-	versionInfo = GitVersion();
-	Information("Building for version {0}", versionInfo.FullSemVer);
+	//versionInfo = GitVersion();
+	//Information("Building for version {0}", versionInfo.FullSemVer);
 });
 
 
@@ -180,7 +180,7 @@ Task("Clean-Sonarqube")
     CleanDirectory(sonarDirectory);
 }); 
 
-//https://github.com/AdaskoTheBeAsT/netcoretypewriterrecipes/tree/76652692d4dd1acc6d4149df44cd302a3575ae77
+
 
 Task("Sonar")
   .IsDependentOn("Clean-Sonarqube")
@@ -229,3 +229,4 @@ Task("Default")
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 RunTarget(target);
+
