@@ -6,17 +6,26 @@ namespace AzureDevOpsKats.Service.Mappings
 {
     public static class AutoMapperConfiguration
     {
-        private static bool _isMappinginitialized;
+        private static bool IsMappinginitialized { get; set; }
+
+        private static object Lock { get; } = new object();
 
         public static MapperConfiguration Configure() => new MapperConfiguration(cfg =>
         {
-            Mapper.Initialize(x =>
+            lock (Lock)
             {
-                x.CreateMap<Cat, CatModel>().ReverseMap();
-            });
+                if (!IsMappinginitialized)
+                {
+                    Mapper.Initialize(x =>
+                    {
+                        x.CreateMap<Cat, CatModel>().ReverseMap();
+                    });
 
-            Mapper.AssertConfigurationIsValid();
-            _isMappinginitialized = true;
+                    Mapper.AssertConfigurationIsValid();
+                }
+
+                IsMappinginitialized = true;
+            }
         });
     }
 }

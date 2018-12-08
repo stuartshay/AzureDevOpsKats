@@ -20,6 +20,7 @@ namespace AzureDevOpsKats.Test.Service
         }
 
         [Fact]
+        [Trait("Category", "Intergration")]
         public void Can_Get_Cat_List()
         {
             var results = _catService.GetCats();
@@ -31,6 +32,7 @@ namespace AzureDevOpsKats.Test.Service
 
         [Theory]
         [InlineData(1)]
+        [Trait("Category", "Intergration")]
         public void Get_Cat(int id)
         {
             var result = _catService.GetCat(id);

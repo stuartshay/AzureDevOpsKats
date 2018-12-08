@@ -21,6 +21,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
+        [Trait("Category", "Intergration")]
         public void Get_Cats()
         {
             var results = _catRepository.GetCats();
@@ -29,6 +30,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
+        [Trait("Category", "Intergration")]
         public void Create_Cat()
         {
             var cat = new Cat
@@ -43,6 +45,7 @@ namespace AzureDevOpsKats.Test.Repository
 
         [Theory]
         [InlineData(1)]
+        [Trait("Category", "Intergration")]
         public void Get_Cat(int id)
         {
             var result = _catRepository.GetCat(id);
@@ -53,6 +56,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
+        [Trait("Category", "Intergration")]
         public void Delete_Cat()
         {
             var cat = new Cat
