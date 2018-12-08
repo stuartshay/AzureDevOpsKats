@@ -40,6 +40,10 @@ jobs:
  
   steps:
   
+  - task: DotNetCoreInstaller@0
+    inputs:
+      version: '2.1.500'
+
   - bash:  |
       echo "export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
       dotnet --info
