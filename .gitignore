@@ -7,7 +7,7 @@
 coverage-html/
 .test-results
 cli/
-coverage*.*
+*coverage*.*
 tools/
 docfx_project/
 

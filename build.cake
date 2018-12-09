@@ -79,7 +79,7 @@ Task("Clean")
         CleanDirectory(testResultsDirectory);
         CleanDirectory(coverageResultsDirectory);
 
-        DeleteFiles("./coverage*.*");
+        DeleteFiles("./*coverage*.*");
     });
 
 
@@ -147,7 +147,7 @@ Task("Coverage")
             .WithAssembliesMatching("./test/**/*.dll")
             .WithSourcesMatching("./src/**/*.cs")
             .WithNonFatalThreshold()
-            .GenerateReport(ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
+            .GenerateReport(ReportType.OPENCOVER |  ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
         );
    });
 
@@ -185,16 +185,18 @@ Task("Clean-Sonarqube")
 Task("Sonar")
   .IsDependentOn("Clean-Sonarqube")
   .IsDependentOn("SonarBegin")
-  .IsDependentOn("Build")
+  .IsDependentOn("Coverage")
   .IsDependentOn("SonarEnd");
 
 Task("SonarBegin")
     .Does(() => { SonarBegin(new SonarBeginSettings {
         Url = Settings.SonarUrl,
         Key = Settings.SonarKey,
-        Name = Settings.SonarName
-        });
+        Name = Settings.SonarName,
+        ArgumentCustomization = args=>args.Append("/d:sonar.cs.opencover.reportsPaths=opencovercoverage.xml")
     });
+});
+  
   
 Task("SonarEnd")
     .Does(() => { 
