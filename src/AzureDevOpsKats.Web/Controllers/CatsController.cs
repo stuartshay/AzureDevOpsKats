@@ -102,7 +102,7 @@ namespace AzureDevOpsKats.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return new UnprocessableEntityObjectResult(ModelState);
+                return BadRequest(ModelState);
             }
 
             $"Bytes Exist:{value.Bytes != null}".ConsoleRed();

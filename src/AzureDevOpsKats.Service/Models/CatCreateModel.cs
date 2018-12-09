@@ -14,5 +14,11 @@ namespace AzureDevOpsKats.Service.Models
 
         // [Required]
         public byte[] Bytes { get; set; }
+
+        public override string ToString()
+        {
+            return $"Name:{Name}|Description:{Description}";
+        }
+
     }
 }

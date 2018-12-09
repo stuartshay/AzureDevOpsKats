@@ -1,26 +1,44 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
+using AzureDevOpsKats.Test.Fixture;
 using AzureDevOpsKats.Web.Controllers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using FluentAssertions;
 using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace AzureDevOpsKats.Test.Mock
 {
-    public class CatsControllerMockTest
+    public class CatsControllerMockTest : IClassFixture<CatConfigurationFixture>
     {
         private readonly ITestOutputHelper _output;
 
-        public CatsControllerMockTest(ITestOutputHelper output)
+        private readonly ServiceProvider _serviceProvider;
+
+        public CatsControllerMockTest(CatConfigurationFixture fixture, ITestOutputHelper output)
         {
             _output = output;
+            _serviceProvider = fixture.ServiceProvider;
+        }
+
+        [Fact]
+        public void Given_NullParameter_Constructor_ShouldThrow_ArgumentNullException()
+        {
+            // Arrange
+            ICatService catService = null;
+
+            // Action
+            Action action = () => { new CatsController(catService, null, null, null); };
+
+            // Assert
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -96,19 +114,47 @@ namespace AzureDevOpsKats.Test.Mock
             Assert.IsType<NotFoundResult>(result);
         }
 
-        [Fact(Skip = "TODO")]
+        [Fact]
         [Trait("Category", "Mock")]
-        public void Create_Cat_Invalid_ModelState()
+        public void Create_Cat()
         {
             // Arrange 
             var cat = new CatCreateModel { Name = "Cat", Description = "Cat", Bytes = CreateSpecialByteArray(7000) };
-            var sut = GetCatsController();
+            var catModel = new CatModel { Name = "Cat", Description = "Cat" };
+            var mockCatService = new Mock<ICatService>();
+            mockCatService
+                .Setup(mr => mr.CreateCat(catModel))
+                .Verifiable();
+
+            var mockFileService = new Mock<IFileService>();
+            mockFileService
+                .Setup(mr => mr.SaveFile(It.IsAny<string>(), cat.Bytes))
+                .Verifiable();
+
+            var sut = GetCatsController(mockCatService.Object, mockFileService.Object);
 
             //Act
             var result = sut.Post(cat);
 
             //Assert
-            Assert.IsType<UnprocessableEntityObjectResult>(result);
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact()]
+        [Trait("Category", "Mock")]
+        public void Create_Cat_Invalid_ModelState()
+        {
+            // Arrange 
+            var cat = new CatCreateModel { Name = "Cat", Bytes = CreateSpecialByteArray(7000) };
+            var sut = GetCatsController();
+            sut.ModelState.AddModelError("Description", "Required");
+
+            //Act
+            var result = sut.Post(cat);
+
+            //Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
         }
 
         [Fact]
@@ -170,7 +216,6 @@ namespace AzureDevOpsKats.Test.Mock
             Assert.IsType<NoContentResult>(result);
         }
 
-
         [Fact]
         [Trait("Category", "Mock")]
         public void Delete_Cat_NotFoundRequest()
@@ -199,7 +244,7 @@ namespace AzureDevOpsKats.Test.Mock
             catService = catService ?? new Mock<ICatService>().Object;
             fileService = fileService ?? new Mock<IFileService>().Object;
             logger = logger ?? new Mock<ILogger<CatsController>>().Object;
-            settings = settings ?? new Mock<IOptions<ApplicationOptions>>().Object;
+            settings = settings ?? _serviceProvider.GetService<IOptions<ApplicationOptions>>();
 
             return new CatsController(catService, fileService, logger, settings);
         }
