@@ -66,6 +66,6 @@ jobs:
       version: '2.1.500'
   
   - powershell: |
-      .\build.ps1 -Target Sonar -BuildEnvironment "cloud" -Verbosity Diagnostic
+      .\build.ps1 -BuildEnvironment "cloud" -Verbosity Diagnostic
     displayName: 'Cake Build'
   

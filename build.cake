@@ -193,7 +193,9 @@ Task("SonarBegin")
         Url = Settings.SonarUrl,
         Key = Settings.SonarKey,
         Name = Settings.SonarName,
-        ArgumentCustomization = args=>args.Append("/d:sonar.cs.opencover.reportsPaths=opencovercoverage.xml")
+        ArgumentCustomization = args=>args
+        .Append("/d:sonar.cs.opencover.reportsPaths=opencovercoverage.xml")
+        .Append("/d:sonar.exclusions=**/Helpers/**")
     });
 });
   

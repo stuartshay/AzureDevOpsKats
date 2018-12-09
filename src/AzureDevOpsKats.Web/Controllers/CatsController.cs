@@ -6,7 +6,6 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -96,11 +95,10 @@ namespace AzureDevOpsKats.Web.Controllers
         ///  Create Cat
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost]
-        [Consumes("application/json", "multipart/form-data")]
-        public IActionResult Post([FromBody] CatCreateModel value, IFormFile file)
+        [Consumes("application/json")]
+        public IActionResult Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)
             {
@@ -108,7 +106,6 @@ namespace AzureDevOpsKats.Web.Controllers
             }
 
             $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
-            $"File Exists:{file != null}".ConsoleRed();
 
             string fileName = $"{Guid.NewGuid()}.jpg";
             var filePath = Path.Combine($"{Path.GetFullPath(ApplicationSettings.FileStorage.RequestPath)}/{fileName}");

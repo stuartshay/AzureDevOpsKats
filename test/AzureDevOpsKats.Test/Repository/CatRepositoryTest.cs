@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
@@ -41,6 +42,27 @@ namespace AzureDevOpsKats.Test.Repository
             };
 
             _catRepository.CreateCat(cat);
+        }
+
+        [Fact]
+        [Trait("Category", "Intergration")]
+        public void Edit_Cat()
+        {
+            var id = 2;
+            var description = $"Updated_Cat_{DateTime.Now.Second}";
+            var cat = new Cat
+            {
+                Id = id,
+                Name = "Test 2",
+                Description = description,
+                Photo = "Test-Cat.jpg"
+            };
+
+            _catRepository.EditCat(cat);
+            var newCat = _catRepository.GetCat(id);
+
+            Assert.Equal(id, newCat.Id);
+            Assert.Equal(description, newCat.Description);
         }
 
         [Theory]
