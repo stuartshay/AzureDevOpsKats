@@ -18,7 +18,7 @@ namespace AzureDevOpsKats.Test.Mock
         {
             //  Arrange
             // https://stackoverflow.com/questions/47482256/how-to-unit-test-startup-cs-in-net-core
-
+             
             Mock<IConfigurationSection> configurationSectionStub = new Mock<IConfigurationSection>();
             configurationSectionStub.Setup(x => x["DefaultConnection"]).Returns("TestConnectionString");
 

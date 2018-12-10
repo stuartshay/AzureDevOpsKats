@@ -4,6 +4,18 @@ trigger:
 variables:
   buildConfiguration: 'Release'
 
+trigger:
+  branches:
+    include:
+    - master
+    - releases/*
+  paths:
+    include:
+    - docs/*
+    exclude:
+    - docs/README.md
+
+
 jobs:
 
 - template: azure-pipelines.template.yml
