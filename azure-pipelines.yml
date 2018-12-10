@@ -4,10 +4,8 @@ trigger:
     - master
     - releases/*
   paths:
-    include:
-    - docs/*
     exclude:
-    - docs/README.md
+    - infastructure/*
 
 variables:
   buildConfiguration: 'Release'
