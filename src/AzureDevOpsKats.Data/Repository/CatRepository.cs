@@ -41,6 +41,37 @@ namespace AzureDevOpsKats.Data.Repository
             return cats;
         }
 
+        public IEnumerable<Cat> GetCats(int limit, int offset)
+        {
+            Open();
+
+            List<Cat> cats = new List<Cat>();
+            using (var command = _dbConnection.CreateCommand())
+            {
+                command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats " +
+                                      "ORDER BY Name LIMIT @param1 OFFSET @param2;";
+
+                command.Parameters.Add(new SqliteParameter("@param1", limit));
+                command.Parameters.Add(new SqliteParameter("@param2", offset));
+
+                var result = command.ExecuteReader();
+                while (result.Read())
+                {
+                    var cat = new Cat
+                    {
+                        Id = result.GetInt32(0),
+                        Name = result.GetString(1) != null ? result.GetString(1) : null,
+                        Description = result.GetString(2) != null ? result.GetString(2) : null,
+                        Photo = result.GetString(3) != null ? result.GetString(3) : null,
+                    };
+
+                    cats.Add(cat);
+                }
+            }
+
+            return cats;
+        }
+
         public Cat GetCat(int id)
         {
             Open();
@@ -50,7 +81,7 @@ namespace AzureDevOpsKats.Data.Repository
                 command.Parameters.Add(new SqliteParameter("@param1", id));
 
                 var result = command.ExecuteReader();
-                if (result == null)
+                if (!result.HasRows)
                 {
                     return null;
                 }

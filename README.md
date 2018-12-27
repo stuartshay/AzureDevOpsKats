@@ -73,6 +73,13 @@ dotnet tool list -g
 ./build.sh
 ```
 
+### SonarQube Testing 
+
+```
+ ./build.ps1 -target sonar
+```
+
+
 ## Web Site
 
 The Site can be accesed at the following url

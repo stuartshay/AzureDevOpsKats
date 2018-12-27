@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using AzureDevOpsKats.Service.Interface;
 
 namespace AzureDevOpsKats.Service.Service
 {
-    public class FileService : IFileService, IDisposable
+    public class FileService : IFileService
     {
         private readonly string _applicationPath;
 
@@ -18,6 +17,14 @@ namespace AzureDevOpsKats.Service.Service
             File.WriteAllBytes(filePath, bytes);
         }
 
+        public void ValidateDirectory(string path)
+        {
+            bool exists = Directory.Exists(path);
+
+            if (!exists)
+                Directory.CreateDirectory(path);
+        }
+
         public void DeleteFile(string fileName)
         {
             var filePath = Path.Combine($"{Path.GetFullPath(_applicationPath)}/{fileName}");
@@ -25,16 +32,6 @@ namespace AzureDevOpsKats.Service.Service
             {
                 File.Delete(filePath);
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
         }
     }
 }

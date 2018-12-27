@@ -38,6 +38,7 @@ namespace AzureDevOpsKats.Test.Service
             var result = _catService.GetCat(id);
             Assert.IsType<CatModel>(result);
             Assert.NotNull(result);
+            Assert.Equal(id, result.Id);
         }
     }
 }

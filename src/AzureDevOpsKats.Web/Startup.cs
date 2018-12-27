@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace AzureDevOpsKats.Web
@@ -26,14 +27,10 @@ namespace AzureDevOpsKats.Web
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration"></param>
-        /// <param name="logger"></param>
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _logger = logger;
         }
-
-        private readonly ILogger _logger;
 
         /// <summary>
         ///
@@ -77,18 +74,18 @@ namespace AzureDevOpsKats.Web
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole();
+            loggerFactory.AddEventSourceLogger();
+
             if (env.IsDevelopment())
             {
-                _logger.LogInformation("In Development environment");
+                Log.Information("In Development environment");
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Error");
             }
-
-            loggerFactory.AddConsole();
-            loggerFactory.AddEventSourceLogger();
 
             ConfigureSwagger(app);
             ConfigureFileBrowser(app);

@@ -32,12 +32,25 @@ namespace AzureDevOpsKats.Test.Repository
 
         [Fact]
         [Trait("Category", "Intergration")]
+        public void Get_Cats_Paging()
+        {
+            var results = _catRepository.GetCats(3, 0);
+            Assert.NotNull(results);
+            Assert.IsType<List<Cat>>(results);
+            Assert.True(results.Count() == 3);
+        }
+
+        [Fact]
+        [Trait("Category", "Intergration")]
         public void Create_Cat()
         {
+            var name = "Test 2";
+            var description = "Test Description";
+
             var cat = new Cat
             {
-                Name = "Test 2",
-                Description = "Test",
+                Name = name,
+                Description = description,
                 Photo = "Test-Cat.jpg"
             };
 
@@ -75,6 +88,15 @@ namespace AzureDevOpsKats.Test.Repository
 
             Assert.NotNull(result);
             Assert.IsType<Cat>(result);
+        }
+
+        [Theory]
+        [InlineData(int.MaxValue)]
+        [Trait("Category", "Intergration")]
+        public void Get_Cat_Returns_Null(int id)
+        {
+            var result = _catRepository.GetCat(id);
+            Assert.Null(result);
         }
 
         [Fact]

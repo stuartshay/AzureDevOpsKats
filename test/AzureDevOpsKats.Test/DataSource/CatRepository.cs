@@ -24,6 +24,14 @@ namespace AzureDevOpsKats.Test.DataSource
             return result;
         }
 
+        public IEnumerable<Cat> GetCats(int limit, int offset)
+        {
+            var result = _context.Cats
+                .OrderBy(i => i.Name).Skip(offset).Take(limit).ToList();
+
+            return result;
+        }
+
         public Cat GetCat(int id)
         {
             var result = _context.Cats.FirstOrDefault(x => x.Id == id);

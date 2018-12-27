@@ -8,6 +8,5 @@ public static class Settings
 
     public static string SonarName => "AzureDevOpsKats";
 
-    public static string SonarExclude => "/d:sonar.exclusions=**/Helpers/**,**/wwwroot/js/**";
+    public static string SonarExclude => "/d:sonar.exclusions=**/Helpers/**,**/wwwroot/js/**,Program.cs";
 }
-

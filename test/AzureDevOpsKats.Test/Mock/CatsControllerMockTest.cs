@@ -119,7 +119,10 @@ namespace AzureDevOpsKats.Test.Mock
         public void Create_Cat()
         {
             // Arrange 
-            var cat = new CatCreateModel { Name = "Cat", Description = "Cat", Bytes = CreateSpecialByteArray(7000) };
+            var name = "Fun Cat";
+            var description = "The Fun Cat";
+
+            var cat = new CatCreateModel { Name = name, Description = description, Bytes = CreateSpecialByteArray(7000) };
             var catModel = new CatModel { Name = "Cat", Description = "Cat" };
             var mockCatService = new Mock<ICatService>();
             mockCatService
@@ -138,6 +141,7 @@ namespace AzureDevOpsKats.Test.Mock
 
             //Assert
             Assert.IsType<OkResult>(result);
+            Assert.Equal($"Name:{name}|Description:{description}", cat.ToString());
         }
 
         [Fact()]
