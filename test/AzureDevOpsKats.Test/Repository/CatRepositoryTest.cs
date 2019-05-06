@@ -42,6 +42,16 @@ namespace AzureDevOpsKats.Test.Repository
 
         [Fact]
         [Trait("Category", "Intergration")]
+        public void Get_Count()
+        {
+            var result = _catRepository.GetCount();
+
+            Assert.IsType<long>(result);
+            Assert.True(result > 0);
+        }
+
+        [Fact]
+        [Trait("Category", "Intergration")]
         public void Create_Cat()
         {
             var name = "Test 2";

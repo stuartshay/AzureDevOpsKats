@@ -72,6 +72,20 @@ namespace AzureDevOpsKats.Data.Repository
             return cats;
         }
 
+        public long GetCount()
+        {
+            Open();
+            using (var command = _dbConnection.CreateCommand())
+            {
+                command.CommandText = "SELECT COUNT(*) FROM Cats";
+
+                var result = command.ExecuteScalar();
+                var item = result ?? 0;
+
+                return (long)item;
+            }
+        }
+
         public Cat GetCat(int id)
         {
             Open();

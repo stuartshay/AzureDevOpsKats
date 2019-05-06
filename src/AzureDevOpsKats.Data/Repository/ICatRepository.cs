@@ -10,6 +10,8 @@ namespace AzureDevOpsKats.Data.Repository
 
         IEnumerable<Cat> GetCats(int limit, int offset);
 
+        long GetCount();
+
         Cat GetCat(int id);
 
         void EditCat(Cat cat);

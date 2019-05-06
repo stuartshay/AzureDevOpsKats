@@ -32,6 +32,12 @@ namespace AzureDevOpsKats.Test.DataSource
             return result;
         }
 
+        public long GetCount()
+        {
+            var result = _context.Cats.Count();
+            return result;
+        }
+
         public Cat GetCat(int id)
         {
             var result = _context.Cats.FirstOrDefault(x => x.Id == id);
