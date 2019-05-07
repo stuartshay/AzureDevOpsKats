@@ -1,5 +1,5 @@
 # Build Stage
-FROM microsoft/dotnet:2.1-sdk
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2
 
 RUN apt-get update && apt-get install -y \
     tree \
@@ -13,6 +13,5 @@ RUN dotnet tool list -g
 COPY .  /app
 
 WORKDIR /app
-
 
 RUN dotnet restore

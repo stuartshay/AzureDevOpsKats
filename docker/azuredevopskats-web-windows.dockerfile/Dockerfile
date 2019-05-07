@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1.500-sdk-nanoserver-1809 AS build-env
+FROM mcr.microsoft.com/windows/nanoserver:1809 AS build-env
 
 RUN dotnet --version
 
@@ -14,7 +14,7 @@ WORKDIR /app
 RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
 
 WORKDIR /app/src/AzureDevOpsKats.Web
-RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r win10-x64
+RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r win10-x64
 
 # Runtime Image Stage
 FROM microsoft/dotnet:2.1.6-aspnetcore-runtime-nanoserver-1809

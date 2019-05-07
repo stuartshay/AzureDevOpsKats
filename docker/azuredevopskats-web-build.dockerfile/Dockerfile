@@ -1,4 +1,4 @@
-FROM stuartshay/azuredevopskats:2.1.1-base AS build-env
+FROM stuartshay/azuredevopskats:2.2.2-base AS build-env
 
 ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
@@ -12,9 +12,7 @@ COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 WORKDIR /app/src/AzureDevOpsKats.Web
 
 RUN dotnet tool list -g
-#RUN dotnet setversion 2.1.9.${BUILD_NUMBER} AzureDevOpsKats.Web.csproj
-
-RUN dotnet publish -o /publish -c Release -f netcoreapp2.1 -r debian.9-x64
+RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r debian.9-x64
 
 # Runtime Image Stage
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
