@@ -34,12 +34,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <!-- SonarQube needs this -->
     <ProjectGuid>{28651399-8B0E-47AF-A871-39B17BA6187B}</ProjectGuid>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="$(SolutionDir)_stylecop/stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
 
 </Project>

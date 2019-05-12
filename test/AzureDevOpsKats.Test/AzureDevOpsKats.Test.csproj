@@ -23,11 +23,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <!-- Mark the project as being a test project -->
-    <SonarQubeTestProject>true</SonarQubeTestProject>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\AzureDevOpsKats.Data\AzureDevOpsKats.Data.csproj" />
     <ProjectReference Include="..\..\src\AzureDevOpsKats.Service\AzureDevOpsKats.Service.csproj" />
@@ -48,10 +43,12 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <!-- SonarQube needs this -->
-    <ProjectGuid>{8DF74D69-2F32-48B7-8624-EFFEB2677704}</ProjectGuid>
+    <SonarQubeTestProject>true</SonarQubeTestProject>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ProjectGuid>{8DF74D69-2F32-48B7-8624-EFFEB2677704}</ProjectGuid>
+  </PropertyGroup>
 
 
 </Project>
