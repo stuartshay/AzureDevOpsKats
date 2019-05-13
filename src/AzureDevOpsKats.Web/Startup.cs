@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
@@ -7,7 +6,6 @@ using AzureDevOpsKats.Service.Mappings;
 using AzureDevOpsKats.Service.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -120,65 +118,6 @@ namespace AzureDevOpsKats.Web
                     Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath)),
                 RequestPath = config.FileStorage.RequestPath
             });
-        }
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
-    internal static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddCustomSwagger(
-            this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Info
-                {
-                    Title = "AzureDevOpsKats.Web",
-                    Description = "AzureDevOpsKats.Web",
-                    Version = "v1",
-                    TermsOfService = "None",
-                });
-
-                options.IncludeXmlComments(GetXmlCommentsPath());
-            });
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomCors(
-            this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()));
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomCookiePolicy(
-            this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            return services;
-        }
-
-        private static string GetXmlCommentsPath()
-        {
-            var basePath = AppContext.BaseDirectory;
-            var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
-            var fileName = Path.GetFileName(assemblyName + ".xml");
-
-            return Path.Combine(basePath, fileName);
         }
     }
 }
