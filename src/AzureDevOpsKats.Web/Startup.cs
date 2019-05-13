@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace AzureDevOpsKats.Web
 {
@@ -59,6 +58,7 @@ namespace AzureDevOpsKats.Web
             services.AddScoped<ICatService, CatService>();
 
             // Services Configuration
+            services.AddApiBehaviorOptions();
             services.AddCustomSwagger(Configuration);
             services.AddCustomCors(Configuration);
             services.AddCustomCookiePolicy(Configuration);
@@ -70,6 +70,7 @@ namespace AzureDevOpsKats.Web
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
+        /// <param name="loggerFactory"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
@@ -118,7 +119,7 @@ namespace AzureDevOpsKats.Web
             {
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath)),
-                RequestPath = config.FileStorage.RequestPath
+                RequestPath = config.FileStorage.RequestPath,
             });
         }
     }

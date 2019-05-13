@@ -105,6 +105,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public IActionResult Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)
@@ -141,7 +142,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpPut("{id}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public IActionResult Put(int id, [FromBody] CatUpdateModel value)
         {
             if (!ModelState.IsValid)

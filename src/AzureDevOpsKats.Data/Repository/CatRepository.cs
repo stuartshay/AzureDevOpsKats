@@ -167,7 +167,6 @@ namespace AzureDevOpsKats.Data.Repository
             {
                 _dbConnection.OpenAsync();
             }
-
         }
 
         public void Dispose()

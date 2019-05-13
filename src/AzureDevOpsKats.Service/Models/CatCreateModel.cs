@@ -3,7 +3,7 @@
 namespace AzureDevOpsKats.Service.Models
 {
     /// <summary>
-    /// Create Model for Cat. 
+    /// Create Model for Cat.
     /// </summary>
     public class CatCreateModel
     {
