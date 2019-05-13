@@ -18,9 +18,13 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats) 
 
 
-|  Job                        |   Status                                 |                                                         |
-| --------------------------- | -----------------------------------------|---------------------------------------------------------|
-| Sonarqube Code Quaility     |[![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats) | XXXXXXX |
+| Job                         | Agent   | Status                                                  |
+| ----------------------------| --------|---------------------------------------------------------|
+| Sonarqube Code Quaility     | Travis  |[![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats) |
+
+
+
+
 
 
 
