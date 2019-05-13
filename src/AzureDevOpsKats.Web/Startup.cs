@@ -85,6 +85,8 @@ namespace AzureDevOpsKats.Web
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseHttpsRedirection();
+
             ConfigureSwagger(app);
             ConfigureFileBrowser(app);
 

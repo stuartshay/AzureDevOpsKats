@@ -6,6 +6,7 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -46,9 +47,10 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Get List of Cats
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An ActionResult of type Cat List</returns>
         [HttpGet]
         [Produces("application/json", Type = typeof(IEnumerable<CatModel>))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
             _logger.LogWarning("Get All Cats");
@@ -61,9 +63,11 @@ namespace AzureDevOpsKats.Web.Controllers
         /// Get Cat
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>An ActionResult of type Cat</returns>
         [HttpGet("{id}")]
         [Produces("application/json", Type = typeof(CatModel))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
             var result = _catService.GetCat(id);
@@ -79,6 +83,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
             var result = _catService.GetCat(id);
@@ -98,11 +104,12 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public IActionResult Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return new UnprocessableEntityObjectResult(ModelState);
             }
 
             $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
@@ -126,20 +133,25 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Update Cat Properties
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Cat Id</param>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <response code="200">Returns the updated cat</response>
+        /// <response code="422">Validation error</response>
+        /// <returns>An ActionResult of type Cat</returns>
         [HttpPut("{id}")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Put(int id, [FromBody] CatUpdateModel value)
         {
-            if (value == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return new UnprocessableEntityObjectResult(ModelState);
             }
 
             _catService.EditCat(id, value);
 
-            return NoContent();
+            return Ok(value);
         }
     }
 }
