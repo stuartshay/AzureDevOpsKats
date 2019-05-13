@@ -18,10 +18,17 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats) [![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats)
 
 
-|                             |                                          |                                                         |
+|  Library                    |  Nuget Repository                        |  MyGet Repository                                       |
 | --------------------------- | -----------------------------------------|---------------------------------------------------------|
-| AzureDevOpsKats.Data        | [![MyGet][data-nuget-badge]][data-nuget] | [![MyGet][data-myget-badge]][data-myget]                |
-| AzureDevOpsKats.Service     | [![MyGet][service-nuget-badge]][service-nuget] | [![MyGet][service-myget-badge]][service-myget]    |
+| AzureDevOpsKats.Data        | [![Nuget][data-nuget-badge]][data-nuget] | [![MyGet][data-myget-badge]][data-myget]                |
+| AzureDevOpsKats.Service     | [![Nuget][service-nuget-badge]][service-nuget] | [![MyGet][service-myget-badge]][service-myget]    |
+
+
+
+
+
+
+
 
 
 [data-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Data
