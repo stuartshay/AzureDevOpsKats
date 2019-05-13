@@ -10,8 +10,8 @@
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.1-base.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.1-base "microbadger.com")
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.9-build.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.9-build "microbadger.com")
 
-[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/)
-[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-api)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-api/)
+
+
 
 
 
@@ -22,33 +22,13 @@
 | Sonarqube Code Quaility       | Travis       |[![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats) |
 | Windows/Linux Automated Build | Appveyor     |[![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats) |
 | Windows/Linux Automated Build | Azure Devops |[![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+| Docker Base Image             | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/) 
+| Docker Deploy Image           | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-api)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-api/)
 
 |  Library                    |  Nuget Repository                        |  MyGet Repository                                       |
 | --------------------------- | -----------------------------------------|---------------------------------------------------------|
 | AzureDevOpsKats.Data        | [![Nuget][data-nuget-badge]][data-nuget] | [![MyGet][data-myget-badge]][data-myget]                |
 | AzureDevOpsKats.Service     | [![Nuget][service-nuget-badge]][service-nuget] | [![MyGet][service-myget-badge]][service-myget]    |
-
-
-
-
-
-
-
 
 
 [data-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Data
