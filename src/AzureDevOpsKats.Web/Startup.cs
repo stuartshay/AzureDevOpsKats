@@ -1,17 +1,26 @@
+using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Mappings;
 using AzureDevOpsKats.Service.Service;
+using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace AzureDevOpsKats.Web
 {
@@ -44,6 +53,7 @@ namespace AzureDevOpsKats.Web
             services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
+
             var config = Configuration.Get<ApplicationOptions>();
 
             AutoMapperConfiguration.Configure();
@@ -59,9 +69,14 @@ namespace AzureDevOpsKats.Web
 
             // Services Configuration
             services.AddApiBehaviorOptions();
+
+            services.AddApiVersioning(Configuration);
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddCustomSwagger(Configuration);
+
             services.AddCustomCors(Configuration);
             services.AddCustomCookiePolicy(Configuration);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -71,7 +86,7 @@ namespace AzureDevOpsKats.Web
         /// <param name="app"></param>
         /// <param name="env"></param>
         /// <param name="loggerFactory"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             loggerFactory.AddConsole();
             loggerFactory.AddEventSourceLogger();
@@ -83,26 +98,27 @@ namespace AzureDevOpsKats.Web
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler($"/Error");
             }
 
             app.UseHttpsRedirection();
 
-            ConfigureSwagger(app);
+            ConfigureSwagger(app, apiVersionDescriptionProvider);
             ConfigureFileBrowser(app);
 
             app.UseCookiePolicy();
             app.UseMvc();
         }
 
-        private void ConfigureSwagger(IApplicationBuilder app)
+        private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(options =>
             {
-                var endpoint = $"/swagger/v1/swagger.json";
-                var endpointName = $"AzureDevOpsKats.Web V1";
-                c.SwaggerEndpoint(endpoint, endpointName);
+                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"AzureDevOpsKats.Web - {description.GroupName.ToUpperInvariant()}");
+                }
             });
         }
 

@@ -16,9 +16,10 @@ namespace AzureDevOpsKats.Web.Controllers
     /// <summary>
     ///
     /// </summary>
-    [Route("api/[controller]")]
-    [EnableCors("AllowAll")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/cats")]
+    [EnableCors("AllowAll")]
+    [ApiVersion("1.0")]
     public class CatsController : ControllerBase
     {
         private readonly ICatService _catService;

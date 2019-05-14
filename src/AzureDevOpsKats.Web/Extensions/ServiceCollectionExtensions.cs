@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
+using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace AzureDevOpsKats.Web
 {
@@ -18,18 +18,19 @@ namespace AzureDevOpsKats.Web
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "AzureDevOpsKats.Web",
-                    Version = "v1",
-                    Description = "AzureDevOpsKats.Web",
-                    Contact = new OpenApiContact()
-                    {
-                        Email = "stuartshay@yahoo.com",
-                        Name = "Stuart Shay",
-                        Url = new Uri("https://github.com/stuartshay"),
-                    },
-                });
+                options.OperationFilter<SwaggerDefaultValues>();
+                //options.SwaggerDoc("v1", new OpenApiInfo
+                //{
+                //    Title = "AzureDevOpsKats.Web",
+                //    Version = "v1",
+                //    Description = "AzureDevOpsKats.Web",
+                //    Contact = new OpenApiContact()
+                //    {
+                //        Email = "stuartshay@yahoo.com",
+                //        Name = "Stuart Shay",
+                //        Url = new Uri("https://github.com/stuartshay"),
+                //    },
+                //});
 
                 options.IncludeXmlComments(GetXmlCommentsPath());
             });
@@ -81,6 +82,28 @@ namespace AzureDevOpsKats.Web
             });
 
             return services;
+        }
+
+        /// <summary>
+        /// Api Versioning
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        public static void AddApiVersioning(this IServiceCollection services, IConfiguration configuration)
+        {
+            _ = services.AddApiVersioning(options => { options.ReportApiVersions = true; });
+
+            services.AddVersionedApiExplorer(
+                options =>
+                {
+                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+                    // note: the specified format code will format the version as "'v'major[.minor][-status]"
+                    options.GroupNameFormat = "'v'VVV";
+
+                    // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+                    // can also be used to control the format of the API version in route templates
+                    options.SubstituteApiVersionInUrl = true;
+                });
         }
 
         private static string GetXmlCommentsPath()
