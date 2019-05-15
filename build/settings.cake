@@ -13,4 +13,3 @@ public static class Settings
     public static string SonarExcludeDuplications => "/d:sonar.cpd.exclusions=**/Extensions.cs";
 
     public static string MyGetSource => "https://www.myget.org/F/azuredevopskats/api/v2/package";
-}
