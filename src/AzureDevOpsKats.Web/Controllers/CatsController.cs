@@ -65,6 +65,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>An ActionResult of type Cat</returns>
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
         [HttpGet("{id}")]
         [Produces("application/json", Type = typeof(CatModel))]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -83,6 +85,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -103,6 +107,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -140,6 +146,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <response code="200">Returns the updated cat</response>
         /// <response code="422">Validation error</response>
         /// <returns>An ActionResult of type Cat</returns>
+        [ApiVersion("1.0")]
+        [ApiVersion("2.0")]
         [HttpPut("{id}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]

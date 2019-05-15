@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using AzureDevOpsKats.Service.Interface;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
@@ -18,27 +18,44 @@ namespace AzureDevOpsKats.Web.Controllers
     {
         private readonly ICatService _catService;
 
-        private readonly IFileService _fileService;
-
         private readonly ILogger<CatsControllerV2> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CatsController"/> class.
+        /// Initializes a new instance of the <see cref="CatsControllerV2"/> class.
         /// </summary>
         /// <param name="catService"></param>
-        public CatsControllerV2(ICatService catService)
+        /// <param name="logger"></param>
+        public CatsControllerV2(ICatService catService, ILogger<CatsControllerV2> logger)
         {
             _catService = catService ?? throw new ArgumentNullException(nameof(catService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
         /// Get Cats Paging
         /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="page"></param>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("{limit:int}/{page:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public IActionResult Get(int limit, int page)
         {
-            return new string[] { "value1", "value2" };
+            _logger.LogWarning("Get All Cats");
+
+            var total = _catService.GetCount();
+            if (total == 0)
+                return NotFound();
+
+            var results = _catService.GetCats(limit, page);
+
+            HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
+            HttpContext.Response.Headers.Add("X-InlineCount", total.ToString());
+
+            return Ok(results);
         }
     }
 }
