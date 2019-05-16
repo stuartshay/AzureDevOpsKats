@@ -1,9 +1,9 @@
 ﻿using System;
 using AzureDevOpsKats.Service.Interface;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
