@@ -43,7 +43,7 @@ for:
       - choco install codecov    
     build_script:
       - ps: >-
-          .\build.ps1 -BuildEnvironment "cloud"
+          .\build.ps1 
         
   -
     matrix:
