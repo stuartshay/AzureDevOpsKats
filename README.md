@@ -52,25 +52,24 @@ dotnet run
 
 ### Cake
 
-Windows 
+#### Prerequisites:
+```
+Java Lattest JDK/JRE
+```
+
+Windows    
 
 ```
-set-executionpolicy unrestricted
-
 .\build.ps1
 ```
 
 Linux/Mac
-```
+
+```bash
 chmod +x build.sh
-"export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
-source  ~/.bash_profile
-
-dotnet tool install -g Cake.Tool
-dotnet tool list -g
 ```
 
-```
+```bash
 ./build.sh
 ```
 

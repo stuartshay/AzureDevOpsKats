@@ -39,7 +39,6 @@ for:
       only:
       - image: Visual Studio 2017
     before_build:
-      - choco install dotnetcore-sdk --version 2.2.203
       - choco install codecov    
     build_script:
       - ps: >-
