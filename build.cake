@@ -163,14 +163,13 @@ Task("Publish")
         });
 });
 
-
-Task("Generate-Docs")
-    .IsDependentOn("Clean")
-    .Does(() => 
-    {
-        DocFxBuild("./docfx/docfx.json");
-        Zip("./docfx/_site/", "./artifacts/docfx.zip");
-    });
+//Task("Generate-Docs")
+//    .IsDependentOn("Clean")
+//    .Does(() => 
+//   {
+//       DocFxBuild("./docfx/docfx.json");
+//       Zip("./docfx/_site/", "./artifacts/docfx.zip");
+//    });
 
 Task("Clean-Sonarqube")
   .WithCriteria(BuildSystem.IsLocalBuild)
