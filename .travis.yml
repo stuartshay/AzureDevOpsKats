@@ -15,7 +15,4 @@ before_install:
   - chmod +x build.sh
 script:
   - dotnet --info
-  - export PATH="$PATH:/home/travis/.dotnet/tools"
-  - dotnet tool install -g Cake.Tool
-  - dotnet tool list  -g
   - ./build.sh -target=sonar
