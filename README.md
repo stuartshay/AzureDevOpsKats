@@ -11,12 +11,6 @@
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.9-build.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.9-build "microbadger.com")
 
 
-
-
-
-
-
-
 | Job                           | Agent        | Status                                                  |
 | ------------------------------| -------------|---------------------------------------------------------|
 | Sonarqube Code Quaility       | Travis       |[![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats) |
@@ -80,12 +74,17 @@ dotnet tool list -g
 ./build.sh
 ```
 
-### SonarQube Testing 
+### SonarQube Testing
 
+**Windows** 
 ```
- ./build.ps1 -target sonar
+ ./build.ps1 -target=sonar
 ```
 
+**Mac/Linux**
+```
+./build.sh -target=sonar
+```
 
 ## Web Site
 
@@ -130,7 +129,6 @@ docfx docfx/docfx.json --serve
 ```
 http://localhost:8080
 ```
-
 #### Deployment 
 ```powershell
- .\build.ps1 -target Generate-Docs
+ .\build.ps1 -target=Generate-Docs
