@@ -2,7 +2,9 @@ trigger:
   branches:
     include:
     - master
+    - develop
     - releases/*
+    - feature*
   paths:
     exclude:
     - infastructure/*
@@ -24,12 +26,14 @@ jobs:
     vmImage: 'ubuntu-16.04'
     node_version: 9.x
 
-
 - job: Linux 
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - bash: chmod +x ./build.sh 
+    - bash:  |
+      dotnet --info
+      chmod +x .build.sh 
+      ./build.sh 
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
       docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
@@ -40,7 +44,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-- job: macOS
+- job: MacOS
   pool:
     vmImage: 'xcode9-macos10.13'
  
@@ -51,11 +55,9 @@ jobs:
       version: '2.2.203'
 
   - bash:  |
-      echo "export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
       dotnet --info
-      dotnet tool install -g Cake.Tool
-      dotnet tool list -g
-      chmod +x ./build-mac.sh 
+      chmod +x .build.sh 
+      ./build.sh 
     displayName: 'Cake Build'
     env:
       COREHOST_TRACE: 0
@@ -72,6 +74,6 @@ jobs:
       version: '2.2.203'
   
   - powershell: |
-      .\build.ps1 -BuildEnvironment "cloud" -Verbosity Diagnostic
+      .\build.ps1
     displayName: 'Cake Build'
   

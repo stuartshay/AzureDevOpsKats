@@ -178,12 +178,6 @@ Task("Clean-Sonarqube")
 }); 
 
 
-Task("Sonar")
-  .IsDependentOn("Clean-Sonarqube")
-  .IsDependentOn("SonarBegin")
-  .IsDependentOn("Coverage")
-  .IsDependentOn("SonarEnd");
-
 Task("SonarBegin")
     .Does(() => { SonarBegin(new SonarBeginSettings {
         Url = Settings.SonarUrl,
@@ -249,6 +243,12 @@ Task("Push-Myget")
 
 Task("Default")
     .IsDependentOn("Pack");
+
+Task("Sonar")
+  .IsDependentOn("Clean-Sonarqube")
+  .IsDependentOn("SonarBegin")
+  .IsDependentOn("Coverage")
+  .IsDependentOn("SonarEnd");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
