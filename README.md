@@ -10,9 +10,16 @@
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.1-base.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.1-base "microbadger.com")
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.9-build.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.9-build "microbadger.com")
 
-Purpose:
+## Purpose
 
 The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.  
+
+
+The Requirements for this project can be viewed at the following.
+
+* [Business Requirements](/docfx/articles/requirements.md)
+* [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
+
 
 ## Web Site
 
