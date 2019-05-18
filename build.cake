@@ -43,7 +43,7 @@ var artifactsDirectory = Directory("./artifacts");
 var sonarDirectory = Directory("./.sonarqube");
 var testResultsDirectory = Directory("./.test-results");
 var coverageResultsDirectory = Directory("./coverage-html");
-var publishirectory = Directory(".") + Directory("publish") + Directory(configuration);
+var publishDirectory = Directory(".") + Directory("publish") + Directory(configuration);
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ Task("Clean")
     .Does(() =>
     {
         CleanDirectory(artifactsDirectory);
-        CleanDirectory(publishirectory);
+        CleanDirectory(publishDirectory);
         CleanDirectory(testResultsDirectory);
         CleanDirectory(coverageResultsDirectory);
 
@@ -159,7 +159,7 @@ Task("Publish")
         new DotNetCorePublishSettings()
         {
             Configuration = configuration,
-            OutputDirectory = publishirectory
+            OutputDirectory = publishDirectory
         });
 });
 

@@ -46,7 +46,7 @@ jobs:
 
 - job: MacOS
   pool:
-    vmImage: 'xcode9-macos10.13'
+    vmImage: 'xcode9-macos10.14'
  
   steps:
   
@@ -77,3 +77,4 @@ jobs:
       .\build.ps1
     displayName: 'Cake Build'
   
+ 

@@ -10,6 +10,23 @@
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.1-base.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.1-base "microbadger.com")
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.9-build.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.9-build "microbadger.com")
 
+Purpose:
+
+The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.  
+
+## Web Site
+
+![](assets/web.png)
+
+
+
+
+
+
+
+
+
+## Builds
 
 | Job                           | Agent        | Status                                                  |
 | ------------------------------| -------------|---------------------------------------------------------|
@@ -93,7 +110,7 @@ The Site can be accesed at the following url
 http://localhost:5000/
 ```
 
-![](assets/web.png)
+
 
 ## Swagger API Documentation
 
