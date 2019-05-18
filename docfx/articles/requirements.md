@@ -1,6 +1,6 @@
 # C# Task
 
-...
+```
 Below are the requirements for the sample project:
 
     Display a list of cats and allow users to add more cats or edit existing cats.
@@ -10,4 +10,4 @@ Below are the requirements for the sample project:
     Do not use razor to build DOM elements or UI
     Use Bootstrap
     Submit via a zip file or github repo
-...
+```
