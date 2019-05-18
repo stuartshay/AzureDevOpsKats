@@ -17,7 +17,7 @@ WORKDIR /app/src/AzureDevOpsKats.Web
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r win10-x64
 
 # Runtime Image Stage
-FROM microsoft/dotnet:2.1.6-aspnetcore-runtime-nanoserver-1809
+FROM microsoft/dotnet:2.2-aspnetcore-runtime-nanoserver-1809
 
 WORKDIR /publish
 COPY --from=build-env /publish .

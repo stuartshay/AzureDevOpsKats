@@ -75,6 +75,9 @@ jobs:
   
   - powershell: |
       .\build.ps1
-    displayName: 'Cake Build'
-  
+  - script: |
+      docker login -u $(dockerLogin) -p $(dockerPassword)
+      docker build -f docker/azuredevopskats-web-windows.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops-win  .
+      docker push stuartshay/azuredevopskats:devops-win
+    displayName: 'Docker Build/Deploy'
  
