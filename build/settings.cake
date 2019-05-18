@@ -8,5 +8,9 @@ public static class Settings
 
     public static string SonarName => "AzureDevOpsKats";
 
-    public static string SonarExclude => "/d:sonar.exclusions=**/Helpers/**,**/wwwroot/js/**,Program.cs";
+    public static string SonarExclude => "/d:sonar.exclusions=**/Extensions/Swagger/**,**/Helpers/**,**/wwwroot/js/**,Program.cs,**/ServiceCollectionExtensions.cs";
+
+    public static string SonarExcludeDuplications => "/d:sonar.cpd.exclusions=**/Extensions.cs";
+
+    public static string MyGetSource => "https://www.myget.org/F/azuredevopskats/api/v2/package";
 }

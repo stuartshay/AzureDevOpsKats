@@ -61,5 +61,24 @@ namespace AzureDevOpsKats.Service.Service
         {
             _catRepository.DeleteCat(id);
         }
+
+        public IEnumerable<CatModel> GetCats(int limit, int offset)
+        {
+            var cats = _catRepository.GetCats(limit, offset);
+            var results = Mapper.Map<IEnumerable<CatModel>>(cats);
+
+            var catModels = results as CatModel[] ?? results.ToArray();
+            foreach (var result in catModels)
+            {
+                result.Photo = @"\images\" + result.Photo;
+            }
+
+            return catModels;
+        }
+
+        public long GetCount()
+        {
+            return _catRepository.GetCount();
+        }
     }
 }

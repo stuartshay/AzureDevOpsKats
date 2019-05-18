@@ -8,7 +8,7 @@ $( window ).resize(function() {
 
 function getCats() {
     $("#cat-list").empty();
-    $.get("/api/Cats", function( data ) {
+    $.get("/api/v1/Cats", function( data ) {
         $.each(data, function(index, d) {
             
             var html = `<div class="col-sm-12 col-md-4">
@@ -46,7 +46,7 @@ function addCat() {
     //     $("#addModal").hide();
     // });
     $.ajax({
-        url: `/api/Cats`,
+        url: `/api/v1/Cats`,
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -66,7 +66,7 @@ function addCat() {
 
 function editCat() {
     $.ajax({
-        url: `/api/Cats/${selectedId}`,
+        url: `/api/v1/Cats/${selectedId}`,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -85,7 +85,7 @@ function editCat() {
 
 function deleteCat(id) {
     $.ajax({
-        url: `/api/Cats/${id}`,
+        url: `/api/v1/Cats/${id}`,
         type: 'DELETE',
         success: function(result) {
             getCats();
@@ -100,7 +100,7 @@ function addCatDialog() {
 function editCatDialog(id) {
     selectedId = id;
     $("#editModal").show();
-    $.get(`/api/Cats/${id}`, function(data) {
+    $.get(`/api/v1/Cats/${id}`, function(data) {
         $("#edit-form #name").val(data.name);
         $("#edit-form #desc").val(data.description);
     });

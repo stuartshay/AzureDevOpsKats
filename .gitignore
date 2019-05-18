@@ -4,6 +4,7 @@
 # Cake 
 .dotnet/
 .sonarqube/
+.store
 coverage-html/
 .test-results
 cli/

@@ -30,6 +30,17 @@ namespace AzureDevOpsKats.Test.Service
             Assert.NotEqual(0, count);
         }
 
+        [Fact]
+        [Trait("Category", "Intergration")]
+        public void Can_Get_Cat_Paging_List()
+        {
+            var results = _catService.GetCats(10,1);
+            var count = results.Count();
+
+            Assert.NotNull(results);
+            Assert.NotEqual(0, count);
+        }
+
         [Theory]
         [InlineData(1)]
         [Trait("Category", "Intergration")]

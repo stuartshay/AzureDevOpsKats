@@ -4,17 +4,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RuntimeFrameworkVersion>$(RuntimeFrameworkVersion)</RuntimeFrameworkVersion>
     <RuntimeIdentifiers>win10-x64;debian.9-x64;ubuntu.16.04-x64;osx.10.12-x64</RuntimeIdentifiers>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn),1701;1702;1705</NoWarn>
     <UserSecretsId>43a62139-9120-489b-a372-b157af0ab275</UserSecretsId>
     <StyleCopTreatErrorsAsWarnings>True</StyleCopTreatErrorsAsWarnings>
     <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
@@ -25,6 +30,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Examples" Version="2.9.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,14 +61,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.2\AzureDevOpsKats.Web.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp2.2\AzureDevOpsKats.Web.xml</DocumentationFile>
-  </PropertyGroup>
 
   <PropertyGroup>
     <ProjectGuid>{E7416C7C-91B7-4E4D-AAE7-9A6FAF4058B8}</ProjectGuid>

@@ -1,26 +1,22 @@
-//build.cake
-//  .\build.ps1 -t Coverage
-
 #load build/settings.cake
+#load build/helpers.cake
 
 //////////////////////////////////////////////////////////////////////
 // TOOLS
 //////////////////////////////////////////////////////////////////////
 
-#tool nuget:?package=MSBuild.SonarQube.Runner.Tool
+#tool nuget:?package=MSBuild.SonarQube.Runner.Tool&version=4.6.0
 #tool nuget:?package=xunit.runner.console&version=2.2.0
 #tool nuget:?package=xunit.runner.visualstudio&version=2.2.0
-#tool nuget:?package=DocFx.Console
-//#tool "nuget:?package=GitVersion.CommandLine"
+#tool nuget:?package=DocFx.Console&version=2.42.3
 
 //////////////////////////////////////////////////////////////////////
 // ADDINS
 //////////////////////////////////////////////////////////////////////
 
 #addin nuget:?package=Cake.MiniCover&version=0.29.0-next20180721071547&prerelease
-//#addin nuget:?package=Cake.NSwag.Console&version=0.2.0-unstable0000
-#addin nuget:?package=Cake.Sonar
-#addin nuget:?package=Cake.DocFx
+#addin nuget:?package=Cake.Sonar&version=1.1.18
+#addin nuget:?package=Cake.DocFx&version=0.13.0
 
 SetMiniCoverToolsProject("./build/tools.csproj");
 
@@ -31,6 +27,8 @@ SetMiniCoverToolsProject("./build/tools.csproj");
 var target = Argument("Target", "Default");
 var configuration = Argument("configuration", "Release");
 var login = Argument<String>("login", null);
+var mygetApiKey = EnvironmentVariable("mygetApiKey");
+
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -45,7 +43,7 @@ var artifactsDirectory = Directory("./artifacts");
 var sonarDirectory = Directory("./.sonarqube");
 var testResultsDirectory = Directory("./.test-results");
 var coverageResultsDirectory = Directory("./coverage-html");
-var publishirectory = Directory(".") + Directory("publish") + Directory(configuration);
+var publishDirectory = Directory(".") + Directory("publish") + Directory(configuration);
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -75,7 +73,7 @@ Task("Clean")
     .Does(() =>
     {
         CleanDirectory(artifactsDirectory);
-        CleanDirectory(publishirectory);
+        CleanDirectory(publishDirectory);
         CleanDirectory(testResultsDirectory);
         CleanDirectory(coverageResultsDirectory);
 
@@ -161,18 +159,17 @@ Task("Publish")
         new DotNetCorePublishSettings()
         {
             Configuration = configuration,
-            OutputDirectory = publishirectory
+            OutputDirectory = publishDirectory
         });
 });
 
-
 Task("Generate-Docs")
-    .IsDependentOn("Build")
+    .IsDependentOn("Clean")
     .Does(() => 
     {
-        DocFxBuild("./docfx/docfx.json");
-       // Zip("./docfx/_site/", artifactsDirectory + "/docfx.zip");
-     });
+       DocFxBuild("./docfx/docfx.json");
+       Zip("./docfx/_site/", "./artifacts/docfx.zip");
+    });
 
 Task("Clean-Sonarqube")
   .WithCriteria(BuildSystem.IsLocalBuild)
@@ -180,13 +177,6 @@ Task("Clean-Sonarqube")
     CleanDirectory(sonarDirectory);
 }); 
 
-
-
-Task("Sonar")
-  .IsDependentOn("Clean-Sonarqube")
-  .IsDependentOn("SonarBegin")
-  .IsDependentOn("Coverage")
-  .IsDependentOn("SonarEnd");
 
 Task("SonarBegin")
     .Does(() => { SonarBegin(new SonarBeginSettings {
@@ -196,9 +186,9 @@ Task("SonarBegin")
         ArgumentCustomization = args=>args
         .Append("/d:sonar.cs.opencover.reportsPaths=opencovercoverage.xml")
         .Append(Settings.SonarExclude)
+        .Append(Settings.SonarExcludeDuplications)
     });
 });
-  
   
 Task("SonarEnd")
     .Does(() => { 
@@ -206,7 +196,7 @@ Task("SonarEnd")
     });
 
 Task("Pack")
-    .IsDependentOn("Coverage")
+    .IsDependentOn("Build")
     .Does(() =>
     {
         foreach (var project in GetFiles("./src/**/*.csproj"))
@@ -216,11 +206,36 @@ Task("Pack")
                 new DotNetCorePackSettings()
                 {
                     Configuration = configuration,
-                    OutputDirectory = artifactsDirectory
+                    OutputDirectory = artifactsDirectory,
+                    NoBuild = true
                 });
         }
     });
 
+Task("Push-Myget")
+    .IsDependentOn("Pack")
+    .Does(() => {
+        var pushSettings = new DotNetCoreNuGetPushSettings 
+        {
+            Source = Settings.MyGetSource,
+            ApiKey = mygetApiKey
+        };
+
+        Information($"artifactsDirectory \"{artifactsDirectory}\".");
+
+        var packages = GetFiles("./artifacts/*.nupkg");
+        foreach(var package in packages) 
+        {
+            if(!IsNuGetPublished(package)) 
+            {
+                Information($"Publishing \"{package}\".");
+                DotNetCoreNuGetPush(package.FullPath, pushSettings);
+            }
+            else {
+                Information($"Bypassing publishing \"{package}\" as it is already published.");
+            }    
+        }
+});
     
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
@@ -229,8 +244,13 @@ Task("Pack")
 Task("Default")
     .IsDependentOn("Pack");
 
+Task("Sonar")
+  .IsDependentOn("Clean-Sonarqube")
+  .IsDependentOn("SonarBegin")
+  .IsDependentOn("Coverage")
+  .IsDependentOn("SonarEnd");
+
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 RunTarget(target);
-

@@ -10,18 +10,43 @@
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.1-base.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.1-base "microbadger.com")
 [![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.9-build.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.9-build "microbadger.com")
 
-[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/)
-[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-api)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-api/)
+## Purpose
 
-[![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats) [![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats)
+The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.  
 
 
-|                             |                                          |                                                         |
+The Requirements for this project can be viewed at the following.
+
+* [Business Requirements](/docfx/articles/requirements.md)
+* [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
+
+
+## Web Site
+
+![](assets/web.png)
+
+
+
+
+
+
+
+
+
+## Builds
+
+| Job                           | Agent        | Status                                                  |
+| ------------------------------| -------------|---------------------------------------------------------|
+| Sonarqube Code Quaility       | Travis       |[![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats) |
+| Windows/Linux Automated Build | Appveyor     |[![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats) |
+| Windows/Linux Automated Build | Azure Devops |[![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1)
+| Docker Base Image             | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/) 
+| Docker Deploy Image           | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-api)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-api/)
+
+|  Library                    |  Nuget Repository                        |  MyGet Repository                                       |
 | --------------------------- | -----------------------------------------|---------------------------------------------------------|
-| AzureDevOpsKats.Data        | [![MyGet][data-nuget-badge]][data-nuget] | [![MyGet][data-myget-badge]][data-myget]                |
-| AzureDevOpsKats.Service     | [![MyGet][service-nuget-badge]][service-nuget] | [![MyGet][service-myget-badge]][service-myget]    |
+| AzureDevOpsKats.Data        | [![Nuget][data-nuget-badge]][data-nuget] | [![MyGet][data-myget-badge]][data-myget]                |
+| AzureDevOpsKats.Service     | [![Nuget][service-nuget-badge]][service-nuget] | [![MyGet][service-myget-badge]][service-myget]    |
 
 
 [data-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Data
@@ -51,34 +76,38 @@ dotnet run
 
 ### Cake
 
-Windows 
+#### Prerequisites:
+```
+Java Lattest JDK/JRE
+```
+
+Windows    
 
 ```
-set-executionpolicy unrestricted
-
 .\build.ps1
 ```
 
 Linux/Mac
-```
+
+```bash
 chmod +x build.sh
-"export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
-source  ~/.bash_profile
-
-dotnet tool install -g Cake.Tool
-dotnet tool list -g
 ```
 
-```
+```bash
 ./build.sh
 ```
 
-### SonarQube Testing 
+### SonarQube Testing
 
+**Windows** 
 ```
- ./build.ps1 -target sonar
+ ./build.ps1 -target=sonar
 ```
 
+**Mac/Linux**
+```
+./build.sh -target=sonar
+```
 
 ## Web Site
 
@@ -88,7 +117,7 @@ The Site can be accesed at the following url
 http://localhost:5000/
 ```
 
-![](assets/web.png)
+
 
 ## Swagger API Documentation
 
@@ -96,3 +125,33 @@ http://localhost:5000/
 http://localhost:5000/swagger/index.html
 ```
 ![](assets/swagger.png)
+
+### DocFX
+
+DocFX generates Documentation directly from source code (.NET, RESTful API, JavaScript, Java, etc...) and Markdown files.
+
+```
+https://dotnet.github.io/docfx/
+```
+
+![](assets/docfx.png)
+
+#### Prerequisites:
+
+```powershell
+choco install docfx
+```
+
+#### Build and Serve Website
+
+```powershell
+docfx docfx/docfx.json
+docfx docfx/docfx.json --serve
+```
+
+```
+http://localhost:8080
+```
+#### Deployment 
+```powershell
+ .\build.ps1 -target=Generate-Docs

@@ -2,6 +2,9 @@
 
 namespace AzureDevOpsKats.Service.Models
 {
+    /// <summary>
+    /// Cat Update Model.
+    /// </summary>
     public class CatUpdateModel
     {
         [Required]

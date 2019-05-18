@@ -9,6 +9,10 @@ namespace AzureDevOpsKats.Service.Interface
 
         CatModel GetCat(int id);
 
+        IEnumerable<CatModel> GetCats(int limit, int offset);
+
+        long GetCount();
+
         void EditCat(int id, CatUpdateModel cat);
 
         void CreateCat(CatModel cat);

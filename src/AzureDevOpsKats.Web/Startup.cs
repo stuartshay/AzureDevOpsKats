@@ -1,20 +1,21 @@
-using System;
 using System.IO;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Mappings;
 using AzureDevOpsKats.Service.Service;
+using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
-using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace AzureDevOpsKats.Web
 {
@@ -47,6 +48,7 @@ namespace AzureDevOpsKats.Web
             services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
+
             var config = Configuration.Get<ApplicationOptions>();
 
             AutoMapperConfiguration.Configure();
@@ -61,10 +63,16 @@ namespace AzureDevOpsKats.Web
             services.AddScoped<ICatService, CatService>();
 
             // Services Configuration
+            services.AddApiBehaviorOptions();
+
+            services.AddApiVersioning(Configuration);
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddCustomSwagger(Configuration);
+
             services.AddCustomCors(Configuration);
             services.AddCustomCookiePolicy(Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         /// <summary>
@@ -72,7 +80,9 @@ namespace AzureDevOpsKats.Web
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        /// <param name="loggerFactory"></param>
+        /// <param name="apiVersionDescriptionProvider"></param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             loggerFactory.AddConsole();
             loggerFactory.AddEventSourceLogger();
@@ -84,24 +94,27 @@ namespace AzureDevOpsKats.Web
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler($"/Error");
             }
 
-            ConfigureSwagger(app);
+            app.UseHttpsRedirection();
+
+            ConfigureSwagger(app, apiVersionDescriptionProvider);
             ConfigureFileBrowser(app);
 
             app.UseCookiePolicy();
             app.UseMvc();
         }
 
-        private void ConfigureSwagger(IApplicationBuilder app)
+        private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(options =>
             {
-                var endpoint = $"/swagger/v1/swagger.json";
-                var endpointName = $"AzureDevOpsKats.Web V1";
-                c.SwaggerEndpoint(endpoint, endpointName);
+                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"AzureDevOpsKats.Web - {description.GroupName.ToUpperInvariant()}");
+                }
             });
         }
 
@@ -118,67 +131,8 @@ namespace AzureDevOpsKats.Web
             {
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath)),
-                RequestPath = config.FileStorage.RequestPath
+                RequestPath = config.FileStorage.RequestPath,
             });
-        }
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
-    internal static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddCustomSwagger(
-            this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Info
-                {
-                    Title = "AzureDevOpsKats.Web",
-                    Description = "AzureDevOpsKats.Web",
-                    Version = "v1",
-                    TermsOfService = "None",
-                });
-
-                options.IncludeXmlComments(GetXmlCommentsPath());
-            });
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomCors(
-            this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()));
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomCookiePolicy(
-            this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            return services;
-        }
-
-        private static string GetXmlCommentsPath()
-        {
-            var basePath = AppContext.BaseDirectory;
-            var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
-            var fileName = Path.GetFileName(assemblyName + ".xml");
-
-            return Path.Combine(basePath, fileName);
         }
     }
 }
