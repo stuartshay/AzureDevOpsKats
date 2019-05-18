@@ -46,7 +46,7 @@ jobs:
 
 - job: MacOS
   pool:
-    vmImage: 'xcode9-macos10.14'
+    vmImage: 'xcode9-macos10.13'
  
   steps:
   
