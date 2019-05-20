@@ -24,7 +24,7 @@ jobs:
      version: '2.2.203'  
 
   - powershell: |
-      .\build.ps1
+      .\build.ps1 --target=test 
   
   - task: CopyFiles@2
     inputs:
@@ -33,7 +33,7 @@ jobs:
   
   - task: CopyFiles@2
     inputs:
-       contents: 'artifacts\**'
+       contents: '.test-results\**'
        targetFolder: $(Build.ArtifactStagingDirectory)
 
  
