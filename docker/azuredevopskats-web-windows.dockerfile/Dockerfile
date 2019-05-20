@@ -17,7 +17,7 @@ WORKDIR /app
 #RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r win10-x64
 
 # Runtime Image Stage
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2.3-nanoserver-1809 
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2.5-nanoserver-1809
 
 #WORKDIR /publish
 #COPY --from=build-env /publish .
