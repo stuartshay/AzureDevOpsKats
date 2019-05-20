@@ -25,9 +25,15 @@ jobs:
 
   - powershell: |
       .\build.ps1
+  
   - task: CopyFiles@2
     inputs:
-       contents: '.test-results\**'
+       contents: 'artifacts\**'
+       targetFolder: $(Build.ArtifactStagingDirectory)
+  
+  - task: CopyFiles@2
+    inputs:
+       contents: 'artifacts\**'
        targetFolder: $(Build.ArtifactStagingDirectory)
 
  
