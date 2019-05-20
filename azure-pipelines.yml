@@ -28,12 +28,13 @@ jobs:
   
   - task: CopyFiles@2
     inputs:
-       contents: 'artifacts\**'
-       targetFolder: $(Build.ArtifactStagingDirectory)
-  
-  - task: CopyFiles@2
-    inputs:
        contents: '.test-results\**'
        targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'XUnit'
+      testResultsFiles: '.test-results\**'
+  
 
  
