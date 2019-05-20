@@ -18,12 +18,12 @@ jobs:
   pool: 
     vmImage: 'windows-2019'
   steps:
-  
-  - task: DotNetCoreInstaller@0
-    inputs:
-      version: '2.2.203'
-  
+    
   - powershell: |
       .\build.ps1
+  - task: CopyFiles@2
+    inputs:
+       contents: 'artifacts\**'
+       targetFolder: $(Build.ArtifactStagingDirectory)
 
  
