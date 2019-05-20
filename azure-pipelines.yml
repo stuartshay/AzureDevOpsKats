@@ -27,7 +27,7 @@ jobs:
       .\build.ps1
   - task: CopyFiles@2
     inputs:
-       contents: 'artifacts\**'
+       contents: '.test-results\**'
        targetFolder: $(Build.ArtifactStagingDirectory)
 
  
