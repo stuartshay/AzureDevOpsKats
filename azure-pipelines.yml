@@ -74,7 +74,14 @@ jobs:
       version: '2.2.203'
   
   - powershell: |
-      .\build.ps1
+      .\build.ps1 --target=test 
+    displayName: 'Cake Build Target Test'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '.test-results\*.trx'
+
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
       docker build -f docker/azuredevopskats-web-windows.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops-win  .
