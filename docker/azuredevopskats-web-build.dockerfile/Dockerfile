@@ -15,7 +15,7 @@ RUN dotnet tool list -g
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r debian.9-x64
 
 # Runtime Image Stage
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
 
 ARG VCS_REF
 
