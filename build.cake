@@ -150,7 +150,11 @@ Task("Coverage")
             .GenerateReport(ReportType.OPENCOVER |  ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
         );
         
-        OpenCoverToCoberturaConverter("./opencovercoverage.xml", "./cobertura-coverage.xml");
+        if (!BuildSystem.TravisCI.IsRunningOnTravisCI)
+        {
+            OpenCoverToCoberturaConverter("./opencovercoverage.xml", "./cobertura-coverage.xml");
+        }
+
    });
 
 Task("Publish")
