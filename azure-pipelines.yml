@@ -24,7 +24,7 @@ jobs:
      version: '2.2.203'  
 
   - powershell: |
-      .\build.ps1 --target=Coverage
+      .\build.ps1 --target=Publish
   
   - task: PublishTestResults@2
     inputs:
