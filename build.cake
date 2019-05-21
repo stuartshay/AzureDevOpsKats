@@ -158,7 +158,7 @@ Task("Coverage")
    });
 
 Task("Publish")
-    .IsDependentOn("Test")
+    .IsDependentOn("Coverage")
     .Does(() =>
 {
     DotNetCorePublish(
