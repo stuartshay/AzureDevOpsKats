@@ -26,11 +26,6 @@ jobs:
   - powershell: |
       .\build.ps1 --target=Coverage
   
-  - task: CopyFiles@2
-    inputs:
-       contents: '.test-results\**'
-       targetFolder: $(Build.ArtifactStagingDirectory)
-
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
@@ -40,6 +35,13 @@ jobs:
     inputs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: 'cobertura-coverage.xml'
-  
 
- 
+  - task: CopyFiles@2
+    inputs:
+       contents: 'publish\Release\**'
+       targetFolder: $(Build.ArtifactStagingDirectory)
+  
+  - task: PublishBuildArtifacts@1
+    inputs:
+     pathtoPublish: $(Build.ArtifactStagingDirectory)
+     artifactName: WebApplicationBundle
