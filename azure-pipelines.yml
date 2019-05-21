@@ -24,7 +24,7 @@ jobs:
      version: '2.2.203'  
 
   - powershell: |
-      .\build.ps1 --target=test 
+      .\build.ps1 --target=Coverage
   
   - task: CopyFiles@2
     inputs:
