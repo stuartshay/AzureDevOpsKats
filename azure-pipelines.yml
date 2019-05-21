@@ -35,6 +35,11 @@ jobs:
     inputs:
       testRunner: VSTest
       testResultsFiles: '.test-results\*.trx'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: 'cobertura-coverage.xml'
   
 
  
