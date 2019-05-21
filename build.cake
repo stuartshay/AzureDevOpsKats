@@ -9,6 +9,7 @@
 #tool nuget:?package=xunit.runner.console&version=2.2.0
 #tool nuget:?package=xunit.runner.visualstudio&version=2.2.0
 #tool nuget:?package=DocFx.Console&version=2.42.3
+#tool nuget:?package=OpenCoverToCoberturaConverter&version=0.3.2
 
 //////////////////////////////////////////////////////////////////////
 // ADDINS
@@ -17,6 +18,7 @@
 #addin nuget:?package=Cake.MiniCover&version=0.29.0-next20180721071547&prerelease
 #addin nuget:?package=Cake.Sonar&version=1.1.18
 #addin nuget:?package=Cake.DocFx&version=0.13.0
+#addin "nuget:?package=Cake.OpenCoverToCoberturaConverter&version=0.1.1.2"
 
 SetMiniCoverToolsProject("./build/tools.csproj");
 
@@ -147,8 +149,9 @@ Task("Coverage")
             .WithNonFatalThreshold()
             .GenerateReport(ReportType.OPENCOVER |  ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
         );
+        
+        OpenCoverToCoberturaConverter("./opencovercoverage.xml", "./cobertura-coverage.xml");
    });
-
 
 Task("Publish")
     .IsDependentOn("Test")

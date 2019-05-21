@@ -9,6 +9,7 @@ coverage-html/
 .test-results
 cli/
 *coverage*.*
+cobertura.xml
 tools/
 docfx_project/
 
