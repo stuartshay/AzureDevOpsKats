@@ -49,4 +49,14 @@ jobs:
      pathtoPublish: $(Build.ArtifactStagingDirectory)
      artifactName: WebApplicationBundle
 
+  - task: GitHubPagesPublish@1
+    inputs:
+      docPath: '$(System.DefaultWorkingDirectory)\docFx\_site\*'
+      githubusername: 'NavigatorDataStore'
+      githubemail: 'stuartshay@gmail.com'
+      githubaccesstoken: '5ef636e619a805d917bbfa0fbf2487e1e36839a9'
+      repositoryname: 'AzureDevOpsKats'
+      branchname: 'gh-pages'
+      commitmessage: 'Automated Release $(Release.ReleaseId)'
+
 
