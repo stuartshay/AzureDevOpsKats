@@ -51,7 +51,7 @@ jobs:
 
   - task: GitHubPagesPublish@1
     inputs:
-      docPath: '$(System.DefaultWorkingDirectory)\docFx\_site\*'
+      docPath: 'docFx\*'
       githubusername: 'NavigatorDataStore'
       githubemail: 'stuartshay@gmail.com'
       githubaccesstoken: '5ef636e619a805d917bbfa0fbf2487e1e36839a9'
