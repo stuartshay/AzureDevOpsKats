@@ -158,7 +158,7 @@ Task("Coverage")
    });
 
 Task("Publish")
-    .IsDependentOn("Coverage")
+    .IsDependentOn("Build")
     .Does(() =>
 {
     DotNetCorePublish(
@@ -256,6 +256,11 @@ Task("Sonar")
   .IsDependentOn("SonarBegin")
   .IsDependentOn("Coverage")
   .IsDependentOn("SonarEnd");
+
+Task("CI-Build")
+  .IsDependentOn("Coverage")
+  .IsDependentOn("Publish")
+  .IsDependentOn("Generate-Docs");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
