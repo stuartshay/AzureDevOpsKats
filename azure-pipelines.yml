@@ -52,11 +52,11 @@ jobs:
   - task: GitHubPagesPublish@1
     inputs:
       docPath: 'docFx\*'
-      githubusername: 'NavigatorDataStore'
-      githubemail: 'stuartshay@gmail.com'
-      githubaccesstoken: '5ef636e619a805d917bbfa0fbf2487e1e36839a9'
+      githubusername: 'stuartshay'
+      githubemail: 'sshay@yahoo.com'
+      githubaccesstoken: '12593d2a799c8e06fac69171f91b93fd1ca0341d'
       repositoryname: 'AzureDevOpsKats'
-      branchname: 'origin/gh-pages'
+      branchname: 'gh-pages'
       commitmessage: 'Automated Release $(Release.ReleaseId)'
 
 
