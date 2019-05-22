@@ -23,9 +23,12 @@ jobs:
     inputs:
      version: '2.2.203'  
 
-  - powershell: |
-      .\build.ps1 --target=CI-Build
-  
+  - task: Cake@0
+    inputs:
+     script: 'build.cake'
+     target: 'CI-Build'
+     verbosity: 'Verbose'
+
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
@@ -45,3 +48,5 @@ jobs:
     inputs:
      pathtoPublish: $(Build.ArtifactStagingDirectory)
      artifactName: WebApplicationBundle
+
+
