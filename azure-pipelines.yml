@@ -56,7 +56,7 @@ jobs:
       githubemail: 'stuartshay@gmail.com'
       githubaccesstoken: '5ef636e619a805d917bbfa0fbf2487e1e36839a9'
       repositoryname: 'AzureDevOpsKats'
-      branchname: 'gh-pages'
+      branchname: 'origin/gh-pages'
       commitmessage: 'Automated Release $(Release.ReleaseId)'
 
 
