@@ -29,6 +29,16 @@ jobs:
      target: 'CI-Build'
      verbosity: 'Verbose'
 
+  - task: GitHubPagesPublish@1
+    inputs:
+      docPath: 'docFx\*'
+      githubusername: 'stuartshay'
+      githubemail: 'sshay@yahoo.com'
+      githubaccesstoken: 'd2aefd544c41147d43521ee44081bc3d0ee5d838'
+      repositoryname: 'AzureDevOpsKats'
+      branchname: 'gh-pages'
+      commitmessage: 'Automated Release $(Release.ReleaseId)'
+
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
@@ -49,14 +59,5 @@ jobs:
      pathtoPublish: $(Build.ArtifactStagingDirectory)
      artifactName: WebApplicationBundle
 
-  - task: GitHubPagesPublish@1
-    inputs:
-      docPath: 'docFx\*'
-      githubusername: 'stuartshay'
-      githubemail: 'sshay@yahoo.com'
-      githubaccesstoken: '1379d9057c38e65d93e37d290a015c1cf930ca0'
-      repositoryname: 'AzureDevOpsKats'
-      branchname: 'gh-pages'
-      commitmessage: 'Automated Release $(Release.ReleaseId)'
 
 
