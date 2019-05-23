@@ -32,9 +32,9 @@ jobs:
   - task: GitHubPagesPublish@1
     inputs:
       docPath: 'docFx\*'
-      githubusername: 'stuartshay'
-      githubemail: 'sshay@yahoo.com'
-      githubaccesstoken: 'd2aefd544c41147d43521ee44081bc3d0ee5d838'
+      githubusername: $(git_username)
+      githubemail: $(git_email)
+      githubaccesstoken: $(Nukeepeer_github_token)
       repositoryname: 'AzureDevOpsKats'
       branchname: 'gh-pages'
       commitmessage: 'Automated Release $(Release.ReleaseId)'
