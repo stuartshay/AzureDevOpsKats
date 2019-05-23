@@ -28,6 +28,16 @@ jobs:
      script: 'Write-Host "Hello World"
      Write-Host "$(git_username) | $(git_email) | $(Nukeepeer_github_token)"'
 
+  - task: GitHubPagesPublish@1
+    inputs:
+      docPath: 'docFx\*'
+      githubusername: git_username
+      githubemail: $(git_email)
+      githubaccesstoken: $(Nukeepeer_github_token)
+      repositoryname: 'AzureDevOpsKats'
+      branchname: 'gh-pages'
+      commitmessage: 'Automated Release $(Release.ReleaseId)'
+
   - task: DotNetCoreInstaller@0
     inputs:
      version: '2.2.203'  
@@ -38,15 +48,7 @@ jobs:
      target: 'CI-Build'
      verbosity: 'Verbose'
 
-  - task: GitHubPagesPublish@1
-    inputs:
-      docPath: 'docFx\*'
-      githubusername: $(git_username)
-      githubemail: $(git_email)
-      githubaccesstoken: $(Nukeepeer_github_token)
-      repositoryname: 'AzureDevOpsKats'
-      branchname: 'gh-pages'
-      commitmessage: 'Automated Release $(Release.ReleaseId)'
+
 
   - task: PublishTestResults@2
     inputs:
