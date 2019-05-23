@@ -26,7 +26,7 @@ jobs:
     inputs:
      targetType: 'inline'
      script: 'Write-Host "Hello World"
-     Write-Host "$(git_username)"'
+     Write-Host "$(git_username) | $(git_email) | $(Nukeepeer_github_token)"'
 
   - task: DotNetCoreInstaller@0
     inputs:
