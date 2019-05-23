@@ -15,28 +15,13 @@ variables:
 jobs:
 
 - job: Windows
-  variables:
-  - group: 'Git Hub'
   
   pool: 
     vmImage: 'windows-2019'
+  variables:
+  - group: 'Git Hub'  
+  
   steps:
-
-  - task: PowerShell@2
-    inputs:
-     targetType: 'inline'
-     script: 'Write-Host "Hello World"
-     Write-Host "$(git_username) | $(git_email) | $(Nukeepeer_github_token)"'
-
-  - task: GitHubPagesPublish@1
-    inputs:
-      docPath: 'docFx\*'
-      githubusername: $(git_username)
-      githubemail: $(git_email)
-      githubaccesstoken: $(Nukeepeer_github_token)
-      repositoryname: 'AzureDevOpsKats'
-      branchname: 'gh-pages'
-      commitmessage: 'Automated Release $(Release.ReleaseId)'
 
   - task: DotNetCoreInstaller@0
     inputs:
@@ -47,8 +32,10 @@ jobs:
      script: 'build.cake'
      target: 'CI-Build'
      verbosity: 'Verbose'
-
-
+    env:
+      COREHOST_TRACE: 0
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1  
 
   - task: PublishTestResults@2
     inputs:
@@ -69,6 +56,3 @@ jobs:
     inputs:
      pathtoPublish: $(Build.ArtifactStagingDirectory)
      artifactName: WebApplicationBundle
-
-
-
