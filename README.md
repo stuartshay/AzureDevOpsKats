@@ -1,3 +1,0 @@
-# AzureDevOpsKats
-
-gh-pages here

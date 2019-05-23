@@ -1,0 +1,33 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: AzureDevOpsKats.Web/1.0
+  name: AzureDevOpsKats.Web
+  href: restapi/azuredevopskatsV1.html
+- uid: AzureDevOpsKats.Web/1.0/Delete
+  name: Delete
+  href: restapi/azuredevopskatsV1.html#AzureDevOpsKats_Web_1_0_Delete
+- uid: AzureDevOpsKats.Web/1.0/Get
+  name: Get
+  href: restapi/azuredevopskatsV1.html#AzureDevOpsKats_Web_1_0_Get
+- uid: AzureDevOpsKats.Web/1.0/Post
+  name: Post
+  href: restapi/azuredevopskatsV1.html#AzureDevOpsKats_Web_1_0_Post
+- uid: AzureDevOpsKats.Web/1.0/Put
+  name: Put
+  href: restapi/azuredevopskatsV1.html#AzureDevOpsKats_Web_1_0_Put
+- uid: AzureDevOpsKats.Web/2.0
+  name: AzureDevOpsKats.Web
+  href: restapi/azuredevopskatsV2.html
+- uid: AzureDevOpsKats.Web/2.0/Delete
+  name: Delete
+  href: restapi/azuredevopskatsV2.html#AzureDevOpsKats_Web_2_0_Delete
+- uid: AzureDevOpsKats.Web/2.0/Get
+  name: Get
+  href: restapi/azuredevopskatsV2.html#AzureDevOpsKats_Web_2_0_Get
+- uid: AzureDevOpsKats.Web/2.0/Post
+  name: Post
+  href: restapi/azuredevopskatsV2.html#AzureDevOpsKats_Web_2_0_Post
+- uid: AzureDevOpsKats.Web/2.0/Put
+  name: Put
+  href: restapi/azuredevopskatsV2.html#AzureDevOpsKats_Web_2_0_Put
