@@ -31,7 +31,7 @@ jobs:
   - task: GitHubPagesPublish@1
     inputs:
       docPath: 'docFx\*'
-      githubusername: git_username
+      githubusername: $(git_username)
       githubemail: $(git_email)
       githubaccesstoken: $(Nukeepeer_github_token)
       repositoryname: 'AzureDevOpsKats'
