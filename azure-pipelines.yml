@@ -56,3 +56,14 @@ jobs:
     inputs:
      pathtoPublish: $(Build.ArtifactStagingDirectory)
      artifactName: WebApplicationBundle
+
+  - task: GitHubPagesPublish@1
+    inputs:
+      docPath: 'docFx\*'
+      githubusername: $(git_username)
+      githubemail: $(git_email)
+      githubaccesstoken: $(Nukeeper_github_token)
+      repositoryname: 'AzureDevOpsKats'
+      branchname: 'gh-pages'
+      commitmessage: 'Automated Release $(Release.ReleaseId)'
+
