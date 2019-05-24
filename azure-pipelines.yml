@@ -59,11 +59,11 @@ jobs:
 
   - task: GitHubPagesPublish@1
     inputs:
-      docPath: 'docFx\*'
+      docPath: 'docFx\_site\*'
       githubusername: $(git_username)
       githubemail: $(git_email)
       githubaccesstoken: $(Nukeeper_github_token)
       repositoryname: 'AzureDevOpsKats'
       branchname: 'gh-pages'
-      commitmessage: 'Automated Release $(Release.ReleaseId)'
+      commitmessage: 'Automated Release'
 
