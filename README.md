@@ -77,52 +77,17 @@ http://localhost:5000/
 
 ### Build Commands
 
-|  Library                    |  Nuget Repository                              | 
-| --------------------------- | -----------------------------------------------|
-| CI Build                    | ./build.sh  --target=CI-Build                  |
-| SonarQube Testing           | ./build.sh  --target=sonar                     |
-
-
-
-
+|  Build Type                 |  Linux/Mac                    | Windows                       |
+| --------------------------- | ------------------------------|  -----------------------------|
+| CI Build                    | ./build.sh  --target=CI-Build | .\build.ps1 --target=CI-Build |
+| SonarQube Testing           | ./build.sh  --target=sonar    | .\build.ps1 --target=sonar    |
 
 #### Prerequisites:
 ```
 Java Lattest JDK/JRE
 ```
-
-Windows    
-
-```
-.\build.ps1
-```
-
 Linux/Mac
 
 ```bash
 chmod +x build.sh
 ```
-
-```bash
-./build.sh
-```
-
-
-
-
-
-
-
-
-**Windows** 
-```
- ./build.ps1 -target=sonar
-```
-
-**Mac/Linux**
-```
-./build.sh -target=sonar
-```
-
-
-
