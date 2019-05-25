@@ -16,6 +16,39 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "articles/assets/docfx.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/assets/docfx.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/assets/swagger.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/assets/swagger.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/assets/web.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/assets/web.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "articles/csharp_coding_standards.md",
       "output": {
@@ -46,6 +79,18 @@
         ".html": {
           "relative_path": "articles/details2.html",
           "hash": "TnRqCIljSHKTNbLk2YHvTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/docfx.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/docfx.html",
+          "hash": "c8RuBCagNx+L7QhBgkCT8w=="
         }
       },
       "is_incremental": false,
@@ -93,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "qxh93Orcw3L1hKf4QuuN7g=="
+          "hash": "lEDks2AoMy6Zvc5qMZPAig=="
         }
       },
       "is_incremental": false,
@@ -117,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "DffcERBDPLyDNuaKGDJOuw=="
+          "hash": "VeHirAW/IURWLP4Z1c8BfA=="
         }
       },
       "is_incremental": false,
@@ -129,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "/YdQs3cBYTKdS1o8bYMEhw=="
+          "hash": "ThC2jRJ6T6sSOjSAQoWHEQ=="
         }
       },
       "is_incremental": false,
@@ -218,7 +263,14 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 10,
+          "total_file_count": 11,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }

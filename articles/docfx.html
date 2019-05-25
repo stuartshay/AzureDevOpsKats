@@ -5,17 +5,17 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Azure DevOps Kats </title>
+    <title>DocFX </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Azure DevOps Kats ">
+    <meta name="title" content="DocFX ">
     <meta name="generator" content="docfx 2.42.3.0">
     
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="styles/docfx.vendor.css">
-    <link rel="stylesheet" href="styles/docfx.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
-    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="index.html">
-                <img id="logo" class="svg" src="logo.svg" alt="">
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -57,14 +57,34 @@
         </div>
       </header>
       <div role="main" class="container body-content hide-when-search">
-        <div class="article row grid">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="azure-devops-kats">Azure DevOps Kats</h1>
+<h1 id="docfx">DocFX</h1>
 
-<h2 id="purpose">Purpose</h2>
-<p>The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.</p>
-<p><img src="articles/assets/web.png" alt=""></p>
+<p>DocFX generates Documentation directly from source code (.NET, RESTful API, JavaScript, Java, etc...) and Markdown files.</p>
+<pre><code>https://dotnet.github.io/docfx/
+</code></pre>
+<p><img src="assets/docfx.png" alt=""></p>
+<h4 id="prerequisites">Prerequisites:</h4>
+<pre><code class="lang-powershell">choco install docfx
+</code></pre>
+<h4 id="build-and-serve-website">Build and Serve Website</h4>
+<pre><code class="lang-powershell">docfx docfx/docfx.json
+docfx docfx/docfx.json --serve
+</code></pre>
+<pre><code>http://localhost:8080
+</code></pre>
+<h4 id="deployment">Deployment</h4>
+<pre><code class="lang-powershell"> .\build.ps1 -target=Generate-Docs
+</code></pre>
 </article>
           </div>
           
@@ -73,7 +93,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/stuartshay/AzureDevOpsKats/blob/master/docfx/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/stuartshay/AzureDevOpsKats/blob/master/docfx/articles/docfx.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -99,8 +119,8 @@
       </footer>
     </div>
     
-    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="styles/docfx.js"></script>
-    <script type="text/javascript" src="styles/main.js"></script>
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>
