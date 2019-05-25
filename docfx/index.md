@@ -1,14 +1,8 @@
-# This is the **HOMEPAGE**.
-Refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
+# Azure DevOps Kats
 
-## Quick Start Notes:
-1. Add images to the *images* folder if the file is referencing an image.
-1. 
+## Purpose
 
-```
-# Generate Documentation
-docfx docfx_project/docfx.json
+The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.  
 
-# Serve Website
-docfx serve docfx_project/_site
-```
+
+![](articles/assets/web.png)

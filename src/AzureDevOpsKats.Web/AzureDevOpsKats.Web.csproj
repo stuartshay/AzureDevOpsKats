@@ -10,7 +10,6 @@
     <UserSecretsId>43a62139-9120-489b-a372-b157af0ab275</UserSecretsId>
     <StyleCopTreatErrorsAsWarnings>True</StyleCopTreatErrorsAsWarnings>
     <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -64,6 +63,14 @@
 
   <PropertyGroup>
     <ProjectGuid>{E7416C7C-91B7-4E4D-AAE7-9A6FAF4058B8}</ProjectGuid>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.2\AzureDevOpsKats.Web.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.2\AzureDevOpsKats.Web.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

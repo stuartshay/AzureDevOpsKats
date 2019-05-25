@@ -168,6 +168,9 @@ Task("Publish")
             Configuration = configuration,
             OutputDirectory = publishDirectory
         });
+
+    Zip("./publish/Release", "./publish/webapplication.zip");
+
 });
 
 Task("Generate-Docs")

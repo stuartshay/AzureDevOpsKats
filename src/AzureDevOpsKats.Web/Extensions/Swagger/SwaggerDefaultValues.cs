@@ -18,7 +18,7 @@ namespace MicroService.WebApi.Extensions
         /// <param name="operation">The operation to apply the filter to.</param>
         /// <param name="context">The current operation filter context.</param>
         public void Apply(Operation operation, OperationFilterContext context)
-        {
+        { 
             var apiDescription = context.ApiDescription;
 
             operation.Deprecated = apiDescription.IsDeprecated();

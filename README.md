@@ -23,14 +23,9 @@ The Requirements for this project can be viewed at the following.
 
 ## Web Site
 
+http://azuredevopskats-web.azurewebsites.net/
+
 ![](assets/web.png)
-
-
-
-
-
-
-
 
 
 ## Builds
