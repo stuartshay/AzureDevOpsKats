@@ -19,7 +19,7 @@ The Requirements for this project can be viewed at the following.
 
 * [Business Requirements](/docfx/articles/requirements.md)
 * [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
-* [API Documentation](https://stuartshay.github.io/AzureDevOpsKats/)
+* [Developer DocFx Documentation](https://stuartshay.github.io/AzureDevOpsKats/)
 
 ## Web Site
 
@@ -71,7 +71,20 @@ cd src\AzureDevOpsKats.Web\
 dotnet run
 ```
 
-### Cake
+```
+http://localhost:5000/
+```
+
+### Build Commands
+
+|  Library                    |  Nuget Repository                              | 
+| --------------------------- | -----------------------------------------------|
+| CI Build                    | ./build.sh  --target=CI-Build                  |
+| SonarQube Testing           | ./build.sh  --target=sonar                     |
+
+
+
+
 
 #### Prerequisites:
 ```
@@ -94,7 +107,12 @@ chmod +x build.sh
 ./build.sh
 ```
 
-### SonarQube Testing
+
+
+
+
+
+
 
 **Windows** 
 ```
@@ -106,10 +124,5 @@ chmod +x build.sh
 ./build.sh -target=sonar
 ```
 
-## Web Site
 
-The Site can be accesed at the following url
 
-```
-http://localhost:5000/
-```
