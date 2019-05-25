@@ -6,6 +6,8 @@
   href: requirements.md
 - name: docFx
   href: docfx.md
+- name: Swagger 
+  href: swagger.md
 - name: Details 1
   href: details1.md
 - name: Details 2
