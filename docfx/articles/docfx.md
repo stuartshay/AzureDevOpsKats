@@ -2,6 +2,7 @@
 
 DocFX generates Documentation directly from source code (.NET, RESTful API, JavaScript, Java, etc...) and Markdown files.
 
+
 ```
 https://dotnet.github.io/docfx/
 ```
@@ -24,6 +25,3 @@ docfx docfx/docfx.json --serve
 ```
 http://localhost:8080
 ```
-#### Deployment 
-```powershell
- .\build.ps1 -target=Generate-Docs

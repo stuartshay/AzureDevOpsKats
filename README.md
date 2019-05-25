@@ -23,7 +23,9 @@ The Requirements for this project can be viewed at the following.
 
 ## Web Site
 
-http://azuredevopskats-web.azurewebsites.net/
+http://azuredevopskats-web.azurewebsites.net/    
+http://azuredevopskats-web.azurewebsites.net/swagger/
+
 
 ![](assets/web.png)
 
@@ -111,42 +113,3 @@ The Site can be accesed at the following url
 ```
 http://localhost:5000/
 ```
-
-
-
-## Swagger API Documentation
-
-```
-http://localhost:5000/swagger/index.html
-```
-![](assets/swagger.png)
-
-### DocFX
-
-DocFX generates Documentation directly from source code (.NET, RESTful API, JavaScript, Java, etc...) and Markdown files.
-
-```
-https://dotnet.github.io/docfx/
-```
-
-![](assets/docfx.png)
-
-#### Prerequisites:
-
-```powershell
-choco install docfx
-```
-
-#### Build and Serve Website
-
-```powershell
-docfx docfx/docfx.json
-docfx docfx/docfx.json --serve
-```
-
-```
-http://localhost:8080
-```
-#### Deployment 
-```powershell
- .\build.ps1 -target=Generate-Docs
