@@ -12,6 +12,7 @@ cli/
 cobertura.xml
 tools/
 docfx_project/
+**/PublishProfiles/*
 
 # User-specific files
 *.suo
@@ -231,6 +232,7 @@ ModelManifest.xml
 ### Terraform template
 #  Local .terraform directories
 **/.terraform/*
+
 
 # .tfstate files
 *.tfstate

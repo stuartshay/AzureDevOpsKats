@@ -72,6 +72,9 @@ namespace AzureDevOpsKats.Web
             services.AddCustomCors(Configuration);
             services.AddCustomCookiePolicy(Configuration);
 
+            // Application Insights telemetry
+            services.AddApplicationInsightsTelemetry();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
@@ -80,13 +83,9 @@ namespace AzureDevOpsKats.Web
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        /// <param name="loggerFactory"></param>
         /// <param name="apiVersionDescriptionProvider"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
-            loggerFactory.AddConsole();
-            loggerFactory.AddEventSourceLogger();
-
             if (env.IsDevelopment())
             {
                 Log.Information("In Development environment");

@@ -54,7 +54,11 @@ namespace AzureDevOpsKats.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            _logger.LogWarning("Get All Cats");
+            using (_logger.BeginScope(new Dictionary<string, object> { { "MyKey", "MyValue" } }))
+            {
+                _logger.LogWarning("Get All Cats");
+                _logger.LogError("An example of an Error level message");
+            }
 
             var results = _catService.GetCats();
             return Ok(results);
