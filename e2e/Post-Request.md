@@ -1,18 +1,9 @@
-Sample Post Request
+### Sample Post Request
 
-1 -  Serialize Random image(s) from /data directory,  or create CSV File of bytes below.
-2 -  Post will Return Record Id Created in the Header
-
-
-```
-  access-control-allow-origin: *  
-  api-supported-versions: 1.0  
-  content-type: application/json; charset=utf-8  date: Mon, 27 May 2019 23:44:12 GMT  
- ---> location: /api/v1/cats/35 (Id of Created Value)  
-   server: Kestrel  
-   transfer-encoding: chunked  
-   x-powered-by: ASP.NET 
-```
+1. Serialize Random image(s) from /data directory,  or create CSV File of bytes below.
+2. Post will Return Record Id Created in the Header
+      
+![](assets/created.png)
 
 3. After Photo is Created Put the Title and Description
 

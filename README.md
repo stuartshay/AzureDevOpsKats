@@ -82,12 +82,3 @@ http://localhost:5000/
 | CI Build                    | ./build.sh  --target=CI-Build | .\build.ps1 --target=CI-Build |
 | SonarQube Testing           | ./build.sh  --target=sonar    | .\build.ps1 --target=sonar    |
 
-#### Prerequisites:
-```
-Java Lattest JDK/JRE
-```
-Linux/Mac
-
-```bash
-chmod +x build.sh
-```
