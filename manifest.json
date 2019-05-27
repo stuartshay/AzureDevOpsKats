@@ -170,6 +170,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/sonarqube.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/sonarqube.html",
+          "hash": "K0Wmz2EOrf6fLqlopuZW4A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/swagger.md",
       "output": {
         ".html": {
@@ -186,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "za7hCIiYMzBmk/WKfno3ew=="
+          "hash": "w6eII9xpeLo6429+I4vqGA=="
         }
       },
       "is_incremental": false,
@@ -287,7 +299,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 13,
+          "total_file_count": 14,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
