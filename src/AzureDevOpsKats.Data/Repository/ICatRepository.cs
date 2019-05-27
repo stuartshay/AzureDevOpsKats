@@ -12,12 +12,12 @@ namespace AzureDevOpsKats.Data.Repository
 
         long GetCount();
 
-        Cat GetCat(int id);
+        Cat GetCat(long id);
 
         void EditCat(Cat cat);
 
-        void CreateCat(Cat cat);
+        long CreateCat(Cat cat);
 
-        void DeleteCat(int id);
+        void DeleteCat(long id);
     }
 }

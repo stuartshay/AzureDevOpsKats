@@ -8,6 +8,7 @@
     <RuntimeFrameworkVersion>$(RuntimeFrameworkVersion)</RuntimeFrameworkVersion>
     <RuntimeIdentifiers>win10-x64;debian.9-x64;ubuntu.16.04-x64;osx.10.12-x64</RuntimeIdentifiers>
     <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
+    <StyleCopTreatErrorsAsWarnings>False</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
 
   <ItemGroup>

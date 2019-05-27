@@ -51,10 +51,10 @@ namespace AzureDevOpsKats.Service.Service
             _catRepository.EditCat(result);
         }
 
-        public void CreateCat(CatModel cat)
+        public long CreateCat(CatModel cat)
         {
             var result = Mapper.Map<Cat>(cat);
-            _catRepository.CreateCat(result);
+            return _catRepository.CreateCat(result);
         }
 
         public void DeleteCat(int id)

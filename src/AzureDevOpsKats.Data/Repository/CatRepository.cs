@@ -86,7 +86,7 @@ namespace AzureDevOpsKats.Data.Repository
             }
         }
 
-        public Cat GetCat(int id)
+        public Cat GetCat(long id)
         {
             Open();
             using (var command = _dbConnection.CreateCommand())
@@ -130,7 +130,7 @@ namespace AzureDevOpsKats.Data.Repository
             }
         }
 
-        public void CreateCat(Cat cat)
+        public long CreateCat(Cat cat)
         {
             using (_dbConnection)
             {
@@ -142,12 +142,14 @@ namespace AzureDevOpsKats.Data.Repository
                     command.Parameters.Add(new SqliteParameter("@param2", cat.Description));
                     command.Parameters.Add(new SqliteParameter("@param3", cat.Photo));
 
-                    command.ExecuteNonQuery();
+                    command.ExecuteScalar();
+                    command.CommandText = "SELECT last_insert_rowid()";
+                    return (long)command.ExecuteScalar();
                 }
             }
         }
 
-        public void DeleteCat(int id)
+        public void DeleteCat(long id)
         {
             using (_dbConnection)
             {

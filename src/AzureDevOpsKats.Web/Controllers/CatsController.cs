@@ -6,6 +6,7 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,19 +29,23 @@ namespace AzureDevOpsKats.Web.Controllers
 
         private readonly ILogger<CatsController> _logger;
 
+        private readonly IHostingEnvironment _env;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CatsController"/> class.
         /// </summary>
         /// <param name="catService"></param>
         /// <param name="fileService"></param>
         /// <param name="logger"></param>
+        /// <param name="env"></param>
         /// <param name="settings"></param>
-        public CatsController(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IOptions<ApplicationOptions> settings)
+        public CatsController(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IHostingEnvironment env, IOptions<ApplicationOptions> settings)
         {
             _catService = catService ?? throw new ArgumentNullException(nameof(catService));
             _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ApplicationSettings = settings.Value;
+            _env = env;
         }
 
         private ApplicationOptions ApplicationSettings { get; set; }
@@ -75,7 +80,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [Produces("application/json", Type = typeof(CatModel))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
             var result = _catService.GetCat(id);
             if (result == null)
@@ -117,7 +122,6 @@ namespace AzureDevOpsKats.Web.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         public IActionResult Post([FromBody] CatCreateModel value)
         {
@@ -129,7 +133,8 @@ namespace AzureDevOpsKats.Web.Controllers
             $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
 
             string fileName = $"{Guid.NewGuid()}.jpg";
-            var filePath = Path.Combine($"{Path.GetFullPath(ApplicationSettings.FileStorage.RequestPath)}/{fileName}");
+            string imageDirectory = ApplicationSettings.FileStorage.FilePath;
+            var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
 
             var catModel = new CatModel
             {
@@ -139,9 +144,9 @@ namespace AzureDevOpsKats.Web.Controllers
             };
 
             _fileService.SaveFile(filePath, value.Bytes);
-            _catService.CreateCat(catModel);
+            var result = _catService.CreateCat(catModel);
 
-            return Ok();
+            return Created(new Uri($"{Request.Path}/{result}", UriKind.Relative), value);
         }
 
         /// <summary>

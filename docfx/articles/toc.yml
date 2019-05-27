@@ -10,6 +10,8 @@
   href: docfx.md
 - name: Swagger 
   href: swagger.md
+- name: SonarQube
+  href: sonarqube.md
 - name: Details 1
   href: details1.md
 - name: Details 2
