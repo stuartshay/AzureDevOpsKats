@@ -19,18 +19,21 @@ namespace AzureDevOpsKats.Web
             services.AddSwaggerGen(options =>
             {
                 options.OperationFilter<SwaggerDefaultValues>();
-                //options.SwaggerDoc("v1", new OpenApiInfo
-                //{
-                //    Title = "AzureDevOpsKats.Web",
-                //    Version = "v1",
-                //    Description = "AzureDevOpsKats.Web",
-                //    Contact = new OpenApiContact()
-                //    {
-                //        Email = "stuartshay@yahoo.com",
-                //        Name = "Stuart Shay",
-                //        Url = new Uri("https://github.com/stuartshay"),
-                //    },
-                //});
+
+                /*
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "AzureDevOpsKats.Web",
+                    Version = "v1",
+                    Description = "AzureDevOpsKats.Web",
+                    Contact = new OpenApiContact()
+                    {
+                        Email = "stuartshay@yahoo.com",
+                        Name = "Stuart Shay",
+                        Url = new Uri("https://github.com/stuartshay"),
+                    },
+                });
+                */
 
                 options.IncludeXmlComments(GetXmlCommentsPath());
             });
