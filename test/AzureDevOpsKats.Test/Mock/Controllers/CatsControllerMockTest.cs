@@ -174,7 +174,15 @@ namespace AzureDevOpsKats.Test.Mock
         public void Update_Cat_BadRequest()
         {
             // Arrange 
-            var controller = GetCatsController();
+            var dataSet = new CatModel { Id = 1, Description = "Description" };
+
+            var mockCatService = new Mock<ICatService>();
+            mockCatService
+               .Setup(mr => mr.GetCat(It.IsAny<int>()))
+               .Returns(dataSet)
+               .Verifiable();
+
+            var controller = GetCatsController(mockCatService.Object);
             controller.ModelState.AddModelError("Name", "Required");
 
             //Act
@@ -188,9 +196,15 @@ namespace AzureDevOpsKats.Test.Mock
         [Trait("Category", "Mock")]
         public void Update_Cat()
         {
+            var dataSet = new CatModel { Id = 1, Description = "Description" };
+
             var mockCatService = new Mock<ICatService>();
             mockCatService
                .Setup(mr => mr.EditCat(It.IsAny<int>(), It.IsAny<CatUpdateModel>()))
+               .Verifiable();
+            mockCatService
+               .Setup(mr => mr.GetCat(It.IsAny<int>()))
+               .Returns(dataSet)
                .Verifiable();
 
             var sut = GetCatsController(mockCatService.Object);
@@ -201,6 +215,26 @@ namespace AzureDevOpsKats.Test.Mock
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        [Trait("Category", "Mock")]
+        public void Update_Cat_Not_Found()
+        {
+            var mockCatService = new Mock<ICatService>();
+            mockCatService
+               .Setup(mr => mr.GetCat(It.IsAny<int>()))
+               .Returns((CatModel) null)
+               .Verifiable();
+
+            var sut = GetCatsController(mockCatService.Object);
+
+            //Act
+            var cat = new CatUpdateModel { Name = "Cat", Description = "Cat Description" };
+            var result = sut.Put(1, cat);
+
+            //Assert
+            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]

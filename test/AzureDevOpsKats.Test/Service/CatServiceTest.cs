@@ -23,21 +23,29 @@ namespace AzureDevOpsKats.Test.Service
         [Trait("Category", "Intergration")]
         public void Can_Get_Cat_List()
         {
-            var results = _catService.GetCats();
-            var count = results.Count();
+            var sut = _catService.GetCats();
+            var count = sut.Count();
 
-            Assert.NotNull(results);
+            Assert.NotNull(sut);
             Assert.NotEqual(0, count);
+        }
+
+        [Fact]
+        [Trait("Category", "Intergration")]
+        public void Can_Get_Cats_Count()
+        {
+            var sut = _catService.GetCount();
+            Assert.NotEqual(0, sut);
         }
 
         [Fact]
         [Trait("Category", "Intergration")]
         public void Can_Get_Cat_Paging_List()
         {
-            var results = _catService.GetCats(10,1);
-            var count = results.Count();
+            var sut = _catService.GetCats(10,1);
+            var count = sut.Count();
 
-            Assert.NotNull(results);
+            Assert.NotNull(sut);
             Assert.NotEqual(0, count);
         }
 
@@ -46,10 +54,15 @@ namespace AzureDevOpsKats.Test.Service
         [Trait("Category", "Intergration")]
         public void Get_Cat(int id)
         {
-            var result = _catService.GetCat(id);
-            Assert.IsType<CatModel>(result);
-            Assert.NotNull(result);
-            Assert.Equal(id, result.Id);
+            var sut = _catService.GetCat(id);
+
+            Assert.IsType<CatModel>(sut);
+            Assert.NotNull(sut);
+            Assert.Equal(id, sut.Id);
+
+            Assert.NotEmpty(sut.Name);
+            Assert.NotEmpty(sut.Description);
+            Assert.NotEmpty(sut.Photo);
         }
     }
 }

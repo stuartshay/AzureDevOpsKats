@@ -162,9 +162,15 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpPut("{id}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
         public IActionResult Put(int id, [FromBody] CatUpdateModel value)
         {
+            var result = _catService.GetCat(id);
+            if (result == null)
+                return NotFound();
+
             if (!ModelState.IsValid)
             {
                 return new UnprocessableEntityObjectResult(ModelState);

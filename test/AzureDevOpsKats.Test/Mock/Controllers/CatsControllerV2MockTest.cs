@@ -32,7 +32,8 @@ namespace AzureDevOpsKats.Test.Mock
             var httpResponse = MockHelpers.SetHttpResponseMessage(HttpStatusCode.OK);
             var controller = GetCatsControllerV2(httpResponse, mockCatService.Object);
 
-            var sut = controller.Get(2, 1); 
+            var sut = controller.Get(2, 1);
+            controller.ControllerContext = MockHelpers.GetHttpContext();
 
             Assert.NotNull(sut);
             Assert.IsType<OkObjectResult>(sut);
