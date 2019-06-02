@@ -14,7 +14,11 @@ Plugins
 ![](/assets/jmeter.png)
 
 
+#### Command Line 
 
-
-
+**Load Test Report** 
+```
+jmeter -n -t PathOfJmeterFile -l PathOfResultFile
+jmeter -n -t script.jmx -l scriptresults.jtl
+```
 
