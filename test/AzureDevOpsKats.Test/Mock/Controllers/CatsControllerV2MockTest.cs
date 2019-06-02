@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Test.Fixture;
+using AzureDevOpsKats.Test.Helpers;
 using AzureDevOpsKats.Web.Controllers;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
-using System.Net.Http;
-using AzureDevOpsKats.Test.Helpers;
-using System.Net;
 
 namespace AzureDevOpsKats.Test.Mock
 {
     public class CatsControllerV2MockTest : IClassFixture<CatConfigurationFixture>
     {
-        [Fact(Skip ="Fix")]
+        [Fact]
         [Trait("Category", "Mock")]
         public void Get_Cats_Paging_List_ReturnsData()
         {
             // Arrange 
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCount()).Returns(2);
-            mockCatService.Setup(b => b.GetCats())
+            mockCatService.Setup(b => b.GetCats(It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(new List<CatModel>()
                 {
                     new CatModel{Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1"},
@@ -31,10 +31,12 @@ namespace AzureDevOpsKats.Test.Mock
 
             var httpResponse = MockHelpers.SetHttpResponseMessage(HttpStatusCode.OK);
             var controller = GetCatsControllerV2(httpResponse, mockCatService.Object);
-
-            var sut = controller.Get(2, 1);
             controller.ControllerContext = MockHelpers.GetHttpContext();
 
+            // Act
+            var sut = controller.Get(2, 1);
+
+            // Assert 
             Assert.NotNull(sut);
             Assert.IsType<OkObjectResult>(sut);
 
