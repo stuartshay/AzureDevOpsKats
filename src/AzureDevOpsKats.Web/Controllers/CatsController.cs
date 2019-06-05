@@ -76,7 +76,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <returns>An ActionResult of type Cat</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("2.0")]
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetById")]
         [Produces("application/json", Type = typeof(CatModel))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -146,7 +146,7 @@ namespace AzureDevOpsKats.Web.Controllers
             _fileService.SaveFile(filePath, value.Bytes);
             var result = _catService.CreateCat(catModel);
 
-            return Created(new Uri($"{Request.Path}/{result}", UriKind.Relative), value);
+            return CreatedAtRoute("GetById", new { id = result });
         }
 
         /// <summary>

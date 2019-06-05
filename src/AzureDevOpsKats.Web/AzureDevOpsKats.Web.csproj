@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
@@ -63,8 +64,14 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
   <PropertyGroup>
     <ProjectGuid>{E7416C7C-91B7-4E4D-AAE7-9A6FAF4058B8}</ProjectGuid>
+    <ApplicationInsightsResourceId>/subscriptions/4ffc998e-322d-4b70-9e93-1515eed562c6/resourcegroups/AzureDevOpsKats-RG/providers/microsoft.insights/components/AzureDevOpsKats-Insights</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/4ffc998e-322d-4b70-9e93-1515eed562c6/resourcegroups/AzureDevOpsKats-RG/providers/microsoft.insights/components/AzureDevOpsKats-Insights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -34,8 +34,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Get Cats Paging
         /// </summary>
-        /// <param name="limit"></param>
-        /// <param name="page"></param>
+        /// <param name="limit">results count</param>
+        /// <param name="page">page number</param>
         /// <returns></returns>
         [HttpGet]
         [Route("{limit:int}/{page:int}")]
