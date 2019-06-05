@@ -39,6 +39,5 @@ namespace AzureDevOpsKats.Test.Service
             _fileService.DeleteFile(fileName);
 
         }
-
     }
 }
