@@ -5,15 +5,15 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Test.Fixture;
 using AzureDevOpsKats.Web.Controllers;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 using Xunit.Abstractions;
-using Microsoft.AspNetCore.Hosting;
 
 namespace AzureDevOpsKats.Test.Mock
 {
@@ -206,14 +206,14 @@ namespace AzureDevOpsKats.Test.Mock
                .Returns(dataSet)
                .Verifiable();
 
-            var sut = GetCatsController(mockCatService.Object);
+            var controller = GetCatsController(mockCatService.Object);
 
-            //Act
+            // Act
             var cat = new CatUpdateModel { Name = "Cat", Description = "Cat Description" };
-            var result = sut.Put(1, cat);
+            var sut = controller.Put(1, cat);
 
-            //Assert
-            Assert.IsType<OkObjectResult>(result);
+            // Assert
+            Assert.IsType<OkObjectResult>(sut);
         }
 
         [Fact]
