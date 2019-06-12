@@ -7,7 +7,7 @@ namespace AzureDevOpsKats.Service.Models
     /// </summary>
     public class CatModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         ///  Cat Name.
