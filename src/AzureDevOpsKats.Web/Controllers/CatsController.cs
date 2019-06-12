@@ -145,8 +145,9 @@ namespace AzureDevOpsKats.Web.Controllers
 
             _fileService.SaveFile(filePath, value.Bytes);
             var result = _catService.CreateCat(catModel);
+            catModel.Id = result;
 
-            return CreatedAtRoute("GetById", new { id = result });
+            return CreatedAtRoute("GetById", new { Id = result }, catModel);
         }
 
         /// <summary>
