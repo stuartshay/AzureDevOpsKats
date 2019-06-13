@@ -71,7 +71,6 @@ jobs:
     inputs:
       version: '2.2.203'
 
-
   - task: Cake@0
     inputs:
      script: 'build.cake'
