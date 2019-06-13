@@ -32,6 +32,23 @@ jobs:
     inputs:
       testRunner: VSTest
       testResultsFiles: '.test-results/*.trx'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: 'cobertura-coverage.xml'
+
+  - task: CopyFiles@2
+    inputs:
+      contents: 'publish/webapplication.zip'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: WebApplicationBundle
+
+
   
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
