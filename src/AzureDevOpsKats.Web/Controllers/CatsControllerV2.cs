@@ -41,7 +41,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [Route("{limit:int}/{page:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
+        [Produces("application/json")]
         public IActionResult Get(int limit, int page)
         {
             _logger.LogWarning("Get All Cats");
@@ -55,6 +55,19 @@ namespace AzureDevOpsKats.Web.Controllers
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
             HttpContext.Response.Headers.Add("X-InlineCount", total.ToString());
 
+            return Ok(results);
+        }
+
+        /// <summary>
+        ///  Total Cat Photos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("results/total")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetTotal()
+        {
+            var results = _catService.GetCount();
             return Ok(results);
         }
     }

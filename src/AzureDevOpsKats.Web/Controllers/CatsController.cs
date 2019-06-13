@@ -120,9 +120,9 @@ namespace AzureDevOpsKats.Web.Controllers
         [MapToApiVersion("2.0")]
         [HttpPost]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(CatModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
         public IActionResult Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)

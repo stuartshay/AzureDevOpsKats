@@ -17,6 +17,33 @@ namespace AzureDevOpsKats.Test.Mock
     {
         [Fact]
         [Trait("Category", "Mock")]
+        public void Get_Total_Cats_ReturnsData()
+        {
+            // Arrange 
+            var mockCatService = new Mock<ICatService>();
+            mockCatService.Setup(b => b.GetCount()).Returns(2);
+
+            var httpResponse = MockHelpers.SetHttpResponseMessage(HttpStatusCode.OK);
+            var controller = GetCatsControllerV2(httpResponse, mockCatService.Object);
+            controller.ControllerContext = MockHelpers.GetHttpContext();
+
+            // Act
+            var sut = controller.GetTotal();
+
+            // Assert 
+            Assert.NotNull(sut);
+            Assert.IsType<OkObjectResult>(sut);
+
+            var objectResult = sut as OkObjectResult;
+            Assert.NotNull(objectResult);
+            Assert.True(objectResult.StatusCode == 200);
+
+            Assert.IsType<long>(objectResult.Value);
+            Assert.Equal(2L, objectResult.Value); 
+        }
+
+        [Fact]
+        [Trait("Category", "Mock")]
         public void Get_Cats_Paging_List_ReturnsData()
         {
             // Arrange 

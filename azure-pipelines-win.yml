@@ -14,27 +14,6 @@ variables:
 
 jobs:
 
-- job: Linux 
-  
-  pool:
-    vmImage: 'ubuntu-16.04'
-  
-  variables:
-  - group: 'Docker Hub'
-  
-  steps:
-  - bash: chmod +x ./build.sh 
-  - script: |
-      docker login -u $(dockerLogin) -p $(dockerPassword)
-      docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
-      docker push stuartshay/azuredevopskats:devops 
-    displayName: 'Cake Build'
-    env:
-      COREHOST_TRACE: 0
-      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-      DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-
 - job: Windows
 
   pool:
