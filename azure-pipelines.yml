@@ -48,8 +48,16 @@ jobs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: WebApplicationBundle
 
+  - task: GitHubPagesPublish@1
+    inputs:
+      docPath: 'docFx\_site\*'
+      githubusername: $(git_username)
+      githubemail: $(git_email)
+      githubaccesstoken: $(Nukeeper_github_token)
+      repositoryname: 'AzureDevOpsKats'
+      branchname: 'gh-pages'
+      commitmessage: 'Automated Release'
 
-  
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
       docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
