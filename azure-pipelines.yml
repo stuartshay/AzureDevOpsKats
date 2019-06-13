@@ -31,7 +31,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '.test-results\*.trx'
+      testResultsFiles: '.test-results/*.trx'
   
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
