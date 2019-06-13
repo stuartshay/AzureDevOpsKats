@@ -26,7 +26,7 @@ jobs:
 
   - script: |
       ./build.sh --target=CI-Build
-      displayName: 'Cake Build'
+    displayName: 'Cake Build'
  
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
