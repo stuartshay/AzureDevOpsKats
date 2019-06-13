@@ -23,9 +23,12 @@ jobs:
   - group: 'Docker Hub'
   
   steps:
-  - bash: chmod +x ./build.sh --target=CI-Build
+
+  - scipts: | 
+      chmod +x  build.sh 
+      ./build.sh --target=CI-Build
     displayName: 'Cake Build'
- 
+
  
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
