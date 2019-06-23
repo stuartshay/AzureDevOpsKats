@@ -69,7 +69,7 @@ jobs:
   
   - task: DotNetCoreInstaller@0
     inputs:
-      version: '2.2.203'
+      version: '2.2.300'
 
   - task: Cake@0
     inputs:
