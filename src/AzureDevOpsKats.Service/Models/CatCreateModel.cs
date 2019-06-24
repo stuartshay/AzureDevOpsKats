@@ -9,6 +9,7 @@ namespace AzureDevOpsKats.Service.Models
     public class CatCreateModel
     {
         public IFormFile File { get; set; }
+        
         /// <summary>
         /// Cat Name
         /// </summary>
