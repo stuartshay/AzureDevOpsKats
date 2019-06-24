@@ -130,7 +130,7 @@ namespace AzureDevOpsKats.Web.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
+            // $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
 
             string fileName = $"{Guid.NewGuid()}.jpg";
             string imageDirectory = ApplicationSettings.FileStorage.FilePath;
@@ -144,6 +144,8 @@ namespace AzureDevOpsKats.Web.Controllers
             };
 
             _fileService.SaveFile(filePath, value.Bytes);
+
+
             var result = _catService.CreateCat(catModel);
             catModel.Id = result;
 
