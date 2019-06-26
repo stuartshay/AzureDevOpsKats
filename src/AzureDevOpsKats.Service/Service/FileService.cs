@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Service.Interface;
+using Microsoft.AspNetCore.Http;
 
 namespace AzureDevOpsKats.Service.Service
 {
@@ -33,5 +36,17 @@ namespace AzureDevOpsKats.Service.Service
                 File.Delete(filePath);
             }
         }
+        /*
+        public async Task UploadFileAsync(string filePath, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                throw new Exception("File is empty!");
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+               await file.CopyToAsync(stream);
+            }
+        }
+        */
     }
 }

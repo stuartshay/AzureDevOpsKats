@@ -16,24 +16,25 @@ export const deleteCatData= (id) => dispatch => {
 }
 export const addCatData = (cat) => dispatch => {
   console.log(cat);
-  // const formData = new FormData();
-  // formData.append('file', cat.file);
-  // formData.append('name', cat.name);
-  // formData.append('description', cat.description);
-  // console.log(formData);
+  const formData = new FormData();
+  formData.append('file', cat.file);
+  formData.append('name', cat.name);
+  formData.append('description', cat.description);
+  console.log(formData);
   // const config = {
   //   headers: {
   //     'content-type': 'multipart/form-data'
   //   }
   // };
 
-  // axios.post('/api/v1/Cats', formData, config)
-  axios.post('/api/v1/Cats', cat, {
-    onUploadProgress: progressEvent => {
-      console.log(progressEvent.loaded / progressEvent.total);
-    }
-  }).then(res => {
-      dispatch(receivedCatData(res.data));
+  axios.post('/api/v2/Cats', formData)
+  // axios.post('/api/v1/Cats', cat, {
+  //   onUploadProgress: progressEvent => {
+  //     console.log(progressEvent.loaded / progressEvent.total);
+  //   }
+    .then(res => {
+      console.log(res);
+      dispatch(getCatsList());
     })
     .catch(err => {
       dispatch({
@@ -76,7 +77,6 @@ export const updateCatData = (cat) => dispatch => {
 
   })
     .then(res => {
-      console.log(res.data);
       dispatch(getCatsList());
     })
     .catch(err => {

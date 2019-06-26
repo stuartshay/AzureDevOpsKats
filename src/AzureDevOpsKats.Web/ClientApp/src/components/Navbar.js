@@ -29,14 +29,14 @@ class Navbar extends Component {
 
   changeFile = (e) => {
 
-    let reader = new FileReader();
-    let bytes = [];
-    reader.onload = function () {
-      let arrayBuffer = this.result;
-      bytes = new Uint8Array(arrayBuffer);
-      // binaryString = String.fromCharCode.apply(null, array);
-    }
-    reader.readAsArrayBuffer(e.target.files[0]);
+    // let reader = new FileReader();
+    // let bytes = [];
+    // reader.onload = function () {
+    //   let arrayBuffer = this.result;
+    //   bytes = new Uint8Array(arrayBuffer);
+    //   // binaryString = String.fromCharCode.apply(null, array);
+    // }
+    // reader.readAsArrayBuffer(e.target.files[0]);
 
     this.setState({
       cat: {
