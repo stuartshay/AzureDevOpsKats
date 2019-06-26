@@ -1,9 +1,11 @@
 import React from "react";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCatsList, getCatData, updateCatData, deleteCatData } from '../actions/cats';
+import { getCats, getCatsList, getCatData, updateCatData, deleteCatData } from '../actions/cats';
 
-import { MDBContainer, MDBModal, MDBModalHeader, MDBModalBody, MDBModalFooter, MDBBtn} from "mdbreact";
+import { MDBContainer, MDBModal, MDBModalHeader, MDBModalBody, MDBModalFooter, MDBBtn,
+  MDBRow, MDBCol, MDBPagination, MDBPageItem, MDBPageNav
+} from "mdbreact";
 import "./HomePage.css";
 
 class HomePage extends React.Component {
@@ -12,6 +14,9 @@ class HomePage extends React.Component {
     this.state = {
       isOpenModal: false,
       cat: this.props.cat,
+      cat_counts: 30,
+      cat_counts_per_page: 6,
+      current_page: 0,
     }
 
     this.openEditDialog = this.openEditDialog.bind(this);
@@ -19,9 +24,35 @@ class HomePage extends React.Component {
     this.deleteCat = this.deleteCat.bind(this);
     this.changeInputValue = this.changeInputValue.bind(this);
     this.updateCatData = this.updateCatData.bind(this);
-    
 
-    
+    this.clickPage = this.clickPage.bind(this);
+    this.clickPrevPage = this.clickPrevPage.bind(this);
+    this.clickNextPage = this.clickNextPage.bind(this);
+  }
+  pageCounts(){
+    return parseInt((this.state.cat_counts - 1) / this.state.cat_counts_per_page) + 1
+  }
+  clickNextPage() {
+    const page = this.state.current_page < this.pageCounts()-1 ? this.state.current_page + 1 : this.state.current_page;
+    this.setState({
+      current_page: page
+    });
+
+    this.props.getCats(this.state.cat_counts_per_page, page);
+  }
+  clickPrevPage(){
+
+    const page = this.state.current_page > 0 ? this.state.current_page - 1 : 0;
+    this.setState({
+      current_page: page
+    })
+    this.props.getCats(this.state.cat_counts_per_page, page);
+  }
+  clickPage(no){
+    this.setState({
+      current_page:no
+    })
+    this.props.getCats(this.state.cat_counts_per_page, no);
   }
 
   updateCatData = () => {
@@ -66,13 +97,17 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getCatsList();
+    this.props.getCats(this.state.cat_counts_per_page, this.state.current_page);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
-      cat: nextProps.cat
+      cat: nextProps.cat,
+      cat_counts: nextProps.count
     })
+    if(nextProps.refreshFlag){
+      this.props.getCats(this.state.cat_counts_per_page, this.state.current_page);
+    }
   }
 
   renderCatsList(props) {
@@ -99,11 +134,49 @@ class HomePage extends React.Component {
     );
   }
 
+  renderPagination() {
+    const items = [];
+
+    for (let page_no = 0; page_no < this.pageCounts(); page_no++) {
+      items.push(
+        <MDBPageItem active={page_no === this.state.current_page} key={page_no} onClick={()=>this.clickPage(page_no)}>
+          <MDBPageNav >
+            {page_no+1} 
+            {page_no === this.state.current_page && <span className="sr-only">(current)</span> }
+          </MDBPageNav>
+        </MDBPageItem>
+      )
+
+    }
+    return (
+      <MDBRow>
+        <MDBCol>
+          <MDBPagination className="d-flex justify-content-end">
+            <MDBPageItem onClick={()=>this.clickPrevPage()}>
+              <MDBPageNav aria-label="Previous">
+                <span aria-hidden="true">Previous</span>
+              </MDBPageNav>
+            </MDBPageItem>
+            {items}
+            <MDBPageItem onClick={()=>this.clickNextPage()}>
+              <MDBPageNav aria-label="Next">
+                <span aria-hidden="true">Next</span>
+              </MDBPageNav>
+            </MDBPageItem>
+          </MDBPagination>
+        </MDBCol>
+      </MDBRow>
+    )
+
+  }
+
   render() {
     return (
       <div>
-        <MDBContainer>
+        <MDBContainer className="pt-5">
+          {this.renderPagination()}
           {this.props.catsList.length ? this.renderCatsList(this.props) : null}
+          {this.renderPagination()}
         </MDBContainer>
         <MDBModal isOpen={this.state.isOpenModal} toggle={this.toggleModal}>
           <MDBModalHeader toggle={this.toggle}>Edit Cat</MDBModalHeader>
@@ -136,19 +209,24 @@ class HomePage extends React.Component {
 const mapStateToProps = (state) =>{
   return ({
     catsList: state.catsList.catsList,
+    count: state.catsList.count,
     cat: state.catsList.cat,
+    refreshFlag: state.catsList.refreshFlag,
     errors: state.errors
   })
 }
 
 HomePage.propTypes = {
+  getCats: PropTypes.func.isRequired,
   getCatsList: PropTypes.func.isRequired,
   getCatData: PropTypes.func.isRequired,
   updateCatData: PropTypes.func.isRequired,
   deleteCatData: PropTypes.func.isRequired,
 
   catsList: PropTypes.array,
+  count: PropTypes.number,
   cat: PropTypes.object,
+  refreshFlag: PropTypes.bool,
 }
 
-export default connect(mapStateToProps, { deleteCatData, getCatsList, getCatData, updateCatData })(HomePage);
+export default connect(mapStateToProps, { deleteCatData, getCatsList, getCatData, updateCatData, getCats })(HomePage);

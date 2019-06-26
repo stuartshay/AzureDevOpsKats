@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { GET_ERRORS, RECEIVED_CATS_LIST, RECEIVED_CAT_DATA, ADD_CAT_DATA } from './types';
+import { GET_ERRORS, RECEIVED_CATS_LIST, RECEIVED_CAT_DATA, REFRESH_LIST } from './types';
 
 export const deleteCatData= (id) => dispatch => {
   axios.delete(`/api/v1/Cats/${id}`)
     .then(res => {
-      dispatch(getCatsList());
+      dispatch(refreshList());
     })
     .catch(err => {
       dispatch({
@@ -15,26 +15,14 @@ export const deleteCatData= (id) => dispatch => {
 
 }
 export const addCatData = (cat) => dispatch => {
-  console.log(cat);
   const formData = new FormData();
   formData.append('file', cat.file);
   formData.append('name', cat.name);
   formData.append('description', cat.description);
-  console.log(formData);
-  // const config = {
-  //   headers: {
-  //     'content-type': 'multipart/form-data'
-  //   }
-  // };
 
   axios.post('/api/v2/Cats', formData)
-  // axios.post('/api/v1/Cats', cat, {
-  //   onUploadProgress: progressEvent => {
-  //     console.log(progressEvent.loaded / progressEvent.total);
-  //   }
     .then(res => {
-      console.log(res);
-      dispatch(getCatsList());
+      dispatch(refreshList());
     })
     .catch(err => {
       dispatch({
@@ -57,10 +45,25 @@ export const getCatData = (id) => dispatch => {
     });
 }
 
+export const getCats = (limit, page) => dispatch => {
+  axios.get(`/api/v2/Cats/${limit}/${page}`)
+    .then(res => {
+      axios.get('/api/v2/Cats/results/total').then(count => {
+        dispatch(receivedCatsList(res.data, count.data));
+      })      
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+}
+
 export const getCatsList = () => dispatch => {
   axios.get('/api/v1/Cats')
     .then(res => {
-      dispatch(receivedCatsList(res.data));
+      dispatch(receivedCatsList(res.data, 0));
     })
     .catch(err => {
       dispatch({
@@ -77,7 +80,7 @@ export const updateCatData = (cat) => dispatch => {
 
   })
     .then(res => {
-      dispatch(getCatsList());
+      dispatch(refreshList());
     })
     .catch(err => {
       dispatch({
@@ -89,10 +92,11 @@ export const updateCatData = (cat) => dispatch => {
 
 // ==========================================================
 
-export const receivedCatsList = catsList => {
+export const receivedCatsList = (catsList,count) => {
   return {
     type: RECEIVED_CATS_LIST,
-    catsList: catsList
+    catsList: catsList,
+    count: count
   }
 }
 
@@ -100,5 +104,11 @@ export const receivedCatData = catData => {
   return {
     type: RECEIVED_CAT_DATA,
     catData: catData
+  }
+}
+
+export const refreshList = () => {
+  return {
+    type: REFRESH_LIST
   }
 }

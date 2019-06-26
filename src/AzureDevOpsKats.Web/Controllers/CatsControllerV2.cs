@@ -67,7 +67,7 @@ namespace AzureDevOpsKats.Web.Controllers
             if (total == 0)
                 return NotFound();
 
-            var results = _catService.GetCats(limit, page);
+            var results = _catService.GetCats(limit, page*limit);
 
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
             HttpContext.Response.Headers.Add("X-InlineCount", total.ToString());
