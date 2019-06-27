@@ -103,7 +103,7 @@ namespace AzureDevOpsKats.Test.Mock
             responseMessage.Headers.Add("x-inlinecount", "10");
 
             logger = logger ?? new Mock<ILogger<CatsControllerV2>>().Object;
-            return new CatsControllerV2(catService, logger);
+            return new CatsControllerV2(catService, null, null, null, null);
         }
 
     }

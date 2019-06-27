@@ -4,7 +4,6 @@ using System.IO;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
-using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -72,7 +71,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Get Cat
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Cat Id</param>
         /// <returns>An ActionResult of type Cat</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("2.0")]
@@ -117,7 +116,6 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="value"></param>
         /// <returns></returns>
         [MapToApiVersion("1.0")]
-        [MapToApiVersion("2.0")]
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -144,7 +142,6 @@ namespace AzureDevOpsKats.Web.Controllers
             };
 
             _fileService.SaveFile(filePath, value.Bytes);
-
 
             var result = _catService.CreateCat(catModel);
             catModel.Id = result;

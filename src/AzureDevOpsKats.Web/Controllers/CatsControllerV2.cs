@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
-using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +12,8 @@ using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     ///
     /// </summary>
@@ -23,7 +23,6 @@ namespace AzureDevOpsKats.Web.Controllers
     [ApiVersion("2.0")]
     public class CatsControllerV2 : ControllerBase
     {
-
         private readonly ICatService _catService;
 
         private readonly IFileService _fileService;
@@ -31,8 +30,6 @@ namespace AzureDevOpsKats.Web.Controllers
         private readonly ILogger<CatsController> _logger;
 
         private readonly IHostingEnvironment _env;
-
-        private ApplicationOptions ApplicationSettings { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CatsControllerV2"/> class.
@@ -47,6 +44,8 @@ namespace AzureDevOpsKats.Web.Controllers
             ApplicationSettings = settings.Value;
             _env = env;
         }
+
+        private ApplicationOptions ApplicationSettings { get; set; }
 
         /// <summary>
         /// Get Cats Paging
@@ -92,14 +91,17 @@ namespace AzureDevOpsKats.Web.Controllers
         ///
         /// </summary>
         /// <param name="form"></param>
-        /// <returns>A <see cref="System.Threading.Tasks.Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+        /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+        [MapToApiVersion("2.0")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async System.Threading.Tasks.Task<IActionResult> PostAsync(IFormCollection form)
+        public async Task<IActionResult> PostAsync(IFormCollection form)
         {
             _logger.LogInformation("inputed form data:", form);
+
             string fileName = $"{Guid.NewGuid()}.jpg";
+
             string imageDirectory = ApplicationSettings.FileStorage.FilePath;
             var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
 
@@ -122,6 +124,7 @@ namespace AzureDevOpsKats.Web.Controllers
                     await file.CopyToAsync(stream);
                 }
             }
+
             var result = _catService.CreateCat(catModel);
             catModel.Id = result;
 
