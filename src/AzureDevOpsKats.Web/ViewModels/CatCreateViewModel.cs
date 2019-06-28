@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace AzureDevOpsKats.Service.Models
+namespace AzureDevOpsKats.Web.ViewModels
 {
     /// <summary>
-    /// Create Model for Cat.
+    /// Cat Create View Model
     /// </summary>
-    public class CatCreateModel
+    public class CatCreateViewModel
     {
+        /// <summary>
+        /// IForm File
+        /// </summary>
         public IFormFile File { get; set; }
 
         /// <summary>
@@ -23,16 +26,5 @@ namespace AzureDevOpsKats.Service.Models
         [Required]
         [MaxLength(250)]
         public string Description { get; set; }
-
-        /// <summary>
-        ///  Serialzied Photo
-        /// </summary>
-        // [Required]
-        public byte[] Bytes { get; set; }
-
-        public override string ToString()
-        {
-            return $"Name:{Name}|Description:{Description}";
-        }
     }
 }

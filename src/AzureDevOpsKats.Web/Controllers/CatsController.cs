@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 namespace AzureDevOpsKats.Web.Controllers
 {
     /// <summary>
-    ///
+    /// Cats Controller
     /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/cats")]
@@ -91,8 +91,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Delete Cat
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Cat Id</param>
+        /// <returns>No Content Result</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("2.0")]
         [HttpDelete("{id}")]
@@ -113,8 +113,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         ///  Create Cat
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">Cat Create Model</param>
+        /// <returns>Cat Model</returns>
         [MapToApiVersion("1.0")]
         [HttpPost]
         [Consumes("application/json")]
@@ -127,8 +127,6 @@ namespace AzureDevOpsKats.Web.Controllers
             {
                 return new UnprocessableEntityObjectResult(ModelState);
             }
-
-            // $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
 
             string fileName = $"{Guid.NewGuid()}.jpg";
             string imageDirectory = ApplicationSettings.FileStorage.FilePath;
@@ -153,7 +151,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// Update Cat Properties
         /// </summary>
         /// <param name="id">Cat Id</param>
-        /// <param name="value"></param>
+        /// <param name="value">Cat Update Model</param>
         /// <response code="200">Returns the updated cat</response>
         /// <response code="422">Validation error</response>
         /// <returns>An ActionResult of type Cat</returns>
