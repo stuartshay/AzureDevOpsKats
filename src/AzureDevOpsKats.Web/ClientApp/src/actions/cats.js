@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { GET_ERRORS, RECEIVED_CATS_LIST, RECEIVED_CAT_DATA, REFRESH_LIST } from './types';
+import { GET_ERRORS, RECEIVED_CATS_LIST, RECEIVED_CAT_DATA, REFRESH_LIST, UPDATED_ITEM, ADDED_ITEM, DELETED_ITEM } from './types';
 
 export const deleteCatData= (id) => dispatch => {
   axios.delete(`/api/v1/Cats/${id}`)
     .then(res => {
       dispatch(refreshList());
+      dispatch(refreshAction(DELETED_ITEM));
     })
     .catch(err => {
       dispatch({
@@ -19,12 +20,12 @@ export const addCatData = (cat) => dispatch => {
   formData.append('file', cat.file);
   formData.append('name', cat.name);
   formData.append('description', cat.description);
-  console.log(formData);
 
   axios.post('/api/v2/Cats', formData)
   // axios.post('/api/v1/Cats', formData)
     .then(res => {
       dispatch(refreshList());
+      dispatch(refreshAction(ADDED_ITEM));
     })
     .catch(err => {
       dispatch({
@@ -83,6 +84,7 @@ export const updateCatData = (cat) => dispatch => {
   })
     .then(res => {
       dispatch(refreshList());
+      dispatch(refreshAction(UPDATED_ITEM));
     })
     .catch(err => {
       dispatch({
@@ -112,5 +114,11 @@ export const receivedCatData = catData => {
 export const refreshList = () => {
   return {
     type: REFRESH_LIST
+  }
+}
+
+export const refreshAction = (action) => {
+  return {
+    type: action
   }
 }

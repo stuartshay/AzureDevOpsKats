@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
 import store from './store';
 
 import Routes from "./Routes";
@@ -20,6 +21,8 @@ class App extends Component {
               <Routes />
             </main>
             <Footer />
+
+            <ToastContainer />
           </div>
         </Router>
       </Provider>

@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { getCats, getCatsList, getCatData, updateCatData, deleteCatData } from '../actions/cats';
 
 import { MDBContainer, MDBModal, MDBModalHeader, MDBModalBody, MDBModalFooter, MDBBtn,
-  MDBRow, MDBCol, MDBPagination, MDBPageItem, MDBPageNav
+  MDBRow, MDBCol, MDBPagination, MDBPageItem, MDBPageNav, MDBIcon
 } from "mdbreact";
 import "./HomePage.css";
 import isEmpty from "../validation/is-empty";
+import { ADDED_ITEM, UPDATED_ITEM, DELETED_ITEM } from "../actions/types";
+import { toast } from "react-toastify";
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -30,6 +32,8 @@ class HomePage extends React.Component {
     this.clickPage = this.clickPage.bind(this);
     this.clickPrevPage = this.clickPrevPage.bind(this);
     this.clickNextPage = this.clickNextPage.bind(this);
+    this.clickFirstPage = this.clickFirstPage.bind(this);
+    this.clickLastPage = this.clickLastPage.bind(this);
   }
   pageCounts(){
     return parseInt((this.state.cat_counts - 1) / this.state.cat_counts_per_page) + 1
@@ -42,7 +46,13 @@ class HomePage extends React.Component {
 
     this.props.getCats(this.state.cat_counts_per_page, page);
   }
-  clickPrevPage(){
+  clickFirstPage() {
+    this.clickPage(0);
+  }
+  clickLastPage() {
+    this.clickPage(this.pageCounts() - 1);
+  }
+  clickPrevPage() {
 
     const page = this.state.current_page > 0 ? this.state.current_page - 1 : 0;
     this.setState({
@@ -103,14 +113,22 @@ class HomePage extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log(nextProps.errors);
+    if (nextProps.action) {
+      if (nextProps.action === ADDED_ITEM) {
+        toast("Added an item successfully!", { position: toast.POSITION.BOTTOM_RIGHT, type: toast.TYPE.INFO});
+      }
+      if (nextProps.action === UPDATED_ITEM) {
+        toast("Updated an item successfully!", { position: toast.POSITION.BOTTOM_RIGHT, type: toast.TYPE.SUCCESS });
+      }
+      if (nextProps.action === DELETED_ITEM) {
+        toast("Deleted an item successfully!", { position: toast.POSITION.BOTTOM_RIGHT, type: toast.TYPE.WARNING });
+      }
+    }
     if(!isEmpty(nextProps.errors)){
-      console.log("errors");
       this.setState({
         errors: nextProps.errors
       });
     } else { 
-      console.log("ok");
       this.setState({
         errors: null,
         cat: nextProps.cat,
@@ -125,7 +143,7 @@ class HomePage extends React.Component {
 
   renderCatsList(props) {
     return (
-      <div className="row" id="cat-list">
+      <div className="row justify-content-center" id="cat-list">
         {
           props.catsList.map(d =>
             <div className="col-sm-12 col-md-4" key={d.id}>
@@ -136,8 +154,8 @@ class HomePage extends React.Component {
                 <div className="card-body">
                   <h4 className="card-title">{d.name}</h4>
                   <p className="card-text">{d.description}</p>
-                  <button className="btn btn-success" onClick={() => this.openEditDialog(d.id)}>Edit</button>
-                  <button className="btn btn-danger" onClick={() => this.deleteCat(d.id)}>Delete</button>
+                  <button className="btn btn-success" onClick={() => this.openEditDialog(d.id)}><MDBIcon far icon="edit" /> Edit</button>
+                  <button className="btn btn-danger" onClick={() => this.deleteCat(d.id)}><MDBIcon far icon="trash-alt" /> Delete</button>
                 </div>
               </div>
             </div>
@@ -149,8 +167,23 @@ class HomePage extends React.Component {
 
   renderPagination() {
     const items = [];
+    let start = 0;
+    let end = this.pageCounts();
+    if(this.pageCounts()>5){
+      if(this.state.current_page-2>0){
+        start = this.state.current_page-2;
+        end = start + 5;
+        if(end > this.pageCounts()){
+          end = this.pageCounts();
+          start = end - 5;
+        }
+      } else {
+        start = 0; end = 5;
+      }
 
-    for (let page_no = 0; page_no < this.pageCounts(); page_no++) {
+    }
+
+    for (let page_no = start; page_no < end; page_no++) {
       items.push(
         <MDBPageItem active={page_no === this.state.current_page} key={page_no} onClick={()=>this.clickPage(page_no)}>
           <MDBPageNav >
@@ -164,8 +197,13 @@ class HomePage extends React.Component {
     return (
       <MDBRow>
         <MDBCol>
-          <MDBPagination className="d-flex justify-content-end">
-            <MDBPageItem onClick={()=>this.clickPrevPage()}>
+          <MDBPagination className="d-flex justify-content-center">
+            <MDBPageItem onClick={() => this.clickFirstPage()}>
+              <MDBPageNav aria-label="Previous">
+                <span aria-hidden="true">First</span>
+              </MDBPageNav>
+            </MDBPageItem>
+            <MDBPageItem onClick={() => this.clickPrevPage()}>
               <MDBPageNav aria-label="Previous">
                 <span aria-hidden="true">Previous</span>
               </MDBPageNav>
@@ -174,6 +212,11 @@ class HomePage extends React.Component {
             <MDBPageItem onClick={()=>this.clickNextPage()}>
               <MDBPageNav aria-label="Next">
                 <span aria-hidden="true">Next</span>
+              </MDBPageNav>
+            </MDBPageItem>
+            <MDBPageItem onClick={() => this.clickLastPage()}>
+              <MDBPageNav aria-label="Previous">
+                <span aria-hidden="true">Last</span>
               </MDBPageNav>
             </MDBPageItem>
           </MDBPagination>
@@ -187,7 +230,6 @@ class HomePage extends React.Component {
     return (
       <div>
         <MDBContainer className="pt-5">
-          {this.renderPagination()}
           {this.props.catsList.length ? this.renderCatsList(this.props) : null}
           {this.renderPagination()}
         </MDBContainer>
@@ -220,8 +262,8 @@ class HomePage extends React.Component {
             }
         </MDBModalBody>
           <MDBModalFooter>
-            <MDBBtn color="primary" onClick={() => this.updateCatData()}>Save changes</MDBBtn>
-            <MDBBtn color="secondary" onClick={()=>this.closeEditDialog()}>Close</MDBBtn>
+            <MDBBtn color="primary" onClick={() => this.updateCatData()}><MDBIcon far icon="save" /> Save changes</MDBBtn>
+            <MDBBtn color="secondary" onClick={() => this.closeEditDialog()}><MDBIcon far icon="window-close" /> Close</MDBBtn>
           </MDBModalFooter>
         </MDBModal>
       </div>
@@ -230,8 +272,8 @@ class HomePage extends React.Component {
 }
 
 const mapStateToProps = (state) =>{
-  console.log(state);
   return ({
+    action: state.catsList.action,
     catsList: state.catsList.catsList,
     count: state.catsList.count,
     cat: state.catsList.cat,
@@ -252,6 +294,7 @@ HomePage.propTypes = {
   cat: PropTypes.object,
   refreshFlag: PropTypes.bool,
   errors: PropTypes.object,
+  action: PropTypes.string
 }
 
 export default connect(mapStateToProps, { deleteCatData, getCatsList, getCatData, updateCatData, getCats })(HomePage);

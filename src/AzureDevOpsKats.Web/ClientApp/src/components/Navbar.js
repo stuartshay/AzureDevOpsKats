@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink, MDBContainer, MDBModal, MDBModalHeader, MDBModalBody, MDBModalFooter, MDBBtn } from "mdbreact";
+import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBIcon, MDBContainer, MDBModal, MDBModalHeader, MDBModalBody, MDBModalFooter, MDBBtn } from "mdbreact";
 import { ReactComponent as Logo } from '../assets/logo.svg';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {addCatData} from '../actions/cats';
+import isEmpty from '../validation/is-empty';
 
 class Navbar extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ class Navbar extends Component {
         name: '',
         description: '',
         file: '',
-      }
+      },
+      errors: null,
     }
 
     this.openAddDialog = this.openAddDialog.bind(this);
@@ -47,9 +49,10 @@ class Navbar extends Component {
   }
 
   addCatData = () => {
+    this.setState({
+      errors: null
+    });
     this.props.addCatData(this.state.cat);
-    this.closeAddDialog();
-
   }
 
   changeInputValue(e) {
@@ -84,6 +87,19 @@ class Navbar extends Component {
     });
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!isEmpty(nextProps.errors)) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    } else {
+      this.setState({
+        errors: null,
+      })
+      this.closeAddDialog();
+    }
+  }
+
   toggleCollapse = collapseID => () =>
     this.setState(prevState => ({
       collapseID: prevState.collapseID !== collapseID ? collapseID : ""
@@ -110,7 +126,7 @@ class Navbar extends Component {
           <MDBBtn color="primary"
             onClick={()=>this.openAddDialog()}
           >
-            Add
+            <MDBIcon icon="plus" /> Add
           </MDBBtn>
         </MDBNavItem>
       </MDBNavbarNav>
@@ -148,22 +164,37 @@ class Navbar extends Component {
                   <label htmlFor="name">Name:</label>
                   <input type="text" className="form-control" id="name" name="name"
                     value={this.state.cat.name} onChange={(e) => this.changeInputValue(e)} />
+                  {!isEmpty(this.state.errors) && this.state.errors.Name && (
+                    this.state.errors.Name.map((item, index) => (
+                      <div className="error-msg" key={index}>{item}</div>
+                    ))
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="desc">Description:</label>
                   <input type="text" className="form-control" id="desc" name="description"
                     value={this.state.cat.description} onChange={e => this.changeInputValue(e)} />
+                  {!isEmpty(this.state.errors) && this.state.errors.Description && (
+                    this.state.errors.Description.map((item, index) => (
+                      <div className="error-msg" key={index}>{item}</div>
+                    ))
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="file">Upload Image</label>
                   <input className="form-control" type="file" id="file" name="file" onChange={e => this.changeFile(e)} />
+                  {!isEmpty(this.state.errors) && this.state.errors.image && (
+                    this.state.errors.image.map((item, index) => (
+                      <div className="error-msg" key={index}>{item}</div>
+                    ))
+                  )}
                 </div>
               </form>
             }
           </MDBModalBody>
           <MDBModalFooter>
-            <MDBBtn color="primary" onClick={() => this.addCatData()}>Save changes</MDBBtn>
-            <MDBBtn color="secondary" onClick={() => this.closeAddDialog()}>Close</MDBBtn>
+            <MDBBtn color="primary" onClick={() => this.addCatData()}><MDBIcon far icon="save" />Save changes</MDBBtn>
+            <MDBBtn color="secondary" onClick={() => this.closeAddDialog()}><MDBIcon far icon="window-close" /> Close</MDBBtn>
           </MDBModalFooter>
         </MDBModal>
       </div>
@@ -172,10 +203,12 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-  addCatData: PropTypes.func.isRequired
+  addCatData: PropTypes.func.isRequired,
+  errors: PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({
+  errors: state.errors
 })
 
 export default connect(mapStateToProps, {addCatData})(withRouter(Navbar));

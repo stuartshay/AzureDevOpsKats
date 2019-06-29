@@ -96,8 +96,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="form"></param>
         /// <returns>A <see cref="System.Threading.Tasks.Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         [HttpPost]
-        [Consumes("application/json")]
-        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async System.Threading.Tasks.Task<IActionResult> PostAsync(IFormCollection form)
         {
             string fileName = $"{Guid.NewGuid()}.jpg";
@@ -111,32 +111,46 @@ namespace AzureDevOpsKats.Web.Controllers
                 Photo = fileName,
             };
 
-            /*
+            TryValidateModel(catModel);
+
             if (!ModelState.IsValid)
             {
                 var returnValue = new UnprocessableEntityObjectResult(ModelState);
                 return returnValue;
             }
-            if (true)
-            {
-                List<String> nameErrors = new List<string>();
-                nameErrors.Add("Name is required");
-                nameErrors.Add("Name is 3 characters at least");
-                return BadRequest(new { errors = new { Name = nameErrors, Description = nameErrors } } );
-            }
-            */
 
             if (form.Files.Count > 0)
             {
                 IFormFile file = form.Files[0];
 
+                List<string> imgErrors = new List<string>();
+                var supportedTypes = new[] { "png", "jpg", "bmp", "ico" };
+                var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
                 if (file == null || file.Length == 0)
-                    throw new Exception("File is empty!");
+                {
+                    imgErrors.Add("File is empty!");
+                }
+
+                if (Array.IndexOf(supportedTypes, fileExt) < 0)
+                {
+                    imgErrors.Add("File Extension Is InValid - Only Upload image File");
+                }
+
+                if (imgErrors.Count > 0)
+                {
+                    return BadRequest(new { Image = imgErrors });
+                }
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
+            }
+            else
+            {
+                List<string> imgErrors = new List<string>();
+                imgErrors.Add("File is empty!");
+                return BadRequest(new { Image = imgErrors });
             }
 
             var result = _catService.CreateCat(catModel);
