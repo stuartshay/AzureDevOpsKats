@@ -4,7 +4,7 @@ const initialState = {
   catsList: [],
   count: 0,
   cat: null,
-  refreshFlag: false
+  refreshFlag: false,
 }
 
 const catsReducer = (state = initialState, action) => {

@@ -7,6 +7,7 @@ import { MDBContainer, MDBModal, MDBModalHeader, MDBModalBody, MDBModalFooter, M
   MDBRow, MDBCol, MDBPagination, MDBPageItem, MDBPageNav
 } from "mdbreact";
 import "./HomePage.css";
+import isEmpty from "../validation/is-empty";
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class HomePage extends React.Component {
       cat_counts: 30,
       cat_counts_per_page: 6,
       current_page: 0,
+      errors: null,
     }
 
     this.openEditDialog = this.openEditDialog.bind(this);
@@ -56,10 +58,10 @@ class HomePage extends React.Component {
   }
 
   updateCatData = () => {
+    this.setState({
+      errors: null
+    });
     this.props.updateCatData(this.state.cat);
-
-    this.closeEditDialog();
-
   }
 
   changeInputValue(e){
@@ -101,12 +103,23 @@ class HomePage extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      cat: nextProps.cat,
-      cat_counts: nextProps.count
-    })
-    if(nextProps.refreshFlag){
-      this.props.getCats(this.state.cat_counts_per_page, this.state.current_page);
+    console.log(nextProps.errors);
+    if(!isEmpty(nextProps.errors)){
+      console.log("errors");
+      this.setState({
+        errors: nextProps.errors
+      });
+    } else { 
+      console.log("ok");
+      this.setState({
+        errors: null,
+        cat: nextProps.cat,
+        cat_counts: nextProps.count
+      })
+      if(nextProps.refreshFlag){
+        this.props.getCats(this.state.cat_counts_per_page, this.state.current_page);
+        this.closeEditDialog();
+      }
     }
   }
 
@@ -187,11 +200,21 @@ class HomePage extends React.Component {
                   <label htmlFor="name">Name:</label>
                   <input type="text" className="form-control" id="name" name="name"
                      value={this.state.cat.name} onChange={(e) => this.changeInputValue(e)}/>
+                  { !isEmpty(this.state.errors) && this.state.errors.Name && (
+                    this.state.errors.Name.map((item, index)=>(
+                      <div className="error-msg" key={index}>{item}</div>
+                    ))
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="desc">Description:</label>
                   <input type="text" className="form-control" id="desc" name ="description" 
                   value={this.state.cat.description} onChange={e => this.changeInputValue(e)}/>
+                  {!isEmpty(this.state.errors) && this.state.errors.Description && (
+                    this.state.errors.Description.map((item, index) => (
+                      <div className="error-msg" key={index}>{item}</div>
+                    ))
+                  )}
                 </div>
               </form>
             }
@@ -207,12 +230,13 @@ class HomePage extends React.Component {
 }
 
 const mapStateToProps = (state) =>{
+  console.log(state);
   return ({
     catsList: state.catsList.catsList,
     count: state.catsList.count,
     cat: state.catsList.cat,
     refreshFlag: state.catsList.refreshFlag,
-    errors: state.errors
+    errors: state.errors.errors
   })
 }
 
@@ -227,6 +251,7 @@ HomePage.propTypes = {
   count: PropTypes.number,
   cat: PropTypes.object,
   refreshFlag: PropTypes.bool,
+  errors: PropTypes.object,
 }
 
 export default connect(mapStateToProps, { deleteCatData, getCatsList, getCatData, updateCatData, getCats })(HomePage);

@@ -23,7 +23,6 @@ namespace AzureDevOpsKats.Web.Controllers
     [ApiVersion("2.0")]
     public class CatsControllerV2 : ControllerBase
     {
-
         private readonly ICatService _catService;
 
         private readonly IFileService _fileService;
@@ -38,7 +37,10 @@ namespace AzureDevOpsKats.Web.Controllers
         /// Initializes a new instance of the <see cref="CatsControllerV2"/> class.
         /// </summary>
         /// <param name="catService"></param>
+        /// <param name="fileService"></param>
         /// <param name="logger"></param>
+        /// <param name="env"></param>
+        /// <param name="settings"></param>
         public CatsControllerV2(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IHostingEnvironment env, IOptions<ApplicationOptions> settings)
         {
             _catService = catService ?? throw new ArgumentNullException(nameof(catService));
@@ -67,7 +69,7 @@ namespace AzureDevOpsKats.Web.Controllers
             if (total == 0)
                 return NotFound();
 
-            var results = _catService.GetCats(limit, page*limit);
+            var results = _catService.GetCats(limit, page * limit);
 
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
             HttpContext.Response.Headers.Add("X-InlineCount", total.ToString());
@@ -94,11 +96,10 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="form"></param>
         /// <returns>A <see cref="System.Threading.Tasks.Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesDefaultResponseType]
+        [Consumes("application/json")]
+        [Produces("application/json")]
         public async System.Threading.Tasks.Task<IActionResult> PostAsync(IFormCollection form)
         {
-            _logger.LogInformation("inputed form data:", form);
             string fileName = $"{Guid.NewGuid()}.jpg";
             string imageDirectory = ApplicationSettings.FileStorage.FilePath;
             var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
@@ -109,6 +110,21 @@ namespace AzureDevOpsKats.Web.Controllers
                 Description = form["description"],
                 Photo = fileName,
             };
+
+            /*
+            if (!ModelState.IsValid)
+            {
+                var returnValue = new UnprocessableEntityObjectResult(ModelState);
+                return returnValue;
+            }
+            if (true)
+            {
+                List<String> nameErrors = new List<string>();
+                nameErrors.Add("Name is required");
+                nameErrors.Add("Name is 3 characters at least");
+                return BadRequest(new { errors = new { Name = nameErrors, Description = nameErrors } } );
+            }
+            */
 
             if (form.Files.Count > 0)
             {
@@ -122,6 +138,7 @@ namespace AzureDevOpsKats.Web.Controllers
                     await file.CopyToAsync(stream);
                 }
             }
+
             var result = _catService.CreateCat(catModel);
             catModel.Id = result;
 

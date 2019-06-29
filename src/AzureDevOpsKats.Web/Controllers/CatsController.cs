@@ -121,8 +121,8 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(CatModel), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        // [ProducesResponseType(typeof(CatModel), StatusCodes.Status201Created)]
+        // [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public IActionResult Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)
@@ -131,7 +131,6 @@ namespace AzureDevOpsKats.Web.Controllers
             }
 
             // $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
-
             string fileName = $"{Guid.NewGuid()}.jpg";
             string imageDirectory = ApplicationSettings.FileStorage.FilePath;
             var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
@@ -144,7 +143,6 @@ namespace AzureDevOpsKats.Web.Controllers
             };
 
             _fileService.SaveFile(filePath, value.Bytes);
-
 
             var result = _catService.CreateCat(catModel);
             catModel.Id = result;

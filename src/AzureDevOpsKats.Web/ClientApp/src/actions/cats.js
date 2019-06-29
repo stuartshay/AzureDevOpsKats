@@ -19,8 +19,10 @@ export const addCatData = (cat) => dispatch => {
   formData.append('file', cat.file);
   formData.append('name', cat.name);
   formData.append('description', cat.description);
+  console.log(formData);
 
   axios.post('/api/v2/Cats', formData)
+  // axios.post('/api/v1/Cats', formData)
     .then(res => {
       dispatch(refreshList());
     })
@@ -85,7 +87,7 @@ export const updateCatData = (cat) => dispatch => {
     .catch(err => {
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       });
     });
 }

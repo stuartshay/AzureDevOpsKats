@@ -28,3 +28,14 @@
 	color:rgba(0,0,0,.35);
 	float:right;
 }
+
+.card-title {
+	height: 28px;
+}
+.card-text {
+	height: 21px;
+}
+
+.error-msg {
+	color: red;
+}

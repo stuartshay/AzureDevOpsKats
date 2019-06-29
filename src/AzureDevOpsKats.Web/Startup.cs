@@ -104,14 +104,13 @@ namespace AzureDevOpsKats.Web
                 app.UseExceptionHandler($"/Error");
             }
 
-            //app.UseHttpsRedirection();
-
+            // app.UseHttpsRedirection();
             ConfigureSwagger(app, apiVersionDescriptionProvider);
+
             // ConfigureFileBrowser(app);
 
             // app.UseCookiePolicy();
             // app.UseMvc();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
