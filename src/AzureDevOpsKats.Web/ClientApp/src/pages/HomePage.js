@@ -91,20 +91,23 @@ class HomePage extends React.Component {
     
 
     this.setState({
-      isOpenModal: !this.state.isOpenModal
+      isOpenModal: !this.state.isOpenModal,
+      errors: null
     });
 
   }
   openEditDialog = (id) => {
     this.props.getCatData(id);
     this.setState({
-      isOpenModal: true
+      isOpenModal: true,
+      errors: null
     });
   }
 
   closeEditDialog = () => {
     this.setState({
-      isOpenModal: false
+      isOpenModal: false,
+      errors: null
     });
   }
 
@@ -115,13 +118,14 @@ class HomePage extends React.Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.action) {
       if (nextProps.action === ADDED_ITEM) {
-        toast("Added an item successfully!", { position: toast.POSITION.BOTTOM_RIGHT, type: toast.TYPE.INFO});
+        toast("Added an item successfully!", { type: toast.TYPE.INFO});
       }
       if (nextProps.action === UPDATED_ITEM) {
-        toast("Updated an item successfully!", { position: toast.POSITION.BOTTOM_RIGHT, type: toast.TYPE.SUCCESS });
+        toast("Updated an item successfully!", { type: toast.TYPE.SUCCESS });
+        this.closeEditDialog();
       }
       if (nextProps.action === DELETED_ITEM) {
-        toast("Deleted an item successfully!", { position: toast.POSITION.BOTTOM_RIGHT, type: toast.TYPE.WARNING });
+        toast("Deleted an item successfully!", { type: toast.TYPE.WARNING });
       }
     }
     if(!isEmpty(nextProps.errors)){
@@ -136,14 +140,18 @@ class HomePage extends React.Component {
       })
       if(nextProps.refreshFlag){
         this.props.getCats(this.state.cat_counts_per_page, this.state.current_page);
-        this.closeEditDialog();
+        if (this.state.current_page >= this.pageCounts()) {
+          this.setState({
+            current_page: this.pageCounts() - 1
+          })
+        }
       }
     }
   }
 
   renderCatsList(props) {
     return (
-      <div className="row justify-content-center" id="cat-list">
+      <div className="row" id="cat-list">
         {
           props.catsList.map(d =>
             <div className="col-sm-12 col-md-4" key={d.id}>
@@ -180,7 +188,6 @@ class HomePage extends React.Component {
       } else {
         start = 0; end = 5;
       }
-
     }
 
     for (let page_no = start; page_no < end; page_no++) {
@@ -188,7 +195,7 @@ class HomePage extends React.Component {
         <MDBPageItem active={page_no === this.state.current_page} key={page_no} onClick={()=>this.clickPage(page_no)}>
           <MDBPageNav >
             {page_no+1} 
-            {page_no === this.state.current_page && <span className="sr-only">(current)</span> }
+            {/* {page_no === this.state.current_page && <span className="sr-only">(current)</span> } */}
           </MDBPageNav>
         </MDBPageItem>
       )
@@ -198,23 +205,23 @@ class HomePage extends React.Component {
       <MDBRow>
         <MDBCol>
           <MDBPagination className="d-flex justify-content-center">
-            <MDBPageItem onClick={() => this.clickFirstPage()}>
+            <MDBPageItem onClick={() => this.clickFirstPage()} disabled={0 === this.state.current_page}>
               <MDBPageNav aria-label="Previous">
                 <span aria-hidden="true">First</span>
               </MDBPageNav>
             </MDBPageItem>
-            <MDBPageItem onClick={() => this.clickPrevPage()}>
+            <MDBPageItem onClick={() => this.clickPrevPage()} disabled={0 === this.state.current_page}>
               <MDBPageNav aria-label="Previous">
                 <span aria-hidden="true">Previous</span>
               </MDBPageNav>
             </MDBPageItem>
             {items}
-            <MDBPageItem onClick={()=>this.clickNextPage()}>
+            <MDBPageItem onClick={() => this.clickNextPage()} disabled={this.pageCounts()-1 === this.state.current_page}>
               <MDBPageNav aria-label="Next">
                 <span aria-hidden="true">Next</span>
               </MDBPageNav>
             </MDBPageItem>
-            <MDBPageItem onClick={() => this.clickLastPage()}>
+            <MDBPageItem onClick={() => this.clickLastPage()} disabled={this.pageCounts() - 1 === this.state.current_page}>
               <MDBPageNav aria-label="Previous">
                 <span aria-hidden="true">Last</span>
               </MDBPageNav>
@@ -229,7 +236,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <MDBContainer className="pt-5">
+        <MDBContainer className="p-3">
           {this.props.catsList.length ? this.renderCatsList(this.props) : null}
           {this.renderPagination()}
         </MDBContainer>

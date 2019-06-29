@@ -66,13 +66,15 @@ class Navbar extends Component {
 
   toggleModal = () => {
     this.setState({
-      isOpenModal: !this.state.isOpenModal
+      isOpenModal: !this.state.isOpenModal,
+      errors: null
     });
 
   }
   openAddDialog = () => {
     this.setState({
       isOpenModal: true,
+      errors: null,
       cat: {
         name: '',
         description: '',
@@ -83,7 +85,8 @@ class Navbar extends Component {
 
   closeAddDialog = () => {
     this.setState({
-      isOpenModal: false
+      isOpenModal: false,
+      errors: null
     });
   }
 
