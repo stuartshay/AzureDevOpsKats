@@ -13,6 +13,9 @@ cobertura.xml
 tools/
 docfx_project/
 **/PublishProfiles/*
+**/ClientApp/build/*
+**/ClientApp/node_modules/*
+
 
 # User-specific files
 *.suo

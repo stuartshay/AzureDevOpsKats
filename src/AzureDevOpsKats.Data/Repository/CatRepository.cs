@@ -49,7 +49,7 @@ namespace AzureDevOpsKats.Data.Repository
             using (var command = _dbConnection.CreateCommand())
             {
                 command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats " +
-                                      "ORDER BY Name LIMIT @param1 OFFSET @param2;";
+                                      "ORDER BY Name COLLATE NOCASE ASC LIMIT @param1 OFFSET @param2;";
 
                 command.Parameters.Add(new SqliteParameter("@param1", limit));
                 command.Parameters.Add(new SqliteParameter("@param2", offset));

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
-using AzureDevOpsKats.Web.Helpers;
+using AzureDevOpsKats.Web.ViewModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +17,7 @@ using Microsoft.Extensions.Options;
 namespace AzureDevOpsKats.Web.Controllers
 {
     /// <summary>
-    ///
+    /// CatsController V2
     /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/cats")]
@@ -25,13 +27,9 @@ namespace AzureDevOpsKats.Web.Controllers
     {
         private readonly ICatService _catService;
 
-        private readonly IFileService _fileService;
-
         private readonly ILogger<CatsController> _logger;
 
         private readonly IHostingEnvironment _env;
-
-        private ApplicationOptions ApplicationSettings { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CatsControllerV2"/> class.
@@ -44,18 +42,19 @@ namespace AzureDevOpsKats.Web.Controllers
         public CatsControllerV2(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IHostingEnvironment env, IOptions<ApplicationOptions> settings)
         {
             _catService = catService ?? throw new ArgumentNullException(nameof(catService));
-            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            ApplicationSettings = settings.Value;
             _env = env;
+            ApplicationSettings = settings.Value;
         }
+
+        private ApplicationOptions ApplicationSettings { get; set; }
 
         /// <summary>
         /// Get Cats Paging
         /// </summary>
-        /// <param name="limit">results count</param>
-        /// <param name="page">page number</param>
-        /// <returns></returns>
+        /// <param name="limit">Results count</param>
+        /// <param name="page">Page Number</param>
+        /// <returns>List of Cats</returns>
         [HttpGet]
         [Route("{limit:int}/{page:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,7 +71,7 @@ namespace AzureDevOpsKats.Web.Controllers
             var results = _catService.GetCats(limit, page * limit);
 
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
-            HttpContext.Response.Headers.Add("X-InlineCount", total.ToString());
+            HttpContext.Response.Headers.Add("X-InlineCount", total.ToString(CultureInfo.InvariantCulture));
 
             return Ok(results);
         }
@@ -80,7 +79,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         ///  Total Cat Photos
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Total Cats</returns>
         [HttpGet]
         [Route("results/total")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -91,14 +90,15 @@ namespace AzureDevOpsKats.Web.Controllers
         }
 
         /// <summary>
-        ///
+        /// Create Cat
         /// </summary>
-        /// <param name="form"></param>
-        /// <returns>A <see cref="System.Threading.Tasks.Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+        /// <param name="form">IFormCollection Interface</param>
+        /// <returns>Cat Model</returns>
+        [MapToApiVersion("2.0")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async System.Threading.Tasks.Task<IActionResult> PostAsync(IFormCollection form)
+        public async Task<IActionResult> PostAsync(IFormCollection form)
         {
             string fileName = $"{Guid.NewGuid()}.jpg";
             string imageDirectory = ApplicationSettings.FileStorage.FilePath;
@@ -156,6 +156,7 @@ namespace AzureDevOpsKats.Web.Controllers
             var result = _catService.CreateCat(catModel);
             catModel.Id = result;
 
+            catModel.Id = result;
             return CreatedAtRoute("GetById", new { Id = result }, catModel);
         }
     }
