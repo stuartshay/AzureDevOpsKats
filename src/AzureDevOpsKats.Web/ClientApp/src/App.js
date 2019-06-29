@@ -17,10 +17,10 @@ class App extends Component {
         <Router>
           <div className="flyout">
             <Navbar />
-            <main style={{ marginTop: "4rem" }}>
+            <main style={{ marginTop: "4rem", paddingBottom: "3rem" }}>
               <Routes />
             </main>
-            <Footer />
+            <Footer/>
 
             <ToastContainer />
           </div>
