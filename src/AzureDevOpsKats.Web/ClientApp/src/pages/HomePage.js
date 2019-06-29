@@ -138,13 +138,13 @@ class HomePage extends React.Component {
         cat: nextProps.cat,
         cat_counts: nextProps.count
       })
+      console.log(this.state.current_page, this.pageCounts());
+      if (this.state.current_page >= this.pageCounts() ) {
+        this.clickLastPage();
+        return;
+      }
       if(nextProps.refreshFlag){
-        this.props.getCats(this.state.cat_counts_per_page, this.state.current_page);
-        if (this.state.current_page >= this.pageCounts()) {
-          this.setState({
-            current_page: this.pageCounts() - 1
-          })
-        }
+        this.props.getCats(this.state.cat_counts_per_page, this.state.current_page); 
       }
     }
   }
