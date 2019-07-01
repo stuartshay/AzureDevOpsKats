@@ -211,7 +211,7 @@ Navbar.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  errors: state.errors
+  errors: state.errors.errors
 })
 
 export default connect(mapStateToProps, {addCatData})(withRouter(Navbar));

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { GET_ERRORS, RECEIVED_CATS_LIST, RECEIVED_CAT_DATA, REFRESH_LIST, UPDATED_ITEM, ADDED_ITEM, DELETED_ITEM } from './types';
 
 export const deleteCatData= (id) => dispatch => {
-  axios.delete(`/api/v1/Cats/${id}`)
+  axios.delete(`/api/v2/Cats/${id}`)
     .then(res => {
       dispatch(refreshList());
       dispatch(refreshAction(DELETED_ITEM));
@@ -28,6 +28,7 @@ export const addCatData = (cat) => dispatch => {
       dispatch(refreshAction(ADDED_ITEM));
     })
     .catch(err => {
+      console.log(err.response);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -36,7 +37,7 @@ export const addCatData = (cat) => dispatch => {
 }
 
 export const getCatData = (id) => dispatch => {
-  axios.get(`/api/v1/Cats/${id}`)
+  axios.get(`/api/v2/Cats/${id}`)
     .then(res => {
       dispatch(receivedCatData(res.data));
     })
@@ -64,7 +65,7 @@ export const getCats = (limit, page) => dispatch => {
 }
 
 export const getCatsList = () => dispatch => {
-  axios.get('/api/v1/Cats')
+  axios.get('/api/v2/Cats')
     .then(res => {
       dispatch(receivedCatsList(res.data, 0));
     })
@@ -77,7 +78,7 @@ export const getCatsList = () => dispatch => {
 }
 
 export const updateCatData = (cat) => dispatch => {
-  axios.put(`/api/v1/Cats/${cat.id}`, {
+  axios.put(`/api/v2/Cats/${cat.id}`, {
     name: cat.name,
     description: cat.description
 
