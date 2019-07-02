@@ -6,7 +6,7 @@ class Footer extends Component {
     return (
       < MDBFooter color="indigo" style={{ position: "absolute", width: '100%' }}>
         <p className="footer-copyright mb-0 py-3 text-center">
-          &copy; {new Date().getFullYear()} Copyright: Cats Database
+          &copy; {new Date().getFullYear()} Copyright: Azure DevOpsKats
         </p>
       </MDBFooter >
     )

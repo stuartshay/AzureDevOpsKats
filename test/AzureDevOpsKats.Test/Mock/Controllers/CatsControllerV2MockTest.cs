@@ -1,20 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Test.Fixture;
 using AzureDevOpsKats.Test.Helpers;
 using AzureDevOpsKats.Web.Controllers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AzureDevOpsKats.Test.Mock
 {
     public class CatsControllerV2MockTest : IClassFixture<CatConfigurationFixture>
     {
+        private readonly ITestOutputHelper _output;
+
+        private readonly ServiceProvider _serviceProvider;
+
+        public CatsControllerV2MockTest(CatConfigurationFixture fixture, ITestOutputHelper output)
+        {
+            _output = output;
+            _serviceProvider = fixture.ServiceProvider;
+        }
+
         [Fact]
         [Trait("Category", "Mock")]
         public void Get_Total_Cats_ReturnsData()
@@ -95,15 +110,27 @@ namespace AzureDevOpsKats.Test.Mock
             Assert.IsType<NotFoundResult>(sut);
         }
 
-        private CatsControllerV2 GetCatsControllerV2(HttpResponseMessage responseMessage, ICatService catService = null, ILogger<CatsControllerV2> logger = null)
+        private CatsControllerV2 GetCatsControllerV2(
+            HttpResponseMessage responseMessage, 
+            ICatService catService = null,
+            IFileService fileService = null,
+            ILogger<CatsControllerV2> logger = null,
+            IOptions<ApplicationOptions> settings = null)
         {
             catService = catService ?? new Mock<ICatService>().Object;
+            fileService = fileService ?? new Mock<IFileService>().Object;
+            logger = logger ?? new Mock<ILogger<CatsControllerV2>>().Object;
+
+            var env = new Mock<IHostingEnvironment>();
+            env.Setup(m => m.ContentRootPath).Returns("/");
+
+            settings = settings ?? _serviceProvider.GetService<IOptions<ApplicationOptions>>();
 
             // TODO - Add to Helper
             responseMessage.Headers.Add("x-inlinecount", "10");
 
             logger = logger ?? new Mock<ILogger<CatsControllerV2>>().Object;
-            return new CatsControllerV2(catService, null, null, null);
+            return new CatsControllerV2(catService, fileService, logger, null, settings);
         }
 
     }

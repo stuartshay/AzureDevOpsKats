@@ -141,7 +141,7 @@ class Navbar extends Component {
           <MDBContainer>
             <MDBNavbarBrand href="/">
               <Logo style={{ height: '2.5rem', width: "2.5rem" }} />
-              Cats Database
+              Azure DevOpsKats
             </MDBNavbarBrand>
             <MDBNavbarToggler onClick={this.toggleCollapse("mainNavbarCollapse")} />
             <MDBCollapse

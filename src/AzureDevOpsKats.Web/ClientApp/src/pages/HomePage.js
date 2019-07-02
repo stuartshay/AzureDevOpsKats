@@ -157,7 +157,7 @@ class HomePage extends React.Component {
             <div className="col-sm-12 col-md-4" key={d.id}>
               <div className="card mt-3 mb-3">
                 <div className="image-wrapper">
-                  <img src={d.photo.substring(1).replace("\\", "/")} alt="Card image" />
+                  <img src={d.photo.substring(1).replace("\\", "/")} alt="Cat Photo" />
                 </div>
                 <div className="card-body">
                   <h4 className="card-title">{d.name}</h4>
@@ -201,35 +201,35 @@ class HomePage extends React.Component {
       )
 
     }
-    return (
-      <MDBRow>
-        <MDBCol>
-          <MDBPagination className="d-flex justify-content-center">
-            <MDBPageItem onClick={() => this.clickFirstPage()} disabled={0 === this.state.current_page}>
-              <MDBPageNav aria-label="Previous">
-                <span aria-hidden="true">First</span>
-              </MDBPageNav>
-            </MDBPageItem>
-            <MDBPageItem onClick={() => this.clickPrevPage()} disabled={0 === this.state.current_page}>
-              <MDBPageNav aria-label="Previous">
-                <span aria-hidden="true">Previous</span>
-              </MDBPageNav>
-            </MDBPageItem>
-            {items}
-            <MDBPageItem onClick={() => this.clickNextPage()} disabled={this.pageCounts()-1 === this.state.current_page}>
-              <MDBPageNav aria-label="Next">
-                <span aria-hidden="true">Next</span>
-              </MDBPageNav>
-            </MDBPageItem>
-            <MDBPageItem onClick={() => this.clickLastPage()} disabled={this.pageCounts() - 1 === this.state.current_page}>
-              <MDBPageNav aria-label="Previous">
-                <span aria-hidden="true">Last</span>
-              </MDBPageNav>
-            </MDBPageItem>
-          </MDBPagination>
-        </MDBCol>
-      </MDBRow>
-    )
+      return (
+          <MDBRow>
+              <MDBCol>
+                  <MDBPagination className="d-flex justify-content-center">
+                      <MDBPageItem onClick={() => this.clickFirstPage()} disabled={0 === this.state.current_page}>
+                          <MDBPageNav aria-label="Previous">
+                              <span aria-hidden="true">First</span>
+                          </MDBPageNav>
+                      </MDBPageItem>
+                      <MDBPageItem onClick={() => this.clickPrevPage()} disabled={0 === this.state.current_page}>
+                          <MDBPageNav aria-label="Previous">
+                              <span aria-hidden="true">Previous</span>
+                          </MDBPageNav>
+                      </MDBPageItem>
+                      {items}
+                      <MDBPageItem onClick={() => this.clickNextPage()} disabled={this.pageCounts() - 1 === this.state.current_page}>
+                          <MDBPageNav aria-label="Next">
+                              <span aria-hidden="true">Next</span>
+                          </MDBPageNav>
+                      </MDBPageItem>
+                      <MDBPageItem onClick={() => this.clickLastPage()} disabled={this.pageCounts() - 1 === this.state.current_page}>
+                          <MDBPageNav aria-label="Previous">
+                              <span aria-hidden="true">Last</span>
+                          </MDBPageNav>
+                      </MDBPageItem>
+                  </MDBPagination>
+              </MDBCol>
+          </MDBRow>
+      )
 
   }
 

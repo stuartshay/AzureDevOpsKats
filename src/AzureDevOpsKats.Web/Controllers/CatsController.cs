@@ -4,10 +4,12 @@ using System.IO;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
+using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -116,84 +118,35 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="value">Cat Create Model</param>
         /// <returns>Cat Model</returns>
         [MapToApiVersion("1.0")]
-        [MapToApiVersion("2.0")]
         [HttpPost]
-        [ProducesResponseType(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult Post([FromForm] CatCreateModel value)
+        public IActionResult Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)
             {
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            if (value.File != null)
+            $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
+
+            string fileName = $"{Guid.NewGuid()}.jpg";
+            string imageDirectory = ApplicationSettings.FileStorage.FilePath;
+            var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
+
+            var catModel = new CatModel
             {
-                IFormFile file = value.File;
+                Name = value.Name,
+                Description = value.Description,
+                Photo = fileName,
+            };
 
-                List<string> imgErrors = new List<string>();
-                var supportedTypes = new[] { "png", "jpg", "bmp", "ico" };
-                var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
-                if (file == null || file.Length == 0)
-                {
-                    imgErrors.Add("File is empty!");
-                }
+            _fileService.SaveFile(filePath, value.Bytes);
+            var result = _catService.CreateCat(catModel);
+            catModel.Id = result;
 
-                if (Array.IndexOf(supportedTypes, fileExt) < 0)
-                {
-                    imgErrors.Add("File Extension Is InValid - Only Upload image File");
-                }
-
-                if (imgErrors.Count > 0)
-                {
-                    return BadRequest(new { Image = imgErrors });
-                }
-
-                // $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
-                string fileName = $"{Guid.NewGuid()}.{fileExt}";
-                string imageDirectory = ApplicationSettings.FileStorage.FilePath;
-                var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
-
-                _fileService.SaveFile(filePath, FormFileBytes(file));
-
-                var catModel = new CatModel
-                {
-                    Name = value.Name,
-                    Description = value.Description,
-                    Photo = fileName,
-                };
-
-                var result = _catService.CreateCat(catModel);
-                catModel.Id = result;
-
-                return CreatedAtRoute("GetById", new { Id = result }, catModel);
-            }
-            else
-            {
-                List<string> imgErrors = new List<string>();
-                imgErrors.Add("File is empty!");
-                return BadRequest(new { errors = new { Image = imgErrors } });
-            }
-        }
-
-        private byte[] FormFileBytes(IFormFile file)
-        {
-            byte[] bytes = null;
-
-            if (file.Length <= 0)
-            {
-                return bytes;
-            }
-
-            using (var fileStream = file.OpenReadStream())
-            using (var ms = new MemoryStream())
-            {
-                fileStream.CopyTo(ms);
-                bytes = ms.ToArray();
-            }
-
-            return bytes;
+            return CreatedAtRoute("GetById", new { Id = result }, catModel);
         }
 
         /// <summary>
