@@ -151,10 +151,12 @@ class HomePage extends React.Component {
 
   renderCatsList(props) {
     return (
+
       <div className="row" id="cat-list">
+
         {
           props.catsList.map(d =>
-            <div className="col-sm-12 col-md-4" key={d.id}>
+            <div className="container-items col-sm-12 col-md-4" key={d.id}>
               <div className="card mt-3 mb-3">
                 <div className="image-wrapper">
                   <img src={d.photo.substring(1).replace("\\", "/")} alt="Cat Photo" />
@@ -162,8 +164,10 @@ class HomePage extends React.Component {
                 <div className="card-body">
                   <h4 className="card-title">{d.name}</h4>
                   <p className="card-text">{d.description}</p>
-                  <button className="btn btn-success" onClick={() => this.openEditDialog(d.id)}><MDBIcon far icon="edit" /> Edit</button>
-                  <button className="btn btn-danger" onClick={() => this.deleteCat(d.id)}><MDBIcon far icon="trash-alt" /> Delete</button>
+                <div className="btn-block">
+                  <button className="btn btn-success" onClick={() => this.openEditDialog(d.id)}>Edit</button>
+                  <button className="btn btn-danger" onClick={() => this.deleteCat(d.id)}> Delete</button>
+                </div>
                 </div>
               </div>
             </div>
@@ -207,23 +211,23 @@ class HomePage extends React.Component {
                   <MDBPagination className="d-flex justify-content-center">
                       <MDBPageItem onClick={() => this.clickFirstPage()} disabled={0 === this.state.current_page}>
                           <MDBPageNav aria-label="Previous">
-                              <span aria-hidden="true">First</span>
-                          </MDBPageNav>
+                           <MDBIcon icon="angle-double-left" />
+          </MDBPageNav>
                       </MDBPageItem>
                       <MDBPageItem onClick={() => this.clickPrevPage()} disabled={0 === this.state.current_page}>
                           <MDBPageNav aria-label="Previous">
-                              <span aria-hidden="true">Previous</span>
+                            <MDBIcon icon="angle-left" />
                           </MDBPageNav>
                       </MDBPageItem>
                       {items}
                       <MDBPageItem onClick={() => this.clickNextPage()} disabled={this.pageCounts() - 1 === this.state.current_page}>
                           <MDBPageNav aria-label="Next">
-                              <span aria-hidden="true">Next</span>
+                           <MDBIcon icon="angle-right" />
                           </MDBPageNav>
                       </MDBPageItem>
                       <MDBPageItem onClick={() => this.clickLastPage()} disabled={this.pageCounts() - 1 === this.state.current_page}>
                           <MDBPageNav aria-label="Previous">
-                              <span aria-hidden="true">Last</span>
+                          <MDBIcon icon="angle-double-right" />
                           </MDBPageNav>
                       </MDBPageItem>
                   </MDBPagination>
@@ -235,7 +239,11 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="cat-main-container">
+      <div className="abs-bg absolute-bg-1"> </div>
+      <div className="abs-bg absolute-bg-2"> </div>
+      <div className="abs-bg absolute-bg-3"> </div>
+      <div className="abs-bg absolute-bg-4"> cat </div>
         <MDBContainer className="p-3">
           {this.props.catsList.length ? this.renderCatsList(this.props) : null}
           {this.renderPagination()}

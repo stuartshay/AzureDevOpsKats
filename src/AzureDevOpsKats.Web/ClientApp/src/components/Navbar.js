@@ -126,10 +126,10 @@ class Navbar extends Component {
     const guestLinks = (
       <MDBNavbarNav right>
         <MDBNavItem>
-          <MDBBtn color="primary"
-            onClick={()=>this.openAddDialog()}
-          >
-            <MDBIcon icon="plus" /> Add
+          <MDBBtn  color="add-color"
+            className = "add-btn"
+            onClick={()=>this.openAddDialog()}>
+            <MDBIcon className="icon" icon="plus" /> Add
           </MDBBtn>
         </MDBNavItem>
       </MDBNavbarNav>
@@ -137,11 +137,11 @@ class Navbar extends Component {
     
     return (
       <div>
-        <MDBNavbar color="indigo" dark expand="md" fixed="top" scrolling>
+        <MDBNavbar className="header-position" color="header-bg" dark expand="md" fixed="top" scrolling>
           <MDBContainer>
             <MDBNavbarBrand href="/">
-              <Logo style={{ height: '2.5rem', width: "2.5rem" }} />
-              Azure DevOpsKats
+              <Logo  className= "name-logo"/>
+              Azure DevOps
             </MDBNavbarBrand>
             <MDBNavbarToggler onClick={this.toggleCollapse("mainNavbarCollapse")} />
             <MDBCollapse
