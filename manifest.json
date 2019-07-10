@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "QUz0c8DDilDjH8ob2XtGEQ=="
+          "hash": "MXjjaRzBOzZifJ+rtfydAA=="
         }
       },
       "is_incremental": false,
@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/csharp_coding_standards.html",
-          "hash": "eKE50ScsYkGJBLe3IUEfCA=="
+          "hash": "EVcJiI1PT+YexB/6p+OIGw=="
         }
       },
       "is_incremental": false,
@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/details1.html",
-          "hash": "OH3vlFY9HMdLisxuoLGKwg=="
+          "hash": "DaQ4INBa/RnezNBWCMbGmA=="
         }
       },
       "is_incremental": false,
@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/details2.html",
-          "hash": "TnRqCIljSHKTNbLk2YHvTQ=="
+          "hash": "RCaz3rdUzqVXz7PjGoZ4zg=="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/docfx.html",
-          "hash": "VxRFOENITI/iliIfpj9T7A=="
+          "hash": "cpUKl0c+yAQQ0qBzPs+5lQ=="
         }
       },
       "is_incremental": false,
@@ -102,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/howto/howto1.html",
-          "hash": "f8q3nzzTXpUfLOrfaila7Q=="
+          "hash": "0kPEDty8FVmaIluGx+Pvbg=="
         }
       },
       "is_incremental": false,
@@ -114,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/howto/howto2.html",
-          "hash": "M56ZZsjg0WCuA6giVdTe+A=="
+          "hash": "6ZVJfOt39sFoR+LhqwFuZA=="
         }
       },
       "is_incremental": false,
@@ -126,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/howto/overview.html",
-          "hash": "im9VOun3uWieHS1uAhgnOw=="
+          "hash": "Me90I7iAqH8qe/01xWzLSg=="
         }
       },
       "is_incremental": false,
@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "lEDks2AoMy6Zvc5qMZPAig=="
+          "hash": "ywawQs22zfWUIVsXXe1uzw=="
         }
       },
       "is_incremental": false,
@@ -150,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/onboarding.html",
-          "hash": "wHUhyl3qkIVybSn7VjeBAw=="
+          "hash": "e0H79uMyrF6CXx1xdTinog=="
         }
       },
       "is_incremental": false,
@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/requirements.html",
-          "hash": "k80boe7rRRAb+pPOaXq6lw=="
+          "hash": "rqKlHKD/KHqrRfTapNyRkg=="
         }
       },
       "is_incremental": false,
@@ -174,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/sonarqube.html",
-          "hash": "K0Wmz2EOrf6fLqlopuZW4A=="
+          "hash": "jaMAjHucGsGNctmAcbe1Iw=="
         }
       },
       "is_incremental": false,
@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/swagger.html",
-          "hash": "IqtyXDJ7eFaGmzND4C8IWQ=="
+          "hash": "RElCT/XlopWbRnCR/4kfmA=="
         }
       },
       "is_incremental": false,
@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "ThC2jRJ6T6sSOjSAQoWHEQ=="
+          "hash": "DA9hVazLAmBn2fvICINfCw=="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "restapi/azuredevopskatsV1.html",
-          "hash": "D74Q3X9CBGT4njvAyVP0dg=="
+          "hash": "pk8AejGPCQif4ydaLmKDsA=="
         }
       },
       "is_incremental": false,
@@ -240,7 +240,7 @@
       "output": {
         ".html": {
           "relative_path": "restapi/azuredevopskatsV2.html",
-          "hash": "EWepmRvPAhzBC0DH5c4/9Q=="
+          "hash": "2A2dyl9K0MdHS6mrtH+5Jw=="
         }
       },
       "is_incremental": false,
@@ -282,13 +282,6 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "RestApiDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor RestApiDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -307,6 +300,13 @@
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 14,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
