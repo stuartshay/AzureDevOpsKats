@@ -32,10 +32,10 @@ namespace AzureDevOpsKats.Web.Controllers
         private readonly ILogger<CatsControllerV2> _logger;
 
         private readonly IHostingEnvironment _env;
-        private ICatService catService;
-        private IFileService fileService;
-        private ILogger<CatsControllerV2> logger;
-        private IOptions<ApplicationOptions> settings;
+        private readonly ICatService catService;
+        private readonly IFileService fileService;
+        private readonly ILogger<CatsControllerV2> logger;
+        private readonly IOptions<ApplicationOptions> settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CatsControllerV2"/> class.

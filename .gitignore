@@ -16,12 +16,12 @@ docfx_project/
 **/ClientApp/build/*
 **/ClientApp/node_modules/*
 
-
 # User-specific files
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+.idea
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
