@@ -49,11 +49,15 @@ jobs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: WebApplicationBundle
 
-  - task: DockerInstaller@0
-    displayName: Docker Installer
-    inputs:
-      dockerVersion: 19.03.0-rc3
-      releaseType: test
+ # - task: DockerInstaller@0
+ #   displayName: Docker Installer
+ #   inputs:
+ #     dockerVersion: 19.03.0-rc3
+ #     releaseType: test
+
+  - script: |
+      curl -fsSL https://get.docker.com/ -o docker-install.sh
+      CHANNEL=nightly sh docker-install.sh
 
   - script: |
       docker -v
