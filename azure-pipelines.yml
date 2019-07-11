@@ -56,9 +56,10 @@ jobs:
       releaseType: test
 
   - script: |
+      docker -v
       docker login -u $(dockerLogin) -p $(dockerPassword)
       docker buildx create --name multibuilder
-      docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  --push .
+      docker buildx build --platform linux/amd64, linux/arm64, linux/arm/v7 -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  --push .
       #docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
       #docker push stuartshay/azuredevopskats:devops 
     displayName: 'Docker Build & Push'
