@@ -56,6 +56,7 @@ jobs:
  #     releaseType: test
 
   - script: |
+      apt purge docker-ce docker-ce-cli
       curl -fsSL https://get.docker.com/ -o docker-install.sh
       CHANNEL=nightly sh docker-install.sh
 
