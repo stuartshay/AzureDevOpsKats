@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using AzureDevOpsKats.Service.Interface;
-using Microsoft.AspNetCore.Http;
 
 namespace AzureDevOpsKats.Service.Service
 {
