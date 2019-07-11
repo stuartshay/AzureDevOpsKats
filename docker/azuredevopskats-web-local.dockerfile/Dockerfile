@@ -12,11 +12,14 @@ COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 COPY NuGet.config /app/NuGet.config
 COPY common.props /app/common.props
 
+RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN apt-get install -y nodejs
+
 WORKDIR /app
 RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
 
 WORKDIR /app/src/AzureDevOpsKats.Web
-RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r debian.9-x64
+RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 
 
 # Runtime Image Stage
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
