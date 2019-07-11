@@ -52,8 +52,8 @@ jobs:
   - task: DockerInstaller@0
     displayName: Docker Installer
     inputs:
-      dockerVersion: 19.03.0-ce
-      releaseType: stable
+      dockerVersion: 19.03.0-rc3
+      releaseType: test
 
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
