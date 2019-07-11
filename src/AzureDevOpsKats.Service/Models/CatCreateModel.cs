@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 
 namespace AzureDevOpsKats.Service.Models
 {
@@ -8,8 +7,6 @@ namespace AzureDevOpsKats.Service.Models
     /// </summary>
     public class CatCreateModel
     {
-        public IFormFile File { get; set; }
-
         /// <summary>
         /// Cat Name
         /// </summary>

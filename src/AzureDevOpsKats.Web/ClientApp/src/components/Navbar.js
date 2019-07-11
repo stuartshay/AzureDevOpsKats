@@ -141,7 +141,7 @@ class Navbar extends Component {
           <MDBContainer>
             <MDBNavbarBrand href="/">
               <Logo  className= "name-logo"/>
-              Azure DevOps
+              Azure DevOpsKats
             </MDBNavbarBrand>
             <MDBNavbarToggler onClick={this.toggleCollapse("mainNavbarCollapse")} />
             <MDBCollapse

@@ -49,6 +49,12 @@ jobs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: WebApplicationBundle
 
+  - task: DockerInstaller@0
+    displayName: Docker Installer
+    inputs:
+      dockerVersion: 19.03.0-ce
+      releaseType: stable
+
   - script: |
       docker login -u $(dockerLogin) -p $(dockerPassword)
       docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .

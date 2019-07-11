@@ -18,7 +18,7 @@ class HomePage extends React.Component {
       isOpenModal: false,
       cat: this.props.cat,
       cat_counts: 30,
-      cat_counts_per_page: 6,
+      cat_counts_per_page: 9,
       current_page: 0,
       errors: null,
     }

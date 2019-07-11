@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace AzureDevOpsKats.Service.Models.V2
+namespace AzureDevOpsKats.Web.ViewModels
 {
     /// <summary>
-    /// Create Model for Cat.
+    /// CatCreateViewModel
     /// </summary>
-    public class CatCreateModelV2
+    public class CatCreateViewModel
     {
         /// <summary>
         ///  IFormFile Image.
@@ -30,6 +30,7 @@ namespace AzureDevOpsKats.Service.Models.V2
         [MinLength(3, ErrorMessage = "The description may be at least 3 characters")]
         public string Description { get; set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"Name:{Name}|Description:{Description}";

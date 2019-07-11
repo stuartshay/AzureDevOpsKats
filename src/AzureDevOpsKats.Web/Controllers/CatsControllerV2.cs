@@ -5,7 +5,7 @@ using System.IO;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
-using AzureDevOpsKats.Service.Models.V2;
+using AzureDevOpsKats.Web.ViewModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -106,7 +106,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult Post([FromForm] CatCreateModelV2 value)
+        public IActionResult Post([FromForm] CatCreateViewModel value)
         {
             if (!ModelState.IsValid)
             {
