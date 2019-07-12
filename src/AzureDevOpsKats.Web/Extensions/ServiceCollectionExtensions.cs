@@ -2,6 +2,7 @@
 using System.IO;
 using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,21 @@ namespace AzureDevOpsKats.Web
     /// </summary>
     internal static class ServiceCollectionExtensions
     {
+        /// <summary>
+        ///  Display Configuration
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <param name="environment"></param>
+        public static void DisplayConfiguration(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
+        {
+            var config = configuration.Get<Service.Configuration.ApplicationOptions>();
+            Console.WriteLine($"Environment: {environment.EnvironmentName}");
+            Console.WriteLine($"FileStorage: {config.FileStorage}");
+            Console.WriteLine($"RequestPath: {config.FileStorage.RequestPath}");
+            Console.WriteLine($"DbConnection: {configuration.GetConnectionString("DbConnection")}");
+        }
+
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>

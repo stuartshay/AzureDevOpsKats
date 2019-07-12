@@ -7,14 +7,12 @@ using AzureDevOpsKats.Service.Service;
 using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -29,19 +27,26 @@ namespace AzureDevOpsKats.Web
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
+        /// <param name="env"></param>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
             Configuration = configuration;
+            HostingEnvironment = env;
         }
 
         /// <summary>
-        ///
+        /// Configuration.
         /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        ///
+        /// Hosting Environment.
+        /// </summary>
+        private IHostingEnvironment HostingEnvironment { get; }
+
+        /// <summary>
+        /// Configure Services
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -51,6 +56,7 @@ namespace AzureDevOpsKats.Web
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
 
+            services.DisplayConfiguration(Configuration, HostingEnvironment);
             var config = Configuration.Get<ApplicationOptions>();
 
             AutoMapperConfiguration.Configure();
