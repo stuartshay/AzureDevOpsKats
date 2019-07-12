@@ -59,6 +59,7 @@ jobs:
       docker -v
       apt-get purge docker-ce
       curl https://get.docker.com | CHANNEL=test sh
+      sudo usermod -aG docker vsts
       ## linux-amd64
       wget -q https://github.com/docker/buildx/releases/download/v0.2.2/buildx-v0.2.2.linux-amd64
       sudo chmod 777 buildx-v0.2.2.linux-amd64
