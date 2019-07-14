@@ -31,7 +31,8 @@ namespace AzureDevOpsKats.Web
         public static int Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.AzureAnalytics(workspaceId: "8a8cc6bf-50af-4ad6-abb7-41ce59795f7a","JN168nKopk0YJgGmU/IdrvWqzVtNw+E6eosu9i5QULiBDbqo8ifX/+0szfEONH7ZvP7XyY7OsfhdHsmVhDNZxg==")
+                .Enrich.WithMachineName()
+                .WriteTo.AzureAnalytics(workspaceId: "8a8cc6bf-50af-4ad6-abb7-41ce59795f7a", "JN168nKopk0YJgGmU/IdrvWqzVtNw+E6eosu9i5QULiBDbqo8ifX/+0szfEONH7ZvP7XyY7OsfhdHsmVhDNZxg==")
                 .WriteTo.ColoredConsole()
                 .ReadFrom.Configuration(Configuration)
                 .CreateLogger();

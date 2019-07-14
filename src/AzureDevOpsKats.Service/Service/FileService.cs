@@ -39,8 +39,14 @@ namespace AzureDevOpsKats.Service.Service
 
             if (File.Exists(filePath))
             {
+                _logger.LogInformation("FileExists: {FilePath}", filePath);
                 File.Delete(filePath);
             }
+            else
+            {
+                _logger.LogError("File Not Exists: {FilePath}", filePath);
+            }
+
         }
     }
 }
