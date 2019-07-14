@@ -22,7 +22,7 @@ namespace AzureDevOpsKats.Data.Repository
             List<Cat> cats = new List<Cat>();
             using (var command = _dbConnection.CreateCommand())
             {
-                command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats ORDER BY Name;";
+                command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats ORDER BY Name COLLATE NOCASE ASC;";
                 var result = command.ExecuteReader();
                 while (result.Read())
                 {

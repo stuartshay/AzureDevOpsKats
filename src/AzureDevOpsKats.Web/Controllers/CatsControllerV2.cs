@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
+
     /// <summary>
     /// CatsController V2
     /// </summary>
@@ -40,9 +42,9 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="CatsControllerV2"/> class.
         /// </summary>
-        /// <param name="catService"></param>
-        /// <param name="fileService"></param>
-        /// <param name="logger"></param>
+        /// <param name="catService">Cat Service</param>
+        /// <param name="fileService">File Service</param>
+        /// <param name="logger">Logger</param>
         /// <param name="env"></param>
         /// <param name="settings"></param>
         public CatsControllerV2(ICatService catService, IFileService fileService, ILogger<CatsControllerV2> logger, IHostingEnvironment env, IOptions<ApplicationOptions> settings)
@@ -52,6 +54,9 @@ namespace AzureDevOpsKats.Web.Controllers
             _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
             _env = env;
             ApplicationSettings = settings.Value;
+
+            _logger.LogInformation("Init CatsControllerV2-1: {Now}", DateTime.Now);
+            Log.Information("Init CatsControllerV2-2: {Now}", DateTime.Now);
         }
 
         private ApplicationOptions ApplicationSettings { get; set; }
@@ -73,7 +78,9 @@ namespace AzureDevOpsKats.Web.Controllers
 
             var total = _catService.GetCount();
             if (total == 0)
+            {
                 return NotFound();
+            }
 
             var results = _catService.GetCats(limit, page * limit);
 
@@ -136,9 +143,9 @@ namespace AzureDevOpsKats.Web.Controllers
                 }
 
                 string fileName = $"{Guid.NewGuid()}.{fileExt}";
-                string imageDirectory = ApplicationSettings.FileStorage.FilePath;
-                var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
+                var filePath = Path.Combine(ApplicationSettings.FileStorage.PhysicalFilePath, fileName);
 
+                _logger.LogDebug($"Save Image:{filePath}");
                 _fileService.SaveFile(filePath, FormFileBytes(file));
 
                 var catModel = new CatModel
@@ -155,19 +162,18 @@ namespace AzureDevOpsKats.Web.Controllers
             }
             else
             {
-                List<string> imgErrors = new List<string>();
-                imgErrors.Add("File is empty!");
+                List<string> imgErrors = new List<string> { "File is empty!" };
                 return BadRequest(new { errors = new { Image = imgErrors } });
             }
         }
 
         private byte[] FormFileBytes(IFormFile file)
         {
-            byte[] bytes = null;
+            byte[] bytes;
 
             if (file.Length <= 0)
             {
-                return bytes;
+                return null;
             }
 
             using (var fileStream = file.OpenReadStream())

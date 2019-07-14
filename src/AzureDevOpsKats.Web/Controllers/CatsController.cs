@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
@@ -47,6 +48,9 @@ namespace AzureDevOpsKats.Web.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ApplicationSettings = settings.Value;
             _env = env;
+
+            _logger.LogInformation("Init CatsController-1: {Now}", DateTime.Now);
+            Log.Information("Init CatsController-2: {Now}", DateTime.Now);
         }
 
         private ApplicationOptions ApplicationSettings { get; set; }
@@ -133,7 +137,9 @@ namespace AzureDevOpsKats.Web.Controllers
 
             string fileName = $"{Guid.NewGuid()}.jpg";
             string imageDirectory = ApplicationSettings.FileStorage.FilePath;
-            var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
+
+            var filePath = Path.Combine(ApplicationSettings.FileStorage.PhysicalFilePath, fileName);
+            _logger.LogDebug($"Save Image:{filePath}");
 
             var catModel = new CatModel
             {

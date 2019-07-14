@@ -25,8 +25,12 @@ namespace AzureDevOpsKats.Web
         {
             var config = configuration.Get<Service.Configuration.ApplicationOptions>();
             Console.WriteLine($"Environment: {environment.EnvironmentName}");
-            Console.WriteLine($"FileStorage: {config.FileStorage}");
+            Console.WriteLine($"CurrentDirectory: {Directory.GetCurrentDirectory()}");
+
+            Console.WriteLine($"FilePath: {config.FileStorage.FilePath}");
             Console.WriteLine($"RequestPath: {config.FileStorage.RequestPath}");
+            Console.WriteLine($"PhysicalFileProvider: {config.FileStorage.PhysicalFilePath}");
+
             Console.WriteLine($"DbConnection: {configuration.GetConnectionString("DbConnection")}");
         }
 

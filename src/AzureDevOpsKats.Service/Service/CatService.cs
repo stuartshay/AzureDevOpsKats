@@ -3,8 +3,10 @@ using System.Linq;
 using AutoMapper;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
+using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
+using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Service.Service
 {
@@ -12,9 +14,12 @@ namespace AzureDevOpsKats.Service.Service
     {
         private readonly ICatRepository _catRepository;
 
-        public CatService(ICatRepository catRepository)
+        private readonly string _requestPath;
+
+        public CatService(ICatRepository catRepository, IOptions<ApplicationOptions> settings)
         {
             this._catRepository = catRepository;
+            _requestPath = settings.Value.FileStorage.RequestPath;
         }
 
         public IEnumerable<CatModel> GetCats()
@@ -25,7 +30,7 @@ namespace AzureDevOpsKats.Service.Service
             var catModels = results as CatModel[] ?? results.ToArray();
             foreach (var result in catModels)
             {
-                result.Photo = @"\images\" + result.Photo;
+                result.Photo = $"{_requestPath}/{result.Photo}";
             }
 
             return catModels;
@@ -70,7 +75,8 @@ namespace AzureDevOpsKats.Service.Service
             var catModels = results as CatModel[] ?? results.ToArray();
             foreach (var result in catModels)
             {
-                result.Photo = @"\images\" + result.Photo;
+                // result.Photo = @"\images\" + result.Photo;
+                result.Photo = $"{_requestPath}/{result.Photo}";
             }
 
             return catModels;

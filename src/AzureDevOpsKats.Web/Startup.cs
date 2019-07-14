@@ -27,8 +27,8 @@ namespace AzureDevOpsKats.Web
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// <param name="env"></param>
-        /// <param name="configuration"></param>
+        /// <param name="env">IHosting Environment</param>
+        /// <param name="configuration">IConfiguration Property</param>
         public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,19 +36,19 @@ namespace AzureDevOpsKats.Web
         }
 
         /// <summary>
-        /// Configuration.
+        /// Gets Configuration.
         /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Hosting Environment.
+        /// Gets Hosting Environment.
         /// </summary>
         private IHostingEnvironment HostingEnvironment { get; }
 
         /// <summary>
         /// Configure Services
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="services">IService Collection</param>
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuration
@@ -93,11 +93,11 @@ namespace AzureDevOpsKats.Web
         }
 
         /// <summary>
-        ///
+        /// Configure
         /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        /// <param name="apiVersionDescriptionProvider"></param>
+        /// <param name="app">IApplication Builder</param>
+        /// <param name="env">IHosting Environment</param>
+        /// <param name="apiVersionDescriptionProvider">IApiVersion Description Provider</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())
@@ -112,11 +112,10 @@ namespace AzureDevOpsKats.Web
 
             // app.UseHttpsRedirection();
             ConfigureSwagger(app, apiVersionDescriptionProvider);
-
             // ConfigureFileBrowser(app);
 
             // app.UseCookiePolicy();
-            // app.UseMvc();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -131,7 +130,6 @@ namespace AzureDevOpsKats.Web
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
@@ -159,12 +157,19 @@ namespace AzureDevOpsKats.Web
             options.DefaultFileNames.Clear();
             options.DefaultFileNames.Add("index.html");
             app.UseDefaultFiles(options);
+
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(config.FileStorage.PhysicalFilePath),
+            //    RequestPath = config.FileStorage.RequestPath,
+            //});
+
+            app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath)),
+                FileProvider = new PhysicalFileProvider(config.FileStorage.PhysicalFilePath),
                 RequestPath = config.FileStorage.RequestPath,
+                EnableDirectoryBrowsing = true,
             });
         }
     }
