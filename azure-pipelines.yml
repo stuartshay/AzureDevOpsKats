@@ -61,13 +61,13 @@ jobs:
       curl https://get.docker.com | CHANNEL=test sh
       sudo usermod -aG docker vsts
       ## linux-amd64
-      wget -q https://github.com/docker/buildx/releases/download/v0.2.2/buildx-v0.2.2.linux-amd64
-      sudo chmod 777 buildx-v0.2.2.linux-amd64
-      mkdir -p ~/.docker/cli-plugins/
-      mv buildx-v0.2.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+      #wget -q https://github.com/docker/buildx/releases/download/v0.2.2/buildx-v0.2.2.linux-amd64
+      #sudo chmod 777 buildx-v0.2.2.linux-amd64
+      #mkdir -p ~/.docker/cli-plugins/
+      #mv buildx-v0.2.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
       ## linux/arm64 (TODO)
       ## linux/arm/v7 (TODO)
-    displayName: 'Docker Install/buildx Plugin'
+    displayName: 'Docker Install'
 
 
   - script: |

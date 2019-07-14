@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -24,15 +25,19 @@ namespace AzureDevOpsKats.Web
     /// </summary>
     public class Startup
     {
+        private readonly ILogger<Startup> _logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="env">IHosting Environment</param>
         /// <param name="configuration">IConfiguration Property</param>
-        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        /// <param name="logger">ILogger Startup</param>
+        public Startup(IHostingEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
             HostingEnvironment = env;
+            _logger = logger;
         }
 
         /// <summary>
@@ -56,7 +61,7 @@ namespace AzureDevOpsKats.Web
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
 
-            services.DisplayConfiguration(Configuration, HostingEnvironment);
+            services.DisplayConfiguration(Configuration, HostingEnvironment, _logger);
             var config = Configuration.Get<ApplicationOptions>();
 
             AutoMapperConfiguration.Configure();
@@ -159,17 +164,10 @@ namespace AzureDevOpsKats.Web
             app.UseDefaultFiles(options);
 
             app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(config.FileStorage.PhysicalFilePath),
-            //    RequestPath = config.FileStorage.RequestPath,
-            //});
-
-            app.UseFileServer(new FileServerOptions
+            app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(config.FileStorage.PhysicalFilePath),
                 RequestPath = config.FileStorage.RequestPath,
-                EnableDirectoryBrowsing = true,
             });
         }
     }

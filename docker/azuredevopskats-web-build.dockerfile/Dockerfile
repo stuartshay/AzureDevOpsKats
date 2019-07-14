@@ -12,7 +12,7 @@ COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 WORKDIR /app/src/AzureDevOpsKats.Web
 
 RUN dotnet tool list -g
-RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r debian.9-x64
+RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 
 
 # Runtime Image Stage
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
