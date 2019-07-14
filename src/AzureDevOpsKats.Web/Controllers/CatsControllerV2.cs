@@ -17,7 +17,6 @@ using Serilog;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
-
     /// <summary>
     /// CatsController V2
     /// </summary>
@@ -56,7 +55,6 @@ namespace AzureDevOpsKats.Web.Controllers
             ApplicationSettings = settings.Value;
 
             _logger.LogInformation("Init CatsControllerV2-1: {Now}", DateTime.Now);
-            Log.Information("Init CatsControllerV2-2: {Now}", DateTime.Now);
         }
 
         private ApplicationOptions ApplicationSettings { get; set; }

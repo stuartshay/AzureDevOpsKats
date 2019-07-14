@@ -1,7 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
+using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Service.Service
 {
@@ -9,13 +10,17 @@ namespace AzureDevOpsKats.Service.Service
     {
         private readonly string _applicationPath;
 
-        public FileService(string applicationPath)
+        private readonly ILogger<FileService> _logger;
+
+        public FileService(IOptions<ApplicationOptions> settings, ILogger<FileService> logger)
         {
-            _applicationPath = applicationPath;
+            _applicationPath = settings.Value.FileStorage.FilePath;
+            _logger = logger;
         }
 
         public void SaveFile(string filePath, byte[] bytes)
         {
+            _logger.LogInformation("SaveFile: {FilePath}", filePath);
             File.WriteAllBytes(filePath, bytes);
         }
 
@@ -30,22 +35,12 @@ namespace AzureDevOpsKats.Service.Service
         public void DeleteFile(string fileName)
         {
             var filePath = Path.Combine($"{Path.GetFullPath(_applicationPath)}/{fileName}");
+            _logger.LogInformation("DeleteFile: {FilePath}", filePath);
+
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
         }
-        /*
-        public async Task UploadFileAsync(string filePath, IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                throw new Exception("File is empty!");
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-               await file.CopyToAsync(stream);
-            }
-        }
-        */
     }
 }

@@ -50,7 +50,6 @@ namespace AzureDevOpsKats.Web.Controllers
             _env = env;
 
             _logger.LogInformation("Init CatsController-1: {Now}", DateTime.Now);
-            Log.Information("Init CatsController-2: {Now}", DateTime.Now);
         }
 
         private ApplicationOptions ApplicationSettings { get; set; }
@@ -136,10 +135,8 @@ namespace AzureDevOpsKats.Web.Controllers
             $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
 
             string fileName = $"{Guid.NewGuid()}.jpg";
-            string imageDirectory = ApplicationSettings.FileStorage.FilePath;
-
             var filePath = Path.Combine(ApplicationSettings.FileStorage.PhysicalFilePath, fileName);
-            _logger.LogDebug($"Save Image:{filePath}");
+            _logger.LogInformation("Save Image: {FilePath}", filePath);
 
             var catModel = new CatModel
             {

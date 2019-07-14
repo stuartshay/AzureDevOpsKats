@@ -14,7 +14,7 @@ namespace AzureDevOpsKats.Test.Service
 
         public FileServiceTest()
         {
-            _fileService = new FileService(ApplicationPath);
+            //_fileService = new FileService(ApplicationPath);
         }
 
         [Fact]

@@ -65,10 +65,10 @@ namespace AzureDevOpsKats.Web
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), dbConnection))};";
 
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
-            services.AddSingleton<IFileService>(new FileService(imagesRoot));
 
             services.AddSingleton<ICatRepository>(new CatRepository(connection));
             services.AddScoped<ICatService, CatService>();
+            services.AddScoped<IFileService, FileService>();
 
             // Services Configuration
             services.AddApiBehaviorOptions();

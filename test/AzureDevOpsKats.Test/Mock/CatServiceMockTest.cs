@@ -153,7 +153,7 @@ namespace AzureDevOpsKats.Test.Mock
 
             AutoMapperConfiguration.Configure();
 
-            return new CatService(catRepository);
+            return new CatService(catRepository, null);
         }
     }
 }
