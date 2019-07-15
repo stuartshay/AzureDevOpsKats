@@ -46,7 +46,6 @@ namespace AzureDevOpsKats.Service.Service
             {
                 _logger.LogError("File Not Exists: {FilePath}", filePath);
             }
-
         }
     }
 }

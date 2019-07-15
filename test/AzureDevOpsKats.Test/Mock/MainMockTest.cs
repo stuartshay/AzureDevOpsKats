@@ -5,6 +5,7 @@ using AzureDevOpsKats.Web.Controllers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace AzureDevOpsKats.Test.Mock
 {
     public class MainMockTest
     {
-        [Fact(Skip = "Fix Env")]
+        [Fact(Skip = "Fix")]
         [Trait("Category", "Mock")]
         public void ConfigureServices_RegistersDependenciesCorrectly()
         {
@@ -21,8 +22,10 @@ namespace AzureDevOpsKats.Test.Mock
             var mockEnvironment = new Mock<IHostingEnvironment>();
             mockEnvironment.Setup(m => m.EnvironmentName).Returns("test");
 
+            var logger = new Mock<ILogger<Startup>>().Object;
+
             IServiceCollection services = new ServiceCollection();
-            var target = new Startup(null, Configuration);
+            var target = new Startup(mockEnvironment.Object, Configuration, logger);
 
             // Act
             target.ConfigureServices(services);
@@ -31,10 +34,8 @@ namespace AzureDevOpsKats.Test.Mock
             var serviceProvider = services.BuildServiceProvider();
 
             //  Assert
-
-
-            //var controller = serviceProvider.GetService<CatsController>();
-            //Assert.NotNull(controller);
+            var controller = serviceProvider.GetService<CatsController>();
+            Assert.NotNull(controller);
         }
 
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
