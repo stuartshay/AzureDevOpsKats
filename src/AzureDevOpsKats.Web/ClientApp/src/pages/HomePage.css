@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 body {
-	background:#ffffff;;
+	background:#ffffff;
 }
 
 a.border.nav-link.border-light.rounded.mr-1 {
@@ -12,10 +12,6 @@ a.border.nav-link.border-light.rounded.mr-1 {
 a.border.nav-link.border-light.rounded.mr-1:hover {
   color: #1C2331;
 }
-
-/*.btn.btn-sm.indigo:hover{
-  color: #fff;
-}*/
 
 .nav-link.active{
   background-color: rgba(255, 255, 255, 0.1);
@@ -36,8 +32,8 @@ a.border.nav-link.border-light.rounded.mr-1:hover {
     width: 100%;
     height: 100%;
 }
-/*add style*/
 
+/*add style*/
 .header-bg{
     background-color: #302D30;
 }
@@ -55,7 +51,7 @@ a.border.nav-link.border-light.rounded.mr-1:hover {
 .card{
     border: none;
     background: #FFFFFF !important;
-    box-shadow: 0px 6px 16px rgba(146, 172, 187, 0.2) !important;
+    box-shadow: 0 6px 16px rgba(146, 172, 187, 0.2) !important;
     border-radius: 10px;
 }
 .card-title {
@@ -111,7 +107,7 @@ a.border.nav-link.border-light.rounded.mr-1:hover {
 
 /*pagination*/
 .justify-content-center{
-    margin: 60px 0 10px;
+    margin: 10px 0 60px;
     justify-content: flex-end !important;
 }
 .pagination .page-item.active .page-link{
@@ -124,7 +120,7 @@ a.border.nav-link.border-light.rounded.mr-1:hover {
 }
 
 .cat-main-container{
-    padding: 100px 0 220px;
+    padding: 100px 0 100px;
     position: relative;
 }
 .pagination .active{
@@ -145,27 +141,17 @@ a.border.nav-link.border-light.rounded.mr-1:hover {
     top: 1%;
     background-image: url("../assets/cat-right.png");
 }
+
 .absolute-bg-2{
     left: 11%;
     top: 45%;
     background-image: url("../assets/cat.png");
+}
 
-}.absolute-bg-3{
+.absolute-bg-3{
      right: 13%;
      bottom: 11%;
      background-image: url("../assets/cat-right.png");
-
-}.absolute-bg-4{
-      font-family: Lato;
-      font-style: normal;
-      font-weight: 900;
-      font-size: 280px;
-      line-height: 341px;
-      text-align: center;
-      text-transform: uppercase;
-      color: rgba(10, 9, 10, 0.03);
-      bottom: 77px;
 }
-
 
 

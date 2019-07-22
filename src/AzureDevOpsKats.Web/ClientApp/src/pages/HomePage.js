@@ -177,6 +177,53 @@ class HomePage extends React.Component {
     );
   }
 
+    render() {
+        return (
+            <div className="cat-main-container">
+            <div className="abs-bg absolute-bg-1"> </div>
+            <div className="abs-bg absolute-bg-2"> </div>
+            <div className="abs-bg absolute-bg-3"> </div>
+            <MDBContainer className="p-3">
+        {this.renderPagination()}
+        {this.props.catsList.length ? this.renderCatsList(this.props) : null}
+    </MDBContainer>
+        <MDBModal isOpen={this.state.isOpenModal} toggle={this.toggleModal}>
+    <MDBModalHeader toggle={this.toggle}>Edit Cat</MDBModalHeader>
+        <MDBModalBody>
+        { this.state.cat &&
+        <form id="add-form">
+            <div className="form-group">
+            <label htmlFor="name">Name:</label>
+        <input type="text" className="form-control" id="name" name="name"
+        value={this.state.cat.name} onChange={(e) => this.changeInputValue(e)}/>
+        { !isEmpty(this.state.errors) && this.state.errors.Name && (
+            this.state.errors.Name.map((item, index)=>(
+                <div className="error-msg" key={index}>{item}</div>
+        ))
+        )}
+    </div>
+        <div className="form-group">
+            <label htmlFor="desc">Description:</label>
+        <input type="text" className="form-control" id="desc" name ="description"
+        value={this.state.cat.description} onChange={e => this.changeInputValue(e)}/>
+        {!isEmpty(this.state.errors) && this.state.errors.Description && (
+            this.state.errors.Description.map((item, index) => (
+                <div className="error-msg" key={index}>{item}</div>
+        ))
+        )}
+    </div>
+        </form>
+    }
+    </MDBModalBody>
+        <MDBModalFooter>
+        <MDBBtn color="primary" onClick={() => this.updateCatData()}><MDBIcon far icon="save" /> Save changes</MDBBtn>
+        <MDBBtn color="secondary" onClick={() => this.closeEditDialog()}><MDBIcon far icon="window-close" /> Close</MDBBtn>
+            </MDBModalFooter>
+            </MDBModal>
+            </div>
+    );
+    }
+
   renderPagination() {
     const items = [];
     let start = 0;
@@ -198,7 +245,7 @@ class HomePage extends React.Component {
       items.push(
         <MDBPageItem active={page_no === this.state.current_page} key={page_no} onClick={()=>this.clickPage(page_no)}>
           <MDBPageNav >
-            {page_no+1} 
+            {page_no+1}
             {/* {page_no === this.state.current_page && <span className="sr-only">(current)</span> } */}
           </MDBPageNav>
         </MDBPageItem>
@@ -212,7 +259,7 @@ class HomePage extends React.Component {
                       <MDBPageItem onClick={() => this.clickFirstPage()} disabled={0 === this.state.current_page}>
                           <MDBPageNav aria-label="Previous">
                            <MDBIcon icon="angle-double-left" />
-          </MDBPageNav>
+                       </MDBPageNav>
                       </MDBPageItem>
                       <MDBPageItem onClick={() => this.clickPrevPage()} disabled={0 === this.state.current_page}>
                           <MDBPageNav aria-label="Previous">
@@ -235,54 +282,6 @@ class HomePage extends React.Component {
           </MDBRow>
       )
 
-  }
-
-  render() {
-    return (
-      <div className="cat-main-container">
-      <div className="abs-bg absolute-bg-1"> </div>
-      <div className="abs-bg absolute-bg-2"> </div>
-      <div className="abs-bg absolute-bg-3"> </div>
-      <div className="abs-bg absolute-bg-4"> cat </div>
-        <MDBContainer className="p-3">
-          {this.props.catsList.length ? this.renderCatsList(this.props) : null}
-          {this.renderPagination()}
-        </MDBContainer>
-        <MDBModal isOpen={this.state.isOpenModal} toggle={this.toggleModal}>
-          <MDBModalHeader toggle={this.toggle}>Edit Cat</MDBModalHeader>
-          <MDBModalBody>
-            { this.state.cat &&
-              <form id="add-form">
-                <div className="form-group">
-                  <label htmlFor="name">Name:</label>
-                  <input type="text" className="form-control" id="name" name="name"
-                     value={this.state.cat.name} onChange={(e) => this.changeInputValue(e)}/>
-                  { !isEmpty(this.state.errors) && this.state.errors.Name && (
-                    this.state.errors.Name.map((item, index)=>(
-                      <div className="error-msg" key={index}>{item}</div>
-                    ))
-                  )}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="desc">Description:</label>
-                  <input type="text" className="form-control" id="desc" name ="description" 
-                  value={this.state.cat.description} onChange={e => this.changeInputValue(e)}/>
-                  {!isEmpty(this.state.errors) && this.state.errors.Description && (
-                    this.state.errors.Description.map((item, index) => (
-                      <div className="error-msg" key={index}>{item}</div>
-                    ))
-                  )}
-                </div>
-              </form>
-            }
-        </MDBModalBody>
-          <MDBModalFooter>
-            <MDBBtn color="primary" onClick={() => this.updateCatData()}><MDBIcon far icon="save" /> Save changes</MDBBtn>
-            <MDBBtn color="secondary" onClick={() => this.closeEditDialog()}><MDBIcon far icon="window-close" /> Close</MDBBtn>
-          </MDBModalFooter>
-        </MDBModal>
-      </div>
-    );
   }
 }
 
