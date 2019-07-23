@@ -10,6 +10,7 @@ import "./HomePage.css";
 import isEmpty from "../validation/is-empty";
 import { ADDED_ITEM, UPDATED_ITEM, DELETED_ITEM } from "../actions/types";
 import { toast } from "react-toastify";
+import $ from 'jquery';
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -45,12 +46,15 @@ class HomePage extends React.Component {
     });
 
     this.props.getCats(this.state.cat_counts_per_page, page);
+      this.scrollTop();
   }
   clickFirstPage() {
     this.clickPage(0);
+      this.scrollTop();
   }
   clickLastPage() {
     this.clickPage(this.pageCounts() - 1);
+      this.scrollTop();
   }
   clickPrevPage() {
 
@@ -59,12 +63,18 @@ class HomePage extends React.Component {
       current_page: page
     })
     this.props.getCats(this.state.cat_counts_per_page, page);
+      this.scrollTop();
   }
   clickPage(no){
     this.setState({
       current_page:no
     })
     this.props.getCats(this.state.cat_counts_per_page, no);
+    this.scrollTop();
+  }
+
+  scrollTop(){
+      $('html, body').animate({scrollTop: 0}, 800);
   }
 
   updateCatData = () => {
@@ -88,7 +98,7 @@ class HomePage extends React.Component {
   }
 
   toggleModal = () => {
-    
+
 
     this.setState({
       isOpenModal: !this.state.isOpenModal,
@@ -132,7 +142,7 @@ class HomePage extends React.Component {
       this.setState({
         errors: nextProps.errors
       });
-    } else { 
+    } else {
       this.setState({
         errors: null,
         cat: nextProps.cat,
@@ -144,7 +154,7 @@ class HomePage extends React.Component {
         return;
       }
       if(nextProps.refreshFlag){
-        this.props.getCats(this.state.cat_counts_per_page, this.state.current_page); 
+        this.props.getCats(this.state.cat_counts_per_page, this.state.current_page);
       }
     }
   }
@@ -184,8 +194,8 @@ class HomePage extends React.Component {
             <div className="abs-bg absolute-bg-2"> </div>
             <div className="abs-bg absolute-bg-3"> </div>
             <MDBContainer className="p-3">
-        {this.renderPagination()}
         {this.props.catsList.length ? this.renderCatsList(this.props) : null}
+        {this.renderPagination()}
     </MDBContainer>
         <MDBModal isOpen={this.state.isOpenModal} toggle={this.toggleModal}>
     <MDBModalHeader toggle={this.toggle}>Edit Cat</MDBModalHeader>
