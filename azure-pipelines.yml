@@ -60,30 +60,14 @@ jobs:
       apt-get purge docker-ce
       curl https://get.docker.com | CHANNEL=test sh
       sudo usermod -aG docker vsts
-      ## linux-amd64
-      #wget -q https://github.com/docker/buildx/releases/download/v0.2.2/buildx-v0.2.2.linux-amd64
-      #sudo chmod 777 buildx-v0.2.2.linux-amd64
-      #mkdir -p ~/.docker/cli-plugins/
-      #mv buildx-v0.2.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
-      ## linux/arm64 (TODO)
-      ## linux/arm/v7 (TODO)
     displayName: 'Docker Install'
 
 
   - script: |
       docker -v
-      docker buildx ls
       docker login -u $(dockerLogin) -p $(dockerPassword)
-      docker buildx create --use --name multibuilder linux/amd64   
-      docker buildx build --platform linux/amd64 -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  --push .
-      #https://www.mjpitz.com/blog/2019/05/07/docker-buildx/
-      #docker buildx ls
-      #docker buildx use multibuilder
-      #docker buildx ls
-      # https://medium.com/titansoft-engineering/docker-build-cache-sharing-on-multi-hosts-with-buildkit-and-buildx-eb8f7005918e
-      # docker buildx build --platform linux/amd64,linux/arm64 linux/arm/v7 -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  --push .
-      #docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
-      #docker push stuartshay/azuredevopskats:devops 
+      docker build -f docker/azuredevopskats-web-local.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
+      docker push stuartshay/azuredevopskats:devops 
     displayName: 'Docker Build & Push'
     env:
       COREHOST_TRACE: 0
