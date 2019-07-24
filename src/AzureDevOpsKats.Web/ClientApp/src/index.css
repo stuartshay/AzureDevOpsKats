@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+body{
+	position: relative;
+}
+
+.flyout {
+	position: relative;
+	display:flex;
+	flex-direction: column;
+	min-height:100vh;
+}
+
+.home-feature-box .fa {
+	font-size:6rem;
+}
+
+.home-feature-box span {
+	display: block;
+	color:#111;
+	font-weight:bold;
+	margin-top:1.5rem;
+}
+
+.example-components-list li > a {
+  color: #495057;
+}
+
+.example-components-list li:last-child > a {
+	border-bottom:0;
+}
+
+.example-components-list li > a .fa {
+	color:rgba(0,0,0,.35);
+	float:right;
+}
+
+.card-title {
+	height: 28px;
+}
+.card-text {
+	height: 21px;
+}
+
+.error-msg {
+	color: red;
+}
+
+.btn {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.footer-bg{
+	background-color: #302D30;
+}
+.footer-copyright{
+	font-family: Lato;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: center;
+	color: #E3D6CE;
+	margin-bottom: 0;
+}
+.add-color{
+	background-color: transparent !important;
+}
+.add-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 112px !important;
+	height: 38px !important;
+	color: #FFFFFF !important;
+	cursor: pointer;
+	font-family: Lato !important;
+	text-transform: uppercase ;
+	border: 1px solid #FFFFFF !important;
+	box-sizing: border-box;
+	border-radius: 50px !important;
+}
+
+.add-btn:hover, .add-btn:active {
+	color: #302D30 !important;
+	background: #E3D6CE !important;
+	border: none;
+}
+.icon{
+	margin-right: 5px;
+}
+

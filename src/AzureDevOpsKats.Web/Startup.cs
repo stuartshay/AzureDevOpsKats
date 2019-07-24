@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -24,24 +25,35 @@ namespace AzureDevOpsKats.Web
     /// </summary>
     public class Startup
     {
+        private readonly ILogger<Startup> _logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
+        /// <param name="env">IHosting Environment</param>
+        /// <param name="configuration">IConfiguration Property</param>
+        /// <param name="logger">ILogger Startup</param>
+        public Startup(IHostingEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            HostingEnvironment = env;
+            _logger = logger;
         }
 
         /// <summary>
-        ///
+        /// Gets Configuration.
         /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        ///
+        /// Gets Hosting Environment.
         /// </summary>
-        /// <param name="services"></param>
+        private IHostingEnvironment HostingEnvironment { get; }
+
+        /// <summary>
+        /// Configure Services
+        /// </summary>
+        /// <param name="services">IService Collection</param>
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuration
@@ -49,6 +61,7 @@ namespace AzureDevOpsKats.Web
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
 
+            services.DisplayConfiguration(Configuration, HostingEnvironment, _logger);
             var config = Configuration.Get<ApplicationOptions>();
 
             AutoMapperConfiguration.Configure();
@@ -57,10 +70,10 @@ namespace AzureDevOpsKats.Web
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), dbConnection))};";
 
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
-            services.AddSingleton<IFileService>(new FileService(imagesRoot));
 
             services.AddSingleton<ICatRepository>(new CatRepository(connection));
             services.AddScoped<ICatService, CatService>();
+            services.AddScoped<IFileService, FileService>();
 
             // Services Configuration
             services.AddApiBehaviorOptions();
@@ -76,14 +89,20 @@ namespace AzureDevOpsKats.Web
             services.AddApplicationInsightsTelemetry();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
         }
 
         /// <summary>
-        ///
+        /// Configure
         /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        /// <param name="apiVersionDescriptionProvider"></param>
+        /// <param name="app">IApplication Builder</param>
+        /// <param name="env">IHosting Environment</param>
+        /// <param name="apiVersionDescriptionProvider">IApiVersion Description Provider</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())
@@ -96,13 +115,31 @@ namespace AzureDevOpsKats.Web
                 app.UseExceptionHandler($"/Error");
             }
 
-            //app.UseHttpsRedirection();
-
+            // app.UseHttpsRedirection();
             ConfigureSwagger(app, apiVersionDescriptionProvider);
-            ConfigureFileBrowser(app);
+            // ConfigureFileBrowser(app);
 
-            app.UseCookiePolicy();
-            app.UseMvc();
+            // app.UseCookiePolicy();
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
@@ -125,11 +162,11 @@ namespace AzureDevOpsKats.Web
             options.DefaultFileNames.Clear();
             options.DefaultFileNames.Add("index.html");
             app.UseDefaultFiles(options);
+
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath)),
+                FileProvider = new PhysicalFileProvider(config.FileStorage.PhysicalFilePath),
                 RequestPath = config.FileStorage.RequestPath,
             });
         }

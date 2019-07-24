@@ -9,6 +9,8 @@ using AzureDevOpsKats.Service.Service;
 using Xunit;
 using Moq;
 using Xunit.Abstractions;
+using AzureDevOpsKats.Service.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Test.Mock
 {
@@ -151,9 +153,13 @@ namespace AzureDevOpsKats.Test.Mock
         {
             catRepository = catRepository ?? new Mock<ICatRepository>().Object;
 
+            ApplicationOptions app = new ApplicationOptions() { FileStorage = new FileStorage { FilePath = "/", RequestPath = "/Images" }};
+            var settings = new Mock<IOptions<ApplicationOptions>>();
+            settings.Setup(ap => ap.Value).Returns(app);
+
             AutoMapperConfiguration.Configure();
 
-            return new CatService(catRepository);
+            return new CatService(catRepository, settings.Object);
         }
     }
 }

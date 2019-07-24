@@ -2,10 +2,12 @@
 using System.IO;
 using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Web
 {
@@ -14,6 +16,28 @@ namespace AzureDevOpsKats.Web
     /// </summary>
     internal static class ServiceCollectionExtensions
     {
+        /// <summary>
+        ///  Display Configuration
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <param name="environment"></param>
+        public static void DisplayConfiguration(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment, ILogger<Startup> logger)
+        {
+            var config = configuration.Get<Service.Configuration.ApplicationOptions>();
+            Console.WriteLine($"Environment: {environment.EnvironmentName}");
+            Console.WriteLine($"CurrentDirectory: {Directory.GetCurrentDirectory()}");
+
+            Console.WriteLine($"FilePath: {config.FileStorage.FilePath}");
+            Console.WriteLine($"RequestPath: {config.FileStorage.RequestPath}");
+            Console.WriteLine($"PhysicalFilePath: {config.FileStorage.PhysicalFilePath}");
+
+            Console.WriteLine($"DbConnection: {configuration.GetConnectionString("DbConnection")}");
+
+            logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
+            logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
+        }
+
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>

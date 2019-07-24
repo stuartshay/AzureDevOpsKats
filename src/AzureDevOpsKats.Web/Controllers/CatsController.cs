@@ -9,13 +9,15 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
     /// <summary>
-    ///
+    /// Cats Controller
     /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/cats")]
@@ -46,6 +48,8 @@ namespace AzureDevOpsKats.Web.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ApplicationSettings = settings.Value;
             _env = env;
+
+            _logger.LogInformation("Init CatsController-1: {Now}", DateTime.Now);
         }
 
         private ApplicationOptions ApplicationSettings { get; set; }
@@ -72,7 +76,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Get Cat
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Cat Id</param>
         /// <returns>An ActionResult of type Cat</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("2.0")]
@@ -92,8 +96,8 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         /// Delete Cat
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Cat Id</param>
+        /// <returns>No Content Result</returns>
         [MapToApiVersion("1.0")]
         [MapToApiVersion("2.0")]
         [HttpDelete("{id}")]
@@ -114,15 +118,13 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <summary>
         ///  Create Cat
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">Cat Create Model</param>
+        /// <returns>Cat Model</returns>
         [MapToApiVersion("1.0")]
-        [MapToApiVersion("2.0")]
         [HttpPost]
-        [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(CatModel), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public IActionResult Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)
@@ -133,8 +135,8 @@ namespace AzureDevOpsKats.Web.Controllers
             $"Bytes Exist:{value.Bytes != null}".ConsoleRed();
 
             string fileName = $"{Guid.NewGuid()}.jpg";
-            string imageDirectory = ApplicationSettings.FileStorage.FilePath;
-            var filePath = Path.Combine(_env.ContentRootPath, imageDirectory, fileName);
+            var filePath = Path.Combine(ApplicationSettings.FileStorage.PhysicalFilePath, fileName);
+            _logger.LogInformation("Save Image: {FilePath}", filePath);
 
             var catModel = new CatModel
             {
@@ -154,7 +156,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// Update Cat Properties
         /// </summary>
         /// <param name="id">Cat Id</param>
-        /// <param name="value"></param>
+        /// <param name="value">Cat Update Model</param>
         /// <response code="200">Returns the updated cat</response>
         /// <response code="422">Validation error</response>
         /// <returns>An ActionResult of type Cat</returns>
