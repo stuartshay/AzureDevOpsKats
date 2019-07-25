@@ -10,6 +10,9 @@ COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 
 WORKDIR /app/src/AzureDevOpsKats.Web
 
+RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN apt-get install -y nodejs
+
 RUN dotnet tool list -g
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 
 
