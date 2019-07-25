@@ -18,6 +18,10 @@ namespace AzureDevOpsKats.Test.DataSource
             _context = context;
         }
 
+        public CatRepository()
+        {
+        }
+
         public IEnumerable<Cat> GetCats()
         {
             var result = _context.Cats.OrderBy(i => i.Name).ToList();
@@ -27,7 +31,7 @@ namespace AzureDevOpsKats.Test.DataSource
         public IEnumerable<Cat> GetCats(int limit, int offset)
         {
             var result = _context.Cats
-                .OrderBy(i => i.Name).Skip(offset).Take(limit).ToList();
+                .OrderBy(i => i.Name).Skip(offset*limit).Take(limit).ToList();
 
             return result;
         }
@@ -38,7 +42,7 @@ namespace AzureDevOpsKats.Test.DataSource
             return result;
         }
 
-        public Cat GetCat(int id)
+        public Cat GetCat(long id)
         {
             var result = _context.Cats.FirstOrDefault(x => x.Id == id);
             return result;
@@ -50,13 +54,15 @@ namespace AzureDevOpsKats.Test.DataSource
             _context.SaveChanges();
         }
 
-        public void CreateCat(Cat cat)
+        public long CreateCat(Cat cat)
         {
             _context.Cats.Add(cat);
             _context.SaveChanges();
+
+            return 0;
         }
 
-        public void DeleteCat(int id)
+        public void DeleteCat(long id)
         {
             var cat = GetCat(id);
 

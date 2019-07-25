@@ -22,7 +22,7 @@ namespace AzureDevOpsKats.Data.Repository
             List<Cat> cats = new List<Cat>();
             using (var command = _dbConnection.CreateCommand())
             {
-                command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats ORDER BY Name;";
+                command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats ORDER BY Name COLLATE NOCASE ASC;";
                 var result = command.ExecuteReader();
                 while (result.Read())
                 {
@@ -49,7 +49,7 @@ namespace AzureDevOpsKats.Data.Repository
             using (var command = _dbConnection.CreateCommand())
             {
                 command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats " +
-                                      "ORDER BY Name LIMIT @param1 OFFSET @param2;";
+                                      "ORDER BY Name COLLATE NOCASE ASC LIMIT @param1 OFFSET @param2;";
 
                 command.Parameters.Add(new SqliteParameter("@param1", limit));
                 command.Parameters.Add(new SqliteParameter("@param2", offset));
@@ -86,7 +86,7 @@ namespace AzureDevOpsKats.Data.Repository
             }
         }
 
-        public Cat GetCat(int id)
+        public Cat GetCat(long id)
         {
             Open();
             using (var command = _dbConnection.CreateCommand())
@@ -130,7 +130,7 @@ namespace AzureDevOpsKats.Data.Repository
             }
         }
 
-        public void CreateCat(Cat cat)
+        public long CreateCat(Cat cat)
         {
             using (_dbConnection)
             {
@@ -142,12 +142,14 @@ namespace AzureDevOpsKats.Data.Repository
                     command.Parameters.Add(new SqliteParameter("@param2", cat.Description));
                     command.Parameters.Add(new SqliteParameter("@param3", cat.Photo));
 
-                    command.ExecuteNonQuery();
+                    command.ExecuteScalar();
+                    command.CommandText = "SELECT last_insert_rowid()";
+                    return (long)command.ExecuteScalar();
                 }
             }
         }
 
-        public void DeleteCat(int id)
+        public void DeleteCat(long id)
         {
             using (_dbConnection)
             {

@@ -15,7 +15,7 @@ namespace AzureDevOpsKats.Service.Interface
 
         void EditCat(int id, CatUpdateModel cat);
 
-        void CreateCat(CatModel cat);
+        long CreateCat(CatModel cat);
 
         void DeleteCat(int id);
     }

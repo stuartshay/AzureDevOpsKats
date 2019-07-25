@@ -25,7 +25,7 @@ deploy: off
 branches:
   only:
     - develop
-    - /release.*/ 
+    - /release.*/
     - master
 skip_commits:
   files:
@@ -39,11 +39,10 @@ for:
       only:
       - image: Visual Studio 2017
     before_build:
-      - choco install codecov    
+      - choco install codecov
     build_script:
       - ps: >-
-          .\build.ps1 
-        
+          .\build.ps1     
   -
     matrix:
       only:

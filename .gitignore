@@ -9,14 +9,19 @@ coverage-html/
 .test-results
 cli/
 *coverage*.*
+cobertura.xml
 tools/
 docfx_project/
+**/PublishProfiles/*
+**/ClientApp/build/*
+**/ClientApp/node_modules/*
 
 # User-specific files
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+.idea
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -223,6 +228,7 @@ ModelManifest.xml
 ### Terraform template
 #  Local .terraform directories
 **/.terraform/*
+
 
 # .tfstate files
 *.tfstate

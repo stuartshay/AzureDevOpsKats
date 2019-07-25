@@ -64,7 +64,8 @@ namespace AzureDevOpsKats.Test.Repository
                 Photo = "Test-Cat.jpg"
             };
 
-            _catRepository.CreateCat(cat);
+            var sut = _catRepository.CreateCat(cat);
+            Assert.True(sut > 0);
         }
 
         [Fact]

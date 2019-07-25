@@ -19,18 +19,15 @@ The Requirements for this project can be viewed at the following.
 
 * [Business Requirements](/docfx/articles/requirements.md)
 * [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
-
+* [Developer DocFx Documentation](https://stuartshay.github.io/AzureDevOpsKats/)
 
 ## Web Site
 
+http://azuredevopskats-web.azurewebsites.net/    
+http://azuredevopskats-web.azurewebsites.net/swagger/
+
+
 ![](assets/web.png)
-
-
-
-
-
-
-
 
 
 ## Builds
@@ -74,84 +71,14 @@ cd src\AzureDevOpsKats.Web\
 dotnet run
 ```
 
-### Cake
-
-#### Prerequisites:
-```
-Java Lattest JDK/JRE
-```
-
-Windows    
-
-```
-.\build.ps1
-```
-
-Linux/Mac
-
-```bash
-chmod +x build.sh
-```
-
-```bash
-./build.sh
-```
-
-### SonarQube Testing
-
-**Windows** 
-```
- ./build.ps1 -target=sonar
-```
-
-**Mac/Linux**
-```
-./build.sh -target=sonar
-```
-
-## Web Site
-
-The Site can be accesed at the following url
-
 ```
 http://localhost:5000/
 ```
 
+### Build Commands
 
+|  Build Type                 |  Linux/Mac                    | Windows                       |
+| --------------------------- | ------------------------------|  -----------------------------|
+| CI Build                    | ./build.sh  --target=CI-Build | .\build.ps1 --target=CI-Build |
+| SonarQube Testing           | ./build.sh  --target=sonar    | .\build.ps1 --target=sonar    |
 
-## Swagger API Documentation
-
-```
-http://localhost:5000/swagger/index.html
-```
-![](assets/swagger.png)
-
-### DocFX
-
-DocFX generates Documentation directly from source code (.NET, RESTful API, JavaScript, Java, etc...) and Markdown files.
-
-```
-https://dotnet.github.io/docfx/
-```
-
-![](assets/docfx.png)
-
-#### Prerequisites:
-
-```powershell
-choco install docfx
-```
-
-#### Build and Serve Website
-
-```powershell
-docfx docfx/docfx.json
-docfx docfx/docfx.json --serve
-```
-
-```
-http://localhost:8080
-```
-#### Deployment 
-```powershell
- .\build.ps1 -target=Generate-Docs

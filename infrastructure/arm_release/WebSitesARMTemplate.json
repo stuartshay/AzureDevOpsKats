@@ -1,0 +1,31 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "WebsiteName": {
+        "type": "string"
+      },
+      "HostingPlanName": {
+        "type": "string"
+      }
+    },
+    "resources": [
+      {
+        "name": "[parameters('WebsiteName')]",
+        "type": "Microsoft.Web/sites",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2014-06-01",
+        "tags": {
+          "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('HostingPlanName'))]": "Resource",
+          "displayName": "AzureDevOpsKats-Web"
+        },
+        "properties": {
+          "name": "[parameters('WebsiteName')]",
+          "serverFarm": "[parameters('HostingPlanName')]"
+        },
+        "resources": [
+          
+        ]
+      }
+    ]
+  }
