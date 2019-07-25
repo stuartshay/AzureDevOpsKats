@@ -44,6 +44,7 @@ namespace AzureDevOpsKats.Test.Mock
 
             // Act
             var sut = controller.GetTotal();
+            _output.WriteLine($"Total:{sut.ToString()}");
 
             // Assert 
             Assert.NotNull(sut);
@@ -130,7 +131,7 @@ namespace AzureDevOpsKats.Test.Mock
             responseMessage.Headers.Add("x-inlinecount", "10");
 
             logger = logger ?? new Mock<ILogger<CatsControllerV2>>().Object;
-            return new CatsControllerV2(catService, fileService, logger, null, settings);
+            return new CatsControllerV2(catService, fileService, logger, settings);
         }
 
     }

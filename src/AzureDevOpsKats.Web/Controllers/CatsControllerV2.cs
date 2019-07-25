@@ -7,13 +7,11 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.ViewModels;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Serilog;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
@@ -32,12 +30,6 @@ namespace AzureDevOpsKats.Web.Controllers
 
         private readonly ILogger<CatsControllerV2> _logger;
 
-        private readonly IHostingEnvironment _env;
-        private readonly ICatService catService;
-        private readonly IFileService fileService;
-        private readonly ILogger<CatsControllerV2> logger;
-        private readonly IOptions<ApplicationOptions> settings;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CatsControllerV2"/> class.
         /// </summary>
@@ -46,12 +38,11 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="logger">Logger</param>
         /// <param name="env"></param>
         /// <param name="settings"></param>
-        public CatsControllerV2(ICatService catService, IFileService fileService, ILogger<CatsControllerV2> logger, IHostingEnvironment env, IOptions<ApplicationOptions> settings)
+        public CatsControllerV2(ICatService catService, IFileService fileService, ILogger<CatsControllerV2> logger, IOptions<ApplicationOptions> settings)
         {
             _catService = catService ?? throw new ArgumentNullException(nameof(catService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
-            _env = env;
             ApplicationSettings = settings.Value;
 
             _logger.LogInformation("Init CatsControllerV2-1: {Now}", DateTime.Now);
@@ -125,7 +116,7 @@ namespace AzureDevOpsKats.Web.Controllers
                 List<string> imgErrors = new List<string>();
                 var supportedTypes = new[] { "png", "jpg" };
                 var fileExt = Path.GetExtension(file.FileName).Substring(1);
-                if (file == null || file.Length == 0)
+                if (file.Length == 0)
                 {
                     imgErrors.Add("File is empty!");
                 }
@@ -167,11 +158,11 @@ namespace AzureDevOpsKats.Web.Controllers
 
         private byte[] FormFileBytes(IFormFile file)
         {
-            byte[] bytes;
+            byte[] bytes = null;
 
             if (file.Length <= 0)
             {
-                return null;
+                return bytes;
             }
 
             using (var fileStream = file.OpenReadStream())

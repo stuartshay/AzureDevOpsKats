@@ -75,7 +75,6 @@ namespace AzureDevOpsKats.Service.Service
             var catModels = results as CatModel[] ?? results.ToArray();
             foreach (var result in catModels)
             {
-                // result.Photo = @"\images\" + result.Photo;
                 result.Photo = $"{_requestPath}/{result.Photo}";
             }
 
