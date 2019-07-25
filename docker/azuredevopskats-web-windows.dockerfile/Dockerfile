@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2.300-nanoserver-1809 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2.401-nanoserver-1809 AS build-env
 
 RUN dotnet --version
 
@@ -17,7 +17,7 @@ WORKDIR /app
 #RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 -r win10-x64
 
 # Runtime Image Stage
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2.5-nanoserver-1809
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2.6-nanoserver-1809
 
 #WORKDIR /publish
 #COPY --from=build-env /publish .
