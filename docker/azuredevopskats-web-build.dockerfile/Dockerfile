@@ -4,7 +4,6 @@ ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 COPY src /app/src
-COPY _stylecop /app/_stylecop
 COPY common.props /app/common.props
 COPY NuGet.config /app/NuGet.config
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
