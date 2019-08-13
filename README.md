@@ -14,7 +14,6 @@
 
 The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.  
 
-
 The Requirements for this project can be viewed at the following.
 
 * [Business Requirements](/docfx/articles/requirements.md)
@@ -23,7 +22,7 @@ The Requirements for this project can be viewed at the following.
 
 ## Web Site
 
-http://azuredevopskats-web.azurewebsites.net/    
+http://azuredevopskats-web.azurewebsites.net/
 http://azuredevopskats-web.azurewebsites.net/swagger/
 
 
@@ -83,4 +82,3 @@ http://localhost:5000/
 | --------------------------- | ------------------------------|  -----------------------------|
 | CI Build                    | ./build.sh  --target=CI-Build | .\build.ps1 --target=CI-Build |
 | SonarQube Testing           | ./build.sh  --target=sonar    | .\build.ps1 --target=sonar    |
-
