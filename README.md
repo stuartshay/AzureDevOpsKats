@@ -22,8 +22,8 @@ The Requirements for this project can be viewed at the following.
 
 ## Web Site
 
-http://azuredevopskats-web.azurewebsites.net/
-http://azuredevopskats-web.azurewebsites.net/swagger/
+http://azuredevopskats-web.azurewebsites.net/        
+http://azuredevopskats-web.azurewebsites.net/swagger/       
 
 
 ![](assets/web.png)
