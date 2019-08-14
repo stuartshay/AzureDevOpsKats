@@ -25,7 +25,7 @@
   "devDependencies": {
     "react-scripts": "^3.0.1",
     "renamer": "^1.1.2",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.7.0"
   },
   "browserslist": [
     ">0.2%",
