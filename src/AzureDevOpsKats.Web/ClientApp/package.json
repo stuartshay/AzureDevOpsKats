@@ -23,7 +23,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^3.1.2",
     "renamer": "^1.1.2",
     "rimraf": "^2.6.3"
   },
