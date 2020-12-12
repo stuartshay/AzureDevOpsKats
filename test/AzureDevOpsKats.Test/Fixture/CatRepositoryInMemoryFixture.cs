@@ -20,7 +20,7 @@ namespace AzureDevOpsKats.Test.Fixture
 
             azureDevOpsKatsContext.Database.EnsureDeleted();
             azureDevOpsKatsContext.Database.EnsureCreated();
-            //azureDevOpsKatsContext.EnsureSeedDataForContextRange(150);
+            // azureDevOpsKatsContext.EnsureSeedDataForContextRange(150);
 
             CatRepository = new CatRepository(azureDevOpsKatsContext);
         }

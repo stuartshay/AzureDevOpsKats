@@ -20,7 +20,7 @@ namespace AzureDevOpsKats.Web.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/cats")]
-    [EnableCors("AllowAll")]
+   // [EnableCors("AllowAll")]
     [ApiVersion("2.0")]
     public class CatsControllerV2 : ControllerBase
     {

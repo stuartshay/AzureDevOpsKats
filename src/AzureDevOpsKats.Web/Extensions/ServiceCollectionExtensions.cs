@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +41,7 @@ namespace AzureDevOpsKats.Web
         {
             services.AddSwaggerGen(options =>
             {
-                options.OperationFilter<SwaggerDefaultValues>();
+                //options.OperationFilter<SwaggerDefaultValues>();
 
                 /*
                 options.SwaggerDoc("v1", new OpenApiInfo

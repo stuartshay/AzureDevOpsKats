@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Interface;
-using AzureDevOpsKats.Service.Mappings;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Service.Service;
 using Xunit;
@@ -151,15 +151,17 @@ namespace AzureDevOpsKats.Test.Mock
 
         private ICatService GetCatService(ICatRepository catRepository = null)
         {
-            catRepository = catRepository ?? new Mock<ICatRepository>().Object;
+            catRepository ??= new Mock<ICatRepository>().Object;
 
             ApplicationOptions app = new ApplicationOptions() { FileStorage = new FileStorage { FilePath = "/", RequestPath = "/Images" }};
             var settings = new Mock<IOptions<ApplicationOptions>>();
             settings.Setup(ap => ap.Value).Returns(app);
 
-            AutoMapperConfiguration.Configure();
+            // Mapping Configuration
+            var mapperConfig = new MapperConfiguration(cfg => { cfg.AddMaps("AzureDevOpsKats.Service"); });
+            IMapper mapper = new Mapper(mapperConfig);
 
-            return new CatService(catRepository, settings.Object);
+            return new CatService(catRepository, settings.Object, mapper);
         }
     }
 }

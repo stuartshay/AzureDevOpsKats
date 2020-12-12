@@ -16,16 +16,19 @@ namespace AzureDevOpsKats.Service.Service
 
         private readonly string _requestPath;
 
-        public CatService(ICatRepository catRepository, IOptions<ApplicationOptions> settings)
+        private readonly IMapper _mapper;
+
+        public CatService(ICatRepository catRepository, IOptions<ApplicationOptions> settings, IMapper mapper)
         {
             this._catRepository = catRepository;
+            _mapper = mapper;
             _requestPath = settings.Value.FileStorage.RequestPath;
         }
 
         public IEnumerable<CatModel> GetCats()
         {
             var cats = _catRepository.GetCats();
-            var results = Mapper.Map<IEnumerable<CatModel>>(cats);
+            var results = _mapper.Map<IEnumerable<CatModel>>(cats);
 
             var catModels = results as CatModel[] ?? results.ToArray();
             foreach (var result in catModels)
@@ -39,7 +42,7 @@ namespace AzureDevOpsKats.Service.Service
         public CatModel GetCat(int id)
         {
             var cat = _catRepository.GetCat(id);
-            var result = Mapper.Map<CatModel>(cat);
+            var result = _mapper.Map<CatModel>(cat);
 
             return result;
         }
@@ -58,7 +61,7 @@ namespace AzureDevOpsKats.Service.Service
 
         public long CreateCat(CatModel cat)
         {
-            var result = Mapper.Map<Cat>(cat);
+            var result = _mapper.Map<Cat>(cat);
             return _catRepository.CreateCat(result);
         }
 
@@ -70,7 +73,7 @@ namespace AzureDevOpsKats.Service.Service
         public IEnumerable<CatModel> GetCats(int limit, int offset)
         {
             var cats = _catRepository.GetCats(limit, offset);
-            var results = Mapper.Map<IEnumerable<CatModel>>(cats);
+            var results = _mapper.Map<IEnumerable<CatModel>>(cats);
 
             var catModels = results as CatModel[] ?? results.ToArray();
             foreach (var result in catModels)

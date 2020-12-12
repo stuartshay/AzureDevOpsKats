@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
+using AutoMapper;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
-using AzureDevOpsKats.Service.Mappings;
 using AzureDevOpsKats.Service.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +25,8 @@ namespace AzureDevOpsKats.Test.Fixture
             var dbConnection = builder.GetConnectionString("DbConnection");
 
             // AutoMapper Configuration
-            AutoMapperConfiguration.Configure();
+            var mapperConfig = new MapperConfiguration(cfg => { cfg.AddMaps("AzureDevOpsKats.Service"); });
+            IMapper mapper = new Mapper(mapperConfig);
 
             var serviceProvider = new ServiceCollection()
                 .AddOptions()
@@ -33,6 +34,7 @@ namespace AzureDevOpsKats.Test.Fixture
                 .AddSingleton(builder)
                 .AddSingleton<ICatRepository>(new CatRepository(dbConnection))
                 .AddScoped<ICatService, CatService>()
+                .AddSingleton(mapper)
                 .BuildServiceProvider();
 
             serviceProvider.GetRequiredService<ICatRepository>();

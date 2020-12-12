@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.props" />
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+
     <IsPackable>false</IsPackable>
-    <RuntimeFrameworkVersion>$(RuntimeFrameworkVersion)</RuntimeFrameworkVersion>
-    <RuntimeIdentifiers>win10-x64;debian.9-x64;ubuntu.16.04-x64;osx.10.12-x64</RuntimeIdentifiers>
-    <CodeAnalysisRuleSet>StyleCopRules.ruleset</CodeAnalysisRuleSet>
-    <StyleCopTreatErrorsAsWarnings>False</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
 
   <ItemGroup>
-     <PackageReference Include="Microsoft.AspNetCore.App" />
-     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-        
-    <PackageReference Include="Bogus" Version="28.0.2" />
-    <PackageReference Include="FluentAssertions" Version="5.7.0" />
-
-    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="Bogus" Version="32.0.1" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="Moq" Version="4.15.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.console" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="1.3.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -32,24 +32,11 @@
 
   <ItemGroup>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings.test.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="appsettings.test..json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <SonarQubeTestProject>true</SonarQubeTestProject>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <ProjectGuid>{8DF74D69-2F32-48B7-8624-EFFEB2677704}</ProjectGuid>
-  </PropertyGroup>
-
 
 </Project>
