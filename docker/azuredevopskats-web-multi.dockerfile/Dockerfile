@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 
 RUN dotnet --version
 RUN cat /etc/os-release
@@ -22,7 +22,7 @@ WORKDIR /app/src/AzureDevOpsKats.Web
 RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 
 
 # Runtime Image Stage
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
 RUN cat /etc/os-release
 
