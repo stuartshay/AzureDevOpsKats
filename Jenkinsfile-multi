@@ -2,7 +2,7 @@ node('buildx-armv7') {
     
     String version_prefix = '5.0.1-arm7'
     String version_suffix = ''
-    String docker_image_name = 'stuartshay/AzureDevOpsKats'
+    String docker_image_name = 'stuartshay/azuredevopskats'
     String docker_file = 'docker/azuredevopskats-web-multi.dockerfile/Dockerfile'
     String docker_ignore = 'docker/azuredevopskats-web-multi.dockerfile/.dockerignore'
     String git_path = '' 
