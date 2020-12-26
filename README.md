@@ -14,7 +14,6 @@
 
 The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.  
 
-
 The Requirements for this project can be viewed at the following.
 
 * [Business Requirements](/docfx/articles/requirements.md)
@@ -23,8 +22,8 @@ The Requirements for this project can be viewed at the following.
 
 ## Web Site
 
-http://azuredevopskats-web.azurewebsites.net/    
-http://azuredevopskats-web.azurewebsites.net/swagger/
+http://azuredevopskats-web.azurewebsites.net/        
+http://azuredevopskats-web.azurewebsites.net/swagger/       
 
 
 ![](assets/web.png)
@@ -37,8 +36,10 @@ http://azuredevopskats-web.azurewebsites.net/swagger/
 | Sonarqube Code Quaility       | Travis       |[![Build Status](https://travis-ci.org/stuartshay/AzureDevOpsKats.svg?branch=master)](https://travis-ci.org/stuartshay/AzureDevOpsKats) |
 | Windows/Linux Automated Build | Appveyor     |[![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats) |
 | Windows/Linux Automated Build | Azure Devops |[![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1)
-| Docker Base Image             | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/) 
+| Docker Base Image             | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/)
 | Docker Deploy Image           | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-api)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-api/)
+| Docker Arm7 Image             | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-multi)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-multi/)
+
 
 |  Library                    |  Nuget Repository                        |  MyGet Repository                                       |
 | --------------------------- | -----------------------------------------|---------------------------------------------------------|
@@ -81,4 +82,3 @@ http://localhost:5000/
 | --------------------------- | ------------------------------|  -----------------------------|
 | CI Build                    | ./build.sh  --target=CI-Build | .\build.ps1 --target=CI-Build |
 | SonarQube Testing           | ./build.sh  --target=sonar    | .\build.ps1 --target=sonar    |
-

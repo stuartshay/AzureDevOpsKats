@@ -1,0 +1,16 @@
+execution:
+- scenario: simple
+
+scenarios:
+  simple:
+    script: C:\Users\S534735\Desktop\AzureDevOpsKats\e2e\SmokeTest.jmx
+modules:
+  jmeter:
+    gui: false
+  blazemeter:
+    token: 89e76a90ff4c99cdaa028655:19dfee450a0838fe68b1e3cbd0a6639df497426695b48111baca7372c9f4031b95c71bd2
+reporting:
+- module: blazemeter
+  report-name: Jenkins Build 1
+  test: Taurus Demo
+  project: Taurus Tests Group

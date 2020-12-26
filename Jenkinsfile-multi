@@ -1,0 +1,22 @@
+node('buildx-armv7')  {
+
+    stage('Git checkout') {
+        git branch: 'master', credentialsId: 'gihub-key', url: 'git@github.com:stuartshay/AzureDevOpsKats.git'
+    }
+
+    stage('Docker deploy image') {
+         sh '''mv docker/azuredevopskats-web-multi.dockerfile/.dockerignore .dockerignore
+         docker context ls
+         docker buildx build --platform=linux/arm/v7 -f docker/azuredevopskats-web-multi.dockerfile/Dockerfile --build-arg BUILD_NUMBER=${BUILD_NUMBER} --build-arg VCS_REF=`git rev-parse --short HEAD` -t stuartshay/azuredevopskats:2.2.10-armv7 .'''
+         
+         withCredentials([usernamePassword(credentialsId: 'docker-hub-navigatordatastore', usernameVariable: 'DOCKER_HUB_LOGIN', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+            sh "docker login -u ${DOCKER_HUB_LOGIN} -p ${DOCKER_HUB_PASSWORD}"
+        }
+        sh '''docker push stuartshay/azuredevopskats:2.2.10-armv7'''
+    }
+
+   stage('Mail') {
+        emailext attachLog: true, body: '', subject: "Jenkins build status - ${currentBuild.fullDisplayName}", to: 'sshay@yahoo.com'
+    }
+
+}
