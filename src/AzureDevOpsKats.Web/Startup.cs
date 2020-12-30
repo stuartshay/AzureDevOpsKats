@@ -84,6 +84,7 @@ namespace AzureDevOpsKats.Web
                 app.UseHsts();
             }
 
+
             ConfigureSwagger(app, apiVersionDescriptionProvider);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -107,9 +108,7 @@ namespace AzureDevOpsKats.Web
                 }
             });
 
-            var option = new RewriteOptions();
-            option.AddRedirect("^$", "swagger");
-            app.UseRewriter(option);
+
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)

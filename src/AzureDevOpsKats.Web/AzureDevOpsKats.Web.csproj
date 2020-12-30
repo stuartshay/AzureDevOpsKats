@@ -20,15 +20,52 @@
     <ProjectReference Include="..\AzureDevOpsKats.Service\AzureDevOpsKats.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.AppService.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Docker.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
-<ItemGroup>
+  <ItemGroup>
+    <None Update="wwwroot\**\*">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\**\*">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\**\*">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\actions\" />
+  </ItemGroup>
+
+  <ItemGroup>
   <!-- Don't publish the SPA source files, but do show them in the project files list -->
   <Content Remove="$(SpaRoot)**" />
   <None Remove="$(SpaRoot)**" />
   <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 </ItemGroup>
 
-<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
   <!-- Ensure Node.js is installed -->
   <Exec Command="node --version" ContinueOnError="true">
     <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
@@ -38,7 +75,7 @@
   <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
 </Target>
 
-<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
   <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
   <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
@@ -52,11 +89,6 @@
     </ResolvedFileToPublish>
   </ItemGroup>
 </Target>
-
-
-
-
-
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\net5.0\AzureDevOpsKats.Web.xml</DocumentationFile>
