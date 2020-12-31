@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+
+  web:
+    hostname: web
+    image: "stuartshay/azuredevopskats:2.2.10-build"
+    environment:
+     - ASPNETCORE_ENVIRONMENT=Docker
+    ports:
+     - "5500:5000"
+    networks:
+      - azuredevopskats-network
+
+networks:
+  azuredevopskats-network:
+
