@@ -1,6 +1,6 @@
 node('buildx-armv7') {
     
-    String version_prefix = ${VERSION_PREFIX}
+    String version_prefix = "${VERSION_PREFIX}"
     String version_suffix = ''
     String docker_image_name = 'stuartshay/azuredevopskats'
     String docker_file = 'docker/azuredevopskats-web-multi.dockerfile/Dockerfile'
