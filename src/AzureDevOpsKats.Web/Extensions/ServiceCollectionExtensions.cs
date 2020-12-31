@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using MicroService.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +21,7 @@ namespace AzureDevOpsKats.Web
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <param name="environment"></param>
-        public static void DisplayConfiguration(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment, ILogger<Startup> logger)
+        public static void DisplayConfiguration(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
             var config = configuration.Get<Service.Configuration.ApplicationOptions>();
             Console.WriteLine($"Environment: {environment.EnvironmentName}");
@@ -34,15 +33,15 @@ namespace AzureDevOpsKats.Web
 
             Console.WriteLine($"DbConnection: {configuration.GetConnectionString("DbConnection")}");
 
-            logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
-            logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
+            //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
+            //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
         }
 
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>
             {
-                options.OperationFilter<SwaggerDefaultValues>();
+                //options.OperationFilter<SwaggerDefaultValues>();
 
                 /*
                 options.SwaggerDoc("v1", new OpenApiInfo

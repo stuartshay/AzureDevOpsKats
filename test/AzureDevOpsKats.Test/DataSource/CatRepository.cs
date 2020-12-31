@@ -31,7 +31,7 @@ namespace AzureDevOpsKats.Test.DataSource
         public IEnumerable<Cat> GetCats(int limit, int offset)
         {
             var result = _context.Cats
-                .OrderBy(i => i.Name).Skip(offset*limit).Take(limit).ToList();
+                .OrderBy(i => i.Name).Skip(offset * limit).Take(limit).ToList();
 
             return result;
         }

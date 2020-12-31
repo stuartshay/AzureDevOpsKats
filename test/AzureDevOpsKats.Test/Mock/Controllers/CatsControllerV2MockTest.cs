@@ -125,12 +125,12 @@ namespace AzureDevOpsKats.Test.Mock
             var env = new Mock<IHostingEnvironment>();
             env.Setup(m => m.ContentRootPath).Returns("/");
 
-            settings = settings ?? _serviceProvider.GetService<IOptions<ApplicationOptions>>();
+            settings ??= _serviceProvider.GetService<IOptions<ApplicationOptions>>();
 
             // TODO - Add to Helper
             responseMessage.Headers.Add("x-inlinecount", "10");
 
-            logger = logger ?? new Mock<ILogger<CatsControllerV2>>().Object;
+            logger ??= new Mock<ILogger<CatsControllerV2>>().Object;
             return new CatsControllerV2(catService, fileService, logger, settings);
         }
 

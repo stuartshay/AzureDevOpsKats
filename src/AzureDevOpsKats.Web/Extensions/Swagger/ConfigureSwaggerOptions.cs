@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace MicroService.WebApi.Extensions
+namespace AzureDevOpsKats.Web.Extensions.Swagger
 {
     /// <summary>
     /// Configures the Swagger generation options.
@@ -32,16 +32,16 @@ namespace MicroService.WebApi.Extensions
             }
         }
 
-        private static Info CreateInfoForApiVersion(ApiVersionDescription description)
+        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
         {
-            var info = new Info()
+            var info = new OpenApiInfo()
             {
                 Title = "AzureDevOpsKats.Web",
                 Version = description.ApiVersion.ToString(),
                 Description = "AzureDevOpsKats.Web",
-                Contact = new Contact() { Name = "Stuart Shay", Email = "sshay@yahoo.com" },
-                TermsOfService = "Shareware",
-                License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" },
+               // Contact = new Contact() { Name = "Stuart Shay", Email = "sshay@yahoo.com" },
+               // TermsOfService = "Shareware",
+               // License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" },
             };
 
             if (description.IsDeprecated)

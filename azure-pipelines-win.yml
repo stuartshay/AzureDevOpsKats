@@ -26,7 +26,7 @@ jobs:
 
   - task: DotNetCoreInstaller@0
     inputs:
-     version: '2.2.300'
+     version: '5.0.100'
 
   - task: Cake@0
     inputs:

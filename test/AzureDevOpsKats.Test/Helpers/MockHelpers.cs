@@ -73,6 +73,5 @@ namespace AzureDevOpsKats.Test.Helpers
 
             return controllerContext;
         }
-
     }
 }
