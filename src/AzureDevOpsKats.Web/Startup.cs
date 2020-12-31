@@ -23,13 +23,31 @@ namespace AzureDevOpsKats.Web
     /// </summary>
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        /// <summary>
+        ///  Startup
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="environment"></param>
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public IWebHostEnvironment Environment { get;  }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuration
@@ -37,7 +55,7 @@ namespace AzureDevOpsKats.Web
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
 
-            //services.DisplayConfiguration(Configuration, HostingEnvironment, _logger);
+            services.DisplayConfiguration(Configuration, Environment);
             var config = Configuration.Get<ApplicationOptions>();
             
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection ))};";
@@ -72,6 +90,12 @@ namespace AzureDevOpsKats.Web
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="apiVersionDescriptionProvider"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())

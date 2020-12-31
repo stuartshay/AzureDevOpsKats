@@ -21,7 +21,7 @@ namespace AzureDevOpsKats.Web
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <param name="environment"></param>
-        public static void DisplayConfiguration(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment, ILogger<Startup> logger)
+        public static void DisplayConfiguration(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
             var config = configuration.Get<Service.Configuration.ApplicationOptions>();
             Console.WriteLine($"Environment: {environment.EnvironmentName}");
@@ -33,8 +33,8 @@ namespace AzureDevOpsKats.Web
 
             Console.WriteLine($"DbConnection: {configuration.GetConnectionString("DbConnection")}");
 
-            logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
-            logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
+            //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
+            //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
         }
 
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)

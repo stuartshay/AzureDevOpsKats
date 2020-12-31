@@ -287,9 +287,9 @@ namespace AzureDevOpsKats.Test.Mock
             IOptions<ApplicationOptions> settings = null
             )
         {
-            catService = catService ?? new Mock<ICatService>().Object;
-            fileService = fileService ?? new Mock<IFileService>().Object;
-            logger = logger ?? new Mock<ILogger<CatsController>>().Object;
+            catService ??= new Mock<ICatService>().Object;
+            fileService ??= new Mock<IFileService>().Object;
+            logger ??= new Mock<ILogger<CatsController>>().Object;
 
             var env = new Mock<IHostingEnvironment>();
             env.Setup(m => m.ContentRootPath).Returns("/");

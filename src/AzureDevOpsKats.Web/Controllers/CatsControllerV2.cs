@@ -6,7 +6,6 @@ using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.ViewModels;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -36,7 +35,6 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="catService">Cat Service</param>
         /// <param name="fileService">File Service</param>
         /// <param name="logger">Logger</param>
-        /// <param name="env"></param>
         /// <param name="settings"></param>
         public CatsControllerV2(ICatService catService, IFileService fileService, ILogger<CatsControllerV2> logger, IOptions<ApplicationOptions> settings)
         {
@@ -165,12 +163,11 @@ namespace AzureDevOpsKats.Web.Controllers
                 return bytes;
             }
 
-            using (var fileStream = file.OpenReadStream())
-            using (var ms = new MemoryStream())
-            {
-                fileStream.CopyTo(ms);
-                bytes = ms.ToArray();
-            }
+            using var fileStream = file.OpenReadStream();
+            using var ms = new MemoryStream();
+            
+            fileStream.CopyTo(ms);
+            bytes = ms.ToArray();
 
             return bytes;
         }
