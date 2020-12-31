@@ -11,6 +11,7 @@ cli/
 *coverage*.*
 cobertura.xml
 tools/
+publish/
 docfx_project/
 **/PublishProfiles/*
 **/ClientApp/build/*
