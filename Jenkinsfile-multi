@@ -1,4 +1,4 @@
-node('buildx-armv7') {
+node("${NODE}") {
     
     String version_prefix = "${VERSION_PREFIX}"
     String version_suffix = ''
@@ -6,7 +6,7 @@ node('buildx-armv7') {
     String docker_file = 'docker/azuredevopskats-web-multi.dockerfile/Dockerfile'
     String docker_ignore = 'docker/azuredevopskats-web-multi.dockerfile/.dockerignore'
     String git_path = '' 
-    String platform = 'linux/arm/v7'
+    String platform = "${PLATFORM}"
     String email = 'sshay@yahoo.com' // TODO FIX
 
     stage('Git checkout') {
