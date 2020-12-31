@@ -108,13 +108,12 @@ namespace AzureDevOpsKats.Web
                 app.UseHsts();
             }
 
-
             ConfigureSwagger(app, apiVersionDescriptionProvider);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
