@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Service.Models;
 
 namespace AzureDevOpsKats.Service.Interface
 {
     public interface ICatService
     {
-        IEnumerable<CatModel> GetCats();
+        Task<IEnumerable<CatModel>> GetCats();
 
-        CatModel GetCat(int id);
+        Task<CatModel> GetCat(int id);
 
-        IEnumerable<CatModel> GetCats(int limit, int offset);
+        Task<IEnumerable<CatModel>> GetCats(int limit, int offset);
 
-        long GetCount();
+        Task<long> GetCount();
 
-        void EditCat(int id, CatUpdateModel cat);
+        Task EditCat(int id, CatUpdateModel cat);
 
-        long CreateCat(CatModel cat);
+        Task<long> CreateCat(CatModel cat);
 
-        void DeleteCat(int id);
+        Task DeleteCat(int id);
     }
 }
