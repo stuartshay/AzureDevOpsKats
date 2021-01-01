@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Data.Entities;
 
 namespace AzureDevOpsKats.Data.Repository
 {
     public interface ICatRepository : IDisposable
     {
-        IEnumerable<Cat> GetCats();
+        Task<IEnumerable<Cat>> GetCats();
 
-        IEnumerable<Cat> GetCats(int limit, int offset);
+        Task<IEnumerable<Cat>> GetCats(int limit, int offset);
 
-        long GetCount();
+        Task<long> GetCount();
 
-        Cat GetCat(long id);
+        Task<Cat> GetCat(long id);
 
-        void EditCat(Cat cat);
+        Task EditCat(Cat cat);
 
-        long CreateCat(Cat cat);
+        Task<long> CreateCat(Cat cat);
 
-        void DeleteCat(long id);
+        Task DeleteCat(long id);
     }
 }

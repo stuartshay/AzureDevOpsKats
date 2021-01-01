@@ -27,7 +27,7 @@ namespace AzureDevOpsKats.Service.Service
 
         public IEnumerable<CatModel> GetCats()
         {
-            var cats = _catRepository.GetCats();
+            var cats = _catRepository.GetCats().Result;
             var results = _mapper.Map<IEnumerable<CatModel>>(cats);
 
             var catModels = results as CatModel[] ?? results.ToArray();
@@ -41,7 +41,7 @@ namespace AzureDevOpsKats.Service.Service
 
         public CatModel GetCat(int id)
         {
-            var cat = _catRepository.GetCat(id);
+            var cat = _catRepository.GetCat(id).Result;
             var result = _mapper.Map<CatModel>(cat);
 
             return result;
@@ -62,7 +62,7 @@ namespace AzureDevOpsKats.Service.Service
         public long CreateCat(CatModel cat)
         {
             var result = _mapper.Map<Cat>(cat);
-            return _catRepository.CreateCat(result);
+            return _catRepository.CreateCat(result).Result;
         }
 
         public void DeleteCat(int id)
@@ -72,7 +72,7 @@ namespace AzureDevOpsKats.Service.Service
 
         public IEnumerable<CatModel> GetCats(int limit, int offset)
         {
-            var cats = _catRepository.GetCats(limit, offset);
+            var cats = _catRepository.GetCats(limit, offset).Result;
             var results = _mapper.Map<IEnumerable<CatModel>>(cats);
 
             var catModels = results as CatModel[] ?? results.ToArray();
@@ -86,7 +86,7 @@ namespace AzureDevOpsKats.Service.Service
 
         public long GetCount()
         {
-            return _catRepository.GetCount();
+            return _catRepository.GetCount().Result;
         }
     }
 }

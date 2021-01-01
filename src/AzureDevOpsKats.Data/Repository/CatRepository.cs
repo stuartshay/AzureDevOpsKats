@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Data.Entities;
 using Microsoft.Data.Sqlite;
 
@@ -15,15 +16,15 @@ namespace AzureDevOpsKats.Data.Repository
             _dbConnection = new SqliteConnection(connection);
         }
 
-        public IEnumerable<Cat> GetCats()
+        public async Task<IEnumerable<Cat>> GetCats()
         {
-            Open();
+            await Open();
 
             List<Cat> cats = new List<Cat>();
-            using (var command = _dbConnection.CreateCommand())
+            await using (var command = _dbConnection.CreateCommand())
             {
                 command.CommandText = "SELECT Id,Name,Description,Photo FROM Cats ORDER BY Name COLLATE NOCASE ASC;";
-                var result = command.ExecuteReader();
+                var result = await command.ExecuteReaderAsync();
                 while (result.Read())
                 {
                     var cat = new Cat
@@ -41,12 +42,12 @@ namespace AzureDevOpsKats.Data.Repository
             return cats;
         }
 
-        public IEnumerable<Cat> GetCats(int limit, int offset)
+        public async Task<IEnumerable<Cat>> GetCats(int limit, int offset)
         {
-            Open();
+            await Open();
 
             List<Cat> cats = new List<Cat>();
-            using (var command = _dbConnection.CreateCommand())
+            await using (var command = _dbConnection.CreateCommand())
             {
                 command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats " +
                                       "ORDER BY Name COLLATE NOCASE ASC LIMIT @param1 OFFSET @param2;";
@@ -54,7 +55,7 @@ namespace AzureDevOpsKats.Data.Repository
                 command.Parameters.Add(new SqliteParameter("@param1", limit));
                 command.Parameters.Add(new SqliteParameter("@param2", offset));
 
-                var result = command.ExecuteReader();
+                var result = await command.ExecuteReaderAsync();
                 while (result.Read())
                 {
                     var cat = new Cat
@@ -72,29 +73,29 @@ namespace AzureDevOpsKats.Data.Repository
             return cats;
         }
 
-        public long GetCount()
+        public async Task<long> GetCount()
         {
-            Open();
-            using (var command = _dbConnection.CreateCommand())
+            await Open();
+            await using (var command = _dbConnection.CreateCommand())
             {
                 command.CommandText = "SELECT COUNT(*) FROM Cats";
 
-                var result = command.ExecuteScalar();
+                var result = await command.ExecuteScalarAsync();
                 var item = result ?? 0;
 
                 return (long)item;
             }
         }
 
-        public Cat GetCat(long id)
+        public async Task<Cat> GetCat(long id)
         {
-            Open();
-            using (var command = _dbConnection.CreateCommand())
+            await Open();
+            await using (var command = _dbConnection.CreateCommand())
             {
                 command.CommandText = "SELECT Id,Name,Description,Photo FROM Cats WHERE Id = @param1;";
                 command.Parameters.Add(new SqliteParameter("@param1", id));
 
-                var result = command.ExecuteReader();
+                var result = await command.ExecuteReaderAsync();
                 if (!result.HasRows)
                 {
                     return null;
@@ -113,29 +114,29 @@ namespace AzureDevOpsKats.Data.Repository
             }
         }
 
-        public void EditCat(Cat cat)
+        public async Task EditCat(Cat cat)
         {
             using (_dbConnection)
             {
-                Open();
-                using (var command = _dbConnection.CreateCommand())
+                await Open();
+                await using (var command = _dbConnection.CreateCommand())
                 {
                     command.CommandText = "UPDATE Cats SET Name = @param1, Description= @param2 WHERE Id = @param3;";
                     command.Parameters.Add(new SqliteParameter("@param1", cat.Name));
                     command.Parameters.Add(new SqliteParameter("@param2", cat.Description));
                     command.Parameters.Add(new SqliteParameter("@param3", cat.Id));
 
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }
             }
         }
 
-        public long CreateCat(Cat cat)
+        public async Task<long> CreateCat(Cat cat)
         {
-            using (_dbConnection)
+            await using (_dbConnection)
             {
-                Open();
-                using (var command = _dbConnection.CreateCommand())
+                await Open();
+                await using (var command = _dbConnection.CreateCommand())
                 {
                     command.CommandText = "INSERT INTO Cats(Name, Description, Photo) VALUES (@param1, @param2, @param3)";
                     command.Parameters.Add(new SqliteParameter("@param1", cat.Name));
@@ -144,30 +145,32 @@ namespace AzureDevOpsKats.Data.Repository
 
                     command.ExecuteScalar();
                     command.CommandText = "SELECT last_insert_rowid()";
-                    return (long)command.ExecuteScalar();
+                    var result = await command.ExecuteScalarAsync();
+
+                    return (long)result;
                 }
             }
         }
 
-        public void DeleteCat(long id)
+        public async Task DeleteCat(long id)
         {
-            using (_dbConnection)
+            await using (_dbConnection)
             {
-                Open();
-                using (var command = _dbConnection.CreateCommand())
+                await Open();
+                await using (var command = _dbConnection.CreateCommand())
                 {
                     command.CommandText = "DELETE FROM Cats WHERE Id=@param1";
                     command.Parameters.Add(new SqliteParameter("@param1", id));
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }
             }
         }
 
-        public void Open()
+        public async Task Open()
         {
             if (_dbConnection.State == ConnectionState.Closed)
             {
-                _dbConnection.OpenAsync();
+                await _dbConnection.OpenAsync();
             }
         }
 
@@ -179,8 +182,9 @@ namespace AzureDevOpsKats.Data.Repository
 
         protected virtual void Dispose(bool disposing)
         {
-            _dbConnection.Close();
+            _dbConnection.CloseAsync();
             _dbConnection.Dispose();
         }
+
     }
 }
