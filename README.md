@@ -38,7 +38,7 @@ http://azuredevopskats-web.azurewebsites.net/swagger/
 | Windows/Linux Automated Build | Azure Devops |[![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1)
 | Docker Base Image             | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/)
 | Docker Deploy Image           | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-api)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-api/)
-| Docker Arm7 Image             | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-multi)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-multi/)
+| Docker x86/Arm7 Image         | Jenkins      |[![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-multi)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-multi/)
 
 
 |  Library                    |  Nuget Repository                        |  MyGet Repository                                       |
