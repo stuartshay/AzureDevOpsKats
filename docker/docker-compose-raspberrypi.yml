@@ -1,10 +1,10 @@
-version: '3.3'
+version: '3.8'
 
 services:
 
   web:
     hostname: web
-    image: "stuartshay/azuredevopskats:2.2.10-build"
+    image: "stuartshay/azuredevopskats:5.0.1-arm.14"
     environment:
      - ASPNETCORE_ENVIRONMENT=Docker
     ports:
