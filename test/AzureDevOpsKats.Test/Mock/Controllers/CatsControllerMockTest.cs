@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
@@ -15,7 +16,7 @@ using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace AzureDevOpsKats.Test.Mock
+namespace AzureDevOpsKats.Test.Mock.Controllers
 {
     public class CatsControllerMockTest : IClassFixture<CatConfigurationFixture>
     {
@@ -36,7 +37,10 @@ namespace AzureDevOpsKats.Test.Mock
             ICatService catService = null;
 
             // Action
-            Action action = () => { new CatsController(catService, null, null, null, null); };
+            Action action = () =>
+            {
+                var catsController = new CatsController(null, null, null, null, null);
+            };
 
             // Assert
             action.Should().Throw<ArgumentNullException>();
@@ -44,12 +48,12 @@ namespace AzureDevOpsKats.Test.Mock
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Get_Cats_List_ReturnsData()
+        public async Task Get_Cats_List_ReturnsData()
         {
             // Arrange 
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCats())
-                .Returns(new List<CatModel>()
+                .ReturnsAsync(new List<CatModel>()
                 {
                     new CatModel{Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1"},
                     new CatModel{Id = 2, Description = "My Cat 2", Name = "Cat 2", Photo = "MyPhoto 2"}
@@ -57,12 +61,12 @@ namespace AzureDevOpsKats.Test.Mock
 
             var controller = GetCatsController(mockCatService.Object);
 
-            var sut = controller.Get();
+            var sut = await controller.Get();
 
             Assert.NotNull(sut);
-            Assert.IsType<OkObjectResult>(sut);
+            Assert.IsType<OkObjectResult>(sut.Result);
 
-            var objectResult = sut as OkObjectResult;
+            var objectResult = sut.Result as OkObjectResult;
             Assert.NotNull(objectResult);
             Assert.True(objectResult.StatusCode == 200);
 
@@ -75,21 +79,21 @@ namespace AzureDevOpsKats.Test.Mock
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Get_Cat_ReturnsData()
+        public async Task Get_Cat_ReturnsData()
         {
             // Arrange 
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(1))
-                .Returns(new CatModel { Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1" });
+                .ReturnsAsync(new CatModel { Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1" });
 
             var controller = GetCatsController(mockCatService.Object);
 
-            var sut = controller.GetById(1);
+            var sut = await controller.GetById(1);
 
             Assert.NotNull(sut);
-            Assert.IsType<OkObjectResult>(sut);
+            Assert.IsType<OkObjectResult>(sut.Result);
 
-            var objectResult = sut as OkObjectResult;
+            var objectResult = sut.Result as OkObjectResult;
             Assert.NotNull(objectResult);
             Assert.True(objectResult.StatusCode == 200);
 
@@ -100,24 +104,24 @@ namespace AzureDevOpsKats.Test.Mock
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Get_Cat_ReturnsNull()
+        public async Task Get_Cat_ReturnsNull()
         {
             // Arrange 
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(It.IsAny<int>()))
-                .Returns((CatModel)null);
+                .ReturnsAsync((CatModel)null);
 
             var controller = GetCatsController(mockCatService.Object);
 
-            var sut = controller.GetById(1);
+            var sut = await controller.GetById(1);
 
             Assert.NotNull(sut);
-            Assert.IsType<NotFoundResult>(sut);
+            Assert.IsType<NotFoundResult>(sut.Result);
         }
 
         [Fact()]
         [Trait("Category", "Mock")]
-        public void Create_Cat()
+        public async Task Create_Cat()
         {
             // Arrange 
             var name = "Fun Cat";
@@ -129,7 +133,7 @@ namespace AzureDevOpsKats.Test.Mock
             var mockCatService = new Mock<ICatService>();
             mockCatService
                 .Setup(mr => mr.CreateCat(catModel))
-                .Returns((long)id);
+                .ReturnsAsync(id);
 
             var mockFileService = new Mock<IFileService>();
             mockFileService
@@ -139,7 +143,7 @@ namespace AzureDevOpsKats.Test.Mock
             var controller = GetCatsController(mockCatService.Object, mockFileService.Object);
 
             // Act
-            var sut = controller.Post(cat);
+            var sut = await controller.Post(cat);
 
             // Assert
             Assert.IsType<CreatedAtRouteResult>(sut);
@@ -152,7 +156,7 @@ namespace AzureDevOpsKats.Test.Mock
 
         [Fact()]
         [Trait("Category", "Mock")]
-        public void Create_Cat_Invalid_ModelState()
+        public async Task Create_Cat_Invalid_ModelState()
         {
             // Arrange 
             var cat = new CatCreateModel { Name = "Cat", Bytes = CreateSpecialByteArray(7000) };
@@ -161,7 +165,7 @@ namespace AzureDevOpsKats.Test.Mock
             controller.ModelState.AddModelError("Description", "Required");
 
             //Act
-            var sut = controller.Post(cat);
+            var sut = await controller.Post(cat);
 
             //Assert
             var badRequestResult = Assert.IsType<UnprocessableEntityObjectResult>(sut);
@@ -170,7 +174,7 @@ namespace AzureDevOpsKats.Test.Mock
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Update_Cat_BadRequest()
+        public async Task Update_Cat_BadRequest()
         {
             // Arrange 
             var dataSet = new CatModel { Id = 1, Description = "Description" };
@@ -178,22 +182,22 @@ namespace AzureDevOpsKats.Test.Mock
             var mockCatService = new Mock<ICatService>();
             mockCatService
                .Setup(mr => mr.GetCat(It.IsAny<int>()))
-               .Returns(dataSet)
+               .ReturnsAsync(dataSet)
                .Verifiable();
 
             var controller = GetCatsController(mockCatService.Object);
             controller.ModelState.AddModelError("Name", "Required");
 
-            //Act
-            var sut = controller.Put(1, null);
+            // Act
+            var sut = await controller.Put(1, null);
 
-            //Assert
+            // Assert
             Assert.IsType<UnprocessableEntityObjectResult>(sut);
         }
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Update_Cat()
+        public async Task Update_Cat()
         {
             var dataSet = new CatModel { Id = 1, Description = "Description" };
 
@@ -203,14 +207,14 @@ namespace AzureDevOpsKats.Test.Mock
                .Verifiable();
             mockCatService
                .Setup(mr => mr.GetCat(It.IsAny<int>()))
-               .Returns(dataSet)
+               .ReturnsAsync(dataSet)
                .Verifiable();
 
             var controller = GetCatsController(mockCatService.Object);
 
             // Act
             var cat = new CatUpdateModel { Name = "Cat", Description = "Cat Description" };
-            var sut = controller.Put(1, cat);
+            var sut = await controller.Put(1, cat);
 
             // Assert
             Assert.IsType<OkObjectResult>(sut);
@@ -218,32 +222,32 @@ namespace AzureDevOpsKats.Test.Mock
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Update_Cat_Not_Found()
+        public async Task Update_Cat_Not_Found()
         {
             var mockCatService = new Mock<ICatService>();
             mockCatService
                .Setup(mr => mr.GetCat(It.IsAny<int>()))
-               .Returns((CatModel) null)
+               .ReturnsAsync((CatModel)null)
                .Verifiable();
 
             var controller = GetCatsController(mockCatService.Object);
 
-            //Act
+            // Act
             var cat = new CatUpdateModel { Name = "Cat", Description = "Cat Description" };
-            var sut = controller.Put(1, cat);
+            var sut = await controller.Put(1, cat);
 
-            //Assert
+            // Assert
             Assert.IsType<NotFoundResult>(sut);
         }
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Delete_Cat()
+        public async Task Delete_Cat()
         {
             // Arrange 
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(1))
-                .Returns(new CatModel { Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1" });
+                .ReturnsAsync(new CatModel { Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1" });
             mockCatService
                 .Setup(mr => mr.DeleteCat(It.IsAny<int>()))
                 .Verifiable();
@@ -256,7 +260,7 @@ namespace AzureDevOpsKats.Test.Mock
             var controller = GetCatsController(mockCatService.Object, mockFileService.Object);
 
             // Act
-            var sut = controller.Delete(1);
+            var sut = await controller.Delete(1);
 
             // Assert
             Assert.IsType<NoContentResult>(sut);
@@ -264,17 +268,17 @@ namespace AzureDevOpsKats.Test.Mock
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Delete_Cat_NotFoundRequest()
+        public async Task Delete_Cat_NotFoundRequest()
         {
             // Arrange 
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(It.IsAny<int>()))
-                .Returns((CatModel)null);
+                .ReturnsAsync((CatModel)null);
 
             var controller = GetCatsController(mockCatService.Object);
 
             // Act
-            var sut = controller.Delete(1);
+            var sut = await controller.Delete(1);
 
             // Assert
             Assert.IsType<NotFoundResult>(sut);
@@ -291,10 +295,10 @@ namespace AzureDevOpsKats.Test.Mock
             fileService ??= new Mock<IFileService>().Object;
             logger ??= new Mock<ILogger<CatsController>>().Object;
 
-            var env = new Mock<IHostingEnvironment>();
+            var env = new Mock<IWebHostEnvironment>();
             env.Setup(m => m.ContentRootPath).Returns("/");
 
-            settings = settings ?? _serviceProvider.GetService<IOptions<ApplicationOptions>>();
+            settings ??= _serviceProvider.GetService<IOptions<ApplicationOptions>>();
 
             return new CatsController(catService, fileService, logger, env.Object, settings);
         }

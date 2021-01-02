@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
@@ -30,7 +31,7 @@ namespace AzureDevOpsKats.Web.Controllers
 
         private readonly ILogger<CatsController> _logger;
 
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CatsController"/> class.
@@ -40,7 +41,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="logger"></param>
         /// <param name="env"></param>
         /// <param name="settings"></param>
-        public CatsController(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IHostingEnvironment env, IOptions<ApplicationOptions> settings)
+        public CatsController(ICatService catService, IFileService fileService, ILogger<CatsController> logger, IWebHostEnvironment env, IOptions<ApplicationOptions> settings)
         {
             _catService = catService ?? throw new ArgumentNullException(nameof(catService));
             _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
@@ -60,7 +61,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpGet]
         [Produces("application/json", Type = typeof(IEnumerable<CatModel>))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<CatModel>>> Get()
         {
             using (_logger.BeginScope(new Dictionary<string, object> { { "MyKey", "MyValue" } }))
             {
@@ -68,7 +69,7 @@ namespace AzureDevOpsKats.Web.Controllers
                 _logger.LogError("An example of an Error level message");
             }
 
-            var results = _catService.GetCats();
+            var results = await _catService.GetCats();
             return Ok(results);
         }
 
@@ -83,9 +84,9 @@ namespace AzureDevOpsKats.Web.Controllers
         [Produces("application/json", Type = typeof(CatModel))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<ActionResult<CatModel>> GetById(int id)
         {
-            var result = _catService.GetCat(id);
+            var result = await _catService.GetCat(id);
             if (result == null)
                 return NotFound();
 
@@ -102,13 +103,13 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var result = _catService.GetCat(id);
+            var result = await _catService.GetCat(id);
             if (result == null)
                 return NotFound();
 
-            _catService.DeleteCat(id);
+            await _catService.DeleteCat(id);
             _fileService.DeleteFile(result.Photo);
 
             return NoContent();
@@ -124,7 +125,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult Post([FromBody] CatCreateModel value)
+        public async Task<ActionResult> Post([FromBody] CatCreateModel value)
         {
             if (!ModelState.IsValid)
             {
@@ -145,7 +146,7 @@ namespace AzureDevOpsKats.Web.Controllers
             };
 
             _fileService.SaveFile(filePath, value.Bytes);
-            var result = _catService.CreateCat(catModel);
+            var result = await _catService.CreateCat(catModel);
             catModel.Id = result;
 
             return CreatedAtRoute("GetById", new { Id = result }, catModel);
@@ -167,9 +168,9 @@ namespace AzureDevOpsKats.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult Put(int id, [FromBody] CatUpdateModel value)
+        public async Task<ActionResult> Put(int id, [FromBody] CatUpdateModel value)
         {
-            var result = _catService.GetCat(id);
+            var result = await _catService.GetCat(id);
             if (result == null)
                 return NotFound();
 
@@ -178,7 +179,7 @@ namespace AzureDevOpsKats.Web.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            _catService.EditCat(id, value);
+            await _catService.EditCat(id, value);
 
             return Ok(value);
         }

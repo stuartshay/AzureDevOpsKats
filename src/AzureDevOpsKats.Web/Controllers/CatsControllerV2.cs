@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
@@ -59,17 +60,17 @@ namespace AzureDevOpsKats.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces("application/json")]
-        public IActionResult Get(int limit, int page)
+        public async Task<ActionResult<IEnumerable<CatModel>>> Get(int limit, int page)
         {
             _logger.LogWarning("Get All Cats");
 
-            var total = _catService.GetCount();
+            var total = await _catService.GetCount();
             if (total == 0)
             {
                 return NotFound();
             }
 
-            var results = _catService.GetCats(limit, page * limit);
+            var results = await _catService.GetCats(limit, page * limit);
 
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
             HttpContext.Response.Headers.Add("X-InlineCount", total.ToString(CultureInfo.InvariantCulture));
@@ -84,9 +85,9 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpGet]
         [Route("results/total")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetTotal()
+        public async Task<ActionResult<long>> GetTotal()
         {
-            var results = _catService.GetCount();
+            var results = await _catService.GetCount();
             return Ok(results);
         }
 
@@ -100,7 +101,7 @@ namespace AzureDevOpsKats.Web.Controllers
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult Post([FromForm] CatCreateViewModel value)
+        public async Task<ActionResult> Post([FromForm] CatCreateViewModel value)
         {
             if (!ModelState.IsValid)
             {
@@ -142,7 +143,7 @@ namespace AzureDevOpsKats.Web.Controllers
                     Photo = fileName,
                 };
 
-                var result = _catService.CreateCat(catModel);
+                var result = await _catService.CreateCat(catModel);
                 catModel.Id = result;
 
                 return CreatedAtRoute("GetById", new { Id = result }, catModel);

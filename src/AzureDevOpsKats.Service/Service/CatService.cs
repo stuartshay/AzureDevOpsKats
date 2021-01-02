@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
@@ -25,9 +26,9 @@ namespace AzureDevOpsKats.Service.Service
             _requestPath = settings.Value.FileStorage.RequestPath;
         }
 
-        public IEnumerable<CatModel> GetCats()
+        public async Task<IEnumerable<CatModel>> GetCats()
         {
-            var cats = _catRepository.GetCats();
+            var cats = await _catRepository.GetCats();
             var results = _mapper.Map<IEnumerable<CatModel>>(cats);
 
             var catModels = results as CatModel[] ?? results.ToArray();
@@ -39,15 +40,15 @@ namespace AzureDevOpsKats.Service.Service
             return catModels;
         }
 
-        public CatModel GetCat(int id)
+        public async Task<CatModel> GetCat(int id)
         {
-            var cat = _catRepository.GetCat(id);
+            var cat = await _catRepository.GetCat(id);
             var result = _mapper.Map<CatModel>(cat);
 
             return result;
         }
 
-        public void EditCat(int id, CatUpdateModel cat)
+        public async Task EditCat(int id, CatUpdateModel cat)
         {
             var result = new Cat
             {
@@ -56,23 +57,23 @@ namespace AzureDevOpsKats.Service.Service
                 Description = cat.Description,
             };
 
-            _catRepository.EditCat(result);
+            await _catRepository.EditCat(result);
         }
 
-        public long CreateCat(CatModel cat)
+        public async Task<long> CreateCat(CatModel cat)
         {
             var result = _mapper.Map<Cat>(cat);
-            return _catRepository.CreateCat(result);
+            return await _catRepository.CreateCat(result);
         }
 
-        public void DeleteCat(int id)
+        public async Task DeleteCat(int id)
         {
-            _catRepository.DeleteCat(id);
+            await _catRepository.DeleteCat(id);
         }
 
-        public IEnumerable<CatModel> GetCats(int limit, int offset)
+        public async Task<IEnumerable<CatModel>> GetCats(int limit, int offset)
         {
-            var cats = _catRepository.GetCats(limit, offset);
+            var cats = await _catRepository.GetCats(limit, offset);
             var results = _mapper.Map<IEnumerable<CatModel>>(cats);
 
             var catModels = results as CatModel[] ?? results.ToArray();
@@ -84,9 +85,9 @@ namespace AzureDevOpsKats.Service.Service
             return catModels;
         }
 
-        public long GetCount()
+        public async Task<long> GetCount()
         {
-            return _catRepository.GetCount();
+            return await _catRepository.GetCount();
         }
     }
 }

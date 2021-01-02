@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace AzureDevOpsKats.Test.DataSource
 {
@@ -22,52 +24,52 @@ namespace AzureDevOpsKats.Test.DataSource
         {
         }
 
-        public IEnumerable<Cat> GetCats()
+        public async Task<IEnumerable<Cat>> GetCats()
         {
-            var result = _context.Cats.OrderBy(i => i.Name).ToList();
+            var result = await _context.Cats.OrderBy(i => i.Name).ToListAsync();
             return result;
         }
 
-        public IEnumerable<Cat> GetCats(int limit, int offset)
+        public async Task<IEnumerable<Cat>> GetCats(int limit, int offset)
         {
-            var result = _context.Cats
-                .OrderBy(i => i.Name).Skip(offset * limit).Take(limit).ToList();
+            var result = await _context.Cats
+                .OrderBy(i => i.Name).Skip(offset * limit).Take(limit).ToListAsync();
 
             return result;
         }
 
-        public long GetCount()
+        public async Task<long> GetCount()
         {
-            var result = _context.Cats.Count();
+            var result = await _context.Cats.CountAsync();
             return result;
         }
 
-        public Cat GetCat(long id)
+        public async Task<Cat> GetCat(long id)
         {
-            var result = _context.Cats.FirstOrDefault(x => x.Id == id);
+            var result = await _context.Cats.FirstOrDefaultAsync(x => x.Id == id);
             return result;
         }
 
-        public void EditCat(Cat cat)
+        public async Task EditCat(Cat cat)
         {
             _context.Cats.Update(cat);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public long CreateCat(Cat cat)
+        public async Task<long> CreateCat(Cat cat)
         {
             _context.Cats.Add(cat);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return 0;
         }
 
-        public void DeleteCat(long id)
+        public async Task DeleteCat(long id)
         {
-            var cat = GetCat(id);
+            var cat = await GetCat(id);
 
             _context.Cats.Remove(cat);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

@@ -51,10 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="ClientApp\src\actions\" />
   </ItemGroup>
 
