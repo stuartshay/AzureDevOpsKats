@@ -61,7 +61,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
 
         [Fact]
         [Trait("Category", "Mock")]
-        public void Get_Cats_Paging_List_ReturnsData()
+        public async Task Get_Cats_Paging_List_ReturnsData()
         {
             // Arrange 
             var mockCatService = new Mock<ICatService>();
@@ -78,21 +78,21 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
             controller.ControllerContext = MockHelpers.GetHttpContext();
 
             // Act
-            var sut = controller.Get(2, 1);
+            var sut = await controller.Get(2, 1);
 
             // Assert 
             Assert.NotNull(sut);
-            Assert.IsType<OkObjectResult>(sut);
+            Assert.IsType<OkObjectResult>(sut.Result);
 
-            //var objectResult = sut.Result as OkObjectResult;
-            //Assert.NotNull(objectResult);
-            //Assert.True(objectResult.StatusCode == 200);
+            var objectResult = sut.Result as OkObjectResult;
+            Assert.NotNull(objectResult);
+            Assert.True(objectResult.StatusCode == 200);
 
-            //var cats = objectResult.Value as List<CatModel>;
-            //Assert.NotNull(cats);
-            //Assert.NotEmpty(cats);
-            //Assert.True(cats.Count == 2);
-            //Assert.Equal(1, cats[0].Id);
+            var cats = objectResult.Value as List<CatModel>;
+            Assert.NotNull(cats);
+            Assert.NotEmpty(cats);
+            Assert.True(cats.Count == 2);
+            Assert.Equal(1, cats[0].Id);
         }
 
         [Fact]
@@ -109,8 +109,8 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
             var sut = await controller.Get(2, 1).ConfigureAwait(false);
 
             Assert.NotNull(sut);
-            Assert.IsType<ActionResult<IEnumerable<CatModel>>>(sut);
             Assert.IsType<NotFoundResult>(sut.Result);
+            //Assert.IsType<NotFoundResult>(sut.Result);
         }
 
         private CatsControllerV2 GetCatsControllerV2(
