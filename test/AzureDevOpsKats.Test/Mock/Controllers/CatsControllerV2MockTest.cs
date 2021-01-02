@@ -110,7 +110,6 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
 
             Assert.NotNull(sut);
             Assert.IsType<NotFoundResult>(sut.Result);
-            //Assert.IsType<NotFoundResult>(sut.Result);
         }
 
         private CatsControllerV2 GetCatsControllerV2(
