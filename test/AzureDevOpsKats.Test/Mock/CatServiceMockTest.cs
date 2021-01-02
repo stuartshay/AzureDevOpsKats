@@ -37,17 +37,18 @@ namespace AzureDevOpsKats.Test.Mock
                     new Cat{Id = 2, Description = "My Cat 2", Name = "Cat 2", Photo = "MyPhoto 2"}
                 });
 
-            var sut = GetCatService(mockCatRepository.Object);
+            var service = GetCatService(mockCatRepository.Object);
 
             //Act 
-            var results = await sut.GetCats();
+            var results = await service.GetCats();
+            var sut = results.ToList();
 
             //Assert
-            Assert.NotNull(results);
-            Assert.IsType<List<CatModel>>(results);
-            Assert.NotEmpty(results);
+            Assert.NotNull(sut);
+            Assert.IsType<List<CatModel>>(sut);
+            Assert.NotEmpty(sut);
 
-            var cat1 = results.Single(c => c.Id == 1);
+            var cat1 = sut.Single(c => c.Id == 1);
             Assert.Equal("My Cat 1", cat1.Description);
         }
 

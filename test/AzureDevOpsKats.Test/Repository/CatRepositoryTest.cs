@@ -123,9 +123,11 @@ namespace AzureDevOpsKats.Test.Repository
             };
 
             await _catRepository.CreateCat(cat);
-            var resultId = await _catRepository.GetCats();//.Select(c => c.Id); //  .OrderByDescending(c => c.Id).Select(c => c.Id).FirstOrDefaultAsync();
+            var result = await _catRepository.GetCats();
+            var id = result.OrderByDescending(c => c.Id).Select(c => c.Id).FirstOrDefault();
 
-            //await _catRepository.DeleteCat(resultId);
+
+            await _catRepository.DeleteCat(id);
         }
     }
 }
