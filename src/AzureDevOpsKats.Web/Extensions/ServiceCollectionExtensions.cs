@@ -1,14 +1,16 @@
 ﻿using System;
 using System.IO;
+using AzureDevOpsKats.Service.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
-namespace AzureDevOpsKats.Web
+namespace AzureDevOpsKats.Web.Extensions
 {
     /// <summary>
     /// Service Collection Extensions
@@ -35,6 +37,22 @@ namespace AzureDevOpsKats.Web
 
             //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
             //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
+        }
+
+        public static IServiceCollection AddCustomDataProtection(this IServiceCollection services, IConfiguration configuration)
+        {
+            var config = configuration.Get<ApplicationOptions>();
+
+            Console.WriteLine($"Data Protection Enabled:{config.Dataprotection.Enabled}");
+            if (config.Dataprotection.Enabled)
+            {
+                var redis = ConnectionMultiplexer.Connect(config.Dataprotection.RedisConnection);
+                services.AddDataProtection()
+                    .SetApplicationName(config.Dataprotection.RedisKey)
+                    .PersistKeysToStackExchangeRedis(redis, config.Dataprotection.RedisKey);
+            }
+
+            return services;
         }
 
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
@@ -135,7 +153,7 @@ namespace AzureDevOpsKats.Web
         private static string GetXmlCommentsPath()
         {
             var basePath = AppContext.BaseDirectory;
-            var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+            var assemblyName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name;
             var fileName = Path.GetFileName(assemblyName + ".xml");
 
             return Path.Combine(basePath, fileName);
