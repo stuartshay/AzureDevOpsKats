@@ -4,6 +4,7 @@ using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
+using AzureDevOpsKats.Web.Extensions;
 using AzureDevOpsKats.Web.Extensions.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -68,6 +69,7 @@ namespace AzureDevOpsKats.Web
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddCustomSwagger(Configuration);
 
+            services.AddCustomDataProtection(Configuration);
             services.AddCustomCors(Configuration);
             services.AddCustomCookiePolicy(Configuration);
 

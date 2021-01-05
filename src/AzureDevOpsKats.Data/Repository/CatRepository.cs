@@ -185,6 +185,5 @@ namespace AzureDevOpsKats.Data.Repository
             _dbConnection.CloseAsync();
             _dbConnection.Dispose();
         }
-
     }
 }
