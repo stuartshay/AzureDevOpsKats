@@ -12,6 +12,22 @@ services:
     networks:
       - azuredevopskats-network
 
+  redis:
+    image: bitnami/redis
+    ports:
+      - 6379:6379
+    command: ["redis-server", "--appendonly", "yes"]
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - azuredevopskats-network
+
+
+volumes:
+  redis-data:
+
 networks:
   azuredevopskats-network:
 
