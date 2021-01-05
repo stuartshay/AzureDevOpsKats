@@ -1,24 +1,31 @@
 
-### Docker 
+## Docker 
+
+Setup
+
+Windows Host File:  ```C:\Windows\System32\drivers\etc\hosts```    
+Mac/Linux: ```/etc/hosts```
+
+```
+127.0.0.1 azuredevopskats-web
+```
+
+### Docker Compose 
+
+```
+docker-compose up
+docker-compose --scale azuredevopskats-web=5
+```
+
+### Scale Command
+```
+docker-compose --file docker-compose.yml up -d --scale <SERVICE>=<NUMBER> 
+```
 
 
-#### Linux Local Build
+## Linux Local Build
 ```
 cd AzureDevOpsKats
 docker build -f docker/azuredevopskats-web-multi.dockerfile/Dockerfile -t stuartshay/azuredevopskats  .
-docker push stuartshay/azuredevopskats:latest  
-```
-
-#### Windows Local Build
-```
-cd AzureDevOpsKats
-docker build -f docker/azuredevopskats-web-windows.dockerfile/Dockerfile -t stuartshay/azuredevopskats:win  .
-docker push stuartshay/azuredevopskats:win
-
-# Run Container
-docker run -it -p 5000:5000 stuartshay/azuredevopskats:win
-
-# Container IP
-docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" <CONTAINER_ID>
-```
+  ```
 

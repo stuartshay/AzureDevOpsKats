@@ -21,12 +21,9 @@ services:
 
   azuredevopskats-web:
     hostname: azuredevopskats-web
-    container_name: "azuredevopskats-web"
     image: "stuartshay/azuredevopskats:5.0.1-build-16-prerelease-develop"
     environment:
      - ASPNETCORE_ENVIRONMENT=Docker
-    ports:
-     - "5600:5000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.azuredevopskats-web.rule=Host(`azuredevopskats-web`)"
