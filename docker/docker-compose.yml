@@ -3,14 +3,14 @@ version: '3.8'
 services:
 
   traefik:
-    image: "traefik:v2.3"
+    image: "traefik:v2.4"
     container_name: "traefik"
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80" #tell traefik to listen for connections on port 80
+      - "--entrypoints.web.address=:80" 
     ports:
       - "80:80"
       - "8080:8080"
@@ -21,7 +21,7 @@ services:
 
   azuredevopskats-web:
     hostname: azuredevopskats-web
-    image: "stuartshay/azuredevopskats:5.0.1-build-16-prerelease-develop"
+    image: "stuartshay/azuredevopskats:5.0.1-build.17"
     environment:
      - ASPNETCORE_ENVIRONMENT=Docker
     labels:
@@ -49,4 +49,3 @@ volumes:
 
 networks:
   azuredevopskats-network:
-

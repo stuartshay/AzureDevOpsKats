@@ -13,8 +13,13 @@ Mac/Linux: ```/etc/hosts```
 ### Docker Compose 
 
 ```
+docker-compose pull
 docker-compose up
 docker-compose --scale azuredevopskats-web=5
+```
+
+```
+http://azuredevopskats-web
 ```
 
 ### Scale Command
