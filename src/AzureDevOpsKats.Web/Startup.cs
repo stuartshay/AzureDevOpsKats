@@ -8,8 +8,8 @@ using AzureDevOpsKats.Web.Extensions;
 using AzureDevOpsKats.Web.Extensions.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -90,6 +90,12 @@ namespace AzureDevOpsKats.Web
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
         }
 
         /// <summary>
@@ -111,6 +117,8 @@ namespace AzureDevOpsKats.Web
             }
 
             ConfigureSwagger(app, apiVersionDescriptionProvider);
+            app.UseMiddleware(typeof(HttpHeaderMiddleware));
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -132,8 +140,6 @@ namespace AzureDevOpsKats.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-
-
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)

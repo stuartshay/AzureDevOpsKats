@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 
 namespace AzureDevOpsKats.Web.Extensions
@@ -60,21 +61,18 @@ namespace AzureDevOpsKats.Web.Extensions
             services.AddSwaggerGen(options =>
             {
                 //options.OperationFilter<SwaggerDefaultValues>();
-
-                /*
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "AzureDevOpsKats.Web",
-                    Version = "v1",
-                    Description = "AzureDevOpsKats.Web",
-                    Contact = new OpenApiContact()
-                    {
-                        Email = "stuartshay@yahoo.com",
-                        Name = "Stuart Shay",
-                        Url = new Uri("https://github.com/stuartshay"),
-                    },
-                });
-                */
+                //options.SwaggerDoc("v1", new OpenApiInfo
+                //{
+                //    Title = "AzureDevOpsKats.Web",
+                //    Version = "v1",
+                //    Description = "AzureDevOpsKats.Web",
+                //    Contact = new OpenApiContact()
+                //    {
+                //        Email = "stuartshay@yahoo.com",
+                //        Name = "Stuart Shay",
+                //        Url = new Uri("https://github.com/stuartshay"),
+                //    },
+                //});
 
                 options.IncludeXmlComments(GetXmlCommentsPath());
             });

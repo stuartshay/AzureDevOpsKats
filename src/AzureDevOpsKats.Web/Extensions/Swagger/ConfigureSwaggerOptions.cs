@@ -39,9 +39,7 @@ namespace AzureDevOpsKats.Web.Extensions.Swagger
                 Title = "AzureDevOpsKats.Web",
                 Version = description.ApiVersion.ToString(),
                 Description = "AzureDevOpsKats.Web",
-               // Contact = new Contact() { Name = "Stuart Shay", Email = "sshay@yahoo.com" },
-               // TermsOfService = "Shareware",
-               // License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" },
+                Contact = new OpenApiContact() { Name = "Stuart Shay", Email = "sshay@yahoo.com" },
             };
 
             if (description.IsDeprecated)
