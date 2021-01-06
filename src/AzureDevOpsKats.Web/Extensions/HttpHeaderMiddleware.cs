@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using AzureDevOpsKats.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 
 namespace AzureDevOpsKats.Web.Extensions
@@ -16,6 +17,8 @@ namespace AzureDevOpsKats.Web.Extensions
 
         private readonly string _hostName;
 
+        private readonly string _ip4AddressList;
+
         /// <summary>
         /// 
         /// </summary>
@@ -25,6 +28,7 @@ namespace AzureDevOpsKats.Web.Extensions
             this._next = next;
             _machineName = Environment.MachineName;
             _hostName = Dns.GetHostName();
+            _ip4AddressList = ApplicationHelpers.GetIpAddressList();
         }
 
 
@@ -40,7 +44,8 @@ namespace AzureDevOpsKats.Web.Extensions
                 httpContext.Response.Headers.Add("X-Correlation-Id", Guid.NewGuid().ToString());
                 httpContext.Response.Headers.Add("X-MachineName", _machineName);
                 httpContext.Response.Headers.Add("X-HostName", _hostName);
-
+                httpContext.Response.Headers.Add("X-IpV4", _ip4AddressList);
+               
                 return Task.CompletedTask;
             }));
             try
