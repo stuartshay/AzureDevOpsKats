@@ -20,6 +20,9 @@ docfx_project/
 # Developer SQLite/Images
 **/ClientApp/public/Images/*
 
+**/Data/Database.sqlite
+*/Database.sqlite
+**/src/AzureDevOpsKats.Web/Data/*
 
 
 # User-specific files
