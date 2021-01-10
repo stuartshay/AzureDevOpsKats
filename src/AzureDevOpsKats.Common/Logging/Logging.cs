@@ -29,12 +29,13 @@ namespace AzureDevOpsKats.Common.Logging
 
                if (hostingContext.HostingEnvironment.IsDevelopment())
                {
-                   loggerConfiguration.MinimumLevel.Override("AzureDevOpsKats", LogEventLevel.Debug);
+                   loggerConfiguration.MinimumLevel.Override(ApplicationConstants.ApplicationName, LogEventLevel.Debug);
                }
 
                var elasticUrl = hostingContext.Configuration.GetValue<string>("Logging:ElasticUrl");
+               var elasticEnabled = hostingContext.Configuration.GetValue<bool>("Logging:ElasticEnabled");
 
-               if (!string.IsNullOrEmpty(elasticUrl))
+               if (!string.IsNullOrEmpty(elasticUrl) && elasticEnabled)
                {
                    loggerConfiguration.WriteTo.Elasticsearch(
                        new ElasticsearchSinkOptions(new Uri(elasticUrl))

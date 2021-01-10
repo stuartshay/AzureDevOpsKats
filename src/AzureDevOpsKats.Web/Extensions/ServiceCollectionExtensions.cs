@@ -26,7 +26,7 @@ namespace AzureDevOpsKats.Web.Extensions
         /// <param name="environment"></param>
         public static void DisplayConfiguration(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
-            var config = configuration.Get<Service.Configuration.ApplicationOptions>();
+            var config = configuration.Get<ApplicationOptions>();
             Console.WriteLine($"Environment: {environment.EnvironmentName}");
             Console.WriteLine($"CurrentDirectory: {Directory.GetCurrentDirectory()}");
 
@@ -38,8 +38,11 @@ namespace AzureDevOpsKats.Web.Extensions
             Console.WriteLine($"DataProtection: {config.Dataprotection.Enabled}");
             Console.WriteLine($"RedisConnection: {config.Dataprotection.RedisConnection}");
             Console.WriteLine($"Redis Key: {config.Dataprotection.RedisKey}");
-            Console.WriteLine($"Elastic: {config.ElasticConfiguration.Enabled}");
-            Console.WriteLine($"Elastic Uri: {config.ElasticConfiguration.Uri}");
+
+            var elasticUrl = configuration.GetValue<string>("Logging:ElasticUrl");
+            var elasticEnabled = configuration.GetValue<bool>("Logging:ElasticEnabled");
+            Console.WriteLine($"Elastic Uri: {elasticUrl}");
+            Console.WriteLine($"Elastic Enabled: {elasticEnabled}");
 
             //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
             //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);

@@ -2,6 +2,8 @@
 {
     public static class ApplicationConstants
     {
-        public const string IndexName = "globoticket";
+        public const string ApplicationName = "AzureDevOpsKats";
+
+        public const string IndexName = "azuredevopskats";
     }
 }
