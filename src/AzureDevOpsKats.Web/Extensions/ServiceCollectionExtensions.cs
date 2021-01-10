@@ -34,7 +34,12 @@ namespace AzureDevOpsKats.Web.Extensions
             Console.WriteLine($"RequestPath: {config.FileStorage.RequestPath}");
             Console.WriteLine($"PhysicalFilePath: {config.FileStorage.PhysicalFilePath}");
 
-            Console.WriteLine($"DbConnection: {configuration.GetConnectionString("DbConnection")}");
+            Console.WriteLine($"DbConnection: {config.ConnectionStrings.DbConnection}");
+            Console.WriteLine($"DataProtection: {config.Dataprotection.Enabled}");
+            Console.WriteLine($"RedisConnection: {config.Dataprotection.RedisConnection}");
+            Console.WriteLine($"Redis Key: {config.Dataprotection.RedisKey}");
+            Console.WriteLine($"Elastic: {config.ElasticConfiguration.Enabled}");
+            Console.WriteLine($"Elastic Uri: {config.ElasticConfiguration.Uri}");
 
             //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
             //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);

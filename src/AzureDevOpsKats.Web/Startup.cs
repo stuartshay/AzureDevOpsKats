@@ -1,5 +1,6 @@
 using System.IO;
 using AutoMapper;
+using AzureDevOpsKats.Common.Logging;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
@@ -61,6 +62,9 @@ namespace AzureDevOpsKats.Web
             
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection ))};";
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
+
+            //Logging 
+            services.AddTransient<LoggingDelegatingHandler>();
 
             // Services Configuration
             services.AddApiBehaviorOptions();
