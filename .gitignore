@@ -18,9 +18,10 @@ docfx_project/
 **/ClientApp/node_modules/*
 
 # Developer SQLite/Images
-**/ClientApp/public/Images/*
+#**/ClientApp/public/Images/*
 **/Data/Database.sqlite
 Database.sqlite
+
 
 
 # User-specific files
