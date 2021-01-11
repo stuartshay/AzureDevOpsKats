@@ -4,6 +4,7 @@ using System.Data;
 using System.Threading.Tasks;
 using AzureDevOpsKats.Data.Entities;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Data.Repository
 {
@@ -11,9 +12,12 @@ namespace AzureDevOpsKats.Data.Repository
     {
         private readonly SqliteConnection _dbConnection;
 
-        public CatRepository(string connection)
+        private readonly ILogger<CatRepository> _logger;
+
+        public CatRepository(string connection, ILogger<CatRepository> logger)
         {
             _dbConnection = new SqliteConnection(connection);
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Cat>> GetCats()
@@ -69,6 +73,8 @@ namespace AzureDevOpsKats.Data.Repository
                     cats.Add(cat);
                 }
             }
+
+            _logger.LogInformation($"Repository Total Cats:{{catsCount}}|Limit:{limit}|Offset{offset}", cats.Count, limit, offset);
 
             return cats;
         }

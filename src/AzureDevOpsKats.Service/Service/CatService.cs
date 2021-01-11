@@ -7,6 +7,7 @@ using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Service.Service
@@ -15,14 +16,17 @@ namespace AzureDevOpsKats.Service.Service
     {
         private readonly ICatRepository _catRepository;
 
+        private readonly ILogger<CatService> _logger;
+
         private readonly string _requestPath;
 
         private readonly IMapper _mapper;
 
-        public CatService(ICatRepository catRepository, IOptions<ApplicationOptions> settings, IMapper mapper)
+        public CatService(ICatRepository catRepository, IOptions<ApplicationOptions> settings, IMapper mapper, ILogger<CatService> logger)
         {
             this._catRepository = catRepository;
             _mapper = mapper;
+            _logger = logger;
             _requestPath = settings.Value.FileStorage.RequestPath;
         }
 
@@ -36,6 +40,8 @@ namespace AzureDevOpsKats.Service.Service
             {
                 result.Photo = $"{_requestPath}/{result.Photo}";
             }
+
+            _logger.LogInformation("Total Cats:{catsCount}", catModels.Length);
 
             return catModels;
         }
@@ -81,6 +87,8 @@ namespace AzureDevOpsKats.Service.Service
             {
                 result.Photo = $"{_requestPath}/{result.Photo}";
             }
+
+            _logger.LogInformation($"Service Total Cats:{{catsCount}}|Limit:{limit}|Offset{offset}", catModels.Length, limit, offset);
 
             return catModels;
         }

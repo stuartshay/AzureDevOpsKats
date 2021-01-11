@@ -62,8 +62,6 @@ namespace AzureDevOpsKats.Web.Controllers
         [Produces("application/json")]
         public async Task<ActionResult<IEnumerable<CatModel>>> Get(int limit, int page)
         {
-            _logger.LogInformation($"Get All Cats|Limit:{limit}|Page:{page}", limit, page);
-
             var total = await _catService.GetCount();
             if (total == 0)
             {
@@ -74,6 +72,8 @@ namespace AzureDevOpsKats.Web.Controllers
 
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
             HttpContext.Response.Headers.Add("X-InlineCount", total.ToString(CultureInfo.InvariantCulture));
+
+            _logger.LogInformation($"Web Get All Cats|Limit:{limit}|Page:{page}", limit, page);
 
             return Ok(results);
         }
