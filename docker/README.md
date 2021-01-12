@@ -8,18 +8,40 @@ Mac/Linux: ```/etc/hosts```
 
 ```
 127.0.0.1 azuredevopskats-web
+127.0.0.1 es01
+127.0.0.1 kib01
+127.0.0.1 traefik
 ```
 
 ### Docker Compose 
 
-```
-docker-compose pull
-docker-compose up
-docker-compose --scale azuredevopskats-web=5
-```
 
 ```
+docker-compose --file docker-compose.yml pull
+docker-compose --file docker-compose.yml up  --scale azuredevopskats-web=5
+```
+
+### Elastic
+```
+docker-compose --file docker-compose-elastic.yml up
+
+docker-compose --file docker-compose.yml --file docker-compose-elastic.yml pull
+docker-compose --file docker-compose.yml --file docker-compose-elastic.yml up --scale azuredevopskats-web=5
+```
+
+Azure Devops Website
+```
 http://azuredevopskats-web
+```
+
+Elastic Search
+```
+http://es01:5601/app/home#/
+```
+
+Traefik
+```
+http://traefik:8080
 ```
 
 ### Scale Command

@@ -21,7 +21,7 @@ services:
 
   azuredevopskats-web:
     hostname: azuredevopskats-web
-    image: "stuartshay/azuredevopskats:5.0.1-build.17"
+    image: "stuartshay/azuredevopskats:latest"
     environment:
      - ASPNETCORE_ENVIRONMENT=Docker
     labels:
