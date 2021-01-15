@@ -45,6 +45,8 @@ services:
       - setup.kibana.host="kib01:5601"
     depends_on:
       - es01
+    networks:
+      - elastic
 
 volumes:
   data01:

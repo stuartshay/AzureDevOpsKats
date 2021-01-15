@@ -17,7 +17,8 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
-     - azuredevopskats-network  
+     - azuredevopskats-network 
+     - elastic 
 
   azuredevopskats-web:
     hostname: azuredevopskats-web
@@ -32,6 +33,7 @@ services:
      - redis 
     networks:
      - azuredevopskats-network
+     - elastic
 
   redis:
     image: bitnami/redis
@@ -43,9 +45,12 @@ services:
       - redis-data:/data
     networks:
       - azuredevopskats-network
+      - elastic
 
 volumes:
   redis-data:
 
 networks:
   azuredevopskats-network:
+  elastic:
+    driver: bridge
