@@ -39,8 +39,8 @@ namespace AzureDevOpsKats.Web.Extensions
             Console.WriteLine($"RedisConnection: {config.Dataprotection.RedisConnection}");
             Console.WriteLine($"Redis Key: {config.Dataprotection.RedisKey}");
 
-            var elasticUrl = configuration.GetValue<string>("Logging:ElasticUrl");
-            var elasticEnabled = configuration.GetValue<bool>("Logging:ElasticEnabled");
+            var elasticUrl = configuration.GetValue<string>("Logging:ElasticSearchConfiguration:ElasticUrl");
+            var elasticEnabled = configuration.GetValue<bool>("Logging:ElasticSearchConfiguration:ElasticEnabled");
             Console.WriteLine($"Elastic Uri: {elasticUrl}");
             Console.WriteLine($"Elastic Enabled: {elasticEnabled}");
 

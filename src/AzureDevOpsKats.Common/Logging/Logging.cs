@@ -19,6 +19,7 @@ namespace AzureDevOpsKats.Common.Logging
 
                loggerConfiguration.MinimumLevel.Information()
                    .Enrich.FromLogContext()
+                   .Enrich.WithExceptionDetails()
                    .Enrich.WithMachineName()
                    .Enrich.WithProperty("ApplicationName", env.ApplicationName)
                    .Enrich.WithProperty("EnvironmentName", env.EnvironmentName)
@@ -33,8 +34,8 @@ namespace AzureDevOpsKats.Common.Logging
                    loggerConfiguration.MinimumLevel.Override(ApplicationConstants.ApplicationName, LogEventLevel.Debug);
                }
 
-               var elasticUrl = hostingContext.Configuration.GetValue<string>("Logging:ElasticUrl");
-               var elasticEnabled = hostingContext.Configuration.GetValue<bool>("Logging:ElasticEnabled");
+               var elasticUrl = hostingContext.Configuration.GetValue<string>("Logging:ElasticSearchConfiguration:ElasticUrl");
+               var elasticEnabled = hostingContext.Configuration.GetValue<bool>("Logging:ElasticSearchConfiguration:ElasticEnabled");
 
                //https://www.humankode.com/asp-net-core/logging-with-elasticsearch-kibana-asp-net-core-and-docker
                var indexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name?.ToLower().Replace(".", "-")}-{env.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}";

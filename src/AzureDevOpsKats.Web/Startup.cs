@@ -92,6 +92,14 @@ namespace AzureDevOpsKats.Web
 
             services.AddRazorPages();
 
+            //Health Checks
+            services.AddHealthChecks()
+                .AddElasticsearch("http://es01:9200");
+            
+            services.AddHealthChecksUI()
+                .AddInMemoryStorage(); 
+
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -137,6 +145,7 @@ namespace AzureDevOpsKats.Web
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+                endpoints.MapHealthChecksUI();
             });
 
             app.UseSpa(spa =>
