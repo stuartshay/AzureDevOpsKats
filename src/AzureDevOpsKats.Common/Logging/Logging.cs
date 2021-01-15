@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using AzureDevOpsKats.Common.Constants;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +35,9 @@ namespace AzureDevOpsKats.Common.Logging
 
                var elasticUrl = hostingContext.Configuration.GetValue<string>("Logging:ElasticUrl");
                var elasticEnabled = hostingContext.Configuration.GetValue<bool>("Logging:ElasticEnabled");
+
+               //https://www.humankode.com/asp-net-core/logging-with-elasticsearch-kibana-asp-net-core-and-docker
+               var indexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name?.ToLower().Replace(".", "-")}-{env.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}";
 
                if (!string.IsNullOrEmpty(elasticUrl) && elasticEnabled)
                {

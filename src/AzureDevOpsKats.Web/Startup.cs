@@ -147,6 +147,8 @@ namespace AzureDevOpsKats.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
+            //https://github.com/elastic/apm-agent-dotnet/tree/master/sample
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)

@@ -95,7 +95,8 @@ namespace AzureDevOpsKats.Service.Service
 
         public async Task<long> GetCount()
         {
-            return await _catRepository.GetCount();
+            var result = await _catRepository.GetCount();
+            return result;
         }
     }
 }

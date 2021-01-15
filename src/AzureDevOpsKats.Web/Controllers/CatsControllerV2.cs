@@ -63,7 +63,7 @@ namespace AzureDevOpsKats.Web.Controllers
         public async Task<ActionResult<IEnumerable<CatModel>>> Get(int limit, int page)
         {
             var total = await _catService.GetCount();
-            if (total == 0)
+            if (total <= 0)
             {
                 return NotFound();
             }

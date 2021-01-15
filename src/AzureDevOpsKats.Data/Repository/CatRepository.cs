@@ -12,12 +12,16 @@ namespace AzureDevOpsKats.Data.Repository
     {
         private readonly SqliteConnection _dbConnection;
 
+        private readonly string _connectionString; 
+
+
         private readonly ILogger<CatRepository> _logger;
 
         public CatRepository(string connection, ILogger<CatRepository> logger)
         {
-            _dbConnection = new SqliteConnection(connection);
             _logger = logger;
+            _connectionString = connection;
+            _dbConnection = GetSqliteConnection(connection);
         }
 
         public async Task<IEnumerable<Cat>> GetCats()
@@ -85,11 +89,20 @@ namespace AzureDevOpsKats.Data.Repository
             await using (var command = _dbConnection.CreateCommand())
             {
                 command.CommandText = "SELECT COUNT(*) FROM Cats";
+                try
+                {
+                    var result = await command.ExecuteScalarAsync();
+                    var item = result ?? 0;
 
-                var result = await command.ExecuteScalarAsync();
-                var item = result ?? 0;
+                    return (long)item;
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError("GET COUNT FAILED", ex.Message);
+                    return -1;
+                }
 
-                return (long)item;
+                return 0;
             }
         }
 
@@ -190,6 +203,12 @@ namespace AzureDevOpsKats.Data.Repository
         {
             _dbConnection.CloseAsync();
             _dbConnection.Dispose();
+        }
+
+        private SqliteConnection GetSqliteConnection(string connectionString)
+        {
+            var connection = new SqliteConnection(connectionString);
+            return connection;
         }
     }
 }

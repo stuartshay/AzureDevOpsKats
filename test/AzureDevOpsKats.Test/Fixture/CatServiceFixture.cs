@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.IO;
 using AutoMapper;
 using AzureDevOpsKats.Data.Repository;
@@ -7,6 +8,7 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Test.Fixture
 {
@@ -32,7 +34,7 @@ namespace AzureDevOpsKats.Test.Fixture
                 .AddOptions()
                 .Configure<ApplicationOptions>(builder)
                 .AddSingleton(builder)
-                .AddSingleton<ICatRepository>(new CatRepository(dbConnection))
+                .AddSingleton<ICatRepository>(provider => new CatRepository(dbConnection, provider.GetService<ILogger<CatRepository>>()))
                 .AddScoped<ICatService, CatService>()
                 .AddSingleton(mapper)
                 .BuildServiceProvider();
