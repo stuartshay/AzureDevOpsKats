@@ -11,10 +11,10 @@ Mac/Linux: ```/etc/hosts```
 127.0.0.1 es01
 127.0.0.1 kib01
 127.0.0.1 traefik
+127.0.0.1 redis
 ```
 
 ### Docker Compose 
-
 
 ```
 docker-compose --file docker-compose.yml pull
