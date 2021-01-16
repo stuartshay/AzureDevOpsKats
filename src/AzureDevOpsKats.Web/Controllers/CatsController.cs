@@ -183,7 +183,7 @@ namespace AzureDevOpsKats.Web.Controllers
 
             await _catService.EditCat(id, value);
 
-            _logger.LogInformation($"Update:{id}|{value.Name}{value.Description}", id, value.Name, value.Description);
+            _logger.LogInformation("Update:{id}|{@value}", id, value);
 
             return Ok(value);
         }
