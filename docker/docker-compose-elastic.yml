@@ -17,6 +17,7 @@ services:
         hard: -1
     volumes:
       - data01:/usr/share/elasticsearch/data
+      - ./elastic/entrypoint-elastic.sh:/entrypoint-elastic.sh
     ports:
       - 9200:9200
     networks:
@@ -30,6 +31,17 @@ services:
     environment:
       ELASTICSEARCH_URL: http://es01:9200
       ELASTICSEARCH_HOSTS: http://es01:9200
+    networks:
+      - elastic
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.10.1
+    user: root
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./beats/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - elastic
 
