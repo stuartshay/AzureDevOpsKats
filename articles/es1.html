@@ -69,6 +69,20 @@
             <article class="content wrap" id="_content" data-uid="">
 <h2 id="elastic-search">Elastic Search</h2>
 
+<h3 id="setup-index-patterns">Setup Index Patterns</h3>
+<p><img src="assets/es-home.png" alt=""></p>
+<p>Goto Stack Management</p>
+<p><img src="assets/index-pattern.png" alt=""></p>
+<p>Create Index
+<img src="assets/create-index.png" alt=""></p>
+<h2 id="section"></h2>
+<pre><code>https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-mgmt.html
+</code></pre>
+<h3 id="clear-docker-container-log-file">Clear Docker Container Log File</h3>
+<pre><code>docker inspect --format='{{.LogPath}}' &lt;container id/name&gt;
+
+truncate -s 0 /path/to/logfile
+</code></pre>
 </article>
           </div>
           
