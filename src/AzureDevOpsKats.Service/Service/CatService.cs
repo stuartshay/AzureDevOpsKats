@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -25,8 +26,8 @@ namespace AzureDevOpsKats.Service.Service
         public CatService(ICatRepository catRepository, IOptions<ApplicationOptions> settings, IMapper mapper, ILogger<CatService> logger)
         {
             this._catRepository = catRepository;
+            _logger = logger ?? throw new ArgumentException();
             _mapper = mapper;
-            _logger = logger;
             _requestPath = settings.Value.FileStorage.RequestPath;
         }
 

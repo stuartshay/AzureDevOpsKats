@@ -73,7 +73,7 @@ namespace AzureDevOpsKats.Web.Controllers
             HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
             HttpContext.Response.Headers.Add("X-InlineCount", total.ToString(CultureInfo.InvariantCulture));
 
-            _logger.LogInformation($"Web Get All Cats|Limit:{limit}|Page:{page}", limit, page);
+            _logger.LogInformation("Web Get All Cats|Limit:{limit}|Page:{page}", limit, page);
 
             return Ok(results);
         }

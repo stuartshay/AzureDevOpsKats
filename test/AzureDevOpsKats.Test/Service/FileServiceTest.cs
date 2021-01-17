@@ -19,14 +19,14 @@ namespace AzureDevOpsKats.Test.Service
         }
 
         [Fact(Skip = "Fix")]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public void Can_Validate_Create_Path()
         {
             _fileService.ValidateDirectory(ApplicationPath);
         }
 
         [Fact(Skip = "Fix")]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public void Can_Save_Delete_File()
         {
             byte[] bytes = Encoding.ASCII.GetBytes("MOCK_FILE_CONTENT");
