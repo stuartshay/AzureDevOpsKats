@@ -10,14 +10,29 @@ Goto Stack Management
 
 ![](assets/index-pattern.png)
 
-Create Index 
+Create Index       
 ![](assets/create-index.png)
+
+
+```
+azuredevopskats-logs-*
+filebeat-*
+```
 
 ## 
 
 ```
 https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-mgmt.html
 ```
+
+## Elastic Search Plugins
+
+```
+sudo bin/elasticsearch-plugin list
+```
+
+
+
 
 
 
