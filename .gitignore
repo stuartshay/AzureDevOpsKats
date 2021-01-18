@@ -17,6 +17,14 @@ docfx_project/
 **/ClientApp/build/*
 **/ClientApp/node_modules/*
 
+# Developer SQLite/Images
+**/ClientApp/public/Images/*
+
+**/Data/Database.sqlite
+*/Database.sqlite
+**/src/AzureDevOpsKats.Web/Data/*
+
+
 # User-specific files
 *.suo
 *.user

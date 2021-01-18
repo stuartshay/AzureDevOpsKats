@@ -23,7 +23,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Get_Cats()
         {
             var results = await _catRepository.GetCats();
@@ -32,7 +32,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Get_Cats_Paging()
         {
             var results = await _catRepository.GetCats(3, 0);
@@ -42,7 +42,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Get_Count()
         {
             var result = await _catRepository.GetCount();
@@ -52,7 +52,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Create_Cat()
         {
             var name = "Test 2";
@@ -70,7 +70,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Edit_Cat()
         {
             var id = 2;
@@ -92,7 +92,7 @@ namespace AzureDevOpsKats.Test.Repository
 
         [Theory]
         [InlineData(1)]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Get_Cat(int id)
         {
             var result = await _catRepository.GetCat(id);
@@ -104,7 +104,7 @@ namespace AzureDevOpsKats.Test.Repository
 
         [Theory]
         [InlineData(int.MaxValue)]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Get_Cat_Returns_Null(int id)
         {
             var result = await _catRepository.GetCat(id);
@@ -112,7 +112,7 @@ namespace AzureDevOpsKats.Test.Repository
         }
 
         [Fact]
-        [Trait("Category", "Intergration")]
+        [Trait("Category", "Integration")]
         public async Task Delete_Cat()
         {
             var cat = new Cat

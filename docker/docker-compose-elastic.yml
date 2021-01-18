@@ -1,36 +1,86 @@
 version: '3.8'
+
 services:
 
-    es01:
-      image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
-      container_name: es01
-      environment:
-        - node.name=es01
-        - cluster.name=es-docker-cluster
-        - bootstrap.memory_lock=true
-        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-        - discovery.type=single-node
-      ulimits:
-        memlock:
-          soft: -1
-          hard: -1
-      volumes:
-        - data01:/usr/share/elasticsearch/data
-      ports:
-        - 9200:9200
-      networks:
-        - elastic
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    entrypoint: /scripts/entrypoint-elastic.sh
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+      - ./elastic/scripts:/scripts
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
 
-    kib01:
-      image: docker.elastic.co/kibana/kibana:7.9.1
-      container_name: kib01
-      ports:
-        - 5601:5601
-      environment:
-        ELASTICSEARCH_URL: http://es01:9200
-        ELASTICSEARCH_HOSTS: http://es01:9200
-      networks:
-        - elastic
+  kib01:
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    container_name: kib01
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: http://es01:9200
+    networks:
+      - elastic
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.10.2
+    user: root
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./beats/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - es01
+    networks:
+      - elastic
+
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.10.2
+    user: root
+    command: '-e'
+    ports:
+      - 5066
+    volumes:
+      - ./beats/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+    environment:
+      - output.elasticsearch.hosts=['http://es01:9200']
+      - setup.kibana.host=kibana:5601
+    depends_on:
+      - es01
+    networks:
+      - elastic  
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.10.1
+    container_name: apm-server
+    ports:
+      - "8200:8200"
+      - "8201:8200"
+    environment:
+      - output.elasticsearch.hosts=['http://es01:9200']
+      - apm-server.host="0.0.0.0:8200"
+      - setup.kibana.host="kib01:5601"
+    depends_on:
+      - es01
+    networks:
+      - elastic
 
 volumes:
   data01:

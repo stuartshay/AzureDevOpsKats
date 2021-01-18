@@ -89,6 +89,8 @@ namespace AzureDevOpsKats.Web.Controllers
             var result = await _catService.GetCat(id);
             if (result == null)
                 return NotFound();
+           
+            _logger.LogInformation("Get:{id}", id);
 
             return Ok(result);
         }
@@ -180,6 +182,8 @@ namespace AzureDevOpsKats.Web.Controllers
             }
 
             await _catService.EditCat(id, value);
+
+            _logger.LogInformation("Update:{id}|{@value}", id, value);
 
             return Ok(value);
         }

@@ -11,6 +11,8 @@ using Xunit;
 using Moq;
 using Xunit.Abstractions;
 using AzureDevOpsKats.Service.Configuration;
+using AzureDevOpsKats.Web.Controllers;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AzureDevOpsKats.Test.Mock
@@ -160,11 +162,14 @@ namespace AzureDevOpsKats.Test.Mock
             var settings = new Mock<IOptions<ApplicationOptions>>();
             settings.Setup(ap => ap.Value).Returns(app);
 
+            //Logger
+            var logger = new Mock<ILogger<CatService>>().Object;
+
             // Mapping Configuration
             var mapperConfig = new MapperConfiguration(cfg => { cfg.AddMaps("AzureDevOpsKats.Service"); });
             IMapper mapper = new Mapper(mapperConfig);
 
-            return new CatService(catRepository, settings.Object, mapper);
+            return new CatService(catRepository, settings.Object, mapper, logger);
         }
     }
 }

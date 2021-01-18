@@ -1,5 +1,6 @@
 using System.IO;
 using AutoMapper;
+using AzureDevOpsKats.Common.Logging;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -62,6 +64,9 @@ namespace AzureDevOpsKats.Web
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection ))};";
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
 
+            //Logging 
+            services.AddTransient<LoggingDelegatingHandler>();
+
             // Services Configuration
             services.AddApiBehaviorOptions();
 
@@ -74,7 +79,9 @@ namespace AzureDevOpsKats.Web
             services.AddCustomCookiePolicy(Configuration);
 
             // Application Services 
-            services.AddSingleton<ICatRepository>(new CatRepository(connection));
+            services.AddSingleton<ICatRepository>(provider =>
+                new CatRepository(connection, provider.GetService<ILogger<CatRepository>>()));
+
             services.AddScoped<ICatService, CatService>();
             services.AddScoped<IFileService, FileService>();
 
@@ -84,6 +91,14 @@ namespace AzureDevOpsKats.Web
             services.AddSingleton(mapper);
 
             services.AddRazorPages();
+
+            //Health Checks
+            services.AddHealthChecks()
+                .AddElasticsearch("http://es01:9200");
+            
+            services.AddHealthChecksUI()
+                .AddInMemoryStorage(); 
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -130,6 +145,7 @@ namespace AzureDevOpsKats.Web
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+                endpoints.MapHealthChecksUI();
             });
 
             app.UseSpa(spa =>
@@ -140,6 +156,8 @@ namespace AzureDevOpsKats.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
+            //https://github.com/elastic/apm-agent-dotnet/tree/master/sample
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)

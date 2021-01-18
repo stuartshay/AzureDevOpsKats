@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.IO;
 using AutoMapper;
 using AzureDevOpsKats.Data.Repository;
@@ -7,6 +8,8 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AzureDevOpsKats.Test.Fixture
 {
@@ -28,17 +31,19 @@ namespace AzureDevOpsKats.Test.Fixture
             var mapperConfig = new MapperConfiguration(cfg => { cfg.AddMaps("AzureDevOpsKats.Service"); });
             IMapper mapper = new Mapper(mapperConfig);
 
-            var serviceProvider = new ServiceCollection()
+            var services = new ServiceCollection()
                 .AddOptions()
                 .Configure<ApplicationOptions>(builder)
                 .AddSingleton(builder)
-                .AddSingleton<ICatRepository>(new CatRepository(dbConnection))
+                .AddSingleton<ICatRepository>(provider => new CatRepository(dbConnection, provider.GetService<ILogger<CatRepository>>()))
                 .AddScoped<ICatService, CatService>()
+                .AddScoped<ILogger<CatRepository>, NullLogger<CatRepository>>()
+                .AddScoped<ILogger<CatService>, NullLogger<CatService>>()
                 .AddSingleton(mapper)
                 .BuildServiceProvider();
 
-            serviceProvider.GetRequiredService<ICatRepository>();
-            CatService = serviceProvider.GetRequiredService<ICatService>();
+            services.GetRequiredService<ICatRepository>();
+            CatService = services.GetRequiredService<ICatService>();
         }
 
         public ICatService CatService { get; }

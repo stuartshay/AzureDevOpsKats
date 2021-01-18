@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using AzureDevOpsKats.Common.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace AzureDevOpsKats.Web
 {
@@ -26,6 +29,7 @@ namespace AzureDevOpsKats.Web
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -39,7 +43,8 @@ namespace AzureDevOpsKats.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                }).UseSerilog(Logging.ConfigureLogger);
+
 
         ///// <summary>
         /////  Main Entry Point.
@@ -71,24 +76,5 @@ namespace AzureDevOpsKats.Web
         //    }
         //}
 
-        ///// <summary>
-        ///// Create WebHost Builder.
-        ///// </summary>
-        ///// <param name="args">WebHostBuilder Arguments</param>
-        ///// <returns>IWebHost Builder</returns>
-        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        //    WebHost.CreateDefaultBuilder(args)
-        //        .UseStartup<Startup>()
-        //        .UseApplicationInsights() // Enable Application Insights
-        //        .ConfigureLogging((hostingContext, logging) =>
-        //         {
-        //             logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-        //             logging.AddConsole();
-        //             logging.AddDebug();
-
-        //             logging.AddApplicationInsights("tkjrca4geosn58b5jq0m1nsfg3o2oz8jxv58gsys");
-        //             logging.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
-        //         })
-        //        .UseSerilog();
     }
 }
