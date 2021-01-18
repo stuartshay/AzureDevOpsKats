@@ -73,10 +73,16 @@
 <p><img src="assets/es-home.png" alt=""></p>
 <p>Goto Stack Management</p>
 <p><img src="assets/index-pattern.png" alt=""></p>
-<p>Create Index
+<p>Create Index<br>
 <img src="assets/create-index.png" alt=""></p>
+<pre><code>azuredevopskats-logs-*
+filebeat-*
+</code></pre>
 <h2 id="section"></h2>
 <pre><code>https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-mgmt.html
+</code></pre>
+<h2 id="elastic-search-plugins">Elastic Search Plugins</h2>
+<pre><code>sudo bin/elasticsearch-plugin list
 </code></pre>
 <h3 id="clear-docker-container-log-file">Clear Docker Container Log File</h3>
 <pre><code>docker inspect --format='{{.LogPath}}' &lt;container id/name&gt;
