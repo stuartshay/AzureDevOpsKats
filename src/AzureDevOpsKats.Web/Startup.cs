@@ -1,5 +1,8 @@
+using System;
 using System.IO;
+using System.Net.Http;
 using AutoMapper;
+using AzureDevOpsKats.Common.HealthChecks;
 using AzureDevOpsKats.Common.Logging;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
@@ -7,7 +10,9 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
 using AzureDevOpsKats.Web.Extensions;
 using AzureDevOpsKats.Web.Extensions.Swagger;
+using Elastic.Apm.NetCoreAll;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -18,6 +23,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using HealthChecks.UI.Client;
 
 namespace AzureDevOpsKats.Web
 {
@@ -55,7 +61,8 @@ namespace AzureDevOpsKats.Web
         {
             // Configuration
             services.AddOptions();
-            services.Configure<ApplicationOptions>(Configuration);
+            services.Configure<AzureDevOpsKats.Common.Configuration.ApplicationOptions>(Configuration);
+            services.Configure<AzureDevOpsKats.Service.Configuration.ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
 
             services.DisplayConfiguration(Configuration, Environment);
@@ -93,12 +100,21 @@ namespace AzureDevOpsKats.Web
             services.AddRazorPages();
 
             //Health Checks
-            services.AddHealthChecks()
-                .AddElasticsearch("http://es01:9200");
-            
-            services.AddHealthChecksUI()
-                .AddInMemoryStorage(); 
-
+            services
+                .AddHealthChecksUI()
+                .AddInMemoryStorage()
+                .Services
+                .AddHealthChecks()
+                 // .AddCheck<RandomHealthCheck>("random")
+                .AddUrlGroup(new Uri("http://apm-server:8200"), name: "APM Http", tags: new[] { "Port:8200" }, httpMethod: HttpMethod.Get)
+                .AddUrlGroup(new Uri("http://es01:9200"), name: "ElasticSearch Http", tags: new[] { "Port:9200" }, httpMethod: HttpMethod.Get)
+                .AddUrlGroup(new Uri("http://kib01:5601"), name: "Kibana Http", tags: new[] { "Port:5601" }, httpMethod: HttpMethod.Get)
+                .AddUrlGroup(new Uri("http://traefik:8080/ping"), name: "Traefik Http", tags: new[] { "Port:8080" }, httpMethod: HttpMethod.Get)
+                .AddElasticsearch("http://es01:9200", name: "ElasticSearch Client")
+                .AddRedis("redis", name:"Redis Client")
+                .AddCheck<SystemMemoryHealthCheck>("Memory")
+                .Services
+                .AddControllers();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -134,6 +150,8 @@ namespace AzureDevOpsKats.Web
             ConfigureSwagger(app, apiVersionDescriptionProvider);
             app.UseMiddleware(typeof(HttpHeaderMiddleware));
 
+            app.UseAllElasticApm(Configuration);
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -145,6 +163,11 @@ namespace AzureDevOpsKats.Web
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+                endpoints.MapHealthChecks("healthz", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
                 endpoints.MapHealthChecksUI();
             });
 
@@ -156,8 +179,6 @@ namespace AzureDevOpsKats.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
-            //https://github.com/elastic/apm-agent-dotnet/tree/master/sample
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
@@ -172,4 +193,8 @@ namespace AzureDevOpsKats.Web
             });
         }
     }
+
+    // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
+    //https://github.com/elastic/apm-agent-dotnet/tree/master/sample
+
 }
