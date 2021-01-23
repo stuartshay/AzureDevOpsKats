@@ -45,7 +45,7 @@ namespace AzureDevOpsKats.Web.Extensions
             Console.WriteLine($"Elastic Enabled: {elasticEnabled}");
             Console.WriteLine("MemoryHealth - Healthy:{0}", config.MemoryHealthConfiguration.Healthy);
             
-            Log.Information("MemoryHealth - Healthy:{mgs}", config.MemoryHealthConfiguration.Healthy);
+            //Log.Information("MemoryHealth - Healthy:{mgs}", config.MemoryHealthConfiguration.Healthy);
 
             //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
             //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
