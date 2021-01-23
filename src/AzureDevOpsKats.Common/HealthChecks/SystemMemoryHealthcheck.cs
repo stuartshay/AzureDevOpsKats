@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AzureDevOpsKats.Common.Configuration;
@@ -39,20 +40,27 @@ namespace AzureDevOpsKats.Common.HealthChecks
         {
             var client = new MemoryMetricsClient();
             var metrics = client.GetMetrics();
-            var percentUsed = 100 * metrics.Used / metrics.Total;
+            var percentUsed = Math.Round(100 * metrics.Used / metrics.Total, 5);
 
             var status = HealthStatus.Healthy;
+            var message = string.Empty;
 
             var degraded = _memoryHealthConfiguration?.Degraded ?? 80;
+            var unhealthy = _memoryHealthConfiguration?.Unhealthy ?? 90;
+
             if (percentUsed > degraded)
             {
+                message = $"Degraded:{percentUsed} Range:{unhealthy} => {degraded}";
                 status = HealthStatus.Degraded;
             }
-            var unhealthy = _memoryHealthConfiguration?.Unhealthy ?? 90;
+         
             if (percentUsed > unhealthy)
             {
+                message = $"Unhealthy:{percentUsed}| > {degraded} (Degraded)";
                 status = HealthStatus.Unhealthy;
             }
+
+            message = $"Healthy:{percentUsed} < {degraded}%";
 
             var data = new Dictionary<string, object>
             {
@@ -64,7 +72,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
             _logger.LogInformation("PercentUsed:{percentUsed}|Total:{total}|Used:{used}|Free:{free}",
                 percentUsed , metrics.Total, metrics.Used, metrics.Free);
 
-            var result = new HealthCheckResult(status, null, null, data);
+            var result = new HealthCheckResult(status, message, null, data);
 
             return await Task.FromResult(result);
         }
