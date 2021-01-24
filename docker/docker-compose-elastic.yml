@@ -68,7 +68,7 @@ services:
       - elastic  
 
   apm-server:
-    image: docker.elastic.co/apm/apm-server:7.10.1
+    image: docker.elastic.co/apm/apm-server:7.10.2
     container_name: apm-server
     ports:
       - "8200:8200"
