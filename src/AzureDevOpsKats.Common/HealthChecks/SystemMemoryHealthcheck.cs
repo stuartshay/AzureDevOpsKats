@@ -41,7 +41,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
             var client = new MemoryMetricsClient();
             var metrics = client.GetMetrics();
             
-            var percentUsed = metrics.Total != 0 ? Math.Round(100 * metrics.Used / metrics.Total, 2) : 0;
+            var percentUsed = Math.Abs(metrics.Total) > 0 ? Math.Round(100 * metrics.Used / metrics.Total, 2) : 0;
 
             var status = HealthStatus.Healthy;
 
@@ -49,9 +49,9 @@ namespace AzureDevOpsKats.Common.HealthChecks
             var unhealthy = _memoryHealthConfiguration?.Unhealthy ?? 90;
             var message = $"Healthy:{percentUsed} < {degraded}%";
 
-            if (percentUsed > degraded || percentUsed == 0)
+            if (percentUsed > degraded || Math.Abs(percentUsed) > 0)
             {
-                message = $"Degraded:{percentUsed}% Range:{unhealthy}% => {degraded}%";
+                message = $"Degraded:{percentUsed}% Range:{unhealthy}% > {degraded}%";
                 status = HealthStatus.Degraded;
             }
 
@@ -68,10 +68,8 @@ namespace AzureDevOpsKats.Common.HealthChecks
                 {"Free", metrics.Free}
             };
 
-            _logger.LogInformation("PercentUsed:{percentUsed}|Total:{total}|Used:{used}|Free:{free}",
-                percentUsed, metrics.Total, metrics.Used, metrics.Free);
+            _logger.LogInformation("Metrics:{@data}", data);
 
-            
             var result = new HealthCheckResult(status, message, null, data);
 
             return await Task.FromResult(result);

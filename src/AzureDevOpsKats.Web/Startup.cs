@@ -135,6 +135,10 @@ namespace AzureDevOpsKats.Web
                     tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
 
                 .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new []{HealthCheckType.System.ToString()})
+                
+                .AddCheck(name :"SQLite Database", new SqliteConnectionHealthCheck(connectionString : connection, testQuery : "Select 1"),
+                    failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
+                
                 .Services
                 .AddControllers();
 
@@ -234,7 +238,8 @@ namespace AzureDevOpsKats.Web
         }
     }
 
+    // APM Configuration
     // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
-    //https://github.com/elastic/apm-agent-dotnet/tree/master/sample
+    // https://github.com/elastic/apm-agent-dotnet/tree/master/sample
 
 }
