@@ -43,24 +43,26 @@ namespace AzureDevOpsKats.Common.HealthChecks
             var percentUsed = Math.Round(100 * metrics.Used / metrics.Total, 5);
 
             var status = HealthStatus.Healthy;
-            var message = string.Empty;
 
             var degraded = _memoryHealthConfiguration?.Degraded ?? 80;
             var unhealthy = _memoryHealthConfiguration?.Unhealthy ?? 90;
+            var message = $"Healthy:{percentUsed} < {degraded}%";
 
             if (percentUsed > degraded)
             {
                 message = $"Degraded:{percentUsed} Range:{unhealthy} => {degraded}";
                 status = HealthStatus.Degraded;
             }
-         
+
             if (percentUsed > unhealthy)
             {
                 message = $"Unhealthy:{percentUsed}| > {degraded} (Degraded)";
                 status = HealthStatus.Unhealthy;
             }
-
-            message = $"Healthy:{percentUsed} < {degraded}%";
+            //else
+            //{
+            //    message = $"Healthy:{percentUsed} < {degraded}%";
+            //}
 
             var data = new Dictionary<string, object>
             {

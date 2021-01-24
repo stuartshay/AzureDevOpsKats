@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using AutoMapper;
+using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.HealthChecks;
 using AzureDevOpsKats.Common.Logging;
 using AzureDevOpsKats.Data.Repository;
@@ -24,6 +25,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using HealthChecks.UI.Client;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace AzureDevOpsKats.Web
 {
@@ -101,18 +103,39 @@ namespace AzureDevOpsKats.Web
 
             //Health Checks
             services
-                .AddHealthChecksUI()
+                    
+                .AddHealthChecksUI(setupSettings: setup =>
+                {
+                    setup.AddHealthCheckEndpoint("health", "http://localhost:5000/health");
+                    setup.AddHealthCheckEndpoint("health-infa", "http://localhost:5000/health-infa");
+                    setup.AddHealthCheckEndpoint("health-system", "http://localhost:5000/health-system");
+                    // setup.AddWebhookNotification("webhook1", uri: "http://httpbin.org/status/200?code=ax3rt56s", payload: "{...}");
+                })
+
                 .AddInMemoryStorage()
                 .Services
                 .AddHealthChecks()
-                 // .AddCheck<RandomHealthCheck>("random")
-                .AddUrlGroup(new Uri("http://apm-server:8200"), name: "APM Http", tags: new[] { "Port:8200" }, httpMethod: HttpMethod.Get)
-                .AddUrlGroup(new Uri("http://es01:9200"), name: "ElasticSearch Http", tags: new[] { "Port:9200" }, httpMethod: HttpMethod.Get)
-                .AddUrlGroup(new Uri("http://kib01:5601"), name: "Kibana Http", tags: new[] { "Port:5601" }, httpMethod: HttpMethod.Get)
-                .AddUrlGroup(new Uri("http://traefik:8080/ping"), name: "Traefik Http", tags: new[] { "Port:8080" }, httpMethod: HttpMethod.Get)
-                .AddElasticsearch("http://es01:9200", name: "ElasticSearch Client")
-                .AddRedis("redis", name:"Redis Client")
-                .AddCheck<SystemMemoryHealthCheck>("Memory")
+                
+                .AddUrlGroup(new Uri("http://apm-server:8200"), name: "APM Http", tags: new[] { HealthCheckType.Monitoring.ToString(), "Port:8200" }, 
+                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Degraded)
+                
+                .AddUrlGroup(new Uri("http://es01:9200"), name: "ElasticSearch Http", tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }, 
+                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Unhealthy)
+
+                // curl -XGET http://kib01:5601/status -I
+                .AddUrlGroup(new Uri("http://kib01:5601/status"), name: "Kibana Http", tags: new[] { HealthCheckType.Metrics.ToString(), "Port:5601" },
+                    httpMethod: HttpMethod.Head, failureStatus: HealthStatus.Degraded)
+
+                .AddUrlGroup(new Uri("http://traefik:8080/ping"), name: "Traefik Http", tags: new[] { HealthCheckType.Infrastructure.ToString(), "Port:8080" }, 
+                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Unhealthy)
+                
+                .AddElasticsearch("http://es01:9200", name: "ElasticSearch Client", failureStatus: HealthStatus.Degraded, 
+                    tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }) 
+
+                .AddRedis("redis", name:"Redis Client", failureStatus: HealthStatus.Degraded, 
+                    tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
+
+                .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new []{HealthCheckType.System.ToString()})
                 .Services
                 .AddControllers();
 
@@ -163,12 +186,30 @@ namespace AzureDevOpsKats.Web
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapHealthChecks("healthz", new HealthCheckOptions()
+                
+                endpoints.MapHealthChecks("health", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-                endpoints.MapHealthChecksUI();
+                endpoints.MapHealthChecks("health-infa", new HealthCheckOptions()
+                {
+                    Predicate = (check) => check.Tags.Contains(HealthCheckType.Infrastructure.ToString()),
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("health-system", new HealthCheckOptions()
+                {
+                    Predicate = (check) => check.Tags.Contains(HealthCheckType.System.ToString()),
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+
+                // Health Check UI Configuration
+                endpoints.MapHealthChecksUI(setup =>
+                {
+                    setup.UIPath = "/health-ui";
+                    setup.ApiPath = "/health-ui-api";
+                    setup.AddCustomStylesheet("dotnet.css");
+                });
             });
 
             app.UseSpa(spa =>
