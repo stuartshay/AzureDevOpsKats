@@ -103,11 +103,10 @@ namespace AzureDevOpsKats.Web
 
             //Health Checks
             services
-                    
                 .AddHealthChecksUI(setupSettings: setup =>
                 {
                     setup.AddHealthCheckEndpoint("health", "http://localhost:5000/health");
-                    setup.AddHealthCheckEndpoint("health-infa", "http://localhost:5000/health-infa");
+                    setup.AddHealthCheckEndpoint("health-infra", "http://localhost:5000/health-infra");
                     setup.AddHealthCheckEndpoint("health-system", "http://localhost:5000/health-system");
                     // setup.AddWebhookNotification("webhook1", uri: "http://httpbin.org/status/200?code=ax3rt56s", payload: "{...}");
                 })
@@ -192,7 +191,7 @@ namespace AzureDevOpsKats.Web
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-                endpoints.MapHealthChecks("health-infa", new HealthCheckOptions()
+                endpoints.MapHealthChecks("health-infra", new HealthCheckOptions()
                 {
                     Predicate = (check) => check.Tags.Contains(HealthCheckType.Infrastructure.ToString()),
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

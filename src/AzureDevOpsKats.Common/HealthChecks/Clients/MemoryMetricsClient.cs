@@ -37,7 +37,8 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
 
         private MemoryMetrics GetWindowsMetrics()
         {
-            var output = "";
+            var output = string.Empty;
+            var metrics = new MemoryMetrics(); 
 
             var info = new ProcessStartInfo
             {
@@ -51,23 +52,24 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
                 if (process != null) output = process.StandardOutput.ReadToEnd();
             }
 
-            var lines = output.Trim().Split("\n");
-            var freeMemoryParts = lines[0].Split("=", StringSplitOptions.RemoveEmptyEntries);
-            var totalMemoryParts = lines[1].Split("=", StringSplitOptions.RemoveEmptyEntries);
-
-            var metrics = new MemoryMetrics
+            if (!string.IsNullOrEmpty(output))
             {
-                Total = Math.Round(double.Parse(totalMemoryParts[1]) / 1024, 0),
-                Free = Math.Round(double.Parse(freeMemoryParts[1]) / 1024, 0)
-            };
-            metrics.Used = metrics.Total - metrics.Free;
+                var lines = output.Trim().Split("\n");
+                var freeMemoryParts = lines[0].Split("=", StringSplitOptions.RemoveEmptyEntries);
+                var totalMemoryParts = lines[1].Split("=", StringSplitOptions.RemoveEmptyEntries);
+
+                metrics.Total = Math.Round(double.Parse(totalMemoryParts[1]) / 1024, 0);
+                metrics.Free = Math.Round(double.Parse(freeMemoryParts[1]) / 1024, 0);
+                metrics.Used = metrics.Total - metrics.Free;
+            }
 
             return metrics;
         }
 
         private MemoryMetrics GetUnixMetrics()
         {
-            var output = "";
+            var output = string.Empty;
+            var metrics = new MemoryMetrics();
 
             var info = new ProcessStartInfo("free -m")
             {
@@ -80,15 +82,16 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
                 Console.WriteLine(output);
             }
 
-            var lines = output.Split("\n");
-            var memory = lines[1].Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
-            var metrics = new MemoryMetrics
+            if (!string.IsNullOrEmpty(output))
             {
-                Total = double.Parse(memory[1]), 
-                Used = double.Parse(memory[2]), 
-                Free = double.Parse(memory[3])
-            };
+                var lines = output.Trim().Split("\n");
+                var freeMemoryParts = lines[0].Split("=", StringSplitOptions.RemoveEmptyEntries);
+                var totalMemoryParts = lines[1].Split("=", StringSplitOptions.RemoveEmptyEntries);
+
+                metrics.Total = Math.Round(double.Parse(totalMemoryParts[1]) / 1024, 0);
+                metrics.Free = Math.Round(double.Parse(freeMemoryParts[1]) / 1024, 0);
+                metrics.Used = metrics.Total - metrics.Free;
+            }
 
             return metrics;
         }

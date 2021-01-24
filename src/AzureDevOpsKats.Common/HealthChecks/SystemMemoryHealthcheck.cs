@@ -40,7 +40,8 @@ namespace AzureDevOpsKats.Common.HealthChecks
         {
             var client = new MemoryMetricsClient();
             var metrics = client.GetMetrics();
-            var percentUsed = Math.Round(100 * metrics.Used / metrics.Total, 5);
+            
+            var percentUsed = metrics.Total != 0 ? Math.Round(100 * metrics.Used / metrics.Total, 2) : 0;
 
             var status = HealthStatus.Healthy;
 
@@ -48,32 +49,29 @@ namespace AzureDevOpsKats.Common.HealthChecks
             var unhealthy = _memoryHealthConfiguration?.Unhealthy ?? 90;
             var message = $"Healthy:{percentUsed} < {degraded}%";
 
-            if (percentUsed > degraded)
+            if (percentUsed > degraded || percentUsed == 0)
             {
-                message = $"Degraded:{percentUsed} Range:{unhealthy} => {degraded}";
+                message = $"Degraded:{percentUsed}% Range:{unhealthy}% => {degraded}%";
                 status = HealthStatus.Degraded;
             }
 
             if (percentUsed > unhealthy)
             {
-                message = $"Unhealthy:{percentUsed}| > {degraded} (Degraded)";
+                message = $"Unhealthy:{percentUsed}%| > {degraded} (Degraded)%";
                 status = HealthStatus.Unhealthy;
             }
-            //else
-            //{
-            //    message = $"Healthy:{percentUsed} < {degraded}%";
-            //}
 
             var data = new Dictionary<string, object>
             {
-                {"Total", metrics.Total}, 
-                {"Used", metrics.Used}, 
+                {"Total", metrics.Total},
+                {"Used", metrics.Used},
                 {"Free", metrics.Free}
             };
 
             _logger.LogInformation("PercentUsed:{percentUsed}|Total:{total}|Used:{used}|Free:{free}",
-                percentUsed , metrics.Total, metrics.Used, metrics.Free);
+                percentUsed, metrics.Total, metrics.Used, metrics.Free);
 
+            
             var result = new HealthCheckResult(status, message, null, data);
 
             return await Task.FromResult(result);
