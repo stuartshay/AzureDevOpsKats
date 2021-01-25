@@ -1,4 +1,6 @@
-﻿namespace AzureDevOpsKats.Service.Configuration
+﻿using AzureDevOpsKats.Common.Configuration;
+
+namespace AzureDevOpsKats.Service.Configuration
 {
     public class ApplicationOptions
     {
@@ -10,5 +12,8 @@
         ///
         /// </summary>
         public Dataprotection Dataprotection { get; set; }
+
+
+        public MemoryHealthConfiguration MemoryHealthConfiguration { get; set; }
     }
 }

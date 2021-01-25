@@ -13,30 +13,30 @@ namespace AzureDevOpsKats.Test.Mock
 {
     public class MainMockTest
     {
-        [Fact(Skip = "Fix")]
-        [Trait("Category", "Mock")]
-        public void ConfigureServices_RegistersDependenciesCorrectly()
-        {
-            //  Arrange
-            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "test");
-            var mockEnvironment = new Mock<IWebHostEnvironment>();
-            mockEnvironment.Setup(m => m.EnvironmentName).Returns("test");
+        //[Fact(Skip = "Fix")]
+        //[Trait("Category", "Mock")]
+        //public void ConfigureServices_RegistersDependenciesCorrectly()
+        //{
+        //    //  Arrange
+        //    Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "test");
+        //    var mockEnvironment = new Mock<IWebHostEnvironment>();
+        //    mockEnvironment.Setup(m => m.EnvironmentName).Returns("test");
 
-            var logger = new Mock<ILogger<Startup>>().Object;
+        //    var logger = new Mock<ILogger<Startup>>().Object;
 
-            IServiceCollection services = new ServiceCollection();
-            var target = new Startup(Configuration, mockEnvironment.Object); 
+        //    IServiceCollection services = new ServiceCollection();
+        //    var target = new Startup(Configuration, mockEnvironment.Object); 
 
-            // Act
-            target.ConfigureServices(services);
-            services.AddTransient<CatsController>();
+        //    // Act
+        //    target.ConfigureServices(services);
+        //    services.AddTransient<CatsController>();
 
-            var serviceProvider = services.BuildServiceProvider();
+        //    var serviceProvider = services.BuildServiceProvider();
 
-            //  Assert
-            var controller = serviceProvider.GetService<CatsController>();
-            Assert.NotNull(controller);
-        }
+        //    //  Assert
+        //    var controller = serviceProvider.GetService<CatsController>();
+        //    Assert.NotNull(controller);
+        //}
 
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())

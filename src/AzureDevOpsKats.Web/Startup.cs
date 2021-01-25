@@ -1,5 +1,9 @@
+using System;
 using System.IO;
+using System.Net.Http;
 using AutoMapper;
+using AzureDevOpsKats.Common.Constants;
+using AzureDevOpsKats.Common.HealthChecks;
 using AzureDevOpsKats.Common.Logging;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
@@ -7,7 +11,9 @@ using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
 using AzureDevOpsKats.Web.Extensions;
 using AzureDevOpsKats.Web.Extensions.Swagger;
+using Elastic.Apm.NetCoreAll;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -18,6 +24,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using HealthChecks.UI.Client;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace AzureDevOpsKats.Web
 {
@@ -55,7 +63,8 @@ namespace AzureDevOpsKats.Web
         {
             // Configuration
             services.AddOptions();
-            services.Configure<ApplicationOptions>(Configuration);
+            services.Configure<AzureDevOpsKats.Common.Configuration.ApplicationOptions>(Configuration);
+            services.Configure<AzureDevOpsKats.Service.Configuration.ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
 
             services.DisplayConfiguration(Configuration, Environment);
@@ -93,12 +102,45 @@ namespace AzureDevOpsKats.Web
             services.AddRazorPages();
 
             //Health Checks
-            services.AddHealthChecks()
-                .AddElasticsearch("http://es01:9200");
-            
-            services.AddHealthChecksUI()
-                .AddInMemoryStorage(); 
+            services
+                .AddHealthChecksUI(setupSettings: setup =>
+                {
+                    setup.AddHealthCheckEndpoint("health", "http://localhost:5000/health");
+                    setup.AddHealthCheckEndpoint("health-infra", "http://localhost:5000/health-infra");
+                    setup.AddHealthCheckEndpoint("health-system", "http://localhost:5000/health-system");
+                    // setup.AddWebhookNotification("webhook1", uri: "http://httpbin.org/status/200?code=ax3rt56s", payload: "{...}");
+                })
 
+                .AddInMemoryStorage()
+                .Services
+                .AddHealthChecks()
+                
+                .AddUrlGroup(new Uri("http://apm-server:8200"), name: "APM Http", tags: new[] { HealthCheckType.Monitoring.ToString(), "Port:8200" }, 
+                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Degraded)
+                
+                .AddUrlGroup(new Uri("http://es01:9200"), name: "ElasticSearch Http", tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }, 
+                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Unhealthy)
+
+                // curl -XGET http://kib01:5601/status -I
+                .AddUrlGroup(new Uri("http://kib01:5601/status"), name: "Kibana Http", tags: new[] { HealthCheckType.Metrics.ToString(), "Port:5601" },
+                    httpMethod: HttpMethod.Head, failureStatus: HealthStatus.Degraded)
+
+                .AddUrlGroup(new Uri("http://traefik:8080/ping"), name: "Traefik Http", tags: new[] { HealthCheckType.Infrastructure.ToString(), "Port:8080" }, 
+                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Unhealthy)
+                
+                .AddElasticsearch("http://es01:9200", name: "ElasticSearch Client", failureStatus: HealthStatus.Degraded, 
+                    tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }) 
+
+                .AddRedis("redis", name:"Redis Client", failureStatus: HealthStatus.Degraded, 
+                    tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
+
+                .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new []{HealthCheckType.System.ToString()})
+                
+                .AddCheck(name :"SQLite Database", new SqliteConnectionHealthCheck(connectionString : connection, testQuery : "Select 1"),
+                    failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
+                
+                .Services
+                .AddControllers();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -134,6 +176,8 @@ namespace AzureDevOpsKats.Web
             ConfigureSwagger(app, apiVersionDescriptionProvider);
             app.UseMiddleware(typeof(HttpHeaderMiddleware));
 
+            app.UseAllElasticApm(Configuration);
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -145,7 +189,30 @@ namespace AzureDevOpsKats.Web
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapHealthChecksUI();
+                
+                endpoints.MapHealthChecks("health", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("health-infra", new HealthCheckOptions()
+                {
+                    Predicate = (check) => check.Tags.Contains(HealthCheckType.Infrastructure.ToString()),
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("health-system", new HealthCheckOptions()
+                {
+                    Predicate = (check) => check.Tags.Contains(HealthCheckType.System.ToString()),
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+
+                // Health Check UI Configuration
+                endpoints.MapHealthChecksUI(setup =>
+                {
+                    setup.UIPath = "/health-ui";
+                    setup.ApiPath = "/health-ui-api";
+                    setup.AddCustomStylesheet("dotnet.css");
+                });
             });
 
             app.UseSpa(spa =>
@@ -156,8 +223,6 @@ namespace AzureDevOpsKats.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
-            //https://github.com/elastic/apm-agent-dotnet/tree/master/sample
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
@@ -172,4 +237,9 @@ namespace AzureDevOpsKats.Web
             });
         }
     }
+
+    // APM Configuration
+    // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
+    // https://github.com/elastic/apm-agent-dotnet/tree/master/sample
+
 }

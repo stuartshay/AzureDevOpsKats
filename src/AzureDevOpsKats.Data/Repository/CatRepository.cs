@@ -31,7 +31,7 @@ namespace AzureDevOpsKats.Data.Repository
             List<Cat> cats = new List<Cat>();
             await using (var command = _dbConnection.CreateCommand())
             {
-                command.CommandText = "SELECT Id,Name,Description,Photo FROM Cats ORDER BY Name COLLATE NOCASE ASC;";
+                command.CommandText = "SELECT Id, Name, Description, Photo FROM Cats ORDER BY Name COLLATE NOCASE ASC;";
                 var result = await command.ExecuteReaderAsync();
                 while (result.Read())
                 {
@@ -57,7 +57,7 @@ namespace AzureDevOpsKats.Data.Repository
             List<Cat> cats = new List<Cat>();
             await using (var command = _dbConnection.CreateCommand())
             {
-                command.CommandText = "SELECT Id,Name, Description,Photo FROM Cats " +
+                command.CommandText = "SELECT Id, Name, Description, Photo FROM Cats " +
                                       "ORDER BY Name COLLATE NOCASE ASC LIMIT @param1 OFFSET @param2;";
 
                 command.Parameters.Add(new SqliteParameter("@param1", limit));
@@ -96,7 +96,7 @@ namespace AzureDevOpsKats.Data.Repository
 
                 return (long)item;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("GET COUNT FAILED", ex.Message);
                 return -1;
@@ -107,7 +107,7 @@ namespace AzureDevOpsKats.Data.Repository
         {
             await Open();
             await using var command = _dbConnection.CreateCommand();
-            command.CommandText = "SELECT Id,Name,Description,Photo FROM Cats WHERE Id = @param1;";
+            command.CommandText = "SELECT Id, Name, Description, Photo FROM Cats WHERE Id = @param1;";
             command.Parameters.Add(new SqliteParameter("@param1", id));
 
             var result = await command.ExecuteReaderAsync();

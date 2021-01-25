@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using Serilog;
 
 namespace AzureDevOpsKats.Web.Extensions
 {
@@ -43,6 +43,9 @@ namespace AzureDevOpsKats.Web.Extensions
             var elasticEnabled = configuration.GetValue<bool>("Logging:ElasticSearchConfiguration:ElasticEnabled");
             Console.WriteLine($"Elastic Uri: {elasticUrl}");
             Console.WriteLine($"Elastic Enabled: {elasticEnabled}");
+            Console.WriteLine("MemoryHealth - Healthy:{0}", config.MemoryHealthConfiguration.Healthy);
+            
+            //Log.Information("MemoryHealth - Healthy:{mgs}", config.MemoryHealthConfiguration.Healthy);
 
             //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
             //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);

@@ -89,7 +89,7 @@ namespace AzureDevOpsKats.Web.Controllers
         {
             var results = await _catService.GetCount();
 
-            _logger.LogInformation($"Get Total:{results}:", results);
+            _logger.LogInformation("Get Total:{results}:", results);
 
             return Ok(results);
         }
