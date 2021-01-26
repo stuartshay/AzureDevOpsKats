@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using AzureDevOpsKats.Common.HealthChecks.Metrics;
+using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Common.HealthChecks.Clients
 {
@@ -96,6 +97,8 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
                 metrics.Free = Math.Round(double.Parse(freeMemory) / 1024, 0);
                 metrics.Used = metrics.Total - metrics.Free;
             }
+
+            Console.WriteLine($"Metrics:Total{metrics.Total}|Free:{metrics.Free}|Used:{metrics.Used}");
 
             return metrics;
         }

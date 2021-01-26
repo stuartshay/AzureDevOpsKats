@@ -126,7 +126,7 @@ namespace AzureDevOpsKats.Web
                     httpMethod: HttpMethod.Head, failureStatus: HealthStatus.Degraded)
 
                 .AddUrlGroup(new Uri("http://traefik:8080/ping"), name: "Traefik Http", tags: new[] { HealthCheckType.Infrastructure.ToString(), "Port:8080" }, 
-                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Unhealthy)
+                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Degraded)
                 
                 .AddElasticsearch("http://es01:9200", name: "ElasticSearch Client", failureStatus: HealthStatus.Degraded, 
                     tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }) 
