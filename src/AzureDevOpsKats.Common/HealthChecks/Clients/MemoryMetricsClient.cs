@@ -73,7 +73,7 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
 
             var info = new ProcessStartInfo("free -m")
             {
-                FileName = "/bin/bash", Arguments = "-c \"free -m\"", RedirectStandardOutput = true
+                FileName = "bash", Arguments = "-c \"free -m\"", RedirectStandardOutput = true
             };
 
             using (var process = Process.Start(info))
@@ -85,11 +85,15 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
             if (!string.IsNullOrEmpty(output))
             {
                 var lines = output.Trim().Split("\n");
-                var freeMemoryParts = lines[0].Split("=", StringSplitOptions.RemoveEmptyEntries);
-                var totalMemoryParts = lines[1].Split("=", StringSplitOptions.RemoveEmptyEntries);
 
-                metrics.Total = Math.Round(double.Parse(totalMemoryParts[1]) / 1024, 0);
-                metrics.Free = Math.Round(double.Parse(freeMemoryParts[1]) / 1024, 0);
+                // Split Free Command Results
+                var value2 = System.Text.RegularExpressions.Regex.Split(lines[1], @"\s\s+");
+                
+                var freeMemory = value2.Length == 7 ? value2[3] : "0";
+                var totalMemory = value2.Length == 7 ? value2[1] : "0";
+
+                metrics.Total = Math.Round(double.Parse(totalMemory) / 1024, 0);
+                metrics.Free = Math.Round(double.Parse(freeMemory) / 1024, 0);
                 metrics.Used = metrics.Total - metrics.Free;
             }
 
