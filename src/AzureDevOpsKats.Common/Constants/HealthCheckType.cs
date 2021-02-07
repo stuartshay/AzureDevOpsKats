@@ -13,6 +13,8 @@
 
         Metrics,
 
-        System
+        System,
+
+        ReadinessCheck,
     }
 }
