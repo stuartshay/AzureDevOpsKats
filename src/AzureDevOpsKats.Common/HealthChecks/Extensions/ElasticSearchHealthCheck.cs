@@ -3,7 +3,7 @@ using AzureDevOpsKats.Common.Constants;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace AzureDevOpsKats.Common.HealthChecks
+namespace AzureDevOpsKats.Common.HealthChecks.Extensions
 {
     public static class ElasticSearchHealthCheck
     {
@@ -21,12 +21,4 @@ namespace AzureDevOpsKats.Common.HealthChecks
             return builder;
         }
     }
-
-
-
-
-
-
-
-
 }

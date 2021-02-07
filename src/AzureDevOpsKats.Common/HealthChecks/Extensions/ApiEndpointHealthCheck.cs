@@ -4,7 +4,7 @@ using AzureDevOpsKats.Common.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace AzureDevOpsKats.Common.HealthChecks
+namespace AzureDevOpsKats.Common.HealthChecks.Extensions
 {
     public static class ApiEndpointHealthCheck
     {
