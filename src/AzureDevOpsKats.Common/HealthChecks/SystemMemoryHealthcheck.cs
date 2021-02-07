@@ -49,7 +49,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
             var unhealthy = _memoryHealthConfiguration?.Unhealthy ?? 90;
             var message = $"Healthy:{percentUsed} < {degraded}%";
 
-            if (percentUsed > degraded || Math.Abs(percentUsed) > 0)
+            if (percentUsed > degraded || percentUsed == 0)
             {
                 message = $"Degraded:{percentUsed}% Range:{unhealthy}% > {degraded}%";
                 status = HealthStatus.Degraded;

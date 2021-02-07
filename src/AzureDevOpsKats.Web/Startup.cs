@@ -1,12 +1,9 @@
-using System;
 using System.IO;
-using System.Net.Http;
 using AutoMapper;
 using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.HealthChecks;
 using AzureDevOpsKats.Common.Logging;
 using AzureDevOpsKats.Data.Repository;
-using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
 using AzureDevOpsKats.Web.Extensions;
@@ -26,6 +23,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using HealthChecks.UI.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using ApplicationOptions = AzureDevOpsKats.Service.Configuration.ApplicationOptions;
 
 namespace AzureDevOpsKats.Web
 {
@@ -55,6 +53,8 @@ namespace AzureDevOpsKats.Web
         /// </summary>
         public IWebHostEnvironment Environment { get;  }
 
+      
+
         /// <summary>
         /// 
         /// </summary>
@@ -63,13 +63,17 @@ namespace AzureDevOpsKats.Web
         {
             // Configuration
             services.AddOptions();
-            services.Configure<AzureDevOpsKats.Common.Configuration.ApplicationOptions>(Configuration);
-            services.Configure<AzureDevOpsKats.Service.Configuration.ApplicationOptions>(Configuration);
+            services.Configure<Common.Configuration.ApplicationOptions>(Configuration);
+            services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton(Configuration);
+
+            var startupHealthCheck = new StartupTasksHealthCheck();
+            services.AddSingleton(startupHealthCheck);
 
             services.DisplayConfiguration(Configuration, Environment);
             var config = Configuration.Get<ApplicationOptions>();
-            
+            var commonConfig = Configuration.Get<Common.Configuration.ApplicationOptions>();
+
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection ))};";
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
 
@@ -110,35 +114,16 @@ namespace AzureDevOpsKats.Web
                     setup.AddHealthCheckEndpoint("health-system", "http://localhost:5000/health-system");
                     // setup.AddWebhookNotification("webhook1", uri: "http://httpbin.org/status/200?code=ax3rt56s", payload: "{...}");
                 })
-
                 .AddInMemoryStorage()
                 .Services
                 .AddHealthChecks()
-                
-                .AddUrlGroup(new Uri("http://apm-server:8200"), name: "APM Http", tags: new[] { HealthCheckType.Monitoring.ToString(), "Port:8200" }, 
-                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Degraded)
-                
-                .AddUrlGroup(new Uri("http://es01:9200"), name: "ElasticSearch Http", tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }, 
-                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Unhealthy)
-
-                // curl -XGET http://kib01:5601/status -I
-                .AddUrlGroup(new Uri("http://kib01:5601/status"), name: "Kibana Http", tags: new[] { HealthCheckType.Metrics.ToString(), "Port:5601" },
-                    httpMethod: HttpMethod.Head, failureStatus: HealthStatus.Degraded)
-
-                .AddUrlGroup(new Uri("http://traefik:8080/ping"), name: "Traefik Http", tags: new[] { HealthCheckType.Infrastructure.ToString(), "Port:8080" }, 
-                    httpMethod: HttpMethod.Get, failureStatus: HealthStatus.Unhealthy)
-                
-                .AddElasticsearch("http://es01:9200", name: "ElasticSearch Client", failureStatus: HealthStatus.Degraded, 
-                    tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }) 
-
-                .AddRedis("redis", name:"Redis Client", failureStatus: HealthStatus.Degraded, 
-                    tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
-
+                .AddCheck<StartupTasksHealthCheck>("Startup Health Check", tags: new[] { HealthCheckType.ReadinessCheck.ToString(), HealthCheckType.System.ToString() })
+                .AddApiEndpointHealthChecks(commonConfig.ApiHealthConfiguration)
+                .AddElasticSearchHealthCheck(commonConfig.ElasticSearchConfiguration)
+                .AddRedis("redis", name:"Redis Client", failureStatus: HealthStatus.Degraded, tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
                 .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new []{HealthCheckType.System.ToString()})
-                
                 .AddCheck(name :"SQLite Database", new SqliteConnectionHealthCheck(connectionString : connection, testQuery : "Select 1"),
                     failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
-                
                 .Services
                 .AddControllers();
 
@@ -153,6 +138,7 @@ namespace AzureDevOpsKats.Web
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
+            startupHealthCheck.StartupTaskCompleted = true;
         }
 
         /// <summary>
@@ -237,9 +223,4 @@ namespace AzureDevOpsKats.Web
             });
         }
     }
-
-    // APM Configuration
-    // https://www.elastic.co/guide/en/apm/agent/dotnet/current/configuration-on-asp-net-core.html
-    // https://github.com/elastic/apm-agent-dotnet/tree/master/sample
-
 }

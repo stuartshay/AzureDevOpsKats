@@ -30,6 +30,7 @@ RUN cat /etc/os-release
 
 RUN apt-get update && apt-get install -y \
         curl \
+        procps \
         tree \
     && rm -rf /var/lib/apt/lists/* \
     && curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /wait_for_it.sh \

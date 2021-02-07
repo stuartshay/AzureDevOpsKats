@@ -4,6 +4,6 @@
     {
         public string ElasticUrl { get; set; }
         
-        public bool ElasticEnabled { get; set; } 
+        public bool Enabled { get; set; } 
     }
 }
