@@ -52,8 +52,8 @@ processors:
 #========================== Elasticsearch output ===============================
 output.elasticsearch:
   hosts: '${ELASTICSEARCH_HOSTS:es01:9200}'
-  username: ${ELASTICSEARCH_USERNAME}
-  password: ${ELASTICSEARCH_PASSWORD}
+  #username: ${ELASTICSEARCH_USERNAME}
+  #password: ${ELASTICSEARCH_PASSWORD}
 
 #============================== Dashboards =====================================
 setup.dashboards:
@@ -62,8 +62,8 @@ setup.dashboards:
 #============================== Kibana =========================================
 setup.kibana:
   hosts: '${KIBANA_HOST:kib01:5601}'
-  username: ${ELASTICSEARCH_USERNAME}
-  password: ${ELASTICSEARCH_PASSWORD}
+  #username: ${ELASTICSEARCH_USERNAME}
+  #password: ${ELASTICSEARCH_PASSWORD}
 
 #============================== Xpack Monitoring ===============================
 xpack.monitoring:

@@ -48,24 +48,33 @@ services:
 
   filebeat:
     image: docker.elastic.co/beats/filebeat:7.10.2
+    container_name: filebeat
     user: root
-    command: filebeat -e -strict.perms=false
+    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s filebeat']
     volumes:
+      - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
       - ./beats/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
-      - es01
+      es01:
+        condition: service_healthy
     networks:
       - elastic
+    healthcheck:
+      test: filebeat test config
+      interval: 30s
+      timeout: 15s
+      retries: 5  
 
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:7.10.2
     user: root
-    command: '-e'
+    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s metricbeat']
     ports:
       - 5066
     volumes:
+      - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
       - ./beats/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -74,9 +83,31 @@ services:
       - output.elasticsearch.hosts=['http://es01:9200']
       - setup.kibana.host=kibana:5601
     depends_on:
-      - es01
+      es01:
+        condition: service_healthy
     networks:
       - elastic  
+
+  heartbeat:
+    image: docker.elastic.co/beats/heartbeat:${TAG}
+    user: root
+    container_name: heartbeat
+    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s heartbeat']
+    volumes:
+      - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
+      - ./beats/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      es01:
+        condition: service_healthy
+    networks:
+      - elastic  
+    healthcheck:
+      test: heartbeat test config
+      interval: 30s
+      timeout: 15s
+      retries: 5
 
   apm-server:
     image: docker.elastic.co/apm/apm-server:7.10.2
@@ -100,7 +131,8 @@ services:
          -E apm-server.kibana.host=kib01:5601
          -E output.elasticsearch.hosts=["es01:9200"]
     depends_on:
-      - es01
+      es01:
+        condition: service_healthy
     networks:
       - elastic
     healthcheck:
