@@ -76,9 +76,10 @@ services:
     volumes:
       - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
       - ./beats/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
-      - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
     environment:
       - output.elasticsearch.hosts=['http://es01:9200']
       - setup.kibana.host=kibana:5601

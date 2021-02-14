@@ -19,7 +19,7 @@ WORKDIR /app
 RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
 
 WORKDIR /app/src/AzureDevOpsKats.Web
-RUN dotnet publish -o /publish -c Release -f net5.0 
+RUN dotnet publish -o /publish -c Release -f net5.0  --version-suffix ${BUILD_NUMBER}
 
 # Runtime Image Stage
 FROM mcr.microsoft.com/dotnet/aspnet:5.0

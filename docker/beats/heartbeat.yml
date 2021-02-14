@@ -2,8 +2,9 @@ heartbeat.monitors:
 - type: http
   schedule: '@every 5s'
   urls:
-    - https://es01:9200
+    - http://es01:9200
     - http://kib01:5601
+    - http://azuredevopskats-web:5000/health
   #ssl:
   #  certificate_authorities: ["/usr/share/heartbeat/certs/ca/ca.crt"]
 
@@ -15,6 +16,7 @@ heartbeat.monitors:
 
 processors:
 - add_cloud_metadata:
+
 
 output.elasticsearch:
   hosts: ['es01:9200']

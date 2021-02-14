@@ -23,7 +23,7 @@ chmod go-w /usr/share/$beat/$beat.yml
 echo "Setting up dashboards..."
 # Load the sample dashboards for the Beat.
 # REF: https://www.elastic.co/guide/en/beats/metricbeat/master/metricbeat-sample-dashboards.html
-${beat} --strict.perms=false setup -v
+${beat} --strict.perms=false setup --dashboards -v
 
 #echo "Copy keystore to ./config dir"
 #cp /usr/share/$beat/$beat.keystore /config/$beat/$beat.keystore
