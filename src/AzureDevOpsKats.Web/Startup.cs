@@ -1,13 +1,16 @@
+using System;
 using System.IO;
 using AutoMapper;
 using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.HealthChecks;
+using AzureDevOpsKats.Common.HealthChecks.Extensions;
 using AzureDevOpsKats.Common.Logging;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
 using AzureDevOpsKats.Web.Extensions;
 using AzureDevOpsKats.Web.Extensions.Swagger;
+using AzureDevOpsKats.Web.HostedServices;
 using Elastic.Apm.NetCoreAll;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -105,6 +108,29 @@ namespace AzureDevOpsKats.Web
 
             services.AddRazorPages();
 
+            //Scoped Services 
+            services.AddScoped<ICatsHostedService, CatsHostedService>();
+
+            services.AddCronJob<MyCronJob1>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = @"*/5 * * * *";
+            });
+
+            // MyCronJob2 calls the scoped service CatsHostedService
+            services.AddCronJob<MyCronJob2>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = @"* * * * *";
+            });
+
+            services.AddCronJob<MyCronJob3>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = @"50 12 * * *";
+            });
+
+
             //Health Checks
             services
                 .AddHealthChecksUI(setupSettings: setup =>
@@ -117,6 +143,7 @@ namespace AzureDevOpsKats.Web
                 .AddInMemoryStorage()
                 .Services
                 .AddHealthChecks()
+                .AddVersionHealthCheck()
                 .AddCheck<StartupTasksHealthCheck>("Startup Health Check", tags: new[] { HealthCheckType.ReadinessCheck.ToString(), HealthCheckType.System.ToString() })
                 .AddApiEndpointHealthChecks(commonConfig.ApiHealthConfiguration)
                 .AddElasticSearchHealthCheck(commonConfig.ElasticSearchConfiguration)
