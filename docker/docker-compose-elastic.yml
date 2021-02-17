@@ -47,7 +47,7 @@ services:
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:7.10.2
+    image: docker.elastic.co/beats/filebeat:7.11.1
     container_name: filebeat
     user: root
     command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s filebeat']
