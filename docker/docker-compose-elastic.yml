@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
     entrypoint: /scripts/entrypoint-elastic.sh
     container_name: es01
     environment:
@@ -29,7 +29,7 @@ services:
       test: curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"'
 
   kib01:
-    image: docker.elastic.co/kibana/kibana:7.10.2
+    image: docker.elastic.co/kibana/kibana:${TAG}
     container_name: kib01
     depends_on:
       es01:
@@ -47,7 +47,7 @@ services:
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:7.10.2
+    image: docker.elastic.co/beats/filebeat:${TAG}
     container_name: filebeat
     user: root
     command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s filebeat']
@@ -68,7 +68,7 @@ services:
       retries: 5  
 
   metricbeat:
-    image: docker.elastic.co/beats/metricbeat:7.10.2
+    image: docker.elastic.co/beats/metricbeat:${TAG}
     user: root
     command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s metricbeat']
     ports:
@@ -110,8 +110,23 @@ services:
       timeout: 15s
       retries: 5
 
+  packetbeat:
+    image: docker.elastic.co/beats/packetbeat:${TAG}
+    container_name: packetbeat
+    user: root
+    cap_add: ['NET_RAW', 'NET_ADMIN']
+    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s packetbeat']
+    volumes:
+      - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
+      - ./beats/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
+    networks:
+      - elastic
+    depends_on:
+      es01:
+        condition: service_healthy
+
   apm-server:
-    image: docker.elastic.co/apm/apm-server:7.10.2
+    image: docker.elastic.co/apm/apm-server:${TAG}
     container_name: apm-server
     depends_on:
       es01:
