@@ -1,4 +1,4 @@
-﻿namespace AzureDevOpsKats.Common.HealthChecks.Metrics
+﻿namespace AzureDevOpsKats.Common.HealthChecks.Models
 {
     public class MemoryMetrics
     {

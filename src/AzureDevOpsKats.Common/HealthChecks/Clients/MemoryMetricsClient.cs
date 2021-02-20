@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using AzureDevOpsKats.Common.HealthChecks.Metrics;
+using AzureDevOpsKats.Common.HealthChecks.Models;
 using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Common.HealthChecks.Clients
