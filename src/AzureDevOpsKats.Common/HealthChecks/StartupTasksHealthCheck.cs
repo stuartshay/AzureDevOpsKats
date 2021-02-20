@@ -14,7 +14,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
             set => _startupTaskCompleted = value;
         }
 
-        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
             if (StartupTaskCompleted)
             {

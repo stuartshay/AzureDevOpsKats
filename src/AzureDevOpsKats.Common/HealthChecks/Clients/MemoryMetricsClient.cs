@@ -2,13 +2,12 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using AzureDevOpsKats.Common.HealthChecks.Models;
-using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Common.HealthChecks.Clients
 {
 
     /// <summary>
-    /// 
+    /// Memory Metrics Client
     /// </summary>
     public class MemoryMetricsClient
     {
@@ -28,7 +27,7 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
             return metrics;
         }
 
-        private bool IsUnix()
+        private static bool IsUnix()
         {
             var isUnix = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ||
                          RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
@@ -36,7 +35,7 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
             return isUnix;
         }
 
-        private MemoryMetrics GetWindowsMetrics()
+        private static MemoryMetrics GetWindowsMetrics()
         {
             var output = string.Empty;
             var metrics = new MemoryMetrics(); 
@@ -67,7 +66,7 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
             return metrics;
         }
 
-        private MemoryMetrics GetUnixMetrics()
+        private static MemoryMetrics GetUnixMetrics()
         {
             var output = string.Empty;
             var metrics = new MemoryMetrics();
@@ -97,8 +96,6 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
                 metrics.Free = Math.Round(double.Parse(freeMemory) / 1024, 0);
                 metrics.Used = metrics.Total - metrics.Free;
             }
-
-            Console.WriteLine($"Metrics:Total{metrics.Total}|Free:{metrics.Free}|Used:{metrics.Used}");
 
             return metrics;
         }

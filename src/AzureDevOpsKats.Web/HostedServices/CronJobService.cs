@@ -8,23 +8,41 @@ using Microsoft.Extensions.Hosting;
 
 namespace AzureDevOpsKats.Web.HostedServices
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class CronJobService : IHostedService, IDisposable
     {
         private System.Timers.Timer _timer;
         private readonly CronExpression _expression;
         private readonly TimeZoneInfo _timeZoneInfo;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cronExpression"></param>
+        /// <param name="timeZoneInfo"></param>
         protected CronJobService(string cronExpression, TimeZoneInfo timeZoneInfo)
         {
             _expression = CronExpression.Parse(cronExpression);
             _timeZoneInfo = timeZoneInfo;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public virtual async Task StartAsync(CancellationToken cancellationToken)
         {
             await ScheduleJob(cancellationToken);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         protected virtual async Task ScheduleJob(CancellationToken cancellationToken)
         {
             var next = _expression.GetNextOccurrence(DateTimeOffset.Now, _timeZoneInfo);

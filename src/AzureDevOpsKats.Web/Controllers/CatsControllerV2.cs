@@ -158,7 +158,7 @@ namespace AzureDevOpsKats.Web.Controllers
             }
         }
 
-        private byte[] FormFileBytes(IFormFile file)
+        private static byte[] FormFileBytes(IFormFile file)
         {
             byte[] bytes = null;
 

@@ -44,11 +44,6 @@ namespace AzureDevOpsKats.Web.Extensions
             Console.WriteLine($"Elastic Uri: {elasticUrl}");
             Console.WriteLine($"Elastic Enabled: {elasticEnabled}");
             Console.WriteLine("MemoryHealth - Healthy:{0}", config.MemoryHealthConfiguration.Healthy);
-            
-            //Log.Information("MemoryHealth - Healthy:{mgs}", config.MemoryHealthConfiguration.Healthy);
-
-            //logger.LogInformation("Init Env Configuration: {Environment}|{CurrentDirectory}", environment.EnvironmentName, Directory.GetCurrentDirectory());
-            //logger.LogInformation("Init FileStorage Configuration: {FilePath}|{RequestPath}|{PhysicalFilePath}", config.FileStorage.FilePath, config.FileStorage.RequestPath, config.FileStorage.PhysicalFilePath);
         }
 
         public static IServiceCollection AddCustomDataProtection(this IServiceCollection services, IConfiguration configuration)

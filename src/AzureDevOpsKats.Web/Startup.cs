@@ -238,7 +238,7 @@ namespace AzureDevOpsKats.Web
             });
         }
 
-        private void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
+        private static void ConfigureSwagger(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             app.UseSwagger();
             app.UseSwaggerUI(options =>
