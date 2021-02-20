@@ -12,8 +12,7 @@ namespace AzureDevOpsKats.Data.Repository
     {
         private readonly SqliteConnection _dbConnection;
 
-        private readonly string _connectionString; 
-
+        private readonly string _connectionString;
 
         private readonly ILogger<CatRepository> _logger;
 
@@ -195,7 +194,7 @@ namespace AzureDevOpsKats.Data.Repository
             _dbConnection.Dispose();
         }
 
-        private SqliteConnection GetSqliteConnection(string connectionString)
+        private static SqliteConnection GetSqliteConnection(string connectionString)
         {
             var connection = new SqliteConnection(connectionString);
             return connection;

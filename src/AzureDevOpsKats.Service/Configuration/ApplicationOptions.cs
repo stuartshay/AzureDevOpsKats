@@ -13,7 +13,6 @@ namespace AzureDevOpsKats.Service.Configuration
         /// </summary>
         public Dataprotection Dataprotection { get; set; }
 
-
         public MemoryHealthConfiguration MemoryHealthConfiguration { get; set; }
     }
 }
