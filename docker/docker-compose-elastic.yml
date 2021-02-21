@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
     entrypoint: /scripts/entrypoint-elastic.sh
     container_name: es01
     environment:
@@ -46,6 +46,22 @@ services:
       retries: 20
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
 
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${TAG}
+    container_name: logstash
+    ### command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-logstash.sh | tr -d "\r" | bash']
+    volumes:
+      - ./scripts/setup-logstash.sh:/usr/local/bin/setup-logstash.sh:ro
+      - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline/
+    networks:
+      - elastic  
+    depends_on:
+      es01:
+        condition: service_healthy
+      kib01:
+        condition: service_healthy    
+
   filebeat:
     image: docker.elastic.co/beats/filebeat:${TAG}
     container_name: filebeat
@@ -69,6 +85,7 @@ services:
 
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:${TAG}
+    container_name: metricbeat
     user: root
     command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s metricbeat']
     ports:
@@ -82,10 +99,12 @@ services:
       - /:/hostfs:ro
     environment:
       - output.elasticsearch.hosts=['http://es01:9200']
-      - setup.kibana.host=kibana:5601
+      - setup.kibana.host=kib01:5601
     depends_on:
       es01:
         condition: service_healthy
+      kib01:
+        condition: service_healthy  
     networks:
       - elastic  
 

@@ -40,6 +40,81 @@ metricbeat.modules:
   hosts: ["unix:///var/run/docker.sock"]
   period: 10s
 
+#-------------------------------- Redis Module --------------------------------
+- module: redis
+  metricsets: ["info", "keyspace"]
+  enabled: true
+  period: 10s
+
+  # Redis hosts
+  hosts: ["redis:6379"]
+
+  # Timeout after which time a metricset should return an error
+  # Timeout is by default defined as period, as a fetch of a metricset
+  # should never take longer then period, as otherwise calls can pile up.
+  #timeout: 1s
+
+  # Optional fields to be added to each event
+  #fields:
+  #  datacenter: west
+
+  # Network type to be used for redis connection. Default: tcp
+  #network: tcp
+
+  # Max number of concurrent connections. Default: 10
+  #maxconn: 10
+
+  # Filters can be used to reduce the number of fields sent.
+  #processors:
+  #  - include_fields:
+  #      fields: ["beat", "metricset", "redis.info.stats"]
+
+  # Redis AUTH password. Empty by default.
+  #password: foobared
+
+#---------------------------- Elasticsearch Module ----------------------------
+- module: elasticsearch
+  metricsets:
+    - node
+    - node_stats
+    #- index
+    #- index_recovery
+    #- index_summary
+    #- shard
+    #- ml_job
+  period: 10s
+  hosts: ["http://es01:9200"]
+  #username: "elastic"
+  #password: "changeme"
+  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+
+
+  #metricsets:
+  #  - server
+  host: "azuredevopskats-web"
+  port: "5000"
+  #enabled: false
+  #paths:
+  #  - path: "/foo"
+  #    namespace: "foo"
+  #    fields: # added to the the response in root. overwrites existing fields
+  #      key: "value"
+
+#-------------------------------- Kibana Module --------------------------------
+- module: kibana
+  metricsets: ["status"]
+  period: 10s
+  hosts: ["kib01:5601"]
+  basepath: ""
+  enabled: true
+
+#------------------------------- Traefik Module -------------------------------
+- module: traefik
+  metricsets: ["health"]
+  period: 10s
+  hosts: ["traefik:8080"]
+
+
 #================================ Processors ===================================
 processors:
 - add_cloud_metadata: ~
@@ -61,7 +136,8 @@ setup.dashboards:
 
 #============================== Kibana =========================================
 setup.kibana:
-  hosts: 'http://kib01:5601'
+  host: 'kib01:5601'
+  protocol: "http"
   #username: ${ELASTICSEARCH_USERNAME}
   #password: ${ELASTICSEARCH_PASSWORD}
 

@@ -37,6 +37,7 @@ services:
 
   redis:
     image: bitnami/redis
+    container_name: redis
     ports:
       - 6379:6379
     environment:
