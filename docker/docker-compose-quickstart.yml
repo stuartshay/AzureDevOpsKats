@@ -2,7 +2,7 @@ version: '2.2'
 
 services:
   apm-server:
-    image: docker.elastic.co/apm/apm-server:7.10.2
+    image: docker.elastic.co/apm/apm-server:7.11.2
     depends_on:
       elasticsearch:
         condition: service_healthy
