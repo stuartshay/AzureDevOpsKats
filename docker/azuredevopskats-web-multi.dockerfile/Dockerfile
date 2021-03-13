@@ -29,7 +29,7 @@ WORKDIR /app/src/AzureDevOpsKats.Web
 
 # RUN sempack --build-version ${BUILD_NUMBER}
 
-RUN dotnet publish -o /publish -c Release -f net5.0 --version-suffix ${BUILD_NUMBER}
+RUN dotnet publish -o /publish -c Release -f net5.0  
 
 
 # Runtime Image Stage
