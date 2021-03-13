@@ -17,8 +17,8 @@ RUN apt-get install -y nodejs
 
 # Install .NET Tools 
 ENV PATH="/root/.dotnet/tools:${PATH}"
-RUN dotnet tool install --global dotnet-sempack
-RUN dotnet tool install --global dotnet-dbinfo  
+RUN dotnet tool install --global sempack --version 1.1.7057.22950
+RUN dotnet tool install --global dotnet-dbinfo --version 1.4.0 
 RUN dotnet tool list -g
 
 
