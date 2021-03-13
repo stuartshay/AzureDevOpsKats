@@ -15,11 +15,20 @@ COPY common.props /app/common.props
 RUN curl -sL https://deb.nodesource.com/setup_14.x |  bash -
 RUN apt-get install -y nodejs
 
+# Install .NET Tools 
+ENV PATH="/root/.dotnet/tools:${PATH}"
+RUN dotnet tool install --global dotnet-sempack
+RUN dotnet tool install --global dotnet-dbinfo  
+RUN dotnet tool list -g
+
+
 WORKDIR /app
 RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
 
+
 WORKDIR /app/src/AzureDevOpsKats.Web
-RUN dotnet publish -o /publish -c Release -f net5.0  --version-suffix ${BUILD_NUMBER}
+RUN dotnet publish -o /publish -c Release -f net5.0 
+
 
 # Runtime Image Stage
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
