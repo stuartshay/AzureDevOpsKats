@@ -17,6 +17,7 @@ docfx_project/
 **/ClientApp/build/*
 **/ClientApp/node_modules/*
 
+
 # Developer SQLite/Images
 ##**/ClientApp/public/Images/*
 
@@ -117,6 +118,7 @@ $tf/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
+*.sln.DotSettings
 
 # JustCode is a .NET coding add-in
 .JustCode
