@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data.Common;
-using System.IO;
-using AutoMapper;
+﻿using AutoMapper;
 using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
@@ -10,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System;
+using System.IO;
 
 namespace AzureDevOpsKats.Test.Fixture
 {

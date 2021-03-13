@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using AzureDevOpsKats.Service.Interface;
+﻿using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Test.Fixture;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -24,7 +24,7 @@ namespace AzureDevOpsKats.Test.Service
         [Trait("Category", "Integration")]
         public async Task Can_Get_Cat_List()
         {
-            var sut =  await _catService.GetCats();
+            var sut = await _catService.GetCats();
             var count = sut.Count();
 
             Assert.NotNull(sut);

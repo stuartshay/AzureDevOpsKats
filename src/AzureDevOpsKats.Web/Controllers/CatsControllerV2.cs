@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading.Tasks;
-using AzureDevOpsKats.Service.Configuration;
+﻿using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.ViewModels;
@@ -12,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
@@ -20,7 +20,7 @@ namespace AzureDevOpsKats.Web.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/cats")]
-   // [EnableCors("AllowAll")]
+    // [EnableCors("AllowAll")]
     [ApiVersion("2.0")]
     public class CatsControllerV2 : ControllerBase
     {
@@ -169,7 +169,7 @@ namespace AzureDevOpsKats.Web.Controllers
 
             using var fileStream = file.OpenReadStream();
             using var ms = new MemoryStream();
-            
+
             fileStream.CopyTo(ms);
             bytes = ms.ToArray();
 

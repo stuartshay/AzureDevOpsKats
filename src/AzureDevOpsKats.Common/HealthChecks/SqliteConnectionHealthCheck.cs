@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace AzureDevOpsKats.Common.HealthChecks
 {
     public class SqliteConnectionHealthCheck : IHealthCheck
     {
-        private static readonly string DefaultTestQuery = "Select 1"; 
-        
-        public string ConnectionString { get; } 
-        
+        private static readonly string DefaultTestQuery = "Select 1";
+
+        public string ConnectionString { get; }
+
         public string TestQuery { get; }
 
         public SqliteConnectionHealthCheck(string connectionString) :
@@ -28,7 +28,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
         {
             await using var connection = new SqliteConnection(ConnectionString);
-            
+
             try
             {
                 await connection.OpenAsync(cancellationToken);

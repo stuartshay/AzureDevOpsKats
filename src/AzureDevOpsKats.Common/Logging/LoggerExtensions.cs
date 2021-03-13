@@ -1,5 +1,5 @@
-﻿using System.Net.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using System.Net.Http;
 
 namespace AzureDevOpsKats.Common.Logging
 {

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AzureDevOpsKats.Common.Configuration;
+﻿using AzureDevOpsKats.Common.Configuration;
 using AzureDevOpsKats.Common.HealthChecks.Clients;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AzureDevOpsKats.Common.HealthChecks
 {
@@ -40,7 +40,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
         {
             var client = new MemoryMetricsClient();
             var metrics = client.GetMetrics();
-            
+
             var percentUsed = Math.Abs(metrics.Total) > 0 ? Math.Round(100 * metrics.Used / metrics.Total, 2) : 0;
 
             var status = HealthStatus.Healthy;

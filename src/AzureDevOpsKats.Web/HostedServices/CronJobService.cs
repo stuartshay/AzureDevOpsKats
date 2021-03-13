@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Cronos;
-using Elastic.Apm.Api;
+﻿using Cronos;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AzureDevOpsKats.Web.HostedServices
 {
@@ -114,7 +113,7 @@ namespace AzureDevOpsKats.Web.HostedServices
         /// 
         /// </summary>
         string CronExpression { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -131,7 +130,7 @@ namespace AzureDevOpsKats.Web.HostedServices
         /// 
         /// </summary>
         public string CronExpression { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

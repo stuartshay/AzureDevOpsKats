@@ -1,11 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using AzureDevOpsKats.Common.Logging;
+﻿using AzureDevOpsKats.Common.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace AzureDevOpsKats.Web
 {

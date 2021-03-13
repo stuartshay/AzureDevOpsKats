@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using AzureDevOpsKats.Data.Entities;
+﻿using AzureDevOpsKats.Data.Entities;
 using Bogus;
+using System.Collections.Generic;
 
 namespace AzureDevOpsKats.Test.Mock
 {

@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using AzureDevOpsKats.Service.Configuration;
+﻿using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.Helpers;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AzureDevOpsKats.Web.Controllers
 {
@@ -21,7 +20,7 @@ namespace AzureDevOpsKats.Web.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/cats")]
-   // [EnableCors("AllowAll")]
+    // [EnableCors("AllowAll")]
     [ApiVersion("1.0")]
     public class CatsController : ControllerBase
     {
@@ -89,7 +88,7 @@ namespace AzureDevOpsKats.Web.Controllers
             var result = await _catService.GetCat(id);
             if (result == null)
                 return NotFound();
-           
+
             _logger.LogInformation("Get:{id}", id);
 
             return Ok(result);

@@ -1,8 +1,8 @@
-﻿using System.IO;
-using AzureDevOpsKats.Service.Configuration;
+﻿using AzureDevOpsKats.Service.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.IO;
 
 namespace AzureDevOpsKats.Test.Fixture
 {

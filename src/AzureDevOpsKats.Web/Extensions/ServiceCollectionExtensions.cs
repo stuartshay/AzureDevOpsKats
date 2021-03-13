@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using AzureDevOpsKats.Service.Configuration;
+﻿using AzureDevOpsKats.Service.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using Serilog;
+using System;
+using System.IO;
 
 namespace AzureDevOpsKats.Web.Extensions
 {
