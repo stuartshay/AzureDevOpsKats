@@ -21,9 +21,9 @@ RUN dotnet tool install --global sempack --version 1.1.7057.22950
 RUN dotnet tool install --global dotnet-dbinfo --version 1.4.0 
 RUN dotnet tool list -g
 
-
 WORKDIR /app
 RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
+#RUN sempack -f foo/foo.csproj --major --minor --build-version --revision
 
 
 WORKDIR /app/src/AzureDevOpsKats.Web
