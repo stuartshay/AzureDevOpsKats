@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AzureDevOpsKats.Data.Entities;
+using AzureDevOpsKats.Data.Repository;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureDevOpsKats.Data.Entities;
-using AzureDevOpsKats.Data.Repository;
-using Microsoft.EntityFrameworkCore;
 
 namespace AzureDevOpsKats.Test.DataSource
 {

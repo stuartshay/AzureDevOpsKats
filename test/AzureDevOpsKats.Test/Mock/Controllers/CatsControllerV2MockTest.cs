@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using AzureDevOpsKats.Service.Configuration;
+﻿using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Test.Fixture;
@@ -14,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -113,7 +113,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         }
 
         private CatsControllerV2 GetCatsControllerV2(
-            HttpResponseMessage responseMessage, 
+            HttpResponseMessage responseMessage,
             ICatService catService = null,
             IFileService fileService = null,
             ILogger<CatsControllerV2> logger = null,

@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using AutoMapper;
 using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.HealthChecks;
@@ -12,6 +10,7 @@ using AzureDevOpsKats.Web.Extensions;
 using AzureDevOpsKats.Web.Extensions.Swagger;
 using AzureDevOpsKats.Web.HostedServices;
 using Elastic.Apm.NetCoreAll;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -20,12 +19,13 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using HealthChecks.UI.Client;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System;
+using System.IO;
 using ApplicationOptions = AzureDevOpsKats.Service.Configuration.ApplicationOptions;
 
 namespace AzureDevOpsKats.Web
@@ -54,9 +54,9 @@ namespace AzureDevOpsKats.Web
         /// <summary>
         /// 
         /// </summary>
-        public IWebHostEnvironment Environment { get;  }
+        public IWebHostEnvironment Environment { get; }
 
-      
+
 
         /// <summary>
         /// 
@@ -77,7 +77,7 @@ namespace AzureDevOpsKats.Web
             var config = Configuration.Get<ApplicationOptions>();
             var commonConfig = Configuration.Get<Common.Configuration.ApplicationOptions>();
 
-            string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection ))};";
+            string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection))};";
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
 
             //Logging 
@@ -138,7 +138,6 @@ namespace AzureDevOpsKats.Web
                     setup.AddHealthCheckEndpoint("health", "http://localhost:5000/health");
                     setup.AddHealthCheckEndpoint("health-infra", "http://localhost:5000/health-infra");
                     setup.AddHealthCheckEndpoint("health-system", "http://localhost:5000/health-system");
-                    // setup.AddWebhookNotification("webhook1", uri: "http://httpbin.org/status/200?code=ax3rt56s", payload: "{...}");
                 })
                 .AddInMemoryStorage()
                 .Services
@@ -147,9 +146,9 @@ namespace AzureDevOpsKats.Web
                 .AddCheck<StartupTasksHealthCheck>("Startup Health Check", tags: new[] { HealthCheckType.ReadinessCheck.ToString(), HealthCheckType.System.ToString() })
                 .AddApiEndpointHealthChecks(commonConfig.ApiHealthConfiguration)
                 .AddElasticSearchHealthCheck(commonConfig.ElasticSearchConfiguration)
-                .AddRedis("redis", name:"Redis Client", failureStatus: HealthStatus.Degraded, tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
-                .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new []{HealthCheckType.System.ToString()})
-                .AddCheck(name :"SQLite Database", new SqliteConnectionHealthCheck(connectionString : connection, testQuery : "Select 1"),
+                .AddRedis("redis", name: "Redis Client", failureStatus: HealthStatus.Degraded, tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
+                .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new[] { HealthCheckType.System.ToString() })
+                .AddCheck(name: "SQLite Database", new SqliteConnectionHealthCheck(connectionString: connection, testQuery: "Select 1"),
                     failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
                 .Services
                 .AddControllers();
@@ -202,7 +201,7 @@ namespace AzureDevOpsKats.Web
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                
+
                 endpoints.MapHealthChecks("health", new HealthCheckOptions()
                 {
                     Predicate = _ => true,

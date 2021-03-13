@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AzureDevOpsKats.Common.HealthChecks.Models;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using AzureDevOpsKats.Common.HealthChecks.Models;
 
 namespace AzureDevOpsKats.Common.HealthChecks.Clients
 {
@@ -38,7 +38,7 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
         private static MemoryMetrics GetWindowsMetrics()
         {
             var output = string.Empty;
-            var metrics = new MemoryMetrics(); 
+            var metrics = new MemoryMetrics();
 
             var info = new ProcessStartInfo
             {
@@ -73,7 +73,9 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
 
             var info = new ProcessStartInfo("free -m")
             {
-                FileName = "bash", Arguments = "-c \"free -m\"", RedirectStandardOutput = true
+                FileName = "bash",
+                Arguments = "-c \"free -m\"",
+                RedirectStandardOutput = true
             };
 
             using (var process = Process.Start(info))
@@ -88,7 +90,7 @@ namespace AzureDevOpsKats.Common.HealthChecks.Clients
 
                 // Split Free Command Results
                 var value2 = System.Text.RegularExpressions.Regex.Split(lines[1], @"\s\s+");
-                
+
                 var freeMemory = value2.Length == 7 ? value2[3] : "0";
                 var totalMemory = value2.Length == 7 ? value2[1] : "0";
 

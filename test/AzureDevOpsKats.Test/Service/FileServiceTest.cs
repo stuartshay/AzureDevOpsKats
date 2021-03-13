@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text;
-using AzureDevOpsKats.Service.Interface;
+﻿using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Service;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Text;
 using Xunit;
 
 namespace AzureDevOpsKats.Test.Service

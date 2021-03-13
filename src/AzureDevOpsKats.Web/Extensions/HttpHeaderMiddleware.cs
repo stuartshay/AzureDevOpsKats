@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AzureDevOpsKats.Web.Helpers;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Net;
 using System.Threading.Tasks;
-using AzureDevOpsKats.Web.Helpers;
-using Microsoft.AspNetCore.Http;
 
 namespace AzureDevOpsKats.Web.Extensions
 {
@@ -45,7 +45,7 @@ namespace AzureDevOpsKats.Web.Extensions
                 httpContext.Response.Headers.Add("X-MachineName", _machineName);
                 httpContext.Response.Headers.Add("X-HostName", _hostName);
                 httpContext.Response.Headers.Add("X-IpV4", _ip4AddressList);
-               
+
                 return Task.CompletedTask;
             }));
             try

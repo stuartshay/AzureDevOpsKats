@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Elastic.Apm;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Elastic.Apm;
-using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Web.HostedServices
 {
@@ -37,7 +37,7 @@ namespace AzureDevOpsKats.Web.HostedServices
                 var currentTransaction = Agent.Tracer.CurrentTransaction;
                 if (currentTransaction == null) throw new Exception("Agent.Tracer.CurrentTransaction returns null");
 
-                _logger.LogInformation("CatsHostedService|Time:{time}", DateTime.Now );
+                _logger.LogInformation("CatsHostedService|Time:{time}", DateTime.Now);
 
 
                 var httpClient = new HttpClient();

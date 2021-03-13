@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using AzureDevOpsKats.Data.Entities;
 using AzureDevOpsKats.Data.Repository;
+using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Service.Service;
-using Xunit;
-using Moq;
-using Xunit.Abstractions;
-using AzureDevOpsKats.Service.Configuration;
-using AzureDevOpsKats.Web.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Moq;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace AzureDevOpsKats.Test.Mock
 {
@@ -158,7 +157,7 @@ namespace AzureDevOpsKats.Test.Mock
         {
             catRepository ??= new Mock<ICatRepository>().Object;
 
-            ApplicationOptions app = new ApplicationOptions() { FileStorage = new FileStorage { FilePath = "/", RequestPath = "/Images" }};
+            ApplicationOptions app = new ApplicationOptions() { FileStorage = new FileStorage { FilePath = "/", RequestPath = "/Images" } };
             var settings = new Mock<IOptions<ApplicationOptions>>();
             settings.Setup(ap => ap.Value).Returns(app);
 

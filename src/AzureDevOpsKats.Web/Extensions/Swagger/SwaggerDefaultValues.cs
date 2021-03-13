@@ -1,9 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-
-namespace AzureDevOpsKats.WebApi.Extensions
+﻿namespace AzureDevOpsKats.WebApi.Extensions
 {
     /// <summary>
     /// Represents the Swagger/Swashbuckle operation filter used to document the implicit API version parameter.

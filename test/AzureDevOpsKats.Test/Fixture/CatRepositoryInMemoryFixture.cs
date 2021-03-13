@@ -1,7 +1,7 @@
-﻿using System;
-using AzureDevOpsKats.Data.Repository;
+﻿using AzureDevOpsKats.Data.Repository;
 using AzureDevOpsKats.Test.DataSource;
 using Microsoft.EntityFrameworkCore;
+using System;
 using CatRepository = AzureDevOpsKats.Test.DataSource.CatRepository;
 
 namespace AzureDevOpsKats.Test.Fixture

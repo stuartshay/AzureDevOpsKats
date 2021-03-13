@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AzureDevOpsKats.Data.Entities;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using AzureDevOpsKats.Data.Entities;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Logging;
 
 namespace AzureDevOpsKats.Data.Repository
 {
