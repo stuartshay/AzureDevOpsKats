@@ -23,10 +23,10 @@ RUN dotnet tool list -g
 
 WORKDIR /app
 RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
-#RUN sempack -f foo/foo.csproj --major --minor --build-version --revision
-
 
 WORKDIR /app/src/AzureDevOpsKats.Web
+
+RUN sempack --build-version ${BUILD_NUMBER}
 RUN dotnet publish -o /publish -c Release -f net5.0 
 
 
