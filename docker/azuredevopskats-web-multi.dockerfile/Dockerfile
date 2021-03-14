@@ -6,19 +6,14 @@ RUN cat /etc/os-release
 ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
 
-# Install Additional Runtimes
-RUN apt-get update && apt-get install -y \
-    wget \
-    apt-transport-https 
-
+# Install Additional SDK/Runtimes
 RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb 
 RUN dpkg -i packages-microsoft-prod.deb 
 
-
-
-
-
-
+RUN apt-get update && apt-get install -y \
+    wget \
+    apt-transport-https && \
+    dotnet-sdk-3.1 
 
 
 COPY src /app/src
