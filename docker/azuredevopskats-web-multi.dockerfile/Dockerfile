@@ -29,7 +29,7 @@ RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
 
 WORKDIR /app/src/AzureDevOpsKats.Web
 
-RUN version --new-version 5.0.1.${BUILD_NUMBER}
+RUN dotnet version --new-version 5.0.1.${BUILD_NUMBER}
 RUN dotnet publish -o /publish -c Release -f net5.0  
 
 # Runtime Image Stage
