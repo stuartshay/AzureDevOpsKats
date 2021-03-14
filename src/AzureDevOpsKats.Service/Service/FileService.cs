@@ -1,8 +1,8 @@
-﻿using AzureDevOpsKats.Service.Configuration;
+﻿using System.IO;
+using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.IO;
 
 namespace AzureDevOpsKats.Service.Service
 {

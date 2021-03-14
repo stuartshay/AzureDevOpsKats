@@ -1,4 +1,9 @@
-﻿using AzureDevOpsKats.Service.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Threading.Tasks;
+using AzureDevOpsKats.Service.Configuration;
 using AzureDevOpsKats.Service.Interface;
 using AzureDevOpsKats.Service.Models;
 using AzureDevOpsKats.Web.ViewModels;
@@ -7,11 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace AzureDevOpsKats.Web.Controllers
 {

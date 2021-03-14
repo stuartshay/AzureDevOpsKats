@@ -1,7 +1,7 @@
-﻿using AzureDevOpsKats.Data.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AzureDevOpsKats.Data.Entities;
 
 namespace AzureDevOpsKats.Data.Repository
 {

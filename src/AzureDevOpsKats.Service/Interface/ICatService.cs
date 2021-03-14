@@ -1,6 +1,6 @@
-﻿using AzureDevOpsKats.Service.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AzureDevOpsKats.Service.Models;
 
 namespace AzureDevOpsKats.Service.Interface
 {
