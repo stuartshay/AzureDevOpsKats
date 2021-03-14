@@ -7,10 +7,12 @@ ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 # Install Additional Runtimes
-RUN apt-get update; \
-    apt-get install -y apt-transport-https && \
-    apt-get update && \
-    apt-get install -y aspnetcore-runtime-3.1.0
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    && apt-get install -y aspnetcore-runtime-3.1.0
+
+
+
 
 COPY src /app/src
 # COPY scripts /
