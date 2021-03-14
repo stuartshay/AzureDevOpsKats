@@ -8,10 +8,11 @@ ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 # Install Additional Runtimes
 RUN apt-get update && apt-get install -y \
+    wget \
     apt-transport-https 
 
-RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb \
-    dpkg -i packages-microsoft-prod.deb 
+RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb 
+RUN dpkg -i packages-microsoft-prod.deb 
 
 
 
