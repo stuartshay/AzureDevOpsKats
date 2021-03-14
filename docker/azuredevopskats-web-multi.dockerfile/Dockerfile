@@ -6,6 +6,12 @@ RUN cat /etc/os-release
 ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
 
+# Install Additional Runtimes
+RUN apt-get update; \
+    sudo apt-get install -y apt-transport-https && \
+    sudo apt-get update && \
+    sudo apt-get install -y aspnetcore-runtime-3.1.0
+
 COPY src /app/src
 # COPY scripts /
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
