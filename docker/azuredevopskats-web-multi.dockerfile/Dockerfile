@@ -8,9 +8,9 @@ ENV BUILD_NUMBER ${BUILD_NUMBER}
 
 # Install Additional Runtimes
 RUN apt-get update; \
-    sudo apt-get install -y apt-transport-https && \
-    sudo apt-get update && \
-    sudo apt-get install -y aspnetcore-runtime-3.1.0
+    apt-get install -y apt-transport-https && \
+    apt-get update && \
+    apt-get install -y aspnetcore-runtime-3.1.0
 
 COPY src /app/src
 # COPY scripts /
