@@ -9,7 +9,7 @@ ENV BUILD_NUMBER ${BUILD_NUMBER}
 # Install Additional Runtimes
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
-    && apt-get install -y dotnet-sdk-3.1.0
+    && apt-get install -y dotnet-sdk-3.1
 
 
 COPY src /app/src
