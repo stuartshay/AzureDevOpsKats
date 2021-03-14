@@ -17,12 +17,6 @@ RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y \
     dotnet-sdk-3.1 
 
-
-
-
-
-
-
 COPY src /app/src
 # COPY scripts /
 COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
