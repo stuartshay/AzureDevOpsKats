@@ -9,10 +9,7 @@ ENV BUILD_NUMBER ${BUILD_NUMBER}
 # Install Additional Runtimes
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
-    && rm -rf /var/lib/apt/lists/* \
-    && curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /wait_for_it.sh \
-    && chmod +x /*.sh
-
+    && apt-get install -y dotnet-sdk-3.1.0
 
 
 COPY src /app/src
