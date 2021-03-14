@@ -13,7 +13,7 @@ RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y \
     wget \
     apt-transport-https && \
-    dotnet-sdk-3.1 
+    apt install dotnet-sdk-3.1 
 
 
 COPY src /app/src
