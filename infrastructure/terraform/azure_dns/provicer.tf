@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 provider "dnsimple" {
-  version = "0.1.0"
+  version = "0.5.3"
 
   token   = "${var.dnsimple_token}"
   account = "${var.dnsimple_account}"
