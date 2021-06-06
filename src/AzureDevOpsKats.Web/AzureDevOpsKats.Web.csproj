@@ -16,7 +16,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="5.0.1" />
     <PackageReference Include="Cronos" Version="0.7.0" />
-    <PackageReference Include="Elastic.Apm.Extensions.Hosting" Version="1.8.1" />
+    <PackageReference Include="Elastic.Apm.Extensions.Hosting" Version="1.10.0" />
     <PackageReference Include="Elastic.Apm.NetCoreAll" Version="1.8.1" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
