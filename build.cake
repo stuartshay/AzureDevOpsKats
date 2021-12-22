@@ -87,7 +87,7 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        DotNetCoreRestore();
+        DotNetRestore();
     });
 
 
@@ -98,9 +98,9 @@ Task("Restore")
         var projects = GetFiles("./**/*.csproj");
         foreach(var project in projects)
         {
-            DotNetCoreBuild(
+            DotNetBuild(
                 project.GetDirectory().FullPath,
-                new DotNetCoreBuildSettings()
+                new DotNetBuildSettings()
                 {
                     Configuration = configuration
                 });
@@ -114,8 +114,8 @@ Task("Test")
         var projects = GetFiles("./test/**/*.csproj");
         foreach(var project in projects)
         {
-           Information("Testing project " + project);  
-           DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+           Information("Testing project " + project);
+           DotNetTest(project.FullPath, new DotNetTestSettings
            {
                Configuration = configuration,
                NoBuild = true,
@@ -128,14 +128,14 @@ Task("Test")
 
 Task("Coverage")
    .IsDependentOn("Test")
-   .Does(() => 
+   .Does(() =>
    {
-        Information("Code Coverage");  
-        MiniCover(tool => 
+        Information("Code Coverage");
+        MiniCover(tool =>
         {
             foreach(var project in GetFiles("./test/**/*.csproj"))
             {
-                DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+                DotNetTest(project.FullPath, new DotNetTestSettings
                 {
                     Configuration = configuration,
                     NoRestore = true,
@@ -149,7 +149,7 @@ Task("Coverage")
             .WithNonFatalThreshold()
             .GenerateReport(ReportType.OPENCOVER |  ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
         );
-        
+
         if (!BuildSystem.TravisCI.IsRunningOnTravisCI)
         {
             OpenCoverToCoberturaConverter("./opencovercoverage.xml", "./cobertura-coverage.xml");
@@ -158,12 +158,12 @@ Task("Coverage")
    });
 
 Task("Publish")
-    .IsDependentOn("Build")
+    .IsDependentOn("Test")
     .Does(() =>
 {
-    DotNetCorePublish(
+    DotNetPublish(
         projectDirectory,
-        new DotNetCorePublishSettings()
+        new DotNetPublishSettings()
         {
             Configuration = configuration,
             OutputDirectory = publishDirectory
@@ -175,7 +175,7 @@ Task("Publish")
 
 Task("Generate-Docs")
     .IsDependentOn("Clean")
-    .Does(() => 
+    .Does(() =>
     {
        DocFxBuild("./docfx/docfx.json");
        Zip("./docfx/_site/", "./artifacts/docfx.zip");
@@ -185,7 +185,7 @@ Task("Clean-Sonarqube")
   .WithCriteria(BuildSystem.IsLocalBuild)
   .Does(()=>{
     CleanDirectory(sonarDirectory);
-}); 
+});
 
 
 Task("SonarBegin")
@@ -199,9 +199,9 @@ Task("SonarBegin")
         .Append(Settings.SonarExcludeDuplications)
     });
 });
-  
+
 Task("SonarEnd")
-    .Does(() => { 
+    .Does(() => {
         SonarEnd(new SonarEndSettings{});
     });
 
@@ -211,9 +211,9 @@ Task("Pack")
     {
         foreach (var project in GetFiles("./src/**/*.csproj"))
         {
-            DotNetCorePack(
+            DotNetPack(
                 project.GetDirectory().FullPath,
-                new DotNetCorePackSettings()
+                new DotNetPackSettings()
                 {
                     Configuration = configuration,
                     OutputDirectory = artifactsDirectory,
@@ -225,7 +225,7 @@ Task("Pack")
 Task("Push-Myget")
     .IsDependentOn("Pack")
     .Does(() => {
-        var pushSettings = new DotNetCoreNuGetPushSettings 
+        var pushSettings = new DotNetNuGetPushSettings
         {
             Source = Settings.MyGetSource,
             ApiKey = mygetApiKey
@@ -234,19 +234,19 @@ Task("Push-Myget")
         Information($"artifactsDirectory \"{artifactsDirectory}\".");
 
         var packages = GetFiles("./artifacts/*.nupkg");
-        foreach(var package in packages) 
+        foreach(var package in packages)
         {
-            if(!IsNuGetPublished(package)) 
+            if(!IsNuGetPublished(package))
             {
                 Information($"Publishing \"{package}\".");
-                DotNetCoreNuGetPush(package.FullPath, pushSettings);
+                DotNetNuGetPush(package.FullPath, pushSettings);
             }
             else {
                 Information($"Bypassing publishing \"{package}\" as it is already published.");
-            }    
+            }
         }
 });
-    
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
@@ -260,10 +260,13 @@ Task("Sonar")
   .IsDependentOn("Coverage")
   .IsDependentOn("SonarEnd");
 
+
 Task("CI-Build")
-  .IsDependentOn("Coverage")
-  .IsDependentOn("Publish")
-  .IsDependentOn("Generate-Docs");
+  .IsDependentOn("Test")
+  .IsDependentOn("Publish");
+  //.IsDependentOn("Coverage")
+  //.IsDependentOn("Generate-Docs");
+
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

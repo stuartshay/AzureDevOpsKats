@@ -47,19 +47,19 @@ namespace AzureDevOpsKats.Web.HostedServices
         /// <returns></returns>
         public override async Task DoWork(CancellationToken cancellationToken)
         {
-            var transaction = Elastic.Apm.Agent
-                .Tracer.StartTransaction("CronJobService", ApiConstants.TypeRequest);
+            //var transaction = Elastic.Apm.Agent
+            //    .Tracer.StartTransaction("CronJobService", ApiConstants.TypeRequest);
 
-            if (Agent.Tracer.CurrentTransaction != null)
-                Agent.Tracer.CurrentTransaction.CaptureSpan("SampleSpan", "PerfBenchmark", () => { });
+            //if (Agent.Tracer.CurrentTransaction != null)
+            //    Agent.Tracer.CurrentTransaction.CaptureSpan("SampleSpan", "PerfBenchmark", () => { });
 
-            using var scope = _serviceProvider.CreateScope();
-            var svc = scope.ServiceProvider.GetRequiredService<ICatsHostedService>();
+            //using var scope = _serviceProvider.CreateScope();
+            //var svc = scope.ServiceProvider.GetRequiredService<ICatsHostedService>();
 
-            await svc.DoWork(cancellationToken);
-            _logger.LogInformation($"{DateTime.Now:hh:mm:ss} CronJob 2 is working.");
+            //await svc.DoWork(cancellationToken);
+            //_logger.LogInformation($"{DateTime.Now:hh:mm:ss} CronJob 2 is working.");
 
-            transaction.End();
+            //transaction.End();
         }
 
         /// <summary>

@@ -1,108 +1,90 @@
 trigger:
   branches:
     include:
-    - master
-    - develop
-    - react
-    - releases/*
-    - feature*
+      - master
+      - develop
+      - react
+      - releases/*
+      - feature*
   paths:
     exclude:
-    - infastructure/*
+      - infastructure/*
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: "Release"
 
 jobs:
+  - job: Linux
+    pool:
+      vmImage: "ubuntu-20.04"
+    variables:
+      - group: "Docker Hub"
 
-- job: Linux 
-  
-  pool:
-    vmImage: 'ubuntu-16.04'
-  
-  variables:
-  - group: 'Docker Hub'
-  
-  steps:
+    steps:
+      - script: |
+          ./build.sh --target=CI-Build
+        displayName: "Cake Build"
 
-  - script: |
-      ./build.sh --target=CI-Build
-    displayName: 'Cake Build'
-  
-  - task: PublishTestResults@2
-    inputs:
-      testRunner: VSTest
-      testResultsFiles: '.test-results/*.trx'
+      - task: CopyFiles@2
+        inputs:
+          contents: "publish/webapplication.zip"
+          targetFolder: $(Build.ArtifactStagingDirectory)
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: 'cobertura-coverage.xml'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: $(Build.ArtifactStagingDirectory)
+          artifactName: WebApplicationBundle
 
-  - task: CopyFiles@2
-    inputs:
-      contents: 'publish/webapplication.zip'
-      targetFolder: $(Build.ArtifactStagingDirectory)
+      # - task: DockerInstaller@0
+      #   displayName: Docker Installer
+      #   inputs:
+      #     dockerVersion: 19.03.0-rc3
+      #     releaseType: test
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: $(Build.ArtifactStagingDirectory)
-      artifactName: WebApplicationBundle
+      - script: |
+          docker -v
+          apt-get purge docker-ce
+          curl https://get.docker.com | CHANNEL=test sh
+          sudo usermod -aG docker vsts
+        displayName: "Docker Install"
 
- # - task: DockerInstaller@0
- #   displayName: Docker Installer
- #   inputs:
- #     dockerVersion: 19.03.0-rc3
- #     releaseType: test
+      - script: |
+          docker -v
+          docker login -u $(dockerLogin) -p $(dockerPassword)
+          docker build -f docker/azuredevopskats-web-multi.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
+          docker push stuartshay/azuredevopskats:devops
+        displayName: "Docker Build & Push"
+        env:
+          COREHOST_TRACE: 0
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+          DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-  - script: |
-      docker -v
-      apt-get purge docker-ce
-      curl https://get.docker.com | CHANNEL=test sh
-      sudo usermod -aG docker vsts
-    displayName: 'Docker Install'
+  #- job: Windows
+  # pool:
+  #  vmImage: "windows-2019"
+  #variables:
+  #  - group: "Git Hub"
 
+  #steps:
+  # - task: DotNetCoreInstaller@0
+  #  inputs:
+  #   version: "5.0.100"
+  # - task: Cake@0
+  #  inputs:
+  #   script: "build.cake"
+  #  target: "Generate-Docs"
+  # verbosity: "Verbose"
+  #env:
+  # COREHOST_TRACE: 0
+  # DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  # DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-  - script: |
-      docker -v
-      docker login -u $(dockerLogin) -p $(dockerPassword)
-      docker build -f docker/azuredevopskats-web-multi.dockerfile/Dockerfile -t stuartshay/azuredevopskats:devops  .
-      docker push stuartshay/azuredevopskats:devops 
-    displayName: 'Docker Build & Push'
-    env:
-      COREHOST_TRACE: 0
-      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-      DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-- job: Windows
-
-  pool:
-    vmImage: 'windows-2019'
-  variables:
-  - group: 'Git Hub'
-
-  steps:
-  
-  - task: DotNetCoreInstaller@0
-    inputs:
-      version: '5.0.100'
-
-  - task: Cake@0
-    inputs:
-     script: 'build.cake'
-     target: 'Generate-Docs'
-     verbosity: 'Verbose'
-    env:
-      COREHOST_TRACE: 0
-      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-      DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-  - task: GitHubPagesPublish@1
-    inputs:
-      docPath: 'docFx\_site\*'
-      githubusername: $(git_username)
-      githubemail: $(git_email)
-      githubaccesstoken: $(Nukeeper_github_token)
-      repositoryname: 'AzureDevOpsKats'
-      branchname: 'gh-pages'
-      commitmessage: 'Automated Release'
+  #- task: GitHubPagesPublish@1
+  #inputs:
+  #docPath: 'docFx\_site\*'
+  #githubusername: $(git_username)
+  #githubemail: $(git_email)
+  #githubaccesstoken: $(Nukeeper_github_token)
+  #repositoryname: "AzureDevOpsKats"
+  #branchname: "gh-pages"
+  #commitmessage: "Automated Release"
