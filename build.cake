@@ -87,7 +87,7 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        DotNetCoreRestore();
+        DotNetRestore();
     });
 
 
@@ -98,9 +98,9 @@ Task("Restore")
         var projects = GetFiles("./**/*.csproj");
         foreach(var project in projects)
         {
-            DotNetCoreBuild(
+            DotNetBuild(
                 project.GetDirectory().FullPath,
-                new DotNetCoreBuildSettings()
+                new DotNetBuildSettings()
                 {
                     Configuration = configuration
                 });
@@ -115,7 +115,7 @@ Task("Test")
         foreach(var project in projects)
         {
            Information("Testing project " + project);
-           DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+           DotNetTest(project.FullPath, new DotNetTestSettings
            {
                Configuration = configuration,
                NoBuild = true,
@@ -135,7 +135,7 @@ Task("Coverage")
         {
             foreach(var project in GetFiles("./test/**/*.csproj"))
             {
-                DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+                DotNetTest(project.FullPath, new DotNetTestSettings
                 {
                     Configuration = configuration,
                     NoRestore = true,
@@ -161,9 +161,9 @@ Task("Publish")
     .IsDependentOn("Test")
     .Does(() =>
 {
-    DotNetCorePublish(
+    DotNetPublish(
         projectDirectory,
-        new DotNetCorePublishSettings()
+        new DotNetPublishSettings()
         {
             Configuration = configuration,
             OutputDirectory = publishDirectory
@@ -211,9 +211,9 @@ Task("Pack")
     {
         foreach (var project in GetFiles("./src/**/*.csproj"))
         {
-            DotNetCorePack(
+            DotNetPack(
                 project.GetDirectory().FullPath,
-                new DotNetCorePackSettings()
+                new DotNetPackSettings()
                 {
                     Configuration = configuration,
                     OutputDirectory = artifactsDirectory,
@@ -225,7 +225,7 @@ Task("Pack")
 Task("Push-Myget")
     .IsDependentOn("Pack")
     .Does(() => {
-        var pushSettings = new DotNetCoreNuGetPushSettings
+        var pushSettings = new DotNetNuGetPushSettings
         {
             Source = Settings.MyGetSource,
             ApiKey = mygetApiKey
@@ -239,7 +239,7 @@ Task("Push-Myget")
             if(!IsNuGetPublished(package))
             {
                 Information($"Publishing \"{package}\".");
-                DotNetCoreNuGetPush(package.FullPath, pushSettings);
+                DotNetNuGetPush(package.FullPath, pushSettings);
             }
             else {
                 Information($"Bypassing publishing \"{package}\" as it is already published.");

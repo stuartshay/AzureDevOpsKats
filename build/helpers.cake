@@ -3,11 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 private bool IsNuGetPublished(FilePath packagePath) {
-   
-    //https://cakebuild.net/api/Cake.ExtendedNuGet/ExtendedNuGetAliases/B1C7AA63
     return false;
 }
-
 
 List<NuSpecContent> GetContent(IEnumerable<string> frameworks, ProjectCollection projects, Func<SolutionProject, bool> projectFilter = null) {
     projectFilter = projectFilter ?? (p => true);
@@ -29,7 +26,7 @@ List<NuSpecContent> GetContent(IEnumerable<string> frameworks, ProjectCollection
 
 public class ProjectCollection {
     public IEnumerable<SolutionProject> SourceProjects {get;set;}
-    public IEnumerable<DirectoryPath> SourceProjectPaths {get { return SourceProjects.Select(p => p.Path.GetDirectory()); } } 
+    public IEnumerable<DirectoryPath> SourceProjectPaths {get { return SourceProjects.Select(p => p.Path.GetDirectory()); } }
     public IEnumerable<SolutionProject> TestProjects {get;set;}
     public IEnumerable<DirectoryPath> TestProjectPaths { get { return TestProjects.Select(p => p.Path.GetDirectory()); } }
     public IEnumerable<SolutionProject> AllProjects { get { return SourceProjects.Concat(TestProjects); } }
@@ -44,5 +41,4 @@ ProjectCollection GetProjects(FilePath slnPath) {
         SourceProjects = projects.Where(p => !p.Name.Contains(".Tests")),
         TestProjects = projects.Where(p => p.Name.Contains(".Tests"))
     };
-    
 }
