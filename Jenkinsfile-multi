@@ -1,11 +1,11 @@
 node("${NODE}") {
-    
+
     String version_prefix = "${VERSION_PREFIX}"
     String version_suffix = ''
     String docker_image_name = 'stuartshay/azuredevopskats'
     String docker_file = 'docker/azuredevopskats-web-multi.dockerfile/Dockerfile'
     String docker_ignore = 'docker/azuredevopskats-web-multi.dockerfile/.dockerignore'
-    String git_path = '' 
+    String git_path = ''
     String platform = "${PLATFORM}"
     String email = 'sshay@yahoo.com' // TODO FIX
 
@@ -22,11 +22,11 @@ node("${NODE}") {
     }
 
     stage('Build & Deploy Docker') {
-        
+
         sh """mv ${docker_ignore} .dockerignore
         docker context ls
         """
-          
+
         if (git_branch == 'master')
         {
             sh """
@@ -52,12 +52,7 @@ node("${NODE}") {
             """
         }
     }
-
-    stage('Mail') {
-        emailext attachLog: true, body: '', subject: "Jenkins build status - ${currentBuild.fullDisplayName}", to: 'sshay@yahoo.com'
-    }
-
- }   
+ }
 
 
 
