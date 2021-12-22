@@ -119,7 +119,7 @@ Task("Test")
            {
                Configuration = configuration,
                NoBuild = true,
-               Loggers = "trx;LogFileName=UnitTestResults.trx",
+               Logger = "trx;LogFileName=UnitTestResults.trx",
                ResultsDirectory = testResultsDirectory,
                ArgumentCustomization = args => args.Append($"--no-restore")
            });
