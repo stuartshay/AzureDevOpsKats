@@ -158,7 +158,7 @@ Task("Coverage")
    });
 
 Task("Publish")
-    .IsDependentOn("Build")
+    .IsDependentOn("Test")
     .Does(() =>
 {
     DotNetCorePublish(
@@ -257,13 +257,16 @@ Task("Default")
 Task("Sonar")
   .IsDependentOn("Clean-Sonarqube")
   .IsDependentOn("SonarBegin")
- # .IsDependentOn("Coverage")
+  .IsDependentOn("Coverage")
   .IsDependentOn("SonarEnd");
 
+
 Task("CI-Build")
- # .IsDependentOn("Coverage")
-  .IsDependentOn("Publish")
-  .IsDependentOn("Generate-Docs");
+  .IsDependentOn("Test")
+  .IsDependentOn("Publish");
+  //.IsDependentOn("Coverage")
+  //.IsDependentOn("Generate-Docs");
+
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
