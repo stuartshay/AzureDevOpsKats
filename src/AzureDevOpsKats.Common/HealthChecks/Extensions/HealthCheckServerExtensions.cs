@@ -40,13 +40,13 @@ namespace AzureDevOpsKats.Common.HealthChecks.Extensions
 
         public static IHealthChecksBuilder AddElasticSearchHealthCheck(this IHealthChecksBuilder builder, ElasticSearchConfiguration configuration)
         {
-            if (configuration.Enabled)
-            {
-                var elasticUrl = configuration.ElasticUrl;
+            //if (configuration.Enabled)
+            //{
+            //    var elasticUrl = configuration.ElasticUrl;
 
-                builder.AddElasticsearch(elasticUrl, name: "ElasticSearch Client", failureStatus: HealthStatus.Degraded,
-                    tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }, timeout: new TimeSpan(0,1,0));
-            }
+            //    builder.AddElasticsearch(elasticUrl, name: "ElasticSearch Client", failureStatus: HealthStatus.Degraded,
+            //        tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Logging.ToString(), "Port:9200" }, timeout: new TimeSpan(0,1,0));
+            //}
 
 
             return builder;
