@@ -114,7 +114,7 @@ Task("Test")
         var projects = GetFiles("./test/**/*.csproj");
         foreach(var project in projects)
         {
-           Information("Testing project " + project);  
+           Information("Testing project " + project);
            DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
            {
                Configuration = configuration,
@@ -128,10 +128,10 @@ Task("Test")
 
 Task("Coverage")
    .IsDependentOn("Test")
-   .Does(() => 
+   .Does(() =>
    {
-        Information("Code Coverage");  
-        MiniCover(tool => 
+        Information("Code Coverage");
+        MiniCover(tool =>
         {
             foreach(var project in GetFiles("./test/**/*.csproj"))
             {
@@ -149,7 +149,7 @@ Task("Coverage")
             .WithNonFatalThreshold()
             .GenerateReport(ReportType.OPENCOVER |  ReportType.CONSOLE | ReportType.XML | ReportType.HTML)
         );
-        
+
         if (!BuildSystem.TravisCI.IsRunningOnTravisCI)
         {
             OpenCoverToCoberturaConverter("./opencovercoverage.xml", "./cobertura-coverage.xml");
@@ -175,7 +175,7 @@ Task("Publish")
 
 Task("Generate-Docs")
     .IsDependentOn("Clean")
-    .Does(() => 
+    .Does(() =>
     {
        DocFxBuild("./docfx/docfx.json");
        Zip("./docfx/_site/", "./artifacts/docfx.zip");
@@ -185,7 +185,7 @@ Task("Clean-Sonarqube")
   .WithCriteria(BuildSystem.IsLocalBuild)
   .Does(()=>{
     CleanDirectory(sonarDirectory);
-}); 
+});
 
 
 Task("SonarBegin")
@@ -199,9 +199,9 @@ Task("SonarBegin")
         .Append(Settings.SonarExcludeDuplications)
     });
 });
-  
+
 Task("SonarEnd")
-    .Does(() => { 
+    .Does(() => {
         SonarEnd(new SonarEndSettings{});
     });
 
@@ -225,7 +225,7 @@ Task("Pack")
 Task("Push-Myget")
     .IsDependentOn("Pack")
     .Does(() => {
-        var pushSettings = new DotNetCoreNuGetPushSettings 
+        var pushSettings = new DotNetCoreNuGetPushSettings
         {
             Source = Settings.MyGetSource,
             ApiKey = mygetApiKey
@@ -234,19 +234,19 @@ Task("Push-Myget")
         Information($"artifactsDirectory \"{artifactsDirectory}\".");
 
         var packages = GetFiles("./artifacts/*.nupkg");
-        foreach(var package in packages) 
+        foreach(var package in packages)
         {
-            if(!IsNuGetPublished(package)) 
+            if(!IsNuGetPublished(package))
             {
                 Information($"Publishing \"{package}\".");
                 DotNetCoreNuGetPush(package.FullPath, pushSettings);
             }
             else {
                 Information($"Bypassing publishing \"{package}\" as it is already published.");
-            }    
+            }
         }
 });
-    
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
@@ -257,11 +257,11 @@ Task("Default")
 Task("Sonar")
   .IsDependentOn("Clean-Sonarqube")
   .IsDependentOn("SonarBegin")
-  .IsDependentOn("Coverage")
+ # .IsDependentOn("Coverage")
   .IsDependentOn("SonarEnd");
 
 Task("CI-Build")
-  .IsDependentOn("Coverage")
+ # .IsDependentOn("Coverage")
   .IsDependentOn("Publish")
   .IsDependentOn("Generate-Docs");
 
