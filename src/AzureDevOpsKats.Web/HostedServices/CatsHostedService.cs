@@ -30,21 +30,28 @@ namespace AzureDevOpsKats.Web.HostedServices
         /// <returns></returns>
         public async Task DoWork(CancellationToken cancellationToken)
         {
-            var response = await Elastic.Apm.Agent.Tracer.CaptureTransaction("Console .Net Core Example", "background", async () =>
-            {
-                Console.WriteLine("HostedService running");
-                // Make sure Agent.Tracer.CurrentTransaction is not null
-                var currentTransaction = Agent.Tracer.CurrentTransaction;
-                if (currentTransaction == null) throw new Exception("Agent.Tracer.CurrentTransaction returns null");
+            //var response = await Elastic.Apm.Agent.Tracer.CaptureTransaction("Console .Net Core Example", "background", async () =>
+            //{
+            //    Console.WriteLine("HostedService running");
+            //    // Make sure Agent.Tracer.CurrentTransaction is not null
+            //    var currentTransaction = Agent.Tracer.CurrentTransaction;
+            //    if (currentTransaction == null) throw new Exception("Agent.Tracer.CurrentTransaction returns null");
 
-                _logger.LogInformation("CatsHostedService|Time:{time}", DateTime.Now);
+            //    _logger.LogInformation("CatsHostedService|Time:{time}", DateTime.Now);
 
 
-                var httpClient = new HttpClient();
-                return await httpClient.GetAsync("https://github.com/stuartshay/AzureDevOpsKats", cancellationToken);
-            });
+            //    var httpClient = new HttpClient();
+            //    return await httpClient.GetAsync("https://github.com/stuartshay/AzureDevOpsKats", cancellationToken);
+            //});
         }
     }
+
+
+
+
+
+
+
 
     /// <summary>
     /// 
