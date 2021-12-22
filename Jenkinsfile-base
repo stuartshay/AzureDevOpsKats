@@ -7,13 +7,13 @@ node('docker') {
     stage('Docker build base image') {
          sh '''mv docker/azuredevopskats-web-base.dockerfile/.dockerignore .dockerignore
          docker build -f docker/azuredevopskats-web-base.dockerfile/Dockerfile --build-arg BUILD_NUMBER=${BUILD_NUMBER} -t stuartshay/azuredevopskats:2.2.2-base .'''
-         
+
          withCredentials([usernamePassword(credentialsId: 'docker-hub-navigatordatastore', usernameVariable: 'DOCKER_HUB_LOGIN', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
             sh "docker login -u ${DOCKER_HUB_LOGIN} -p ${DOCKER_HUB_PASSWORD}"
         }
         sh '''docker push stuartshay/azuredevopskats:2.2.2-base'''
     }
-    
+
     stage('Docker Scanning') {
        echo "Docker vulnerability scanning"
        def score = 0
@@ -37,15 +37,12 @@ node('docker') {
             if (score < 2){
                 currentBuild.result = 'SUCCESS'
             } else if (score == 2){
-                currentBuild.result = 'UNSTABLE'                
+                currentBuild.result = 'UNSTABLE'
             } else {
-                currentBuild.result = 'FAILURE'                
+                currentBuild.result = 'FAILURE'
             }
         }
     }
-  
-   stage('Mail') {
-        emailext attachLog: true, body: '', subject: "Jenkins build status - ${currentBuild.fullDisplayName}", to: 'sshay@yahoo.com'
-    }
+
 
 }
