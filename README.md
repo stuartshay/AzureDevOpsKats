@@ -19,11 +19,6 @@ The Requirements for this project can be viewed at the following.
 - [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
 - [Developer DocFx Documentation](https://stuartshay.github.io/AzureDevOpsKats/)
 
-## Web Site
-
-http://azuredevopskats-web.azurewebsites.net/
-http://azuredevopskats-web.azurewebsites.net/swagger/
-
 ![](assets/web.png)
 
 ## Builds
