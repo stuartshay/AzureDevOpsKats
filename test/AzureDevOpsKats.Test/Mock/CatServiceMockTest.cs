@@ -66,11 +66,11 @@ namespace AzureDevOpsKats.Test.Mock
 
             var service = GetCatService(mockCatRepository.Object);
 
-            //Act 
+            // Act 
             var results = await service.GetCats();
             var sut = results.ToList();
 
-            //Assert
+            // Assert
             Assert.NotNull(sut);
             Assert.IsType<List<CatModel>>(sut);
             Assert.NotEmpty(sut);
@@ -96,8 +96,10 @@ namespace AzureDevOpsKats.Test.Mock
 
             var sut = GetCatService(mockCatRepository.Object);
 
-            ////Act 
+            // Act 
             var result = await sut.GetCat(1);
+           
+            // Assert
             Assert.NotNull(result);
             Assert.IsType<CatModel>(result);
             Assert.NotNull(result.Name);
@@ -120,6 +122,9 @@ namespace AzureDevOpsKats.Test.Mock
 
             //Act 
             await sut.CreateCat(cat);
+
+            //Assert
+            mockCatRepository.Verify();
         }
 
         [Fact]
@@ -136,6 +141,9 @@ namespace AzureDevOpsKats.Test.Mock
 
             //Act 
             await sut.EditCat(1, cat);
+
+            //Assert
+            mockCatRepository.Verify();
         }
 
         [Fact]
@@ -149,11 +157,14 @@ namespace AzureDevOpsKats.Test.Mock
 
             var sut = GetCatService(mockCatRepository.Object);
 
-            //Act 
+            //Act
             await sut.DeleteCat(1);
+
+            //Assert
+            mockCatRepository.Verify(x => x.DeleteCat(1), Times.Once());
         }
 
-        private ICatService GetCatService(ICatRepository catRepository = null)
+        private static ICatService GetCatService(ICatRepository catRepository = null)
         {
             catRepository ??= new Mock<ICatRepository>().Object;
 
