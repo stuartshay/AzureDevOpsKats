@@ -303,7 +303,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
             return new CatsController(catService, fileService, logger, env.Object, settings);
         }
 
-        private byte[] CreateSpecialByteArray(int length)
+        private static byte[] CreateSpecialByteArray(int length)
         {
             var arr = new byte[length];
             for (int i = 0; i < arr.Length; i++)
