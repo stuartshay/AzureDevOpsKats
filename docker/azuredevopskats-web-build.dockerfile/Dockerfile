@@ -14,7 +14,7 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
 RUN apt-get install -y nodejs
 
 RUN dotnet tool list -g
-RUN dotnet publish -o /publish -c Release -f netcoreapp2.2 
+RUN dotnet publish -o /publish -c Release -f netcoreapp2.2
 
 # Runtime Image Stage
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
@@ -22,10 +22,10 @@ FROM microsoft/dotnet:2.2-aspnetcore-runtime
 ARG VCS_REF
 
 LABEL org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="e.g. https://github.com/microscaling/microscaling"
+    org.label-schema.vcs-url="e.g. https://github.com/microscaling/microscaling"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        curl \
+    curl \
     && rm -rf /var/lib/apt/lists/* \
     && curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /wait_for_it.sh \
     && chmod +x /wait_for_it.sh
