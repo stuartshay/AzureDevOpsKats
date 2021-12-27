@@ -1,9 +1,9 @@
 
-## Docker 
+## Docker
 
 Setup
 
-Windows Host File:  ```C:\Windows\System32\drivers\etc\hosts```    
+Windows Host File:  ```C:\Windows\System32\drivers\etc\hosts```
 Mac/Linux: ```/etc/hosts```
 
 ```
@@ -14,7 +14,7 @@ Mac/Linux: ```/etc/hosts```
 127.0.0.1 redis
 ```
 
-### Docker Compose 
+### Docker Compose
 
 ```
 docker-compose --file docker-compose.yml pull
@@ -46,9 +46,13 @@ http://traefik:8080
 
 ### Scale Command
 ```
-docker-compose --file docker-compose.yml up -d --scale <SERVICE>=<NUMBER> 
+docker-compose --file docker-compose.yml up -d --scale <SERVICE>=<NUMBER>
 ```
 
+### .NET Docker Packages
+```
+https://github.com/atomist-container-images/mcr.microsoft.com-dotnet_aspnet/blob/main/Dockerfile
+```
 
 ## Linux Local Build
 ```
