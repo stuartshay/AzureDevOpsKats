@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { MDBFooter } from "mdbreact";
+import React from 'react';
+import  {MDBFooter}  from "mdbreact";
 
-class Footer extends Component {
-  render () {
+const Footer = () => {
     return (
       < MDBFooter color="footer-bg" style={{ position: "absolute", width: '100%' }}>
         <p className="footer-copyright mb-0 py-3 text-center">
@@ -10,7 +9,6 @@ class Footer extends Component {
         </p>
       </MDBFooter >
     )
-  }
 }
 
 export default Footer;

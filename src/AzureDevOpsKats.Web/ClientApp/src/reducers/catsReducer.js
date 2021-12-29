@@ -8,8 +8,7 @@ const initialState = {
   action: null,
 }
 
-const catsReducer = (state = initialState, action) => {
-  
+const catsReducer = (state = initialState, action) => {  
   switch(action.type) {
     case RECEIVED_CATS_LIST:
       return {

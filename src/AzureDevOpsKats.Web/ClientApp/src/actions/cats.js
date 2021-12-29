@@ -15,6 +15,7 @@ export const deleteCatData= (id) => dispatch => {
     });
 
 }
+
 export const addCatData = (cat) => dispatch => {
   const formData = new FormData();
   formData.append('file', cat.file);
