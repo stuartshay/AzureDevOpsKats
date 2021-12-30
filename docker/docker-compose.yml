@@ -10,30 +10,33 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80" 
+      - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
-     - azuredevopskats-network 
-     - elastic 
+      - azuredevopskats-network
+      - elastic
 
   azuredevopskats-web:
     hostname: azuredevopskats-web
-    image: "stuartshay/azuredevopskats:5.0.1-build.22"
+    image: "stuartshay/azuredevopskats:5.1-buildx-01"
     environment:
-     - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_ENVIRONMENT=Docker
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.azuredevopskats-web.rule=Host(`azuredevopskats-web`)"
-      - "traefik.http.routers.azuredevopskats-web.entrypoints=web"   
+      - traefik.enable=true
+      - traefik.http.routers.azuredevopskats-web.rule=Host(`azuredevopskats-web`)
+      - traefik.http.routers.azuredevopskats-web.entrypoints=web
+      - traefik.port=5000
     depends_on:
-     - redis 
+      - redis
+    ports:
+      - "5000:5000"
     networks:
-     - azuredevopskats-network
-     - elastic
+      - azuredevopskats-network
+      - elastic
 
   redis:
     image: bitnami/redis
@@ -51,7 +54,8 @@ services:
 volumes:
   redis-data:
 
+    null
 networks:
-  azuredevopskats-network:
+  azuredevopskats-network: null
   elastic:
     driver: bridge

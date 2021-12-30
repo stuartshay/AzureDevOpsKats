@@ -44,7 +44,8 @@ services:
     healthcheck:
       interval: 10s
       retries: 20
-      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null
+        http://localhost:5601/api/status
 
   logstash:
     image: docker.elastic.co/logstash/logstash:${TAG}
@@ -55,18 +56,23 @@ services:
       - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/pipeline:/usr/share/logstash/pipeline/
     networks:
-      - elastic  
+      - elastic
     depends_on:
       es01:
         condition: service_healthy
       kib01:
-        condition: service_healthy    
+        condition: service_healthy
 
   filebeat:
     image: docker.elastic.co/beats/filebeat:${TAG}
     container_name: filebeat
     user: root
-    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s filebeat']
+    command:
+      [
+        '/bin/bash',
+        '-c',
+        'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s filebeat'
+      ]
     volumes:
       - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
       - ./beats/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
@@ -81,13 +87,18 @@ services:
       test: filebeat test config
       interval: 30s
       timeout: 15s
-      retries: 5  
+      retries: 5
 
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:${TAG}
     container_name: metricbeat
     user: root
-    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s metricbeat']
+    command:
+      [
+        '/bin/bash',
+        '-c',
+        'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s metricbeat'
+      ]
     ports:
       - 5066
     volumes:
@@ -104,15 +115,20 @@ services:
       es01:
         condition: service_healthy
       kib01:
-        condition: service_healthy  
+        condition: service_healthy
     networks:
-      - elastic  
+      - elastic
 
   heartbeat:
     image: docker.elastic.co/beats/heartbeat:${TAG}
     user: root
     container_name: heartbeat
-    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s heartbeat']
+    command:
+      [
+        '/bin/bash',
+        '-c',
+        'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s heartbeat'
+      ]
     volumes:
       - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
       - ./beats/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
@@ -122,7 +138,7 @@ services:
       es01:
         condition: service_healthy
     networks:
-      - elastic  
+      - elastic
     healthcheck:
       test: heartbeat test config
       interval: 30s
@@ -133,8 +149,13 @@ services:
     image: docker.elastic.co/beats/packetbeat:${TAG}
     container_name: packetbeat
     user: root
-    cap_add: ['NET_RAW', 'NET_ADMIN']
-    command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s packetbeat']
+    cap_add: [ 'NET_RAW', 'NET_ADMIN' ]
+    command:
+      [
+        '/bin/bash',
+        '-c',
+        'cat /usr/local/bin/setup-beat.sh | tr -d "\r" | bash -s packetbeat'
+      ]
     volumes:
       - ./scripts/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
       - ./beats/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
@@ -152,28 +173,26 @@ services:
         condition: service_healthy
       kib01:
         condition: service_healthy
-    cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
-    cap_drop: ["ALL"]    
+    cap_add: [ "CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID" ]
+    cap_drop: [ "ALL" ]
     ports:
       - "8200:8200"
       - "8201:8200"
     command: >
-       apm-server -e
-         -E apm-server.rum.enabled=true
-         -E setup.kibana.host=kib01:5601
-         -E setup.template.settings.index.number_of_replicas=0
-         -E apm-server.kibana.enabled=true
-         -E apm-server.kibana.host=kib01:5601
-         -E output.elasticsearch.hosts=["es01:9200"]
-    depends_on:
-      es01:
-        condition: service_healthy
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E setup.kibana.host=kib01:5601
+        -E setup.template.settings.index.number_of_replicas=0
+        -E apm-server.kibana.enabled=true
+        -E apm-server.kibana.host=kib01:5601
+        -E output.elasticsearch.hosts=["es01:9200"]
     networks:
       - elastic
     healthcheck:
       interval: 10s
       retries: 12
-      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/  
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null
+        http://localhost:8200/
 
 volumes:
   data01:
