@@ -13,6 +13,7 @@ env:
   ASPNETCORE_ENVIRONMENT: CloudRun
 
 on:
+  workflow_dispatch:
   push:
    paths:
       - 'src/**'
