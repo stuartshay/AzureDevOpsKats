@@ -8,7 +8,7 @@
     <Version>5.0.1.1</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="5.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="6.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />
     <PackageReference Include="AspNetCore.HealthChecks.System" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="5.0.1" />
