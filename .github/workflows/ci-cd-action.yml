@@ -31,7 +31,31 @@ on:
       - 'fix/**'
 
 jobs:
+
+  test-netcore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet ${{ needs.build.outputs.dotnet }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ needs.build.outputs.dotnet }}
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Test with dotnet
+        uses: zyborg/dotnet-tests-report@v1
+        with:
+          project_path: test/AzureDevOpsKats.Test
+          report_name: AzureDevOpsKats.Test
+          report_title: AzureDevOpsKats.Test
+          fail_build_on_failed_tests: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
   build:
+    needs: test-netcore
     runs-on: ubuntu-latest
     outputs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
