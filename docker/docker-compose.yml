@@ -26,12 +26,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.azuredevopskats-web.rule=Host(`azuredevopskats-we\
-        b`)"
-      - "traefik.http.routers.azuredevopskats-web.entrypoints=web"
+      - traefik.enable=true
+      - traefik.http.routers.azuredevopskats-web.rule=Host(`azuredevopskats-web`)
+      - traefik.http.routers.azuredevopskats-web.entrypoints=web
+      - traefik.port=5000
     depends_on:
       - redis
+    ports:
+      - "5000:5000"
     networks:
       - azuredevopskats-network
       - elastic
