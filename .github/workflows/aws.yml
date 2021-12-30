@@ -1,4 +1,6 @@
 name: AWS ECR Deploy
+env:
+  SERVICE: 816939196156.dkr.ecr.us-east-1.amazonaws.com/azuredevopskats
 
 on:
   workflow_dispatch:
@@ -25,7 +27,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_AZUREKATS }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_AZUREKATS }}
-          aws-region: us-east-2
+          aws-region: us-east-1
 
       - name: Login to Amazon ECR
         id: login-ecr
