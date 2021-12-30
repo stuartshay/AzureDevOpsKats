@@ -17,7 +17,7 @@ on:
    paths:
       - 'src/**'
       - 'test/**'
-      - '.github/workflows/actions.yml'
+      - '.github/workflows/ci-cd-actions.yml'
    branches:
       - master
       - develop
