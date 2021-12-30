@@ -55,7 +55,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     outputs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
