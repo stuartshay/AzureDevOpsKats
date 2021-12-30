@@ -13,11 +13,12 @@ env:
   ASPNETCORE_ENVIRONMENT: CloudRun
 
 on:
+  workflow_dispatch:
   push:
    paths:
       - 'src/**'
       - 'test/**'
-      - '.github/workflows/actions.yml'
+      - '.github/workflows/ci-cd-actions.yml'
    branches:
       - master
       - develop
