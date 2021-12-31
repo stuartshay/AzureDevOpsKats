@@ -84,7 +84,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: azuredevopskats
           IMAGE_TAG: ${{ github.sha }}
-          run: |
+        run: |
             docker build -f ${{ env.DOCKER_FILE }} -t AWS_ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
 
