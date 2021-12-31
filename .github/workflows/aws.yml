@@ -79,15 +79,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build image
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          build-args: |
-            BUILD_NUMBER=${{ env.BUILD_NUMBER }}
-          file: ${{ env.DOCKER_FILE }}
-          tags: ${{ env.AWS_ECR_DOCKER_IMAGE }}:${{ env.AWS_ECR_DOCKER_IMAGE_TAG }}
-          outputs: type=docker,dest=image.tar
-          cache-from: type=registry,ref=${{ env.AWS_ECR_DOCKER_IMAGE }}:buildcache
-          cache-to: type=registry,ref=${{ env.AWS_ECR_DOCKER_IMAGE }}:buildcache,mode=max
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: azuredevopskats
+          IMAGE_TAG: ${{ github.sha }}
+          run: |
+            docker build -f ${{ env.DOCKER_FILE }} -t AWS_ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
 
