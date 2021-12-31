@@ -4,7 +4,7 @@ env:
    AWS_ECR_REPOSITORY: azuredevopskats
    DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
    AWS_ECR_DOCKER_IMAGE: azuredevopskats
-   AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-01  #-${{ github.sha }}
+   AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-${{ github.sha }}
    BUILD_NUMBER: '01' ##${{ github.sha }}
 
 on:
