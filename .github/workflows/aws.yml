@@ -5,7 +5,7 @@ env:
    DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
    AWS_ECR_DOCKER_IMAGE: azuredevopskats
    AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-01  #-${{ github.sha }}
-   BUILD_NUMBER: 01 ##${{ github.sha }}
+   BUILD_NUMBER: '01' ##${{ github.sha }}
 
 on:
   workflow_dispatch:
@@ -88,6 +88,6 @@ jobs:
           file: ${{ env.DOCKER_FILE }}
           tags: ${{ env.AWS_ECR_DOCKER_IMAGE }}:${{ env.AWS_ECR_DOCKER_IMAGE_TAG }}
           outputs: type=docker,dest=image.tar
-          #cache-from: type=registry,ref=${{ env.DH_DOCKER_IMAGE }}:buildcache
-          #cache-to: type=registry,ref=${{ env.DH_DOCKER_IMAGE }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.AWS_ECR_DOCKER_IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.AWS_ECR_DOCKER_IMAGE }}:buildcache,mode=max
 
