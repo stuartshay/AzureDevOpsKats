@@ -35,7 +35,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
   build:
-    needs: test-netcore
+    needs: test-aws
     runs-on: ubuntu-latest
     outputs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
