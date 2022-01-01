@@ -8,7 +8,7 @@ env:
   AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-${{ github.sha }}
   ECS_TASK_DEFINITION: .aws/task-definition1.json
   BUILD_NUMBER: "01" ##${{ github.sha }}
-  CONTAINER_NAME: azuredevopskats
+  CONTAINER_NAME: "nginx"
   ECS_SERVICE: "FG-StagingDemo"
   ECS_CLUSTER: "FG-StagingDemo"
 
@@ -103,7 +103,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: "nginx" #${{ env.CONTAINER_NAME }}
+          container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
