@@ -6,7 +6,7 @@ env:
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   AWS_ECR_DOCKER_IMAGE: azuredevopskats
   AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-${{ github.sha }}
-  ECS_TASK_DEFINITION: .aws/task-definition.json
+  ECS_TASK_DEFINITION: .aws/task-definition1.json
   BUILD_NUMBER: "01" ##${{ github.sha }}
   CONTAINER_NAME: azuredevopskats
 
