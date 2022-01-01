@@ -1,28 +1,29 @@
 name: AWS ECR Deploy
 env:
-   AWS_ECR_REGISTRY: 816939196156.dkr.ecr.us-east-1.amazonaws.com
-   AWS_ECR_REPOSITORY: azuredevopskats
-   AWS_REGION: us-east-1
-   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
-   AWS_ECR_DOCKER_IMAGE: azuredevopskats
-   AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-${{ github.sha }}
-   BUILD_NUMBER: '01' ##${{ github.sha }}
+  AWS_ECR_REGISTRY: 816939196156.dkr.ecr.us-east-1.amazonaws.com
+  AWS_ECR_REPOSITORY: azuredevopskats
+  AWS_REGION: us-east-1
+  DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
+  AWS_ECR_DOCKER_IMAGE: azuredevopskats
+  AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-${{ github.sha }}
+  ECS_TASK_DEFINITION: .aws/task-definition.json
+  BUILD_NUMBER: "01" ##${{ github.sha }}
+  CONTAINER_NAME: azuredevopskats
 
 on:
   workflow_dispatch:
   push:
-   paths:
-      - 'src/**'
-      - 'test/**'
-      - '.github/workflows/aws.yml'
-   branches:
+    paths:
+      - "src/**"
+      - "test/**"
+      - ".github/workflows/aws.yml"
+    branches:
       - master
       - develop
-      - 'feature/**'
-      - 'fix/**'
+      - "feature/**"
+      - "fix/**"
 
 jobs:
-
   test-aws:
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +47,7 @@ jobs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
     strategy:
       matrix:
-        dotnet: [ '5.0.x' ]
+        dotnet: ["5.0.x"]
 
     steps:
       - id: dotnet-version
@@ -86,15 +87,14 @@ jobs:
           ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-            docker build -f ${{ env.DOCKER_FILE }} -t $AWS_ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
-            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
-            echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
+          docker build -f ${{ env.DOCKER_FILE }} -t $AWS_ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
-          container-name: azuredevopskats
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
