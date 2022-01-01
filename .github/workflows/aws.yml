@@ -9,6 +9,8 @@ env:
   ECS_TASK_DEFINITION: .aws/task-definition1.json
   BUILD_NUMBER: "01" ##${{ github.sha }}
   CONTAINER_NAME: azuredevopskats
+  ECS_SERVICE: "FG-StagingDemo"
+  ECS_CLUSTER: "FG-StagingDemo"
 
 on:
   workflow_dispatch:
@@ -103,3 +105,11 @@ jobs:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: "nginx" #${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
