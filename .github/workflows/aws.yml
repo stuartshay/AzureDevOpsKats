@@ -92,6 +92,10 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
+      - name: ECS describe-task-definition
+        run: |
+          aws ecs describe-task-definition --task-definition FG-StagingDemo:1
+
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
