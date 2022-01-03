@@ -90,6 +90,7 @@ jobs:
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
