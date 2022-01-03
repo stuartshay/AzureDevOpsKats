@@ -14,15 +14,17 @@
         "maximumPercent": 100,
         "minimumHealthyPercent": 0
     },
-    "AwsvpcConfiguration": {
-        "AssignPublicIp": "ENABLED",
-        "SecurityGroups": [
-            "sg-0c28cb9a40a627b1f"
-        ],
-        "Subnets": [
-            "subnet-00fef76cbd6665bca",
-            "subnet-0ade9dfef07cad30b"
-        ]
+    "NetworkConfiguration": {
+        "AwsvpcConfiguration": {
+            "AssignPublicIp": "ENABLED",
+            "SecurityGroups": [
+                "sg-0c28cb9a40a627b1f"
+            ],
+            "Subnets": [
+                "subnet-00fef76cbd6665bca",
+                "subnet-0ade9dfef07cad30b"
+            ]
+        }
     },
     "enableECSManagedTags": true,
     "enableExecuteCommand": true,
