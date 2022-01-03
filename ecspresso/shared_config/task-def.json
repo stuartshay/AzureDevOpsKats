@@ -9,7 +9,7 @@
             "name": "hello_world",
             "portMappings": [
                 {
-                    "containerPort": 80,
+                    "containerPort": 5000,
                     "protocol": "tcp"
                 }
             ],
