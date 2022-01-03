@@ -30,12 +30,7 @@
     "enableExecuteCommand": true,
     "loadBalancers": [],
     "placementConstraints": [],
-    "placementStrategy": [
-        {
-            "field": "attribute:ecs.availability-zone",
-            "type": "spread"
-        }
-    ],
+    "placementStrategy": [],
     "schedulingStrategy": "REPLICA",
     "serviceRegistries": []
 }
