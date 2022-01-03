@@ -1,0 +1,24 @@
+{
+    "cpu": "1024",
+    "memory": "2048",
+    "containerDefinitions": [
+        {
+            "cpu": 1024,
+            "essential": true,
+            "image": "nginx",
+            "name": "hello_world",
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
+            "volumesFrom": []
+        }
+    ],
+    "family": "{{ must_env `ECS_SERVICE` }}",
+    "networkMode": "awsvpc",
+    "placementConstraints": [],
+    "executionRoleArn": "arn:aws:iam::552047421901:role/giithub-action-deploy-ecs-ecsTaskExecutionRole",
+    "taskRoleArn": null
+}
