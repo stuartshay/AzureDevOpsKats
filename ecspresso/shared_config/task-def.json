@@ -13,7 +13,15 @@
                     "protocol": "tcp"
                 }
             ],
-            "volumesFrom": []
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "hello_world",
+                    "awslogs-region": "{{ must_env `AWS_REGION` }}",
+                    "awslogs-stream-prefix": "test"
+                }
+            }
         }
     ],
     "family": "{{ must_env `ECS_SERVICE` }}",
