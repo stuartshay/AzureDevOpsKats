@@ -94,6 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
+        id: aws-cred
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
@@ -106,7 +107,11 @@ jobs:
         with:
           version: v1.6.0
 
-      - run: |
+      - name: ECS deploy
+        env:
+          AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
+        run: |
+          echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
           ecspresso verify
           ecspresso diff
