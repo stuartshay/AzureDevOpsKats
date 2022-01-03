@@ -19,6 +19,5 @@
     "family": "{{ must_env `ECS_SERVICE` }}",
     "networkMode": "awsvpc",
     "placementConstraints": [],
-    "executionRoleArn": "arn:aws:iam::552047421901:role/giithub-action-deploy-ecs-ecsTaskExecutionRole",
-    "taskRoleArn": null
+    "executionRoleArn": "arn:aws:iam::552047421901:role/giithub-action-deploy-ecs-ecsTaskExecutionRole"
 }
