@@ -1,0 +1,32 @@
+{
+    "cpu": "1024",
+    "memory": "2048",
+    "containerDefinitions": [
+        {
+            "cpu": 1024,
+            "essential": true,
+            "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/{{ must_env `AWS_ECR_REPOSITORY` }}:{{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}",
+            "name": "hello_world",
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "protocol": "tcp"
+                }
+            ],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "hello_world",
+                    "awslogs-region": "{{ must_env `AWS_REGION` }}",
+                    "awslogs-stream-prefix": "test"
+                }
+            }
+        }
+    ],
+    "family": "{{ must_env `ECS_SERVICE` }}",
+    "networkMode": "awsvpc",
+    "placementConstraints": [],
+    "executionRoleArn": "arn:aws:iam::816939196156:role/giithub-action-deploy-ecs-ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::816939196156:role/giithub-action-deploy-ecs-container"
+}
