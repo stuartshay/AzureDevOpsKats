@@ -47,19 +47,19 @@ namespace AzureDevOpsKats.Web
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IWebHostEnvironment Environment { get; }
 
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -80,7 +80,7 @@ namespace AzureDevOpsKats.Web
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection))};";
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
 
-            //Logging 
+            //Logging
             services.AddTransient<LoggingDelegatingHandler>();
 
             // Services Configuration
@@ -94,7 +94,7 @@ namespace AzureDevOpsKats.Web
             services.AddCustomCors(Configuration);
             services.AddCustomCookiePolicy(Configuration);
 
-            // Application Services 
+            // Application Services
             services.AddSingleton<ICatRepository>(provider =>
                 new CatRepository(connection, provider.GetService<ILogger<CatRepository>>()));
 
@@ -108,7 +108,7 @@ namespace AzureDevOpsKats.Web
 
             services.AddRazorPages();
 
-            //Scoped Services 
+            //Scoped Services
             services.AddScoped<ICatsHostedService, CatsHostedService>();
 
             services.AddCronJob<MyCronJob1>(c =>
@@ -170,7 +170,7 @@ namespace AzureDevOpsKats.Web
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
