@@ -116,5 +116,11 @@ jobs:
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
           ecspresso verify
-          ecspresso diff
-          ecspresso deploy
+          SERVICE_STATUS=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE | jq --raw-output 'select(.services[].status != null ) | .services[].status')
+          if [ -z "$SERVICE_STATUS" ]
+          then
+            ecspresso create
+          else
+            ecspresso diff
+            ecspresso deploy
+          fi
