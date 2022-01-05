@@ -1,12 +1,12 @@
 {
-    "cpu": "1024",
-    "memory": "2048",
+    "cpu": "512",
+    "memory": "1024",
     "containerDefinitions": [
         {
-            "cpu": 1024,
+            "cpu": 512,
             "essential": true,
             "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/{{ must_env `AWS_ECR_REPOSITORY` }}:{{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}",
-            "name": "hello_world",
+            "name": "devopskats",
             "portMappings": [
                 {
                     "containerPort": 5000,
@@ -17,9 +17,9 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "hello_world",
+                    "awslogs-group": "devopskats",
                     "awslogs-region": "{{ must_env `AWS_REGION` }}",
-                    "awslogs-stream-prefix": "test"
+                    "awslogs-stream-prefix": "devopskats"
                 }
             }
         }
@@ -27,6 +27,6 @@
     "family": "{{ must_env `ECS_SERVICE` }}",
     "networkMode": "awsvpc",
     "placementConstraints": [],
-    "executionRoleArn": "arn:aws:iam::816939196156:role/giithub-action-deploy-ecs-ecsTaskExecutionRole",
-    "taskRoleArn": "arn:aws:iam::816939196156:role/giithub-action-deploy-ecs-container"
+    "executionRoleArn": "{{ tfstate `aws_iam_role.ecs_task_execution_role.arn` }}",
+    "taskRoleArn": "{{ tfstate `aws_iam_role.container.arn` }}"
 }

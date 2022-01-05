@@ -18,11 +18,11 @@
         "AwsvpcConfiguration": {
             "AssignPublicIp": "ENABLED",
             "SecurityGroups": [
-                "sg-0b44ede426b360f35"
+                "{{ tfstate `aws_security_group.ecs_tasks.id` }}"
             ],
             "Subnets": [
-                "subnet-f6c74afa",
-                "subnet-c8571fe0"
+                "{{ tfstate `data.aws_subnets.public.ids[0]` }}",
+                "{{ tfstate `data.aws_subnets.public.ids[1]` }}"
             ]
         }
     },

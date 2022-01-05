@@ -1,11 +1,12 @@
-name: Deploy ECS Development
+name: Deploy ECS
 env:
   AWS_ECR_REPOSITORY: azuredevopskats
   AWS_REGION: us-east-1
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-test-${{ github.sha }}
-  ECS_SERVICE: "giithub-action-deploy-ecs"
-  ECS_CLUSTER: "giithub-action-deploy-ecs"
+  ECS_SERVICE: "${{ github.ref_name }}-devops"
+  ECS_CLUSTER: "${{ github.ref_name }}-devops"
+  S3_STATE_BUCKET_NAME: "devops-team-tfstate"
 
 on:
   workflow_dispatch:

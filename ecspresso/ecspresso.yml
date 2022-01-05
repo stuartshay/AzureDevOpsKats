@@ -4,4 +4,8 @@ service: {{ must_env `ECS_SERVICE` }}
 service_definition: shared_config/service-def.json
 task_definition: shared_config/task-def.json
 timeout: 10m0s
+plugins:
+  - name: tfstate
+    config:
+      url: s3://{{ must_env `S3_STATE_BUCKET_NAME` }}/devops/aws/us-east-1/s3/devopskats
 appspec: null
