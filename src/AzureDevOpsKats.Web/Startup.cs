@@ -78,7 +78,7 @@ namespace AzureDevOpsKats.Web
             var commonConfig = Configuration.Get<Common.Configuration.ApplicationOptions>();
 
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection))};";
-            string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
+            string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath).Replace('\\', '/'); ;
 
             //Logging 
             services.AddTransient<LoggingDelegatingHandler>();
@@ -143,12 +143,11 @@ namespace AzureDevOpsKats.Web
                 .Services
                 .AddHealthChecks()
                 .AddVersionHealthCheck()
+                .AddFolderHealthCheck(imagesRoot, "Images Path")
                 .AddCheck<StartupTasksHealthCheck>("Startup Health Check", tags: new[] { HealthCheckType.ReadinessCheck.ToString(), HealthCheckType.System.ToString() })
                 .AddApiEndpointHealthChecks(commonConfig.ApiHealthConfiguration)
-
                 .AddElasticSearchHealthCheck(commonConfig.ElasticSearchConfiguration)
-
-                 .AddRedis("redis", name: "Redis Client", failureStatus: HealthStatus.Degraded, tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
+                .AddRedis("redis", name: "Redis Client", failureStatus: HealthStatus.Degraded, tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
                 .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new[] { HealthCheckType.System.ToString() })
                 .AddCheck(name: "SQLite Database", new SqliteConnectionHealthCheck(connectionString: connection, testQuery: "Select 1"),
                     failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
