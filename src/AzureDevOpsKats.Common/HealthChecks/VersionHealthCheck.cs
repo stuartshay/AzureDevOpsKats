@@ -4,6 +4,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace AzureDevOpsKats.Common.HealthChecks
 {
@@ -12,14 +13,20 @@ namespace AzureDevOpsKats.Common.HealthChecks
     /// </summary>
     public class VersionHealthCheck : IHealthCheck
     {
+        private readonly string _dnsHostName;
+
         private readonly string _applicationVersionNumber;
 
         private readonly DateTime _applicationBuildDate;
+
+        private readonly string _environment;
 
         public VersionHealthCheck()
         {
             _applicationVersionNumber = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             _applicationBuildDate = GetAssemblyLastModifiedDate();
+            _environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            _dnsHostName = Dns.GetHostName();
         }
 
         /// <summary>
@@ -34,6 +41,8 @@ namespace AzureDevOpsKats.Common.HealthChecks
             {
                 {"BuildDate", _applicationBuildDate},
                 {"BuildVersion", _applicationVersionNumber},
+                {"DNS HostName", _dnsHostName},
+                {"Environment", _environment},
             };
 
             var healthStatus = !string.IsNullOrEmpty(_applicationVersionNumber) ? HealthStatus.Healthy : HealthStatus.Degraded;
