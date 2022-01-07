@@ -32,5 +32,6 @@
     "placementConstraints": [],
     "placementStrategy": [],
     "schedulingStrategy": "REPLICA",
-    "serviceRegistries": []
+    "serviceRegistries": [],
+    "desiredCount": 1
 }
