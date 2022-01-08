@@ -7,7 +7,7 @@ env:
   ECS_SERVICE: "${{ github.ref_name }}-devops"
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
   S3_STATE_BUCKET_NAME: "devops-team-tfstate"
-  BUILD_NUMBER: 25
+  BUILD_NUMBER: ${{ github.run_number }}
 
 on:
   workflow_dispatch:
@@ -129,6 +129,14 @@ jobs:
           ENI=$(echo $TASK_DETAILS | jq -r '.[] | select(.name=="networkInterfaceId").value')
           PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
           echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
+      - name: Get Task Public IP
+        run: |
+          echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
+
+  health-check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
       - name: Get Task Public IP
         run: |
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
