@@ -39,7 +39,6 @@ jobs:
 
   build:
     needs: test-aws
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     outputs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
@@ -92,7 +91,6 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
