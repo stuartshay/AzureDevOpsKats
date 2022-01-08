@@ -7,6 +7,7 @@ env:
   ECS_SERVICE: "${{ github.ref_name }}-devops"
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
   S3_STATE_BUCKET_NAME: "devops-team-tfstate"
+  BUILD_NUMBER: 25
 
 on:
   workflow_dispatch:
@@ -21,7 +22,7 @@ on:
       - "fix/**"
 
 jobs:
-  test-aws:
+  test-coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +39,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
   build:
-    needs: test-aws
+    needs: test-coverage
     runs-on: ubuntu-latest
     outputs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
@@ -85,10 +86,9 @@ jobs:
           ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f ${{ env.DOCKER_FILE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
+          docker build -f ${{ env.DOCKER_FILE }} --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -122,7 +122,6 @@ jobs:
             ecspresso diff
             ecspresso deploy
           fi
-
       - name: Set Task Public IP
         run: |
           TASK_ARN=$(aws ecs list-tasks --cluster $ECS_CLUSTER --service-name $ECS_SERVICE --query 'taskArns[0]' --output text)
@@ -130,7 +129,6 @@ jobs:
           ENI=$(echo $TASK_DETAILS | jq -r '.[] | select(.name=="networkInterfaceId").value')
           PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
           echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
-
       - name: Get Task Public IP
         run: |
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
