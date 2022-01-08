@@ -7,7 +7,7 @@ env:
   ECS_SERVICE: "${{ github.ref_name }}-devops"
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
   S3_STATE_BUCKET_NAME: "devops-team-tfstate"
-  BUILD_NUMBER: 25
+  BUILD_NUMBER: ${{ github.run_number }}
 
 on:
   workflow_dispatch:
