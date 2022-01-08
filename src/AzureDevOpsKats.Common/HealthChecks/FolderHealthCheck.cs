@@ -13,7 +13,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
     public static class SystemHealthCheckBuilderExtensions
     {
         /// <summary>
-        /// /
+        /// Folder Health Check Extension.
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="folderPath"></param>
