@@ -139,6 +139,6 @@ jobs:
   health-check:
     runs-on: ubuntu-latest
     steps:
-          - name: Get Task Public IP
+            - name: Get Task Public IP
         run: |
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
