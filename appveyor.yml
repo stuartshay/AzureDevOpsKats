@@ -24,8 +24,6 @@ artifacts:
 deploy: off
 branches:
   only:
-    - develop
-    - /release.*/
     - master
 skip_commits:
   files:

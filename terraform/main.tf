@@ -1,6 +1,6 @@
 locals {
-  name = "devops"
-  lambda_function_name = "auto-remove-ecs-service"
+  name                    = "devops"
+  lambda_function_name    = "auto-remove-ecs-service"
   lambda_function_runtime = "python3.8"
   lambda_function_mem     = 10240 #10Gb
   lambda_function_timeout = 900   #15 minutes
@@ -89,11 +89,11 @@ module "lambda_function" {
   timeout     = local.lambda_function_timeout
 
   environment_variables = {
-    ECS_CLUSTERS = "develop-${local.name}"
+    ECS_CLUSTERS       = "develop-${local.name}"
     REMOVE_AFTER_HOURS = 6
   }
 
- create_current_version_allowed_triggers = false
+  create_current_version_allowed_triggers = false
   allowed_triggers = {
     OneRule = {
       principal  = "events.amazonaws.com"
@@ -119,7 +119,68 @@ module "lambda_function" {
 
 ## Cloudwatch Events -  Schedule to run lambda function every hour
 resource "aws_cloudwatch_event_rule" "hourly" {
-    name = "${local.lambda_function_name}-hourly"
-    description = "Process function hourly"
-    schedule_expression = "cron(0 * * * ? *)"
+  name                = "${local.lambda_function_name}-hourly"
+  description         = "Process function hourly"
+  schedule_expression = "cron(0 * * * ? *)"
+}
+
+## Loadblancing
+
+resource "aws_security_group" "master_alb" {
+  name   = "master-${local.name}-alb"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    protocol         = "tcp"
+    from_port        = 80
+    to_port          = 80
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    protocol         = "tcp"
+    from_port        = 443
+    to_port          = 443
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    protocol         = "-1"
+    from_port        = 0
+    to_port          = 0
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
+resource "aws_security_group" "master_ecs_tasks" {
+  name   = "master-${local.name}-ecs-tasks"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = 5000
+    to_port         = 5000
+    security_groups = [aws_security_group.master_alb.id]
+  }
+
+  egress {
+    protocol         = "-1"
+    from_port        = 0
+    to_port          = 0
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
+module "alb_master" {
+  source = "./modules/alb"
+
+  name               = "master-${local.name}"
+  vpc_id             = data.aws_vpc.default.id
+  subnet_ids         = data.aws_subnets.public.ids
+  security_group_ids = [aws_security_group.master_alb.id]
+  enable_https       = false
 }

@@ -77,7 +77,9 @@ data "aws_iam_policy_document" "deploy_user" {
       "ec2:DescribeNetworkInterfaces",
       "application-autoscaling:*",
       "logs:CreateLogStream",
-      "logs:PutLogEvents"
+      "logs:PutLogEvents",
+      "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeLoadBalancers"
     ]
 
     resources = [

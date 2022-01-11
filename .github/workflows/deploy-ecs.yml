@@ -4,10 +4,12 @@ env:
   AWS_REGION: us-east-1
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-test-${{ github.sha }}
+  BRANCH_NAME: "${{ github.ref_name }}"
   ECS_SERVICE: "${{ github.ref_name }}-devops"
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
   S3_STATE_BUCKET_NAME: "devops-team-tfstate"
   BUILD_NUMBER: ${{ github.run_number }}
+  MASTER_ECS_DESIRED_COUNT: 2
 
 on:
   workflow_dispatch:
@@ -92,6 +94,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    outputs:
+      app_url: ${{ steps.set_app_url.outputs.app_url }}
     steps:
       - name: Configure AWS credentials
         id: aws-cred
@@ -105,22 +109,28 @@ jobs:
 
       - uses: kayac/ecspresso@v1
         with:
-          version: v1.6.0
+          version: v1.7.5
 
       - name: ECS deploy
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
+          ECS_DESIRED_COUNT=1
+          if [ "$BRANCH_NAME" == "master" ]
+          then
+            ECS_DESIRED_COUNT=$MASTER_ECS_DESIRED_COUNT
+          fi
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
-          ecspresso verify
+          ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT verify
           SERVICE_STATUS=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE | jq --raw-output 'select(.services[].status != null ) | .services[].status')
-          if [ -z "$SERVICE_STATUS" ]
+          echo $SERVICE_STATUS
+          if [ -z "$SERVICE_STATUS" ] || [ "$SERVICE_STATUS" == "INACTIVE" ]
           then
-            ecspresso create
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT create
           else
-            ecspresso diff
-            ecspresso deploy
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT diff
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy
           fi
       - name: Set Task Public IP
         run: |
@@ -130,13 +140,26 @@ jobs:
           PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
           echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
       - name: Get Task Public IP
+        id: set_app_url
         run: |
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
+          if [ "$BRANCH_NAME" != "master" ]
+          then
+            echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}"
+          else
+            APP_URL=$(aws elbv2 describe-load-balancers --names $ECS_CLUSTER --query 'LoadBalancers[0].DNSName' --output text)
+            echo "::set-output name=app_url::$APP_URL"
+          fi
 
   health-check:
     needs: deploy
     runs-on: ubuntu-latest
+    env:
+      url: ${{needs.deploy.outputs.app_url}}/health
+      max-attempts: 15
+      retry-delay-sec: 5
     steps:
-      - name: Get Task Public IP
+      - name: Application health check
         run: |
-          echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
+          echo "ECS Task Public IP: ${{needs.deploy.outputs.app_url}}"
+          curl --fail -s --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} --retry-connrefused ${{ env.url }} -L  | jq
