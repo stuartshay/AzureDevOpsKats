@@ -118,7 +118,7 @@ jobs:
           ecspresso --ext-str branch_name=$BRANCH_NAME verify
           SERVICE_STATUS=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE | jq --raw-output 'select(.services[].status != null ) | .services[].status')
           echo $SERVICE_STATUS
-          if [ -z "$SERVICE_STATUS" ]
+          if [ -z "$SERVICE_STATUS" ] || [ "$SERVICE_STATUS" == "INACTIVE" ]
           then
             ecspresso --ext-str branch_name=$BRANCH_NAME create
           else
