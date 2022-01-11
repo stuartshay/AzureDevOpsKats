@@ -29,8 +29,7 @@
     },
     "loadBalancers": [
     ] + (
-        local branch_name = "{{ must_env `BRANCH_NAME` }}";
-        if branch_name == "master" then [
+        if std.ExtVar('BRANCH_NAME') == "master" then [
             { "targetGroupArn": "{{ tfstate `module.alb_master.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
         ] else []
     ),
