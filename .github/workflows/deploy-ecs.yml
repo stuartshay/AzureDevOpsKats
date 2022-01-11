@@ -112,6 +112,7 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
+          echo branch_name=$BRANCH_NAME
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
           ecspresso --ext-str branch_name=$BRANCH_NAME verify
