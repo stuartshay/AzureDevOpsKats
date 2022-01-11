@@ -95,7 +95,7 @@ jobs:
     #needs: build
     runs-on: ubuntu-latest
     outputs:
-      app_url: ${{ steps.step1.outputs.test }}
+      app_url: ${{ steps.set_app_url.outputs.app_url }}
     steps:
       - name: Configure AWS credentials
         id: aws-cred
@@ -145,9 +145,9 @@ jobs:
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
           if [ "$BRANCH_NAME" != "master" ]
           then
-            echo "::set-output name=APP_URL::${{ env.TASK_PUBLIC_IP }}"
+            echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}"
           else
-            echo "::set-output name=APP_URL::${{ env.TASK_PUBLIC_IP }}"
+            echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}"
           fi
 
   health-check:
