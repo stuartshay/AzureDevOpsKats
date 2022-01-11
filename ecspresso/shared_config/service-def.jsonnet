@@ -29,7 +29,7 @@
     },
     "loadBalancers": [
     ] + (
-        if std.ExtVar('BRANCH_NAME') == "master" then [
+        if std.ExtVar('branch_name') == "master" then [
             { "targetGroupArn": "{{ tfstate `module.alb_master.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
         ] else []
     ),
