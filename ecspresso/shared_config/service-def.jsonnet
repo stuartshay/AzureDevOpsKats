@@ -36,5 +36,5 @@
     "placementStrategy": [],
     "schedulingStrategy": "REPLICA",
     "serviceRegistries": [],
-    "desiredCount": 1
+    "desiredCount": {{ must_env `MASTER_ECS_DESIRED_COUNT` }}
 }

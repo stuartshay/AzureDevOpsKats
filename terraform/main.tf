@@ -178,9 +178,9 @@ resource "aws_security_group" "master_ecs_tasks" {
 module "alb_master" {
   source = "./modules/alb"
 
-  name                = "master-${local.name}"
-  vpc_id              = data.aws_vpc.default.id
-  subnet_ids          = data.aws_subnets.public.ids
-  security_group_ids  = [aws_security_group.master_alb.id]
-  enable_https        = false
+  name               = "master-${local.name}"
+  vpc_id             = data.aws_vpc.default.id
+  subnet_ids         = data.aws_subnets.public.ids
+  security_group_ids = [aws_security_group.master_alb.id]
+  enable_https       = false
 }

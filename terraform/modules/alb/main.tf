@@ -1,6 +1,6 @@
 resource "aws_lb" "this" {
   name               = var.name
-  internal           = true
+  internal           = false
   load_balancer_type = "application"
   subnets            = var.subnet_ids
 
@@ -10,6 +10,7 @@ resource "aws_lb" "this" {
 
 resource "aws_lb_target_group" "this" {
   name                 = var.name
+  target_type           = "ip"
   port                 = "5000"
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
