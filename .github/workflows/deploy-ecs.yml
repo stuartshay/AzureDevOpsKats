@@ -117,6 +117,7 @@ jobs:
         run: |
           ECS_DESIRED_COUNT=1
           if [ "$BRANCH_NAME" == "master" ]
+          then
             ECS_DESIRED_COUNT=$MASTER_ECS_DESIRED_COUNT
           fi
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
@@ -143,6 +144,7 @@ jobs:
         run: |
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
           if [ "$BRANCH_NAME" != "master" ]
+          then
             echo "::set-output name=APP_URL::${{ env.TASK_PUBLIC_IP }}"
           else
             echo "::set-output name=APP_URL::${{ env.TASK_PUBLIC_IP }}"
