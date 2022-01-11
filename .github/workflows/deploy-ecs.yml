@@ -115,9 +115,9 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
-          ECS_DESIRED_COUNT = 1
+          ECS_DESIRED_COUNT=1
           if [ "$BRANCH_NAME" == "master" ]
-            ECS_DESIRED_COUNT = $MASTER_ECS_DESIRED_COUNT
+            ECS_DESIRED_COUNT=$MASTER_ECS_DESIRED_COUNT
           fi
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
