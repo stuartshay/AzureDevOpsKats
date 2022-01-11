@@ -122,7 +122,7 @@ jobs:
           fi
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
-          ecspresso --ext-str branch_name=$BRANCH_NAME verify
+          ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT verify
           SERVICE_STATUS=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE | jq --raw-output 'select(.services[].status != null ) | .services[].status')
           echo $SERVICE_STATUS
           if [ -z "$SERVICE_STATUS" ] || [ "$SERVICE_STATUS" == "INACTIVE" ]
