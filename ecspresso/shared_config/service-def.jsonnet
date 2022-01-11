@@ -1,4 +1,4 @@
-local branch = "{{ must_env `BRANCH_NAME` }}";
+
 {
     "capacityProviderStrategy": [
         {
@@ -29,9 +29,10 @@ local branch = "{{ must_env `BRANCH_NAME` }}";
     },
     "loadBalancers": [
     ] + (
-        if branch == "master" then [
+        local branch_name = "{{ must_env `BRANCH_NAME` }}";
+        if branch_name == "master" then [
             { "targetGroupArn": "{{ tfstate `module.alb_master.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
-        ]
+        ] else []
     ),
     "enableECSManagedTags": true,
     "enableExecuteCommand": true,
