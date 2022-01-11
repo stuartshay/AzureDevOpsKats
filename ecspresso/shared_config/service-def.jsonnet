@@ -1,4 +1,4 @@
-
+local lib = import 'library-ext.libsonnet';
 {
     "capacityProviderStrategy": [
         {
