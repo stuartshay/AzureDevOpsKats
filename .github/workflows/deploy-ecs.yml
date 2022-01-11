@@ -115,7 +115,10 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
-          echo branch_name=$BRANCH_NAME
+          ECS_DESIRED_COUNT = 1
+          if [ "$BRANCH_NAME" == "master" ]
+            ECS_DESIRED_COUNT = $MASTER_ECS_DESIRED_COUNT
+          fi
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
           ecspresso --ext-str branch_name=$BRANCH_NAME verify
@@ -123,10 +126,10 @@ jobs:
           echo $SERVICE_STATUS
           if [ -z "$SERVICE_STATUS" ] || [ "$SERVICE_STATUS" == "INACTIVE" ]
           then
-            ecspresso --ext-str branch_name=$BRANCH_NAME create
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT create
           else
-            ecspresso --ext-str branch_name=$BRANCH_NAME diff
-            ecspresso --ext-str branch_name=$BRANCH_NAME deploy
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT diff
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy
           fi
       - name: Set Task Public IP
         run: |

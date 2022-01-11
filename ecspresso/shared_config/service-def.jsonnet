@@ -36,5 +36,5 @@
     "placementStrategy": [],
     "schedulingStrategy": "REPLICA",
     "serviceRegistries": [],
-    "desiredCount": "{{ must_env `MASTER_ECS_DESIRED_COUNT` }}"
+    "desiredCount": std.extVar('desired_count')
 }
