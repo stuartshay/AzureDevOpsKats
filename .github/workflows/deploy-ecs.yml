@@ -24,76 +24,78 @@ on:
       - "fix/**"
 
 jobs:
-  test-coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+  # test-coverage:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_DEPLOY }}
-          aws-region: us-east-1
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_DEPLOY }}
+  #         aws-region: us-east-1
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+  #     - name: Login to Amazon ECR
+  #       id: login-ecr
+  #       uses: aws-actions/amazon-ecr-login@v1
 
-  build:
-    needs: test-coverage
+  # build:
+  #   needs: test-coverage
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
+  #   strategy:
+  #     matrix:
+  #       dotnet: ["5.0.x"]
+
+  #   steps:
+  #     - id: dotnet-version
+  #       run: echo "::set-output name=dotnet::${{ matrix.dotnet }}"
+
+  #     - uses: actions/checkout@v2
+
+  #     - name: Setup dotnet ${{ matrix.dotnet }}
+  #       uses: actions/setup-dotnet@v1
+  #       with:
+  #         dotnet-version: ${{ matrix.dotnet }}
+
+  #     - name: Install dependencies
+  #       run: dotnet restore
+
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v1
+
+  #     - name: Set up Docker Buildx
+  #       id: buildx
+  #       uses: docker/setup-buildx-action@v1
+
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_DEPLOY }}
+  #         aws-region: ${{ env.AWS_REGION }}
+
+  #     - name: Login to Amazon ECR
+  #       id: login-ecr
+  #       uses: aws-actions/amazon-ecr-login@v1
+
+  #     - name: Build, tag, and push image to Amazon ECR
+  #       id: build-image
+  #       env:
+  #         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+  #         ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY }}
+  #         IMAGE_TAG: ${{ github.sha }}
+  #       run: |
+  #         docker build -f ${{ env.DOCKER_FILE }} --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
+  #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
+  #         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
+  deploy:
+    #needs: build
     runs-on: ubuntu-latest
     outputs:
-      dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
-    strategy:
-      matrix:
-        dotnet: ["5.0.x"]
-
-    steps:
-      - id: dotnet-version
-        run: echo "::set-output name=dotnet::${{ matrix.dotnet }}"
-
-      - uses: actions/checkout@v2
-
-      - name: Setup dotnet ${{ matrix.dotnet }}
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ matrix.dotnet }}
-
-      - name: Install dependencies
-        run: dotnet restore
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_DEPLOY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -f ${{ env.DOCKER_FILE }} --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+      app_url: ${{ steps.step1.outputs.test }}
     steps:
       - name: Configure AWS credentials
         id: aws-cred
@@ -134,8 +136,14 @@ jobs:
           PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
           echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
       - name: Get Task Public IP
+        id: set_app_url
         run: |
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
+          if [ "$BRANCH_NAME" != "master" ]
+            echo "::set-output name=APP_URL::${{ env.TASK_PUBLIC_IP }}"
+          else
+            echo "::set-output name=APP_URL::${{ env.TASK_PUBLIC_IP }}"
+          fi
 
   health-check:
     needs: deploy
@@ -143,4 +151,4 @@ jobs:
     steps:
       - name: Get Task Public IP
         run: |
-          echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
+          echo "ECS Task Public IP: ${{needs.deploy.outputs.app_url}}"
