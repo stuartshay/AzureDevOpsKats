@@ -145,7 +145,7 @@ jobs:
           echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
           if [ "$BRANCH_NAME" != "master" ]
           then
-            echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}"
+            echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}:5000"
           else
             APP_URL=$(aws elbv2 describe-load-balancers --names $ECS_CLUSTER --query 'LoadBalancers[0].DNSName' --output text)
             echo "::set-output name=app_url::$APP_URL"
