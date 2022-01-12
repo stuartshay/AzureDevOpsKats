@@ -27,9 +27,11 @@
         }
     },
     "loadBalancers": [
-        if std.extVar('branch_name') == "master" then
+    ] + (
+        if std.extVar('branch_name') == "master" then [
             { "targetGroupArn": "{{ tfstate `module.alb_master.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
-    ],
+        ] else []
+    ),
     "enableECSManagedTags": true,
     "enableExecuteCommand": true,
     "placementConstraints": [],
