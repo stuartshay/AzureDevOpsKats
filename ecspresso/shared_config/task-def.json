@@ -21,7 +21,13 @@
                     "awslogs-region": "{{ must_env `AWS_REGION` }}",
                     "awslogs-stream-prefix": "devopskats"
                 }
-            }
+            },
+            "environment": [
+                {
+                  "name": "ASPNETCORE_ENVIRONMENT",
+                  "value": "AwsEcs"
+                }
+            ]
         }
     ],
     "family": "{{ must_env `ECS_SERVICE` }}",
