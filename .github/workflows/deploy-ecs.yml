@@ -3,7 +3,7 @@ env:
   AWS_ECR_REPOSITORY: azuredevopskats
   AWS_REGION: us-east-1
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
-  AWS_ECR_DOCKER_IMAGE_TAG: 5.1-buildx-test-${{ github.sha }}
+  AWS_ECR_DOCKER_IMAGE_TAG: 5.1-${{ github.run_number }}-buildx-${{ github.sha }}
   BRANCH_NAME: "${{ github.ref_name }}"
   ECS_SERVICE: "${{ github.ref_name }}-devops"
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
@@ -19,9 +19,9 @@ on:
         description: ECS Desired Count
         required: true
         options:
-        - 0
-        - 2
-        - 5
+          - 0
+          - 2
+          - 5
       message:
       use-emoji:
         type: boolean
@@ -104,7 +104,8 @@ jobs:
           ECR_REPOSITORY: ${{ env.AWS_ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f ${{ env.DOCKER_FILE }} --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
+          docker build -f ${{ env.DOCKER_FILE }} --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
+              -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
   deploy:

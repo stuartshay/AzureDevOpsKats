@@ -21,12 +21,14 @@ namespace AzureDevOpsKats.Common.HealthChecks
 
         private readonly string _environment;
 
+        private readonly string _osNameAndVersion;
         public VersionHealthCheck()
         {
             _applicationVersionNumber = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             _applicationBuildDate = GetAssemblyLastModifiedDate();
             _environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             _dnsHostName = Dns.GetHostName();
+            _osNameAndVersion = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
         }
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
                 {"BuildVersion", _applicationVersionNumber},
                 {"DNS HostName", _dnsHostName},
                 {"Environment", _environment},
+                {"OsNameAndVersion", _osNameAndVersion},
             };
 
             var healthStatus = !string.IsNullOrEmpty(_applicationVersionNumber) ? HealthStatus.Healthy : HealthStatus.Degraded;
