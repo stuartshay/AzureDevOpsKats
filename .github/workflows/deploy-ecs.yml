@@ -17,12 +17,12 @@ on:
       desired-count:
         type: choice
         description: ECS Desired Count
+        required: true
         options:
         - 0
         - 2
         - 5
       message:
-        required: true
       use-emoji:
         type: boolean
         description: Include 🎉🤣 emojis
