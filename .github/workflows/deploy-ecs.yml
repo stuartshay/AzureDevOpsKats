@@ -14,12 +14,13 @@ env:
 on:
   workflow_dispatch:
     inputs:
-      name:
+      desired-count:
         type: choice
-        description: Who to greet
+        description: ECS Desired Count
         options:
-        - monalisa
-        - cschleiden
+        - 0
+        - 2
+        - 5
       message:
         required: true
       use-emoji:
@@ -27,7 +28,6 @@ on:
         description: Include 🎉🤣 emojis
       environment:
         type: environment
-
 
   push:
     paths:
