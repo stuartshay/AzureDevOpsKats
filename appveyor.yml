@@ -1,7 +1,7 @@
-version: '{build}'
+version: "{build}"
 image:
-- Visual Studio 2019
-- Ubuntu
+  - Visual Studio 2019
+  - Ubuntu
 configuration: Release
 
 cache:
@@ -19,7 +19,7 @@ nuget:
   disable_publish_on_pr: true
 
 artifacts:
-- path: build\artifacts\*.nupkg
+  - path: build\artifacts\*.nupkg
 
 deploy: off
 branches:
@@ -27,22 +27,20 @@ branches:
     - master
 skip_commits:
   files:
-  - LICENSE
-  - README.md
-  - .travis.yml
+    - LICENSE
+    - README.md
+    - .travis.yml
 
 for:
-  -
-    matrix:
+  - matrix:
       only:
-      - image: Visual Studio 2019
+        - image: Visual Studio 2019
     before_build:
       - choco install codecov
     build_script:
       - ps: >-
-          .\build.ps1     
-  -
-    matrix:
+          .\build.ps1
+  - matrix:
       only:
         - image: Ubuntu
     before_build:
