@@ -18,9 +18,9 @@ on:
         type: choice
         description: ECS Desired Count
         required: true
-        default: 1
         options:
           - 0
+          - 1
           - 2
           - 5
 
