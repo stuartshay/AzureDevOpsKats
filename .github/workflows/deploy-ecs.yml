@@ -14,20 +14,15 @@ env:
 on:
   workflow_dispatch:
     inputs:
-      desired-count:
+      desired_count:
         type: choice
         description: ECS Desired Count
         required: true
+        default: 1
         options:
           - 0
           - 2
           - 5
-      message:
-      use-emoji:
-        type: boolean
-        description: Include 🎉🤣 emojis
-      environment:
-        type: environment
 
   push:
     paths:
@@ -136,11 +131,12 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
-          ECS_DESIRED_COUNT=1
-          if [ "$BRANCH_NAME" == "master" ]
-          then
-            ECS_DESIRED_COUNT=$MASTER_ECS_DESIRED_COUNT
-          fi
+          #ECS_DESIRED_COUNT=1
+          #if [ "$BRANCH_NAME" == "master" ]
+          #then
+          #  ECS_DESIRED_COUNT=$MASTER_ECS_DESIRED_COUNT
+          #fi
+          ECS_DESIRED_COUNT=${{ github.event.inputs.desired_count }}
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
           ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT verify
