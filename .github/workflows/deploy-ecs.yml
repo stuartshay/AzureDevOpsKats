@@ -108,7 +108,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker buildx create --name mybuilder --use
-          docker buildx build -f ${{ env.DOCKER_FILE }} --platform linux/amd64 --load  \
+          docker buildx build -f ${{ env.DOCKER_FILE }} --platform linux/amd64   \
                --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
