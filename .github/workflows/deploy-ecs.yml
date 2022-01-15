@@ -9,7 +9,6 @@ env:
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
   S3_STATE_BUCKET_NAME: "devops-team-tfstate"
   BUILD_NUMBER: ${{ github.run_number }}
-  MASTER_ECS_DESIRED_COUNT: 2
 
 on:
   workflow_dispatch:
@@ -133,11 +132,6 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
-          #ECS_DESIRED_COUNT=1
-          #if [ "$BRANCH_NAME" == "master" ]
-          #then
-          #  ECS_DESIRED_COUNT=$MASTER_ECS_DESIRED_COUNT
-          #fi
           ECS_DESIRED_COUNT=${{ github.event.inputs.desired_count }}
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
