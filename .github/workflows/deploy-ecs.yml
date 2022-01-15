@@ -9,25 +9,19 @@ env:
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
   S3_STATE_BUCKET_NAME: "devops-team-tfstate"
   BUILD_NUMBER: ${{ github.run_number }}
-  MASTER_ECS_DESIRED_COUNT: 2
 
 on:
   workflow_dispatch:
     inputs:
-      desired-count:
+      desired_count:
         type: choice
         description: ECS Desired Count
         required: true
         options:
           - 0
+          - 1
           - 2
           - 5
-      message:
-      use-emoji:
-        type: boolean
-        description: Include 🎉🤣 emojis
-      environment:
-        type: environment
 
   push:
     paths:
@@ -58,6 +52,7 @@ jobs:
 
   build:
     needs: test-coverage
+    if: github.ref_name == 'master' || github.ref_name == 'develop'
     runs-on: ubuntu-latest
     outputs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
@@ -114,6 +109,7 @@ jobs:
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
   deploy:
     needs: build
+    if: github.ref_name == 'master' || github.ref_name == 'develop'
     runs-on: ubuntu-latest
     outputs:
       app_url: ${{ steps.set_app_url.outputs.app_url }}
@@ -136,11 +132,7 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
-          ECS_DESIRED_COUNT=1
-          if [ "$BRANCH_NAME" == "master" ]
-          then
-            ECS_DESIRED_COUNT=$MASTER_ECS_DESIRED_COUNT
-          fi
+          ECS_DESIRED_COUNT=${{ github.event.inputs.desired_count }}
           echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
           cd ecspresso
           ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT verify
@@ -155,25 +147,30 @@ jobs:
           fi
       - name: Set Task Public IP
         run: |
-          TASK_ARN=$(aws ecs list-tasks --cluster $ECS_CLUSTER --service-name $ECS_SERVICE --query 'taskArns[0]' --output text)
-          TASK_DETAILS=$(aws ecs describe-tasks --cluster $ECS_CLUSTER --task "${TASK_ARN}" --query 'tasks[0].attachments[0].details')
-          ENI=$(echo $TASK_DETAILS | jq -r '.[] | select(.name=="networkInterfaceId").value')
-          PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
-          echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
+          if (( ${{ github.event.inputs.desired_count }} > 0 )); then
+            TASK_ARN=$(aws ecs list-tasks --cluster $ECS_CLUSTER --service-name $ECS_SERVICE --query 'taskArns[0]' --output text)
+            TASK_DETAILS=$(aws ecs describe-tasks --cluster $ECS_CLUSTER --task "${TASK_ARN}" --query 'tasks[0].attachments[0].details')
+            ENI=$(echo $TASK_DETAILS | jq -r '.[] | select(.name=="networkInterfaceId").value')
+            PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
+            echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
+          fi
       - name: Get Task Public IP
         id: set_app_url
         run: |
-          echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
-          if [ "$BRANCH_NAME" != "master" ]
-          then
-            echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}:5000"
-          else
-            APP_URL=$(aws elbv2 describe-load-balancers --names $ECS_CLUSTER --query 'LoadBalancers[0].DNSName' --output text)
-            echo "::set-output name=app_url::$APP_URL"
+          if (( ${{ github.event.inputs.desired_count }} > 0 )); then
+            echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
+            if [ "$BRANCH_NAME" != "master" ]
+            then
+              echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}:5000"
+            else
+              APP_URL=$(aws elbv2 describe-load-balancers --names $ECS_CLUSTER --query 'LoadBalancers[0].DNSName' --output text)
+              echo "::set-output name=app_url::$APP_URL"
+            fi
           fi
 
   health-check:
     needs: deploy
+    if: (github.ref_name == 'master' || github.ref_name == 'develop') && github.event.inputs.desired_count > 0
     runs-on: ubuntu-latest
     env:
       url: ${{needs.deploy.outputs.app_url}}/health
@@ -184,3 +181,4 @@ jobs:
         run: |
           echo "ECS Task Public IP: ${{needs.deploy.outputs.app_url}}"
           curl --fail -s --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} --retry-connrefused ${{ env.url }} -L  | jq
+          
