@@ -179,7 +179,7 @@ jobs:
 
   health-check:
     needs: deploy
-    if: (github.ref_name == 'master' || github.ref_name == 'develop') && ${{needs.deploy.outputs.ecs_desired_count}} > 0
+    if: (github.ref_name == 'master' || github.ref_name == 'develop') && needs.deploy.outputs.ecs_desired_count > 0
     runs-on: ubuntu-latest
     env:
       url: ${{needs.deploy.outputs.app_url}}/health
