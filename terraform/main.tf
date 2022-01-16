@@ -124,6 +124,11 @@ resource "aws_cloudwatch_event_rule" "hourly" {
   schedule_expression = "cron(0 * * * ? *)"
 }
 
+resource "aws_cloudwatch_event_target" "lambda_function" {
+    rule = aws_cloudwatch_event_rule.hourly.name
+    arn = module.lambda_function.lambda_function_arn
+}
+
 ## Loadblancing
 
 resource "aws_security_group" "master_alb" {
