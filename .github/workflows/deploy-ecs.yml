@@ -18,6 +18,7 @@ on:
         type: choice
         description: ECS Desired Count
         required: true
+        default: 1
         options:
           - 0
           - 1
@@ -181,9 +182,10 @@ jobs:
       url: ${{needs.deploy.outputs.app_url}}/health
       max-attempts: 15
       retry-delay-sec: 5
+      connect-timeout: 1
     steps:
       - name: Application health check
         run: |
           echo "ECS Task Public IP: ${{needs.deploy.outputs.app_url}}"
-          curl --fail -s --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} --retry-connrefused ${{ env.url }} -L  | jq
+          curl --fail -s --max-time 3 --connect-timeout ${{ env.connect-timeout }} --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} ${{ env.url }} -L  | jq
           
