@@ -115,6 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       app_url: ${{ steps.set_app_url.outputs.app_url }}
+      ecs_desired_count: ${{ steps.ecs_deploy.outputs.ecs_desired_count }}
     steps:
       - name: Configure AWS credentials
         id: aws-cred
@@ -131,6 +132,7 @@ jobs:
           version: v1.7.5
 
       - name: ECS deploy
+        id: ecs_deploy
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
@@ -139,7 +141,8 @@ jobs:
           then
               ECS_DESIRED_COUNT=${{ env.DEFAULT_ECS_DESIRED_COUNT }}
           fi
-          echo "::set-output AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
+          echo "::set-output name=ecs_desired_count::$ECS_DESIRED_COUNT"
+          echo "ECS_DESIRED_COUNT=$ECS_DESIRED_COUNT" >> $GITHUB_ENV
           cd ecspresso
           ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT verify
           SERVICE_STATUS=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE | jq --raw-output 'select(.services[].status != null ) | .services[].status')
@@ -153,7 +156,7 @@ jobs:
           fi
       - name: Set Task Public IP
         run: |
-          if (( ${{ github.event.inputs.desired_count }} > 0 )); then
+          if (( ${{ env.ECS_DESIRED_COUNT }} > 0 )); then
             TASK_ARN=$(aws ecs list-tasks --cluster $ECS_CLUSTER --service-name $ECS_SERVICE --query 'taskArns[0]' --output text)
             TASK_DETAILS=$(aws ecs describe-tasks --cluster $ECS_CLUSTER --task "${TASK_ARN}" --query 'tasks[0].attachments[0].details')
             ENI=$(echo $TASK_DETAILS | jq -r '.[] | select(.name=="networkInterfaceId").value')
@@ -163,7 +166,7 @@ jobs:
       - name: Get Task Public IP
         id: set_app_url
         run: |
-          if (( ${{ github.event.inputs.desired_count }} > 0 )); then
+          if (( ${{ env.ECS_DESIRED_COUNT }} > 0 )); then
             echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
             if [ "$BRANCH_NAME" != "master" ]
             then
@@ -176,7 +179,7 @@ jobs:
 
   health-check:
     needs: deploy
-    if: (github.ref_name == 'master' || github.ref_name == 'develop') && github.event.inputs.desired_count > 0
+    if: (github.ref_name == 'master' || github.ref_name == 'develop') && ${{needs.deploy.outputs.ecs_desired_count}} > 0
     runs-on: ubuntu-latest
     env:
       url: ${{needs.deploy.outputs.app_url}}/health
