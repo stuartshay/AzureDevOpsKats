@@ -1,5 +1,4 @@
 ﻿using AzureDevOpsKats.Common.Configuration;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -12,7 +11,7 @@ namespace AzureDevOpsKats.Web.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly string _server;
+        private readonly SmtpConfiguration _smtpConfiguration;
         
         /// <summary>
         /// 
@@ -20,18 +19,17 @@ namespace AzureDevOpsKats.Web.Controllers
         /// <param name="settings"></param>
         public ValuesController(IOptions<SmtpConfiguration> settings)
         {
-            _server = settings.Value.Server;
+            _smtpConfiguration = settings.Value;
         }
 
         /// <summary>
-        /// 
+        ///  AWS Parameter Store Configuration
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public string Get()
+        public SmtpConfiguration Get()
         {
-            var result = $"Server:{_server}";
-            return result;
+            return _smtpConfiguration;
         }
 
     }
