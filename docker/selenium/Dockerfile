@@ -10,6 +10,7 @@ RUN pip3 install selenium pyvirtualdisplay
 # Copy python scripts
 COPY src/selenium_screenshot.py selenium_screenshot.py
 
+USER root
 RUN mkdir -p /output
 RUN chmod 755 /output
 
