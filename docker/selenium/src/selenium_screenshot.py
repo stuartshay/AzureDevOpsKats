@@ -166,4 +166,4 @@ if __name__ == "__main__":
     if len(sys.argv) == 8:
         PARAMS.update({"timeout": sys.argv[7]})
 
-    take_selenium_screenshot(**PARAMS
+    take_selenium_screenshot(**PARAMS)
