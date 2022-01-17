@@ -8,10 +8,10 @@ env:
   BUILD_NUMBER: ${{ github.sha }}
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "docker/selenium/**"
-      - ".github/workflows/selenium.workflow.yml"
 
     branches:
       - master
