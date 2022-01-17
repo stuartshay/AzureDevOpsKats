@@ -151,7 +151,6 @@ def take_selenium_screenshot(url, file_name, width=1000, height=500, **kwargs):
 
 if __name__ == "__main__":
     import sys
-
     PARAMS = {
         "url": sys.argv[1],
         "file_name": sys.argv[2],
