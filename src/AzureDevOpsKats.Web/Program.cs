@@ -49,7 +49,9 @@ namespace AzureDevOpsKats.Web
             .ConfigureAppConfiguration((context, builder) =>
             {
                 if (context.HostingEnvironment.EnvironmentName == "AwsEcs")
-                { builder.AddSystemsManager("/devopskats"); }
+                { 
+                    builder.AddSystemsManager("/devopskats", optional: false, reloadAfter: TimeSpan.FromMinutes(2));
+                }
             })
             .UseSerilog(Logging.ConfigureLogger);
     }
