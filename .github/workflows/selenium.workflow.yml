@@ -48,8 +48,8 @@ jobs:
           file: ${{ env.DOCKER_FILE }}
           tags: ${{ env.DH_DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TAG}},${{ env.DH_DOCKER_IMAGE }}:latest
           outputs: type=docker,dest=image.tar
-          cache-from: type=registry,ref=${{ env.DH_DOCKER_IMAGE }}:buildcache
-          cache-to: type=registry,ref=${{ env.DH_DOCKER_IMAGEE }}:buildcache,mode=max
+          #cache-from: type=registry,ref=${{ env.DH_DOCKER_IMAGE }}:buildcache
+          #cache-to: type=registry,ref=${{ env.DH_DOCKER_IMAGEE }}:buildcache,mode=max
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
