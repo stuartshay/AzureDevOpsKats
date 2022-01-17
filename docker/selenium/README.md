@@ -3,6 +3,7 @@
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats-selenium.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats-selenium/)
 
 Container for taking screenshots using selenium
+
 https://github.com/ubidots/docker-selenium-screenshot
 
 ## Allowed arguments
