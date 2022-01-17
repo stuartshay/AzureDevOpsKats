@@ -77,3 +77,10 @@ jobs:
 
       - name: Docker Hub Registry Push
         run: docker push ${{ env.DH_DOCKER_IMAGE }} --all-tags
+
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: docker
