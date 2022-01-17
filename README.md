@@ -3,8 +3,10 @@
 [![CI/CD Build/Test/Deploy](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml)
 
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
-[![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.1-base.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.1-base "microbadger.com")
-[![](https://images.microbadger.com/badges/version/stuartshay/azuredevopskats:2.1.9-build.svg)](https://microbadger.com/images/stuartshay/azuredevopskats:2.1.9-build "microbadger.com")
+
+```
+master-devops-1727857016.us-east-1.elb.amazonaws.com
+```
 
 ## Purpose
 
