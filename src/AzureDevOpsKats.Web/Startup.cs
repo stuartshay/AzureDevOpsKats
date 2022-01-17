@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using AutoMapper;
+using AzureDevOpsKats.Common.Configuration;
 using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.HealthChecks;
 using AzureDevOpsKats.Common.HealthChecks.Extensions;
@@ -68,6 +69,7 @@ namespace AzureDevOpsKats.Web
             services.AddOptions();
             services.Configure<Common.Configuration.ApplicationOptions>(Configuration);
             services.Configure<ApplicationOptions>(Configuration);
+            services.Configure<SmtpConfiguration>(Configuration.GetSection(SmtpConfiguration.SectionName));
             services.AddSingleton(Configuration);
 
             var startupHealthCheck = new StartupTasksHealthCheck();
@@ -76,6 +78,7 @@ namespace AzureDevOpsKats.Web
             services.DisplayConfiguration(Configuration, Environment);
             var config = Configuration.Get<ApplicationOptions>();
             var commonConfig = Configuration.Get<Common.Configuration.ApplicationOptions>();
+            var smtp = Configuration.Get<SmtpConfiguration>();
 
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection))};";
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath).Replace('\\', '/'); ;
