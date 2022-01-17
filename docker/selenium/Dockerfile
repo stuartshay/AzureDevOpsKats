@@ -1,4 +1,4 @@
-FROM selenium/standalone-chrome
+FROM selenium/standalone-chrome:96.0
 
 # Install packages
 RUN sudo apt-get update && \

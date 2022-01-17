@@ -3,7 +3,7 @@ env:
   DH_DOCKER_IMAGE: stuartshay/azuredevopskats-selenium
   DOCKER_SCRIPT_PATH: docker/selenium
   DOCKER_FILE: "docker/selenium/Dockerfile"
-  DOCKER_IMAGE_TAG: v2.30.3-v2-${{ github.sha }}
+  DOCKER_IMAGE_TAG: v96.0-${{ github.sha }}
   DOCKER_IMAGE_PLATFORM: linux/amd64,linux/arm/v7
   BUILD_NUMBER: ${{ github.sha }}
 
