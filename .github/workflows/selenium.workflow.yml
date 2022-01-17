@@ -43,7 +43,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ env.DOCKER_SCRIPT_PATH }}
-          platforms: linux/arm64
+          platforms: linux/amd64
           build-args: |
             BUILD_NUMBER=${{ env.BUILD_NUMBER }}
           file: ${{ env.DOCKER_FILE }}
