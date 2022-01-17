@@ -5,9 +5,9 @@ services:
   selenium:
     hostname: selenium
     image: stuartshay/azuredevopskats-selenium:latest
-    command: "python3 selenium_screenshot.py https://ubidots.com  /tmp/ubidots.png 1000 500 //body //target"
+    command: "python3 selenium_screenshot.py http://master-devops-1727857016.us-east-1.elb.amazonaws.com  /output/azuredevopskats_1.png 1000 500 //body //target"
     volumes:
-      - ./tmp/assets:/tmp/assets
+      - ./output:/output
       - /dev/shm:/dev/shm
 
 
