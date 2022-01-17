@@ -2,6 +2,20 @@
 
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats-selenium.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats-selenium/)
 
+
+```
+cd AzureDevOpsKats
+
+docker-compose --file docker/docker-compose-selenium.yml pull
+docker-compose --file docker/docker-compose-selenium.yml up
+```
+
+```
+docker run -it stuartshay/azuredevopskats-selenium bash
+```
+
+
+
 Container for taking screenshots using selenium
 
 https://github.com/ubidots/docker-selenium-screenshot

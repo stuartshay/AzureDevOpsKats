@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+
+  selenium:
+    hostname: selenium
+    image: stuartshay/azuredevopskats-selenium:latest
+    command: "python3 selenium_screenshot.py https://ubidots.com  /tmp/ubidots.png 1000 500 //body //target"
+    volumes:
+      - ./tmp/assets:/tmp/assets
+      - /dev/shm:/dev/shm
+
+
