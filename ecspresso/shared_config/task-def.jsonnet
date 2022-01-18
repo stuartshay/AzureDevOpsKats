@@ -33,7 +33,7 @@
                 },
                 {
                     "name": "SYSTEMS_MANAGER_RELOAD",
-                    "value": if std.extVar('branch_name') == "master" then 360 else 60
+                    "value": if std.extVar('branch_name') == "master" then "360" else "60"
                 }
             ]
         }
