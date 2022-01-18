@@ -21,12 +21,18 @@ namespace AzureDevOpsKats.Common.HealthChecks
 
         private readonly string _environment;
 
+        private readonly string _clusterName;
+
+        private readonly string _systemsManagerReload;
+
         private readonly string _osNameAndVersion;
         public VersionHealthCheck()
         {
             _applicationVersionNumber = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             _applicationBuildDate = GetAssemblyLastModifiedDate();
             _environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            _clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME");
+            _systemsManagerReload = Environment.GetEnvironmentVariable("SYSTEMS_MANAGER_RELOAD");
             _dnsHostName = Dns.GetHostName();
             _osNameAndVersion = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
         }
@@ -45,6 +51,8 @@ namespace AzureDevOpsKats.Common.HealthChecks
                 {"BuildVersion", _applicationVersionNumber},
                 {"DNS HostName", _dnsHostName},
                 {"Environment", _environment},
+                {"Cluster Name", _clusterName},
+                {"Systems Manager Reload", _systemsManagerReload},
                 {"OsNameAndVersion", _osNameAndVersion},
             };
 
