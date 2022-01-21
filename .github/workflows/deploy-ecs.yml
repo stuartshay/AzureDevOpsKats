@@ -196,12 +196,6 @@ jobs:
     #needs: health-check
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
-
       - name: Selenium Test
         uses: addnab/docker-run-action@v3
         with:
@@ -212,3 +206,15 @@ jobs:
           run: |
             python3 selenium_screenshot.py https://ubidots.com /tmp/assets/ubidots.png "1000" "500" "//body" "//target"
             ls -al /tmp/assets
+      
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-screenshots
+          path: |
+            /tmp/assets
+      
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: test-screenshots
