@@ -199,14 +199,16 @@ jobs:
     steps:
       - name: Selenium Test
         uses: addnab/docker-run-action@v3
+        env:
+          TEST_URL: ${{needs.deploy.outputs.app_url}}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
           image: stuartshay/azuredevopskats-selenium:latest
           options: -v /tmp/assets:/tmp/assets -v /dev/shm:/dev/shm 
           run: |
-            echo "${{needs.deploy.outputs.app_url}}"
-            python3 selenium_screenshot.py ${{needs.deploy.outputs.app_url}} /tmp/assets/devops.png "1000" "500" "//body" "//target"
+            echo "${TEST_URL}"
+            python3 selenium_screenshot.py ${TEST_URL} /tmp/assets/devops.png "1000" "500" "//body" "//target"
             ls -al /tmp/assets
       
       - name: Archive test artifacts
