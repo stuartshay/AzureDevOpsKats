@@ -13,6 +13,12 @@
                     "protocol": "tcp"
                 }
             ],
+            "mountPoints": [
+                {
+                    "sourceVolume": "efs-{{ must_env `BRANCH_NAME` }}",
+                    "containerPath": "/images"
+                }
+            ],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
