@@ -13,14 +13,6 @@
                     "protocol": "tcp"
                 }
             ],
-            "volumes": [
-                {
-                    "name": "efs-{{ must_env `BRANCH_NAME` }}",
-                    "efsVolumeConfiguration": {
-                        "fileSystemId": if std.extVar('branch_name') == "master" then "{{ tfstate `aws_efs_file_system.master.id` }}" else "{{ tfstate `aws_efs_file_system.develop.id` }}"
-                    }
-                }
-            ],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -43,6 +35,14 @@
                     "value": if std.extVar('branch_name') == "master" then "360" else "60"
                 }
             ]
+        }
+    ],
+    "volumes": [
+        {
+            "name": "efs-{{ must_env `BRANCH_NAME` }}",
+            "efsVolumeConfiguration": {
+                "fileSystemId": if std.extVar('branch_name') == "master" then "{{ tfstate `aws_efs_file_system.master.id` }}" else "{{ tfstate `aws_efs_file_system.develop.id` }}"
+            }
         }
     ],
     "family": "{{ must_env `ECS_SERVICE` }}",
