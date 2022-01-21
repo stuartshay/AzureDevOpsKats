@@ -13,7 +13,14 @@
                     "protocol": "tcp"
                 }
             ],
-            "volumesFrom": [],
+            "volumes": [
+                {
+                    "name": "efs-{{ must_env `BRANCH_NAME` }}",
+                    "efsVolumeConfiguration": {
+                        "fileSystemId": if std.extVar('branch_name') == "master" then "{{ tfstate `aws_efs_file_system.master.id` }}" else "{{ tfstate `aws_efs_file_system.develop.id` }}"
+                    }
+                }
+            ],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
