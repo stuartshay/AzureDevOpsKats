@@ -41,7 +41,7 @@ def update_ecs_service(cluster_name, service_name, remove_after_hours):
             logger.info("Can not find out the service %s from cluster %s" % (service_name, cluster_name))
             return False
 
-        if  get_hour_diff(ecs_service['createdAt']) > remove_after_hours:
+        if  get_hour_diff(ecs_service['createdAt']) < int(remove_after_hours):
             logger.info("Not yet reach %sh(current: %s) of ECS service %s tasks from cluster %s" % (remove_after_hours, get_hour_diff(ecs_service['createdAt']), service_name, cluster_name))
             return False
 
