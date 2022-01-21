@@ -193,7 +193,7 @@ jobs:
   #         curl -v --fail -s --max-time 3 --connect-timeout ${{ env.connect-timeout }} --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} ${{ env.url }} -L  | jq
   
   selenium-test:
-    needs: health-check
+    #needs: health-check
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
