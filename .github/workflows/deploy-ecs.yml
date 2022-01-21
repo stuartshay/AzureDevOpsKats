@@ -205,6 +205,7 @@ jobs:
           image: stuartshay/azuredevopskats-selenium:latest
           options: -v /tmp/assets:/tmp/assets -v /dev/shm:/dev/shm 
           run: |
+            echo "${{needs.deploy.outputs.app_url}}"
             python3 selenium_screenshot.py ${{needs.deploy.outputs.app_url}} /tmp/assets/devops.png "1000" "500" "//body" "//target"
             ls -al /tmp/assets
       
