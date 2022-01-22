@@ -12,3 +12,9 @@ variable "task_role_arn" {
   description = "The ECS task role ARN"
   type        = string
 }
+
+variable "tags" {
+  description = "ALB more tags"
+  type        = map(string)
+  default     = {}
+}

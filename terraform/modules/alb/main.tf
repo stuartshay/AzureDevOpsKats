@@ -6,6 +6,8 @@ resource "aws_lb" "this" {
 
   security_groups = var.security_group_ids
   idle_timeout    = 300
+
+  tags = var.tags
 }
 
 resource "aws_lb_target_group" "this" {

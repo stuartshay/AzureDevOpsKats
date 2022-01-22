@@ -37,3 +37,9 @@ variable "acm_certificate_arn" {
   type        = string
   default     = ""
 }
+
+variable "tags" {
+  description = "ALB more tags"
+  type        = map(string)
+  default     = {}
+}
