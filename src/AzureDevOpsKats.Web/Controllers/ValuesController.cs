@@ -1,4 +1,5 @@
 ﻿using AzureDevOpsKats.Common.Configuration;
+using AzureDevOpsKats.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -37,32 +38,23 @@ namespace AzureDevOpsKats.Web.Controllers
         }
 
         /// <summary>
-        ///  Determine Directory Exists.
+        ///  Directory Items.
         /// </summary>
-        /// <returns>Total Cats</returns>
+        /// <returns>File Items Model</returns>
         [HttpGet]
-        [Route("directory/exist")]
+        [Route("directory/items")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<FileItemsModel> DirectoryExists()
+        public ActionResult<FileItemsModel> DirectoryItems()
         {
             var fileItemsModel = new FileItemsModel { DirectoryPath = @"/images", Status = false, FileCount = 0 };
             if (Directory.Exists(fileItemsModel.DirectoryPath))
             {
                 fileItemsModel.Status = true;
                 fileItemsModel.FileCount = Directory.GetFiles(fileItemsModel.DirectoryPath, "*", SearchOption.AllDirectories).Length;
+                fileItemsModel.Files = Directory.GetFiles(fileItemsModel.DirectoryPath, "*", SearchOption.AllDirectories);
             }
 
             return Ok(fileItemsModel);
         }
     }
-
-    public class FileItemsModel
-    {
-        public string DirectoryPath  { get; set; }
-        
-        public bool Status { get; set; }
-
-        public int FileCount { get; set; }
-    }
-
 }
