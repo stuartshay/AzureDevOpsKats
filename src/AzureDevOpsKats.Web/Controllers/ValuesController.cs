@@ -43,17 +43,26 @@ namespace AzureDevOpsKats.Web.Controllers
         [HttpGet]
         [Route("directory/exist")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<bool> DirectoryExists()
+        public ActionResult<FileItemsModel> DirectoryExists()
         {
-            string root = @"/images";
-            var results = false;
-            if (Directory.Exists(root))
+            var fileItemsModel = new FileItemsModel { DirectoryPath = @"/images", Status = false, FileCount = 0 };
+            if (Directory.Exists(fileItemsModel.DirectoryPath))
             {
-                results = true;
+                fileItemsModel.Status = true;
+                fileItemsModel.FileCount = Directory.GetFiles(fileItemsModel.DirectoryPath, "*", SearchOption.AllDirectories).Length;
             }
 
-            return Ok(results);
+            return Ok(fileItemsModel);
         }
-
     }
+
+    public class FileItemsModel
+    {
+        public string DirectoryPath  { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int FileCount { get; set; }
+    }
+
 }
