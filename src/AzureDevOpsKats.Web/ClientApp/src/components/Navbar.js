@@ -68,9 +68,6 @@ const Navbar = (props) => {
     const toggleCollapse = collapse_ID =>
       setCollapseId(collapseID !== collapse_ID ? collapse_ID : "")
 
-    const closeCollapse = collapse_ID =>
-      collapseID === collapse_ID && setCollapseId("");
-
     const overlay = () => {
       return(
         <div
@@ -111,7 +108,7 @@ const Navbar = (props) => {
     },[props.count]);
       
     return (
-      <div> <h1>Hello</h1>
+      <div>
         <MDBNavbar className="header-position" color="header-bg" dark expand="md" fixed="top" scrolling>
           <MDBContainer>
             <MDBNavbarBrand onClick={() => navigate("")} style={{cursor: 'pointer'}}>

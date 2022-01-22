@@ -5,4 +5,3 @@ export const REFRESH_LIST = 'REFRESH_LIST';
 export const ADDED_ITEM = 'ADDED_ITEM';
 export const UPDATED_ITEM = 'UPDATED_ITEM';
 export const DELETED_ITEM = 'DELETED_ITEM';
-

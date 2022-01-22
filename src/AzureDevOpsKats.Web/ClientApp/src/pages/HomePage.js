@@ -1,6 +1,6 @@
 import React , { useState, useEffect } from "react";
 import { connect, useDispatch } from 'react-redux';
-import { getCats, getCatsList, getCatData, updateCatData, deleteCatData } from '../actions/cats';
+import { getCats, getCatData, updateCatData, deleteCatData } from '../actions/cats';
 import { 
   MDBContainer, MDBModal, MDBModalHeader, MDBModalBody, MDBModalFooter, 
   MDBRow, MDBCol, MDBPagination, MDBPageItem, MDBPageNav, MDBIcon, MDBBtn
@@ -70,6 +70,7 @@ const HomePage = (props) => {
   }
 
   const changeInputValue = (e) => {
+    if(cat[e.target.name].length < 40)
     setCat({
       ...cat,
       [e.target.name]: e.target.value

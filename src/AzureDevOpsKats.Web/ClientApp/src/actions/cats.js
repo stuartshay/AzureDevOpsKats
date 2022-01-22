@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { GET_ERRORS, RECEIVED_CATS_LIST, RECEIVED_CAT_DATA, REFRESH_LIST, UPDATED_ITEM, ADDED_ITEM, DELETED_ITEM } from './types';
 
-export const deleteCatData= (id) => dispatch => {
+export const deleteCatData= (id) => dispatch => { console.log(id);
   axios.delete(`/api/v2/Cats/${id}`)
-    .then(res => {
+    .then(res => { console.log('OK'); console.log(res);
       dispatch(refreshList());
       dispatch(refreshAction(DELETED_ITEM));
     })
-    .catch(err => {
+    .catch(err => { console.log('fail');
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -21,9 +21,9 @@ export const addCatData = (cat) => dispatch => {
   formData.append('file', cat.file);
   formData.append('name', cat.name);
   formData.append('description', cat.description);
+  console.log(formData);
 
   axios.post('/api/v2/Cats', formData)
-  // axios.post('/api/v1/Cats', formData)
     .then(res => {
       dispatch(refreshList());
       dispatch(refreshAction(ADDED_ITEM));
@@ -56,19 +56,6 @@ export const getCats = (limit, page) => dispatch => {
       axios.get('/api/v2/Cats/results/total').then(count => {
         dispatch(receivedCatsList(res.data, count.data));
       })      
-    })
-    .catch(err => {
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
-    });
-}
-
-export const getCatsList = () => dispatch => {
-  axios.get('/api/v2/Cats')
-    .then(res => {
-      dispatch(receivedCatsList(res.data, 0));
     })
     .catch(err => {
       dispatch({
