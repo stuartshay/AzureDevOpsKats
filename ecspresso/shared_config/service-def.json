@@ -33,5 +33,11 @@
     "placementStrategy": [],
     "schedulingStrategy": "REPLICA",
     "serviceRegistries": [],
-    "desiredCount": 1
+    "desiredCount": 1,
+    "Tags": [
+        {
+            "Key": "Env",
+            "Value": "{{ must_env `BRANCH_NAME` }}"
+        }
+    ]
 }

@@ -38,5 +38,11 @@
     "placementStrategy": [],
     "schedulingStrategy": "REPLICA",
     "serviceRegistries": [],
-    "desiredCount": std.extVar('desired_count')
+    "desiredCount": std.extVar('desired_count'),
+    "Tags": [
+        {
+            "Key": "Env",
+            "Value": "{{ must_env `BRANCH_NAME` }}"
+        }
+    ]
 }

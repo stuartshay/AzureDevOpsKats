@@ -55,5 +55,11 @@
     "networkMode": "awsvpc",
     "placementConstraints": [],
     "executionRoleArn": "{{ tfstate `aws_iam_role.ecs_task_execution_role.arn` }}",
-    "taskRoleArn": "{{ tfstate `aws_iam_role.container.arn` }}"
+    "taskRoleArn": "{{ tfstate `aws_iam_role.container.arn` }}",
+    "Tags": [
+        {
+            "Key": "Env",
+            "Value": "{{ must_env `BRANCH_NAME` }}"
+        }
+    ]
 }
