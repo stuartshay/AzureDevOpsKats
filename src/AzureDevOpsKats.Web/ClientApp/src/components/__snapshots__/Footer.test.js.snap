@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly enzyme 1`] = `
+<at
+  color="footer-bg"
+  style={
+    Object {
+      "position": "absolute",
+      "width": "100%",
+    }
+  }
+  tag="footer"
+>
+  <p
+    className="footer-copyright mb-0 py-3 text-center"
+  >
+    © 
+    2022
+     Copyright: Azure DevOpsKats
+  </p>
+</at>
+`;

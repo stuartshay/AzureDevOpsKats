@@ -1,0 +1,27 @@
+1. Clone the gitbranch and run the BE server
+    git clone https://github.com/stuartshay/AzureDevOpsKats.git
+
+    cd AzureDevOpsKats
+    dotnet restore
+
+    cd src\AzureDevOpsKats.Web\
+    dotnet run
+
+2. Move to the clientApp folder and install the node_modules.
+    cd src\AzureDevOpsKats.Web\clientApp
+    npm install (if you alread installed all the package please skip this step )
+    npm run test
+
+    ``````````````````````````
+    if you see the following options on terminal, then please enter "a" to run all the test
+
+    Press `a` to run all tests, or run Jest with `--watchAll`.
+
+    Watch Usage
+    › Press a to run all tests.
+    › Press f to run only failed tests.
+    › Press q to quit watch mode.
+    › Press p to filter by a filename regex pattern. 
+    › Press t to filter by a test name regex pattern.
+    › Press Enter to trigger a test run.
+    
