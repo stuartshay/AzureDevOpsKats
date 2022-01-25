@@ -32,8 +32,6 @@ on:
     branches:
       - master
       - develop
-      - "feature/**"
-      - "fix/**"
 
 jobs:
   test-coverage:
@@ -54,7 +52,6 @@ jobs:
 
   build:
     needs: test-coverage
-    if: github.ref_name == 'master' || github.ref_name == 'develop'
     runs-on: ubuntu-latest
     outputs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
@@ -111,7 +108,6 @@ jobs:
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
   deploy:
     needs: build
-    if: github.ref_name == 'master' || github.ref_name == 'develop'
     runs-on: ubuntu-latest
     outputs:
       app_url: ${{ steps.set_app_url.outputs.app_url }}
@@ -130,7 +126,16 @@ jobs:
       - uses: kayac/ecspresso@v1
         with:
           version: v1.7.5
-
+      
+      - name: Set ECS cluster and service
+        run: |
+          if [ "$BRANCH_NAME" != "master" ]
+          then
+              echo "Set new ECS cluster and servvice to develop..."
+              echo "ECS_CLUSTER=develop-devops" >> $GITHUB_ENV
+              echo "ECS_SERVICE=develop-devops" >> $GITHUB_ENV
+              echo "BRANCH_NAME=develop" >> $GITHUB_ENV
+          fi
       - name: ECS deploy
         id: ecs_deploy
         env:
@@ -179,7 +184,7 @@ jobs:
 
   health-check:
     needs: deploy
-    if: (github.ref_name == 'master' || github.ref_name == 'develop') && needs.deploy.outputs.ecs_desired_count > 0
+    if: needs.deploy.outputs.ecs_desired_count > 0
     runs-on: ubuntu-latest
     env:
       url: ${{needs.deploy.outputs.app_url}}/health
