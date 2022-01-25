@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using AutoMapper;
+using AzureDevOpsKats.Common.Configuration;
 using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.HealthChecks;
 using AzureDevOpsKats.Common.HealthChecks.Extensions;
@@ -47,19 +48,19 @@ namespace AzureDevOpsKats.Web
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IWebHostEnvironment Environment { get; }
 
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -68,6 +69,7 @@ namespace AzureDevOpsKats.Web
             services.AddOptions();
             services.Configure<Common.Configuration.ApplicationOptions>(Configuration);
             services.Configure<ApplicationOptions>(Configuration);
+            services.Configure<SmtpConfiguration>(Configuration.GetSection(SmtpConfiguration.SectionName));
             services.AddSingleton(Configuration);
 
             var startupHealthCheck = new StartupTasksHealthCheck();
@@ -76,11 +78,12 @@ namespace AzureDevOpsKats.Web
             services.DisplayConfiguration(Configuration, Environment);
             var config = Configuration.Get<ApplicationOptions>();
             var commonConfig = Configuration.Get<Common.Configuration.ApplicationOptions>();
+            var smtp = Configuration.Get<SmtpConfiguration>();
 
             string connection = $"Data Source={Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), config.ConnectionStrings.DbConnection))};";
-            string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath);
+            string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath).Replace('\\', '/'); ;
 
-            //Logging 
+            //Logging
             services.AddTransient<LoggingDelegatingHandler>();
 
             // Services Configuration
@@ -94,7 +97,7 @@ namespace AzureDevOpsKats.Web
             services.AddCustomCors(Configuration);
             services.AddCustomCookiePolicy(Configuration);
 
-            // Application Services 
+            // Application Services
             services.AddSingleton<ICatRepository>(provider =>
                 new CatRepository(connection, provider.GetService<ILogger<CatRepository>>()));
 
@@ -108,7 +111,7 @@ namespace AzureDevOpsKats.Web
 
             services.AddRazorPages();
 
-            //Scoped Services 
+            //Scoped Services
             services.AddScoped<ICatsHostedService, CatsHostedService>();
 
             services.AddCronJob<MyCronJob1>(c =>
@@ -141,17 +144,11 @@ namespace AzureDevOpsKats.Web
                 })
                 .AddInMemoryStorage()
                 .Services
+                .AddCustomHealthCheck(Configuration)
                 .AddHealthChecks()
-                .AddVersionHealthCheck()
-                .AddCheck<StartupTasksHealthCheck>("Startup Health Check", tags: new[] { HealthCheckType.ReadinessCheck.ToString(), HealthCheckType.System.ToString() })
-                .AddApiEndpointHealthChecks(commonConfig.ApiHealthConfiguration)
-
                 .AddElasticSearchHealthCheck(commonConfig.ElasticSearchConfiguration)
-
-                 .AddRedis("redis", name: "Redis Client", failureStatus: HealthStatus.Degraded, tags: new[] { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" })
-                .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new[] { HealthCheckType.System.ToString() })
                 .AddCheck(name: "SQLite Database", new SqliteConnectionHealthCheck(connectionString: connection, testQuery: "Select 1"),
-                    failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
+                   failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
                 .Services
                 .AddControllers();
 
@@ -170,7 +167,7 @@ namespace AzureDevOpsKats.Web
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>

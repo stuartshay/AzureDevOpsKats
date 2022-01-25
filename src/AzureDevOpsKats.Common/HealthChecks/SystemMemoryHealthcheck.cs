@@ -52,13 +52,13 @@ namespace AzureDevOpsKats.Common.HealthChecks
             if (percentUsed > degraded || percentUsed == 0)
             {
                 message = $"Degraded:{percentUsed}% Range:{unhealthy}% > {degraded}%";
-                status = HealthStatus.Degraded;
+                //TODO REVIEW status = HealthStatus.Degraded;
             }
 
             if (percentUsed > unhealthy)
             {
                 message = $"Unhealthy:{percentUsed}%| > {degraded} (Degraded)%";
-                status = HealthStatus.Unhealthy;
+                //TODO REVIEW  status = HealthStatus.Unhealthy;
             }
 
             var data = new Dictionary<string, object>

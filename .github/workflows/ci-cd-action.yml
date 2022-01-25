@@ -1,0 +1,117 @@
+name: CI/CD Build/Test/Deploy
+env:
+  SERVICE: azuredevopskats
+  DH_DOCKER_IMAGE: stuartshay/azuredevopskats
+  DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
+  DOCKER_IMAGE_TAG: 5.1-buildx-${{ github.run_number }}-${{ github.sha }}
+  DOCKER_IMAGE_PLATFORM: linux/amd64,linux/arm/v7
+  BUILD_NUMBER: ${{ github.run_number }}
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+      - "test/**"
+    branches:
+      - master
+      - develop
+      - "feature/**"
+      - "fix/**"
+
+jobs:
+  test-netcore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet ${{ needs.build.outputs.dotnet }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ needs.build.outputs.dotnet }}
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Test with dotnet
+        uses: zyborg/dotnet-tests-report@v1
+        with:
+          project_path: test/AzureDevOpsKats.Test
+          report_name: AzureDevOpsKats.Test
+          report_title: AzureDevOpsKats.Test
+          fail_build_on_failed_tests: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    needs: test-netcore
+    runs-on: ubuntu-latest
+    outputs:
+      dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
+    strategy:
+      matrix:
+        dotnet: ["5.0.x"]
+
+    steps:
+      - id: dotnet-version
+        run: echo "::set-output name=dotnet::${{ matrix.dotnet }}"
+
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet ${{ matrix.dotnet }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
+
+      - name: Build image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          build-args: |
+            BUILD_NUMBER=${{ env.BUILD_NUMBER }}
+          file: ${{ env.DOCKER_FILE }}
+          tags: ${{ env.DH_DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TAG}}
+          outputs: type=docker,dest=image.tar
+          cache-from: type=registry,ref=${{ env.DH_DOCKER_IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.DH_DOCKER_IMAGE }}:buildcache,mode=max
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.dotnet }}
+          path: image.tar
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build, test-netcore]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Load images
+        run: |
+          docker load --input ${{ needs.build.outputs.dotnet }}/image.tar
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
+
+      - name: Docker Hub Registry Push
+        run: docker push ${{ env.DH_DOCKER_IMAGE }} --all-tags

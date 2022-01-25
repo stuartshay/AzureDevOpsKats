@@ -49,14 +49,25 @@ http://traefik:8080
 docker-compose --file docker-compose.yml up -d --scale <SERVICE>=<NUMBER>
 ```
 
-### .NET Docker Packages
-```
-https://github.com/atomist-container-images/mcr.microsoft.com-dotnet_aspnet/blob/main/Dockerfile
-```
 
 ## Linux Local Build
+
+Docker Compose
+```
+cd AzureDevOpsKats
+docker-compose -f docker/docker-compose-build.yml build
+docker-compose -f docker/docker-compose-build.yml up
+```
+
+Docker
 ```
 cd AzureDevOpsKats
 docker build -f docker/azuredevopskats-web-multi.dockerfile/Dockerfile -t stuartshay/azuredevopskats  .
   ```
+
+### Reference
+.NET Docker Images
+```
+https://github.com/atomist-container-images/mcr.microsoft.com-dotnet_aspnet/blob/main/Dockerfile
+```
 

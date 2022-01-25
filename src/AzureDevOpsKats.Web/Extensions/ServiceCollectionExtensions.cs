@@ -1,4 +1,7 @@
-﻿using AzureDevOpsKats.Service.Configuration;
+﻿using AzureDevOpsKats.Common.Constants;
+using AzureDevOpsKats.Common.HealthChecks;
+using AzureDevOpsKats.Common.HealthChecks.Extensions;
+using AzureDevOpsKats.Service.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using StackExchange.Redis;
 using System;
 using System.IO;
@@ -132,10 +136,40 @@ namespace AzureDevOpsKats.Web.Extensions
         }
 
         /// <summary>
-        /// Api Versioning
+        ///   Custom Health Check.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            var config = configuration.Get<ApplicationOptions>();
+            var commonConfig = configuration.Get<Common.Configuration.ApplicationOptions>();
+
+            string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath).Replace('\\', '/'); ;
+            
+            services.AddHealthChecks()
+                    .AddVersionHealthCheck()
+                    .AddFolderHealthCheck(imagesRoot, "Images Path")
+                    .AddCheck<StartupTasksHealthCheck>("Startup Health Check", tags: new[] { HealthCheckType.ReadinessCheck.ToString(), HealthCheckType.System.ToString() })
+                    .AddApiEndpointHealthChecks(commonConfig.ApiHealthConfiguration)
+                    .AddCheck<SystemMemoryHealthCheck>("Memory", tags: new[] { HealthCheckType.System.ToString() })
+                ;
+
+            if (config.Dataprotection.Enabled)
+            {
+                services.AddHealthChecks()
+                        .AddRedis("redis", name: "Redis Client", failureStatus: HealthStatus.Degraded, tags: new[]
+                        { HealthCheckType.Infrastructure.ToString(), HealthCheckType.Database.ToString(), "Port:6379" });
+            }
+            return services;
+        }
+
+        /// <summary>
+            /// Api Versioning
+            /// </summary>
+            /// <param name="services"></param>
+            /// <param name="configuration"></param>
         public static void AddApiVersioning(this IServiceCollection services, IConfiguration configuration)
         {
             _ = services.AddApiVersioning(options => { options.ReportApiVersions = true; });

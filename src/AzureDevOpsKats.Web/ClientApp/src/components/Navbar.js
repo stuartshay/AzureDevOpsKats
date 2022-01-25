@@ -105,6 +105,10 @@ const Navbar = (props) => {
       }
         
     },[props.errors]);
+
+    useEffect(() => {
+      setIsOpenModal(false);
+    },[props.count]);
       
     return (
       <div> <h1>Hello</h1>
@@ -177,7 +181,8 @@ const Navbar = (props) => {
 
 //----- mapStateToProps -----
 const mapStateToProps = (state) => ({
-  errors: state.errors.errors
+  errors: state.errors.errors,
+  count: state.catsList.count,
 })
 
 export default connect(mapStateToProps)(withRouter(Navbar));

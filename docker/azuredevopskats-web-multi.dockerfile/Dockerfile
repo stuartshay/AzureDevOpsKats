@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.403 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 
 RUN dotnet --version
 RUN cat /etc/os-release
@@ -12,7 +12,7 @@ COPY AzureDevOpsKats.sln /app/AzureDevOpsKats.sln
 COPY NuGet.config /app/NuGet.config
 COPY common.props /app/common.props
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x |  bash -
 RUN apt-get install -y nodejs
 
 # Install .NET Tools
@@ -26,7 +26,7 @@ RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
 WORKDIR /app/src/AzureDevOpsKats.Web
 
 RUN setversion 5.0.1.${BUILD_NUMBER}
-RUN dotnet publish -o /publish -c Release -f net5.0
+RUN dotnet publish AzureDevOpsKats.Web.csproj -o /publish -c Release -f net5.0
 
 # Runtime Image Stage
 FROM mcr.microsoft.com/dotnet/aspnet:5.0.12

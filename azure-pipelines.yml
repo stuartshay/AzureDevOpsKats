@@ -2,10 +2,6 @@ trigger:
   branches:
     include:
       - master
-      - develop
-      - react
-      - releases/*
-      - feature*
   paths:
     exclude:
       - infastructure/*
