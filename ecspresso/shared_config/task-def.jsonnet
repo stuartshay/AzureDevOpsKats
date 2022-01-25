@@ -22,7 +22,7 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "devopskats",
+                    "awslogs-group": "{{ must_env `ECS_SERVICE` }}",
                     "awslogs-region": "{{ must_env `AWS_REGION` }}",
                     "awslogs-stream-prefix": "devopskats"
                 }
