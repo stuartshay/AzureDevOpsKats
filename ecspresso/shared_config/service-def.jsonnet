@@ -32,7 +32,7 @@
             { "targetGroupArn": "{{ tfstate `module.alb_master.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
         ] else []
     ),
-    "enableECSManagedTags": false,
+    "enableECSManagedTags": true,
     "enableExecuteCommand": true,
     "placementConstraints": [],
     "placementStrategy": [],
@@ -44,5 +44,6 @@
             "Key": "Env",
             "Value": "{{ must_env `BRANCH_NAME` }}"
         }
-    ]
+    ],
+    "propagateTags": "TASK_DEFINITION"
 }
