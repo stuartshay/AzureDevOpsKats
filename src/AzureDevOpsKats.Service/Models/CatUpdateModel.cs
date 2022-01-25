@@ -16,7 +16,7 @@ namespace AzureDevOpsKats.Service.Models
         ///  Description of Cat.
         /// </summary>
         [Required(ErrorMessage = "The description is required")]
-        [MaxLength(250, ErrorMessage = "The description may not exceed 250 characters")]
+        [MaxLength(65, ErrorMessage = "The description may not exceed 250 characters")]
         [MinLength(3, ErrorMessage = "The description may be at least 3 characters")]
         public string Description { get; set; }
     }
