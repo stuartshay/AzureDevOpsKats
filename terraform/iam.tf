@@ -169,6 +169,10 @@ resource "aws_iam_role_policy" "container" {
           "ssm:GetParameterHistory",
           "ssm:GetParametersByPath",
           "ssm:GetParameter",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogGroups"
         ]
         Resource = "*"
       }
