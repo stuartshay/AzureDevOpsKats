@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-const server = "http://localhost:5000";
+const server = process.env.REACT_APP_SERVER_URL;
 chai.use(chaiHttp);
 
 const id = '7867457364876923';
