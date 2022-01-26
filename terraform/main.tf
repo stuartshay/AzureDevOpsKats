@@ -27,6 +27,9 @@ module "ecs" {
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn      = aws_iam_role.container.arn
 
+  tags = {
+    Env = "${local.envs[count.index]}"
+  }
 }
 
 resource "aws_security_group" "ecs_tasks" {
@@ -115,6 +118,10 @@ module "lambda_function" {
       ]
     },
   }
+
+  tags = {
+    Env = "develop"
+  }
 }
 
 ## Cloudwatch Events -  Schedule to run lambda function every hour
@@ -122,11 +129,15 @@ resource "aws_cloudwatch_event_rule" "hourly" {
   name                = "${local.lambda_function_name}-hourly"
   description         = "Process function hourly"
   schedule_expression = "cron(0 * * * ? *)"
+
+  tags = {
+    Env = "develop"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "lambda_function" {
-    rule = aws_cloudwatch_event_rule.hourly.name
-    arn = module.lambda_function.lambda_function_arn
+  rule = aws_cloudwatch_event_rule.hourly.name
+  arn = module.lambda_function.lambda_function_arn
 }
 
 ## Loadblancing
@@ -188,4 +199,62 @@ module "alb_master" {
   subnet_ids         = data.aws_subnets.public.ids
   security_group_ids = [aws_security_group.master_alb.id]
   enable_https       = false
+
+  tags = {
+    Env = "master"
+  }
+}
+
+#EFS 
+resource "aws_efs_file_system" "master" {
+  creation_token = "master-${local.name}"
+
+  tags = {
+    Env = "master"
+    Name= "master-${local.name}"
+  }
+}
+
+resource "aws_efs_file_system" "develop" {
+  creation_token = "develop-${local.name}"
+
+  tags = {
+    Env = "develop"
+    Name= "develop-${local.name}"
+  }
+}
+
+resource "aws_efs_mount_target" "develop" {
+  file_system_id = aws_efs_file_system.develop.id
+  subnet_id      = data.aws_subnets.public.ids[0]
+  security_groups = [aws_security_group.efs.id]
+}
+
+resource "aws_efs_mount_target" "master" {
+  file_system_id = aws_efs_file_system.master.id
+  subnet_id      = data.aws_subnets.public.ids[0]
+  security_groups = [aws_security_group.efs.id]
+}
+
+resource "aws_security_group" "efs" {
+  name   = "${local.name}-efs"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = 2049
+    to_port         = 2049
+    security_groups = [
+      aws_security_group.master_ecs_tasks.id,
+      aws_security_group.ecs_tasks.id
+    ]
+  }
+
+  egress {
+    protocol         = "-1"
+    from_port        = 0
+    to_port          = 0
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 }

@@ -14,11 +14,13 @@ module "ecs" {
     }
   ]
 
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "this" {
   name              = var.name
   retention_in_days = 7
+  tags = var.tags
 }
 
 #----- ECS  Services--------
@@ -41,21 +43,6 @@ resource "aws_ecs_task_definition" "this" {
   }
 ]
 EOF
+
+  tags = var.tags
 }
-
-# resource "aws_ecs_service" "this" {
-#   name            = var.name
-#   cluster         = module.ecs.ecs_cluster_id
-#   task_definition = aws_ecs_task_definition.this.arn
-
-#   network_configuration {
-#     security_groups  = var.security_group_ids
-#     subnets          = var.subnet_ids
-#     assign_public_ip = true
-#   }
-
-#   desired_count = 1
-
-#   deployment_maximum_percent         = 100
-#   deployment_minimum_healthy_percent = 0
-# }
