@@ -80,7 +80,6 @@ data "aws_iam_policy_document" "deploy_user" {
       "logs:PutLogEvents",
       "elasticloadbalancing:DescribeTargetGroups",
       "elasticloadbalancing:DescribeLoadBalancers",
-      "ssm:GetParameters"
     ]
 
     resources = [
@@ -109,7 +108,20 @@ data "aws_iam_policy_document" "deploy_user" {
       "arn:aws:s3:::devops-team-tfstate/*"
     ]
   }
-  
+
+  statement {
+    actions = [
+      "ssm:GetParameters",
+      "ssm:GetParameterHistory",
+      "ssm:GetParametersByPath",
+      "ssm:GetParameter"
+    ]
+
+    resources = [
+      "arn:aws:ssm:us-east-1:816939196156:parameter/devopskats/*"
+    ]
+  }
+
 }
 
 module "deploy_group" {
@@ -164,17 +176,45 @@ resource "aws_iam_role_policy" "container" {
           "ssmmessages:CreateDataChannel",
           "ssmmessages:OpenControlChannel",
           "ssmmessages:OpenDataChannel",
-          "ssm:GetParameters",
-          "ssm:DescribeParameters",
-          "ssm:GetParameterHistory",
-          "ssm:GetParametersByPath",
-          "ssm:GetParameter",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
           "logs:DescribeLogGroups"
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+          "ssm:GetParameterHistory",
+          "ssm:GetParametersByPath",
+          "ssm:GetParameter"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+resource "aws_iam_role_policy" "agent" {
+  name = "devopskats-agent"
+  role = aws_iam_role.ecs_task_execution_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+          "ssm:GetParameterHistory",
+          "ssm:GetParametersByPath",
+          "ssm:GetParameter"
+        ]
+        Resource = [
+          "arn:aws:ssm:us-east-1:816939196156:parameter/devopskats/*"
+        ]
       }
     ]
   })
