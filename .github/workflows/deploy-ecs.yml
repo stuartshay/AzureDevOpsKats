@@ -142,6 +142,7 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ steps.aws-cred.outputs.aws-account-id }}
         run: |
+          echo "ACCOUNT_ID=${{ steps.aws-cred.outputs.aws-account-id }}" >> $GITHUB_ENV
           ECS_DESIRED_COUNT=${{ github.event.inputs.desired_count }}
           if [ -z "$ECS_DESIRED_COUNT" ]
           then

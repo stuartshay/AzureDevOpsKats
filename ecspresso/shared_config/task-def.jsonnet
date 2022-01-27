@@ -44,19 +44,19 @@
             "secrets": [
                 {
                 "name": "SMTP_PASSWORD",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/password"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/password"
                 },
                 {
                 "name": "SMTP_PORT",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/port"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/port"
                 },
                 {
                 "name": "SMTP_SERVER",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/server"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/server"
                 },
                 {
                 "name": "SMTP_USERNAME",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/username"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/username"
                 }
             ]
         }

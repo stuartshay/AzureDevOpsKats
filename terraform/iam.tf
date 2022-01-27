@@ -80,7 +80,6 @@ data "aws_iam_policy_document" "deploy_user" {
       "logs:PutLogEvents",
       "elasticloadbalancing:DescribeTargetGroups",
       "elasticloadbalancing:DescribeLoadBalancers",
-      "ssm:DescribeParameters"
     ]
 
     resources = [
