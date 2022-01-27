@@ -1,5 +1,6 @@
 locals {
   name                    = "devops"
+  project_name            = "devopskats"
   lambda_function_name    = "auto-remove-ecs-service"
   lambda_function_runtime = "python3.8"
   lambda_function_mem     = 10240 #10Gb
@@ -12,17 +13,18 @@ locals {
 }
 
 
-resource "aws_cloudwatch_log_group" "devopskats" {
-  name              = "devopskats"
-  retention_in_days = 7
-}
+# resource "aws_cloudwatch_log_group" "devopskats" {
+#   name              = "devopskats"
+#   retention_in_days = 7
+# }
 
 module "ecs" {
   count = length(local.envs)
 
   source = "./modules/ecs"
 
-  name = "${local.envs[count.index]}-${local.name}"
+  name           = "${local.envs[count.index]}-${local.name}"
+  log_group_name = "devopskats-${local.envs[count.index]}"
 
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn      = aws_iam_role.container.arn
@@ -137,7 +139,7 @@ resource "aws_cloudwatch_event_rule" "hourly" {
 
 resource "aws_cloudwatch_event_target" "lambda_function" {
   rule = aws_cloudwatch_event_rule.hourly.name
-  arn = module.lambda_function.lambda_function_arn
+  arn  = module.lambda_function.lambda_function_arn
 }
 
 ## Loadblancing
@@ -210,8 +212,8 @@ resource "aws_efs_file_system" "master" {
   creation_token = "master-${local.name}"
 
   tags = {
-    Env = "master"
-    Name= "master-${local.name}"
+    Env  = "master"
+    Name = "master-${local.name}"
   }
 }
 
@@ -219,20 +221,20 @@ resource "aws_efs_file_system" "develop" {
   creation_token = "develop-${local.name}"
 
   tags = {
-    Env = "develop"
-    Name= "develop-${local.name}"
+    Env  = "develop"
+    Name = "develop-${local.name}"
   }
 }
 
 resource "aws_efs_mount_target" "develop" {
-  file_system_id = aws_efs_file_system.develop.id
-  subnet_id      = data.aws_subnets.public.ids[0]
+  file_system_id  = aws_efs_file_system.develop.id
+  subnet_id       = data.aws_subnets.public.ids[0]
   security_groups = [aws_security_group.efs.id]
 }
 
 resource "aws_efs_mount_target" "master" {
-  file_system_id = aws_efs_file_system.master.id
-  subnet_id      = data.aws_subnets.public.ids[0]
+  file_system_id  = aws_efs_file_system.master.id
+  subnet_id       = data.aws_subnets.public.ids[0]
   security_groups = [aws_security_group.efs.id]
 }
 
@@ -241,9 +243,9 @@ resource "aws_security_group" "efs" {
   vpc_id = data.aws_vpc.default.id
 
   ingress {
-    protocol        = "tcp"
-    from_port       = 2049
-    to_port         = 2049
+    protocol  = "tcp"
+    from_port = 2049
+    to_port   = 2049
     security_groups = [
       aws_security_group.master_ecs_tasks.id,
       aws_security_group.ecs_tasks.id
@@ -258,3 +260,72 @@ resource "aws_security_group" "efs" {
     ipv6_cidr_blocks = ["::/0"]
   }
 }
+
+## JumpBox
+resource "aws_security_group" "jumpbox" {
+  name   = "${local.name}-jumpbox"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 22
+    to_port     = 22
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 5901
+    to_port     = 5901
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    protocol         = "-1"
+    from_port        = 0
+    to_port          = 0
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
+module "ec2_instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "~> 3.0"
+
+  name = "${local.name}-jumpbox"
+
+  ami                    = "ami-04505e74c0741db8d"
+  instance_type          = "t2.small"
+  key_name               = "culiops"
+  monitoring             = false
+  vpc_security_group_ids = [aws_security_group.jumpbox.id]
+  subnet_id              = "subnet-f6c74afa"
+
+  root_block_device = [
+    {
+      encrypted   = true
+      volume_type = "gp3"
+      throughput  = 200
+      volume_size = 30
+    },
+  ]
+
+  tags = {
+    Env = "develop"
+  }
+
+  volume_tags = {
+    Env = "develop"
+  }
+}
+
+resource "aws_eip" "jumpbox" {
+  instance = module.ec2_instance.id
+  vpc      = true
+
+  tags = {
+    Env = "develop"
+  }
+}
+

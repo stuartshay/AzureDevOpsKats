@@ -22,7 +22,7 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "{{ must_env `ECS_SERVICE` }}",
+                    "awslogs-group": "devopskats-{{ must_env `BRANCH_NAME` }}",
                     "awslogs-region": "{{ must_env `AWS_REGION` }}",
                     "awslogs-stream-prefix": "devopskats"
                 }
@@ -39,6 +39,24 @@
                 {
                     "name": "SYSTEMS_MANAGER_RELOAD",
                     "value": if std.extVar('branch_name') == "master" then "360" else "60"
+                }
+            ],
+            "secrets": [
+                {
+                "name": "SMTP_PASSWORD",
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/password"
+                },
+                {
+                "name": "SMTP_PORT",
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/port"
+                },
+                {
+                "name": "SMTP_SERVER",
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/server"
+                },
+                {
+                "name": "SMTP_USERNAME",
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:{{ must_env `AWS_ACCOUNT_ID` }}:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/username"
                 }
             ]
         }

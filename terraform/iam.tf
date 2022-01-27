@@ -109,7 +109,7 @@ data "aws_iam_policy_document" "deploy_user" {
       "arn:aws:s3:::devops-team-tfstate/*"
     ]
   }
-  
+
 }
 
 module "deploy_group" {

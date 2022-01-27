@@ -1,0 +1,13 @@
+plugin: aws_ec2
+regions:
+  - us-east-1
+aws_profile: stuartshay
+filters:
+  instance-state-name : running
+  tag:application: devopskats
+  tag:env: development
+  tag:Env: develop
+  tag:owner: culiops
+  tag:Name: devops-jumpbox
+compose:
+  ansible_host: public_ip_address

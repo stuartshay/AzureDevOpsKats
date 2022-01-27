@@ -27,6 +27,46 @@ terraform deploy
 - For the ecspresso code, please refer to `../ecspresso/ecspresso.yml`
 - For some reasons, we using `jsonnet`(https://jsonnet.org/) to control which branch ECS tasks need to have a Load Blancing
 
+## How to auto config jumpbox-server
+
+### Preparing
+- We need AWS credentials already setup on your env
+
+- Sine we are using ansible aws EC2 auto inventory, so need to update something on this file `ansible/inventory_aws_ec2.yml`
+
+    ```yaml
+    filters:
+        instance-state-name : running
+        tag:application: devopskats
+        tag:env: development
+        tag:Env: develop
+        tag:owner: culiops
+        tag:Name: devops-jumpbox
+    ```
+
+    Double check ansible hosts after change
+
+    ```bash
+    ansible-inventory --graph -i ansible/inventory_aws_ec2.yml
+    ```
+    The output of above command:
+    ```bash
+    @all:
+    |--@aws_ec2:
+    |  |--ec2-13-229-40-130.ap-southeast-1.compute.amazonaws.com
+    |--@ungrouped:
+    ```
+
+### Command
+```bash
+ansible-playbook ansible/tasks.yml -u ubuntu -i ansible/inventory_aws_ec2.yml
+```
+
+### Example
+```bash
+ansible-playbook ansible/tasks.yaml -u ubuntu -i ansible/inventory_aws_ec2.yml --private-key ../../../projects/StuartShay_29111502/culiops.cer --check --diff
+```
+
 ## The IAM resources
 - We have followed best practice during create IAM resources
 - We created 1 AWS user and group for Github Workflow using during call AWS services with these policies

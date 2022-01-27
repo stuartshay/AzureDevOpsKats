@@ -1,3 +1,8 @@
+variable "log_group_name" {
+  description = "The log group name"
+  type        = string
+}
+
 variable "name" {
   description = "The ECS cluster name"
   type        = string
