@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "deploy_user" {
       "logs:PutLogEvents",
       "elasticloadbalancing:DescribeTargetGroups",
       "elasticloadbalancing:DescribeLoadBalancers",
-      "ssm:GetParameters"
+      "ssm:DescribeParameters"
     ]
 
     resources = [
@@ -107,6 +107,19 @@ data "aws_iam_policy_document" "deploy_user" {
 
     resources = [
       "arn:aws:s3:::devops-team-tfstate/*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "ssm:GetParameters",
+      "ssm:GetParameterHistory",
+      "ssm:GetParametersByPath",
+      "ssm:GetParameter"
+    ]
+
+    resources = [
+      "arn:aws:ssm:us-east-1:816939196156:parameter/devopskats/*"
     ]
   }
 
@@ -164,17 +177,25 @@ resource "aws_iam_role_policy" "container" {
           "ssmmessages:CreateDataChannel",
           "ssmmessages:OpenControlChannel",
           "ssmmessages:OpenDataChannel",
-          "ssm:GetParameters",
-          "ssm:DescribeParameters",
-          "ssm:GetParameterHistory",
-          "ssm:GetParametersByPath",
-          "ssm:GetParameter",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
-          "logs:DescribeLogGroups"
+          "logs:DescribeLogGroups",
+          "ssm:DescribeParameters"
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+          "ssm:GetParameterHistory",
+          "ssm:GetParametersByPath",
+          "ssm:GetParameter"
+        ]
+        Resource = [
+          "arn:aws:ssm:us-east-1:816939196156:parameter/devopskats/*"
+        ]
       }
     ]
   })
