@@ -179,11 +179,33 @@ resource "aws_iam_role_policy" "container" {
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
-          "logs:DescribeLogGroups",
-          "ssm:DescribeParameters"
+          "logs:DescribeLogGroups"
         ]
         Resource = "*"
       },
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+          "ssm:GetParameterHistory",
+          "ssm:GetParametersByPath",
+          "ssm:GetParameter"
+        ]
+        Resource = [
+          "arn:aws:ssm:us-east-1:816939196156:parameter/devopskats/*"
+        ]
+      }
+    ]
+  })
+}
+
+
+resource "aws_iam_role_policy" "agent" {
+  name = "devopskats-agent"
+  role = aws_iam_role.ecs_task_execution_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
       {
         Effect = "Allow"
         Action = [
