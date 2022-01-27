@@ -191,9 +191,7 @@ resource "aws_iam_role_policy" "container" {
           "ssm:GetParametersByPath",
           "ssm:GetParameter"
         ]
-        Resource = [
-          "arn:aws:ssm:us-east-1:816939196156:parameter/devopskats/*"
-        ]
+        Resource = "*"
       }
     ]
   })
