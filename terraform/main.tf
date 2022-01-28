@@ -12,12 +12,6 @@ locals {
   ]
 }
 
-
-# resource "aws_cloudwatch_log_group" "devopskats" {
-#   name              = "devopskats"
-#   retention_in_days = 7
-# }
-
 module "ecs" {
   count = length(local.envs)
 
@@ -248,7 +242,8 @@ resource "aws_security_group" "efs" {
     to_port   = 2049
     security_groups = [
       aws_security_group.master_ecs_tasks.id,
-      aws_security_group.ecs_tasks.id
+      aws_security_group.ecs_tasks.id,
+      aws_security_group.jumpbox.id
     ]
   }
 
