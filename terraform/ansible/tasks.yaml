@@ -7,16 +7,49 @@
   tasks:  
   - name: Install dependency packages
     apt:
-      name: "{{item}}"
+      name: "{{ basic_packages }}"
       state: present
       update_cache: yes
-    loop:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg-agent
-      - software-properties-common
-      - net-tools
+
+  - name: Create the /tmp/efs-utils directory
+    ansible.builtin.file:
+      mode: 0755
+      path: /tmp/efs-utils
+      state: directory
+
+  - name: Download a tarball of the aws/efs-utils repository
+    ansible.builtin.unarchive:
+      src: https://github.com/aws/efs-utils/tarball/master
+      dest: /tmp/efs-utils
+      remote_src: yes
+      extra_opts:
+        - "--strip-components=1"
+
+  - name: Build deb packages from the aws/efs-utils code
+    command: ./build-deb.sh
+    args:
+      chdir: /tmp/efs-utils
+      creates: /tmp/efs-utils/build
+
+  - name: Find all aws/efs-utils deb packages that were built
+    ansible.builtin.find:
+      paths: /tmp/efs-utils/build
+      patterns: "amazon-efs-utils*.deb"
+    register: find_result
+
+  - name: Install aws/efs-utils deb packages
+    ansible.builtin.apt:
+      deb: "{{ item }}"
+    loop: "{{ find_result | json_query('files[*].path') }}"
+    
+  - name: Check aws cli executable is present
+    shell: "which aws"
+    register: aws_cli_result
+    ignore_errors: true
+
+  - name: Install AWS CLI v2
+    shell: cd /tmp && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && ./aws/install
+    when: aws_cli_result.rc != 0
 
   - name: Add vscode GPG key
     apt_key:
@@ -70,19 +103,19 @@
       path: /usr/local/bin/docker-compose
       mode: '0755'
   
+  - name: Copy startup to /home/ubuntu/startup.sh
+    copy:
+      src: "startup.sh"
+      dest: "/home/ubuntu/startup.sh"
+      owner: ubuntu
+      group: ubuntu
+      mode: '0755'
+
   - name: Install ubuntu-desktop
     apt:
-      name: "{{item}}"
+      name: "{{ desktop_packages }}"
       state: latest
       update_cache: yes
-    loop:
-      - ubuntu-desktop
-      - tightvncserver
-      - gnome-panel
-      - gnome-settings-daemon
-      - metacity
-      - nautilus
-      - gnome-terminal
 
   - name: Copy xstartup to /home/ubuntu/.vnc/xstartup
     copy:
@@ -101,6 +134,23 @@
       - vncserver
     notify:
       - restart_vncserver
+
+  - name: Copy systemd for my-startup
+    copy:
+      src: "{{ item }}.service"
+      dest: "/usr/lib/systemd/system/{{ item }}.service"
+      mode: '0644'
+    loop:
+      - my-startup
+
+  - name: Enable a systemd units
+    ansible.builtin.systemd:
+      name: "{{ item }}"
+      state: started
+      enabled: yes
+    loop:
+      - my-startup
+      - vncserver
 
   - name: Just force systemd to reread configs
     ansible.builtin.systemd:

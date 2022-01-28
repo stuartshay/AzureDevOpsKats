@@ -1,1 +1,19 @@
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+basic_packages:
+- apt-transport-https
+- ca-certificates
+- curl
+- gnupg-agent
+- software-properties-common
+- net-tools
+- binutils
+
+desktop_packages:
+- ubuntu-desktop
+- tightvncserver
+- gnome-panel
+- gnome-settings-daemon
+- metacity
+- nautilus
+- gnome-terminal
