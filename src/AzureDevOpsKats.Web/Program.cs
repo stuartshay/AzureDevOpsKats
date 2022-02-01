@@ -1,5 +1,4 @@
-﻿using Amazon;
-using Amazon.Extensions.NETCore.Setup;
+﻿using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -51,7 +50,7 @@ namespace AzureDevOpsKats.Web
                 if (context.HostingEnvironment.EnvironmentName == "AwsEcs")
                 {
                     var clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME");
-                    builder.AddSystemsManager($"/devopskats/{clusterName}", optional: false, reloadAfter: TimeSpan.FromMinutes(2));
+                    builder.AddSystemsManager($"/{ApplicationConstants.SystemsManagerName}/{clusterName}", optional: false, reloadAfter: TimeSpan.FromMinutes(2));
                 }
             })
             .UseSerilog(Logging.ConfigureLogger);
