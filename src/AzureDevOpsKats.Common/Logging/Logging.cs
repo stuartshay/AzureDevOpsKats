@@ -39,7 +39,7 @@ namespace AzureDevOpsKats.Common.Logging
 
                if (hostingContext.HostingEnvironment.EnvironmentName == "AwsEcs")
                {
-                   AWSLoggerConfig configuration = new AWSLoggerConfig("Serilog.ConfigExample");
+                   AWSLoggerConfig configuration = new AWSLoggerConfig("devopskats-develop/serilog");
                    configuration.Region = "us-east-1";
                    loggerConfiguration.WriteTo.AWSSeriLog(configuration);
                }
