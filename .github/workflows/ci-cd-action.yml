@@ -25,10 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup dotnet ${{ needs.build.outputs.dotnet }}
+      - name: Setup dotnet 6.0.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ needs.build.outputs.dotnet }}
+          dotnet-version: 6.0.x
           include-prerelease: true
 
       - name: Install dependencies
@@ -50,7 +50,7 @@ jobs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
     strategy:
       matrix:
-        dotnet: ["6.0.101"]
+        dotnet: [6.0.x]
 
     steps:
       - id: dotnet-version
