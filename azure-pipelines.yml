@@ -50,16 +50,17 @@ jobs:
           DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-  #- job: Windows
-  # pool:
-  #  vmImage: "windows-2019"
-  #variables:
-  #  - group: "Git Hub"
+  - job: Windows
+    pool:
+      vmImage: "windows-2019"
+    variables:
+      - group: "Git Hub"
 
-  #steps:
-  # - task: DotNetCoreInstaller@0
-  #  inputs:
-  #   version: "5.0.100"
+    steps:
+      - task: DotNetCoreInstaller@0
+        inputs:
+        version: "6.0.101"
+
   # - task: Cake@0
   #  inputs:
   #   script: "build.cake"
