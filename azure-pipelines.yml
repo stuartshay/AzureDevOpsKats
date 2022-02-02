@@ -57,9 +57,9 @@ jobs:
       - group: "Git Hub"
 
     steps:
-      - task: DotNetCoreInstaller@0
+      - task: UseDotNet@2
         inputs:
-        version: "6.0.101"
+          version: "6.0.101"
 
   # - task: Cake@0
   #  inputs:
