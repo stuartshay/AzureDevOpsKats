@@ -3,7 +3,7 @@ env:
   SERVICE: azuredevopskats
   DH_DOCKER_IMAGE: stuartshay/azuredevopskats
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
-  DOCKER_IMAGE_TAG: 5.1-buildx-${{ github.run_number }}-${{ github.sha }}
+  DOCKER_IMAGE_TAG: 6.0-buildx-${{ github.run_number }}-${{ github.sha }}
   DOCKER_IMAGE_PLATFORM: linux/amd64,linux/arm/v7
   BUILD_NUMBER: ${{ github.run_number }}
 
@@ -25,10 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup dotnet ${{ needs.build.outputs.dotnet }}
+      - name: Setup dotnet 6.0.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ needs.build.outputs.dotnet }}
+          dotnet-version: 6.0.x
+          include-prerelease: true
 
       - name: Install dependencies
         run: dotnet restore
@@ -49,7 +50,7 @@ jobs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
     strategy:
       matrix:
-        dotnet: ["5.0.x"]
+        dotnet: [6.0.x]
 
     steps:
       - id: dotnet-version
@@ -61,6 +62,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ matrix.dotnet }}
+          include-prerelease: true
 
       - name: Install dependencies
         run: dotnet restore

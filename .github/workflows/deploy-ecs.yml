@@ -3,7 +3,7 @@ env:
   AWS_ECR_REPOSITORY: azuredevopskats
   AWS_REGION: us-east-1
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
-  AWS_ECR_DOCKER_IMAGE_TAG: 5.1-${{ github.run_number }}-buildx-${{ github.sha }}
+  AWS_ECR_DOCKER_IMAGE_TAG: 6.0-${{ github.run_number }}-buildx-${{ github.sha }}
   BRANCH_NAME: "${{ github.ref_name }}"
   ECS_SERVICE: "${{ github.ref_name }}-devops"
   ECS_CLUSTER: "${{ github.ref_name }}-devops"
@@ -57,7 +57,7 @@ jobs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
     strategy:
       matrix:
-        dotnet: ["5.0.x"]
+        dotnet: ["6.0.x"]
 
     steps:
       - id: dotnet-version
@@ -126,7 +126,7 @@ jobs:
       - uses: kayac/ecspresso@v1
         with:
           version: v1.7.5
-      
+
       - name: Set ECS cluster and service
         run: |
           if [ "$BRANCH_NAME" != "master" ]
@@ -196,7 +196,7 @@ jobs:
         run: |
           echo "ECS Task Public IP: ${{needs.deploy.outputs.app_url}}"
           curl -v --fail -s --max-time 3 --connect-timeout ${{ env.connect-timeout }} --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} ${{ env.url }} -L  | jq
-  
+
   selenium-test:
     needs: [health-check, deploy]
     runs-on: ubuntu-latest
@@ -214,14 +214,14 @@ jobs:
             echo "TEST URL: $TEST_URL"
             python3 selenium_screenshot.py $TEST_URL /tmp/assets/devops.png "1000" "500" "//body" "//target"
             ls -al /tmp/assets
-      
+
       - name: Archive test artifacts
         uses: actions/upload-artifact@v2
         with:
           name: test-screenshots
           path: |
             /tmp/assets
-      
+
       - name: Download a test artifact
         uses: actions/download-artifact@v2
         with:
