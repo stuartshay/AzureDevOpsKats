@@ -11,7 +11,7 @@ variables:
   buildConfiguration: "Release"
 
 jobs:
-  - job: Linux
+  - job: Linux Docker Publish
     pool:
       vmImage: "ubuntu-20.04"
     variables:
@@ -32,12 +32,6 @@ jobs:
           pathtoPublish: $(Build.ArtifactStagingDirectory)
           artifactName: WebApplicationBundle
 
-      # - task: DockerInstaller@0
-      #   displayName: Docker Installer
-      #   inputs:
-      #     dockerVersion: 19.03.0-rc3
-      #     releaseType: test
-
       - script: |
           docker -v
           apt-get purge docker-ce
@@ -56,25 +50,21 @@ jobs:
           DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-  #- job: Windows
-  # pool:
-  #  vmImage: "windows-2019"
-  #variables:
-  #  - group: "Git Hub"
+  - job: Windows
+    pool:
+     vmImage: "windows-2019"
+  variables:
+    - group: "Git Hub"
 
-  #steps:
-  # - task: DotNetCoreInstaller@0
-  #  inputs:
-  #   version: "5.0.100"
-  # - task: Cake@0
-  #  inputs:
-  #   script: "build.cake"
-  #  target: "Generate-Docs"
-  # verbosity: "Verbose"
-  #env:
-  # COREHOST_TRACE: 0
-  # DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-  # DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  steps:
+   - task: DotNetCoreInstaller@0
+     inputs:
+     version: "6.0.101"
+
+   - script: |
+          ./build.sh --target=CI-Build
+        displayName: "Cake Build"
+
 
   #- task: GitHubPagesPublish@1
   #inputs:
