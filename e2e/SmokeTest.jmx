@@ -15,7 +15,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="path" elementType="Argument">
             <stringProp name="Argument.name">path</stringProp>
-            <stringProp name="Argument.value">localhost:5000/</stringProp>
+            <stringProp name="Argument.value">master-devops-1727857016.us-east-1.elb.amazonaws.com</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="version" elementType="Argument">

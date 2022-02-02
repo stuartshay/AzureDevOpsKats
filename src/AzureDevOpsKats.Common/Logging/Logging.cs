@@ -45,22 +45,20 @@ namespace AzureDevOpsKats.Common.Logging
                    loggerConfiguration.WriteTo.AWSSeriLog(configuration);
                }
 
-               //var elasticUrl = hostingContext.Configuration.GetValue<string>("Logging:ElasticSearchConfiguration:ElasticUrl");
-               //var elasticEnabled = hostingContext.Configuration.GetValue<bool>("Logging:ElasticSearchConfiguration:ElasticEnabled");
+               var elasticUrl = hostingContext.Configuration.GetValue<string>("Logging:ElasticSearchConfiguration:ElasticUrl");
+               var elasticEnabled = hostingContext.Configuration.GetValue<bool>("Logging:ElasticSearchConfiguration:ElasticEnabled");
 
-                   //if (!string.IsNullOrEmpty(elasticUrl) && elasticEnabled)
-                   //{
-                   //    loggerConfiguration.WriteTo.Elasticsearch(
-                   //        new ElasticsearchSinkOptions(new Uri(elasticUrl))
-                   //        {
-                   //            AutoRegisterTemplate = true,
-                   //            AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                   //            IndexFormat = $"{ApplicationConstants.IndexName}-logs-{0:yyyy.MM.dd}",
-                   //            MinimumLogEventLevel = LogEventLevel.Debug
-                   //        });
-                   //}
+               if (!string.IsNullOrEmpty(elasticUrl) && elasticEnabled)
+               {
+                   loggerConfiguration.WriteTo.Elasticsearch(
+                       new ElasticsearchSinkOptions(new Uri(elasticUrl))
+                       {
+                           AutoRegisterTemplate = true,
+                           AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                           IndexFormat = $"{ApplicationConstants.IndexName}-logs-{0:yyyy.MM.dd}",
+                           MinimumLogEventLevel = LogEventLevel.Debug
+                       });
+               }
            };
-
-
     }
 }

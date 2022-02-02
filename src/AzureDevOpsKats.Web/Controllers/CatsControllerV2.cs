@@ -116,7 +116,7 @@ namespace AzureDevOpsKats.Web.Controllers
                 IFormFile file = value.File;
 
                 List<string> imgErrors = new List<string>();
-                var supportedTypes = new[] { "png", "jpg" };
+                var supportedTypes = new[] { "png", "jpg", "jpeg", "gif" };
                 var fileExt = Path.GetExtension(file.FileName).Substring(1);
                 if (file.Length == 0)
                 {
