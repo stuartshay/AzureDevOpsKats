@@ -11,6 +11,7 @@ variables:
   buildConfiguration: "Release"
 
 jobs:
+
   - job: Linux Docker Publish
     pool:
       vmImage: "ubuntu-20.04"
@@ -56,12 +57,12 @@ jobs:
     variables:
      - group: "Git Hub"
 
-  steps:
-   - task: DotNetCoreInstaller@0
-     inputs:
-     version: "6.0.101"
+    steps:
+     - task: DotNetCoreInstaller@0
+       inputs:
+       version: "6.0.101"
 
-   - script: |
+     - script: |
           ./build.sh --target=CI-Build
         displayName: "Cake Build"
 
