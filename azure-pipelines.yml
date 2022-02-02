@@ -32,11 +32,12 @@ jobs:
           pathtoPublish: $(Build.ArtifactStagingDirectory)
           artifactName: WebApplicationBundle
 
-      - task: DockerInstaller@0
-         displayName: Docker Installer
-         inputs:
-           dockerVersion: 20.10.12
-           releaseType: stable
+      - script: |
+          docker -v
+          apt-get purge docker-ce
+          curl https://get.docker.com | CHANNEL=test sh
+          sudo usermod -aG docker vsts
+        displayName: "Docker Install"
 
       - script: |
           docker -v
