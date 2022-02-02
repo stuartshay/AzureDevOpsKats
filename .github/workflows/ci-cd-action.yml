@@ -50,7 +50,7 @@ jobs:
       dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
     strategy:
       matrix:
-        dotnet: ["6.0.x"]
+        dotnet: ["6.0.101"]
 
     steps:
       - id: dotnet-version
