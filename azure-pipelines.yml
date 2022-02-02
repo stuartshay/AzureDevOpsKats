@@ -18,6 +18,10 @@ jobs:
       - group: "Docker Hub"
 
     steps:
+      - task: UseDotNet@2
+        inputs:
+          version: "6.0.101"
+
       - script: |
           ./build.sh --target=CI-Build
         displayName: "Cake Build"
@@ -50,7 +54,7 @@ jobs:
           DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-  - job: Windows
+  - job: Windows DocFx/Github Pages
     pool:
       vmImage: "windows-2019"
     variables:
