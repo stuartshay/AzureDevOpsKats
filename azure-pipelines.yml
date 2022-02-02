@@ -2,10 +2,11 @@ trigger:
   branches:
     include:
       - master
-      - develop
   paths:
     exclude:
       - infastructure/*
+      - terraform/*
+      - ecspresso
 
 variables:
   buildConfiguration: "Release"
