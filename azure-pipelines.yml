@@ -53,8 +53,8 @@ jobs:
   - job: Windows
     pool:
      vmImage: "windows-2019"
-  variables:
-    - group: "Git Hub"
+    variables:
+     - group: "Git Hub"
 
   steps:
    - task: DotNetCoreInstaller@0
