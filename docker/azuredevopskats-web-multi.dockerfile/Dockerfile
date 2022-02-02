@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 
 RUN dotnet --version
 RUN cat /etc/os-release
@@ -25,11 +25,11 @@ RUN dotnet restore /p:RestoreUseSkipNonexistentTargets="false"
 
 WORKDIR /app/src/AzureDevOpsKats.Web
 
-RUN setversion 5.0.1.${BUILD_NUMBER}
+RUN setversion 6.0.1.${BUILD_NUMBER}
 RUN dotnet publish AzureDevOpsKats.Web.csproj -o /publish -c Release -f net5.0
 
 # Runtime Image Stage
-FROM mcr.microsoft.com/dotnet/aspnet:5.0.12
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 
 RUN cat /etc/os-release
 
