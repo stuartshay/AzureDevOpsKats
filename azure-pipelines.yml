@@ -11,7 +11,7 @@ variables:
   buildConfiguration: "Release"
 
 jobs:
-  - job: Linux
+  - job: Linux_WebApplicationBundle
     pool:
       vmImage: "ubuntu-20.04"
     variables:
