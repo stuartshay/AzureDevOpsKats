@@ -26,8 +26,6 @@ The Requirements for this project can be viewed at the following.
 | ----------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Windows/Linux Automated Build | Appveyor     | [![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats)                                                       |
 | Windows/Linux Automated Build | Azure Devops | [![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1) |
-| Docker Base Image             | Jenkins      | [![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-base)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-base/)          |
-| Docker Deploy Image           | Jenkins      | [![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-api)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-api/)            |
 | Docker x86/Arm7 Image         | Jenkins      | [![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-multi)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-multi/)        |
 
 | Library                 | Nuget Repository                               | MyGet Repository                               |
