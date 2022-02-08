@@ -64,7 +64,7 @@ module "package_in_docker" {
     }
   ]
 
-  build_in_docker = true
+  build_in_docker = false
 }
 
 
