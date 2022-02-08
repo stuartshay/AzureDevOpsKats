@@ -4,7 +4,8 @@ on:
   push:
     paths:
       - "terraform/**.tf"
-
+  pull_request:
+  
 jobs:
   terraform:
     name: "Terraform"
