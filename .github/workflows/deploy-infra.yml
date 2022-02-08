@@ -5,7 +5,9 @@ on:
     paths:
       - "terraform/**.tf"
   pull_request:
-  
+    paths:
+      - "terraform/**.tf"
+      
 jobs:
   terraform:
     name: "Terraform"
