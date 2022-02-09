@@ -1,7 +1,6 @@
 name: "Deploy Infrastructure"
 
 on:
-  workflow_dispatch:
   push:
     paths:
       - "terraform/**.tf"
