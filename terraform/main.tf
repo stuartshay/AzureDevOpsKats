@@ -56,7 +56,7 @@ module "package_in_docker" {
 
   create_function = false
 
-  runtime = local.lambda_function_runtime
+  runtime = "python3"
   source_path = [
     "./function/lambda_function.py",
     {
