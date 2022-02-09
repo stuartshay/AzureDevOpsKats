@@ -6,12 +6,13 @@ terraform {
       version = "~> 3.67"
     }
   }
-  backend "s3" {
-    bucket  = "devops-team-tfstate"
-    encrypt = true
-    key     = "devops/aws/us-east-1/s3/devopskats"
-    region  = "us-east-1"
-    profile = "stuartshay"
+
+  cloud {
+    organization = "DevOpsKats"
+
+    workspaces {
+      name = "AWSDevOpsKats"
+    }
   }
 }
 
