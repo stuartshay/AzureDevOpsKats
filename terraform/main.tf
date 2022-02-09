@@ -78,6 +78,8 @@ module "lambda_function" {
   depends_on                        = [module.package_in_docker]
   cloudwatch_logs_retention_in_days = 7
 
+  ignore_source_code_hash = true
+
   function_name = local.lambda_function_name
   handler       = "lambda_function.lambda_handler"
   runtime       = local.lambda_function_runtime
