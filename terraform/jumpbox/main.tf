@@ -1,8 +1,8 @@
 # JumpBox
 
 locals {
-  name                    = "devops"
-  project_name            = "devopskats"
+  name         = "devops"
+  project_name = "devopskats"
 
   envs = [
     "develop",
