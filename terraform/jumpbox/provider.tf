@@ -11,7 +11,7 @@ terraform {
     organization = "DevOpsKats"
 
     workspaces {
-      name = "AWSDevOpsKats-ECS"
+      name = "AWSDevOpsKats-Jumpbox"
     }
   }
 }
