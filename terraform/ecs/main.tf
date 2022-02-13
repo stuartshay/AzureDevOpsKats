@@ -12,6 +12,17 @@ locals {
   ]
 }
 
+data "terraform_remote_state" "jumpbox" {
+  backend = "remote"
+
+  config = {
+    organization = "DevOpsKats"
+    workspaces = {
+      name = "AWSDevOpsKats-Jumpbox"
+    }
+  }
+}
+
 module "ecs" {
   count = length(local.envs)
 
@@ -52,11 +63,11 @@ resource "aws_security_group" "ecs_tasks" {
 ## Build python package with docker image - Some packages will not work if you build on MAC OS
 module "package_in_docker" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "2.8.0"
+  version = "2.34.0"
 
   create_function = false
 
-  runtime = local.lambda_function_runtime
+  runtime = "python3"
   source_path = [
     "./function/lambda_function.py",
     {
@@ -64,19 +75,21 @@ module "package_in_docker" {
     }
   ]
 
-  build_in_docker = true
+  build_in_docker = false
 }
 
 
 ## Deploy from packaged
 module "lambda_function" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "2.8.0"
+  version = "2.34.0"
 
   create_package                    = false
   local_existing_package            = module.package_in_docker.local_filename
   depends_on                        = [module.package_in_docker]
   cloudwatch_logs_retention_in_days = 7
+
+  ignore_source_code_hash = true
 
   function_name = local.lambda_function_name
   handler       = "lambda_function.lambda_handler"
@@ -243,7 +256,7 @@ resource "aws_security_group" "efs" {
     security_groups = [
       aws_security_group.master_ecs_tasks.id,
       aws_security_group.ecs_tasks.id,
-      aws_security_group.jumpbox.id
+      data.terraform_remote_state.jumpbox.outputs.security_group_id
     ]
   }
 
@@ -253,74 +266,6 @@ resource "aws_security_group" "efs" {
     to_port          = 0
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-  }
-}
-
-## JumpBox
-resource "aws_security_group" "jumpbox" {
-  name   = "${local.name}-jumpbox"
-  vpc_id = data.aws_vpc.default.id
-
-  ingress {
-    protocol    = "tcp"
-    from_port   = 22
-    to_port     = 22
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    protocol    = "tcp"
-    from_port   = 5901
-    to_port     = 5901
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    protocol         = "-1"
-    from_port        = 0
-    to_port          = 0
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-}
-
-module "ec2_instance" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "~> 3.0"
-
-  name = "${local.name}-jumpbox"
-
-  ami                    = "ami-04505e74c0741db8d"
-  instance_type          = "t2.small"
-  key_name               = "culiops"
-  monitoring             = false
-  vpc_security_group_ids = [aws_security_group.jumpbox.id]
-  subnet_id              = "subnet-f6c74afa"
-
-  root_block_device = [
-    {
-      encrypted   = true
-      volume_type = "gp3"
-      throughput  = 200
-      volume_size = 30
-    },
-  ]
-
-  tags = {
-    Env = "develop"
-  }
-
-  volume_tags = {
-    Env = "develop"
-  }
-}
-
-resource "aws_eip" "jumpbox" {
-  instance = module.ec2_instance.id
-  vpc      = true
-
-  tags = {
-    Env = "develop"
   }
 }
 
