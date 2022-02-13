@@ -1,12 +1,15 @@
-name: "Deploy Infrastructure"
+name: "Deploy ECS Infrastructure"
+
+env:
+  TERRAFORM_CHDIR: terraform/ecs
 
 on:
   push:
     paths:
-      - "terraform/**.tf"
+      - "terraform/ecs/**.tf"
   pull_request:
     paths:
-      - "terraform/**.tf"
+      - "terraform/ecs/**.tf"
       
 jobs:
   terraform:
@@ -30,20 +33,20 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform -chdir=terraform fmt -check
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} fmt -check
 
       - name: Terraform Init
         id: init
-        run: terraform -chdir=terraform init
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} init
       
       - name: Terraform Validate
         id: validate
-        run: terraform -chdir=terraform validate -no-color
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} validate -no-color
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform -chdir=terraform plan -no-color
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} plan -no-color
         continue-on-error: true
 
       - uses: actions/github-script@0.9.0
@@ -81,4 +84,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: terraform -chdir=terraform apply -auto-approve
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} apply -auto-approve
