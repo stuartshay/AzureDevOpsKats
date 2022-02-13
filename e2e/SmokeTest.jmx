@@ -59,7 +59,7 @@
         </elementProp>
         <stringProp name="HTTPSampler.domain">${path}</stringProp>
         <stringProp name="HTTPSampler.port"></stringProp>
-        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
         <stringProp name="HTTPSampler.contentEncoding"></stringProp>
         <stringProp name="HTTPSampler.path"></stringProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
@@ -134,7 +134,7 @@ vars.put(&quot;Path&quot;,path);
             <collectionProp name="ModuleController.node_path">
               <stringProp name="764597751">Test Plan</stringProp>
               <stringProp name="764597751">Test Plan</stringProp>
-              <stringProp name="-1906791922">Get Cat By ID Test Fragment</stringProp>
+              <stringProp name="-400506860">Get All Cats V2 Test Fragment</stringProp>
             </collectionProp>
           </ModuleController>
           <hashTree/>
@@ -144,23 +144,7 @@ vars.put(&quot;Path&quot;,path);
           <boolProp name="TransactionController.parent">false</boolProp>
         </TransactionController>
         <hashTree>
-          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="POST Module Controller" enabled="true">
-            <collectionProp name="ModuleController.node_path">
-              <stringProp name="764597751">Test Plan</stringProp>
-              <stringProp name="764597751">Test Plan</stringProp>
-              <stringProp name="-2136604364">Post New Cat Test Fragment</stringProp>
-            </collectionProp>
-          </ModuleController>
-          <hashTree/>
-          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="DELETE Module Controller" enabled="true">
-            <collectionProp name="ModuleController.node_path">
-              <stringProp name="764597751">Test Plan</stringProp>
-              <stringProp name="764597751">Test Plan</stringProp>
-              <stringProp name="771511136">Delete a Cat Test Fragment</stringProp>
-            </collectionProp>
-          </ModuleController>
-          <hashTree/>
-          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="GET ALL  Module Controller" enabled="true">
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="POST Module Controller" enabled="false">
             <collectionProp name="ModuleController.node_path">
               <stringProp name="764597751">Test Plan</stringProp>
               <stringProp name="764597751">Test Plan</stringProp>
@@ -168,7 +152,23 @@ vars.put(&quot;Path&quot;,path);
             </collectionProp>
           </ModuleController>
           <hashTree/>
-          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="GET ONE Module Controller" enabled="true">
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="DELETE Module Controller" enabled="false">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="771511136">Delete a Cat Test Fragment</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="GET ALL  Module Controller" enabled="false">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="-480523292">Get All Cats Test Fragment</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="GET ONE Module Controller" enabled="false">
             <collectionProp name="ModuleController.node_path">
               <stringProp name="764597751">Test Plan</stringProp>
               <stringProp name="764597751">Test Plan</stringProp>
@@ -176,7 +176,7 @@ vars.put(&quot;Path&quot;,path);
             </collectionProp>
           </ModuleController>
           <hashTree/>
-          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="PUT Module Controller" enabled="true">
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="PUT Module Controller" enabled="false">
             <collectionProp name="ModuleController.node_path">
               <stringProp name="764597751">Test Plan</stringProp>
               <stringProp name="764597751">Test Plan</stringProp>
