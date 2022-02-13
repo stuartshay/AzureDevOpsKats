@@ -8,6 +8,7 @@ basic_packages:
 - software-properties-common
 - net-tools
 - binutils
+- unzip
 
 desktop_packages:
 - ubuntu-desktop
@@ -17,3 +18,5 @@ desktop_packages:
 - metacity
 - nautilus
 - gnome-terminal
+
+vnc_default_password: aIo6PwBi

@@ -12,6 +12,17 @@ locals {
   ]
 }
 
+data "terraform_remote_state" "jumpbox" {
+  backend = "remote"
+
+  config = {
+    organization = "DevOpsKats"
+    workspaces = {
+      name = "AWSDevOpsKats-Jumpbox"
+    }
+  }
+}
+
 module "ecs" {
   count = length(local.envs)
 
@@ -245,7 +256,7 @@ resource "aws_security_group" "efs" {
     security_groups = [
       aws_security_group.master_ecs_tasks.id,
       aws_security_group.ecs_tasks.id,
-      #aws_security_group.jumpbox.id
+      data.terraform_remote_state.jumpbox.outputs.security_group_id
     ]
   }
 
