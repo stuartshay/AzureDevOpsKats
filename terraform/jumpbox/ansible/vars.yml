@@ -9,6 +9,7 @@ basic_packages:
 - net-tools
 - binutils
 - unzip
+- tree
 
 desktop_packages:
 - ubuntu-desktop
