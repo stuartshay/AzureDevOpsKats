@@ -10,7 +10,7 @@ on:
   pull_request:
     paths:
       - "terraform/jumpbox/**.tf"
-      
+
 jobs:
   terraform:
     name: "Terraform"
@@ -22,8 +22,8 @@ jobs:
       - name: Setup python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
-          architecture: 'x64' 
+          python-version: "3.8"
+          architecture: "x64"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -38,7 +38,7 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} init
-      
+
       - name: Terraform Validate
         id: validate
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} validate -no-color

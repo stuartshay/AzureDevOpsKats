@@ -44,7 +44,7 @@ module "ec2_instance" {
   name = "${local.name}-jumpbox"
 
   ami                    = "ami-04505e74c0741db8d"
-  instance_type          = "t2.small"
+  instance_type          = "t2.medium"
   key_name               = "culiops"
   monitoring             = false
   vpc_security_group_ids = [aws_security_group.jumpbox.id]
