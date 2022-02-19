@@ -1,16 +1,16 @@
 ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 
 basic_packages:
-  - apt-transport-https
-  - ca-certificates
-  - curl
-  - gnupg-agent
-  - software-properties-common
-  - net-tools
-  - binutils
-  - unzip
-  - tree
-  - python3.10
+- apt-transport-https
+- ca-certificates
+- curl
+- gnupg-agent
+- software-properties-common
+- net-tools
+- binutils
+- unzip
+- tree
+- nodejs
 
 desktop_packages:
   - ubuntu-desktop

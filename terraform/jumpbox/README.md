@@ -1,6 +1,28 @@
-# Jumpbox server
+# Jumpbox Workstation
 
-A Jumpbox server to access the AWS resources, testing,...
+[![Terraform Deploy Jumpbox Infrastructure](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-jumpbox-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-jumpbox-infra.yml)
+
+## Prerequisites
+
+- aws cli
+- ansible
+
+Configure AWS Profile
+
+~/.aws/credentials
+
+```
+[awsdevopskats]
+aws_access_key_id = <AWS_ACCESS_KEY_ID>
+aws_secret_access_key = <AWS_SECRET_ACCESS_KEY>
+```
+
+Add SSH Private Key
+
+```
+chmod 600 ~/.ssh/awsdevopskats.cer
+```
+
 
 ## Functions:
 - Installing Vscode, nfs-utils, AWS-CLI, Docker, docker-compose, VNC-server
@@ -29,6 +51,7 @@ A Jumpbox server to access the AWS resources, testing,...
     ```bash
     ansible-inventory --graph -i ansible/inventory_aws_ec2.yml
     ```
+
     The output of above command:
     ```bash
     @all:
@@ -44,5 +67,5 @@ ansible-playbook ansible/tasks.yml -u ubuntu -i ansible/inventory_aws_ec2.yml
 
 ### Example
 ```bash
-ansible-playbook ansible/tasks.yaml -u ubuntu -i ansible/inventory_aws_ec2.yml --private-key ../../../../projects/StuartShay_29111502/culiops.cer --check --diff
+ansible-playbook ansible/tasks.yaml -u ubuntu -i ansible/inventory_aws_ec2.yml --private-key ~/.ssh/awsdevopskats.cer --check --diff
 ```
