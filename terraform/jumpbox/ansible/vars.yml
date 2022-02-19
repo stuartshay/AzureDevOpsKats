@@ -1,4 +1,4 @@
-ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 
 basic_packages:
 - apt-transport-https
@@ -11,15 +11,15 @@ basic_packages:
 - unzip
 - tree
 - nodejs
-
+- dotnet-sdk
 
 desktop_packages:
-- ubuntu-desktop
-- tightvncserver
-- gnome-panel
-- gnome-settings-daemon
-- metacity
-- nautilus
-- gnome-terminal
+  - ubuntu-desktop
+  - tightvncserver
+  - gnome-panel
+  - gnome-settings-daemon
+  - metacity
+  - nautilus
+  - gnome-terminal
 
 vnc_default_password: aIo6PwBi
