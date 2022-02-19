@@ -67,5 +67,5 @@ ansible-playbook ansible/tasks.yml -u ubuntu -i ansible/inventory_aws_ec2.yml
 
 ### Example
 ```bash
-ansible-playbook ansible/tasks.yaml -u ubuntu -i ansible/inventory_aws_ec2.yml --private-key ~/.ssh/  --check --diff
+ansible-playbook ansible/tasks.yaml -u ubuntu -i ansible/inventory_aws_ec2.yml --private-key ~/.ssh/awsdevopskats.cer --check --diff
 ```
