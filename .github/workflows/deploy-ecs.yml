@@ -1,4 +1,4 @@
-name: Deploy ECS
+name: Deploy ECS Service Tasks
 env:
   AWS_ECR_REPOSITORY: azuredevopskats
   AWS_REGION: us-east-1
@@ -131,7 +131,7 @@ jobs:
         run: |
           if [ "$BRANCH_NAME" != "master" ]
           then
-              echo "Set new ECS cluster and servvice to develop..."
+              echo "Set new ECS cluster and service to develop..."
               echo "ECS_CLUSTER=develop-devops" >> $GITHUB_ENV
               echo "ECS_SERVICE=develop-devops" >> $GITHUB_ENV
               echo "BRANCH_NAME=develop" >> $GITHUB_ENV
