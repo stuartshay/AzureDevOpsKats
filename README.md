@@ -19,6 +19,8 @@ The Kats Club is a Agile Development and DevOps team and has embraced the follow
 The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s infrastructure and is utilizing the following technologies in their development and release pipeline.
 
 - [Terraform Infrastructure](/terraform/README.md)
+- [ECS Service Tasks Deployment](/ecspresso/README.md)
+- [GitHub Actions Workflows](https://github.com/stuartshay/AzureDevOpsKats/actions)
 
 ### Development
 
