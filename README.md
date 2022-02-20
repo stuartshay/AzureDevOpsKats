@@ -16,9 +16,10 @@ The Kats Club is a Agile Development and DevOps team and has embraced the follow
 
 ### AWSDevOpsKats
 
-The Requirements for this project can be viewed at the following.
+The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s infrastructure and is utilizing the following technologies in their development and release pipeline.
 
-- [Business Requirements](/docfx/articles/requirements.md)
+### Development
+
 - [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
 - [Developer DocFx Documentation](https://stuartshay.github.io/AzureDevOpsKats/)
 
