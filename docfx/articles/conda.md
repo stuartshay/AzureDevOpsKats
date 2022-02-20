@@ -1,7 +1,7 @@
 
 # Create virtual environments for python with conda
 
-Update Conada
+Update Conda
 ```
 conda -V
 conda update conda
