@@ -39,3 +39,7 @@ https://github.com/kayac/ecspresso
 ## selenium-test
 
 - Application Smoke and UI Testing
+
+| Test Type           | Docker Image                                                                                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| selenium-screenshot | [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats-selenium.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats-selenium/) |
