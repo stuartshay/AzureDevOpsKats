@@ -47,7 +47,7 @@ Configure and Depoly ECS Container and definition
 
 - [Set Fargate task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
 - Set Container Secrets & Environment Variables
-- Mount Common EFS Storage Volume
+- [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
 
 ecspresso is a deployment tool for Amazon ECS.
 
