@@ -37,3 +37,5 @@ https://github.com/kayac/ecspresso
 [Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
 
 ## selenium-test
+
+- Application Smoke and UI Testing
