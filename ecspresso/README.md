@@ -65,20 +65,6 @@ https://github.com/kayac/ecspresso
 
 - Git Event : Push, Pull Request
 
-### health-check
-
-- Check ECS Deployment and Application Health
-
-[Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
-
-### develop branch
-
-- Git Event : Push
-
-### master branch
-
-- Git Event : Push, Pull Request
-
 ## health-check
 
 - Check ECS Deployment and Application & Health
