@@ -20,7 +20,7 @@ The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s
 - [ECS Service Tasks Deployment](/ecspresso)
 - [GitHub Actions Workflows](https://github.com/stuartshay/AzureDevOpsKats/actions)
 
-## Containerization
+### Containerization
 
 Docker Containers and Docker Compose have been adopted by the team giving the ability to run multiple environment configurations from their local development workstation.
 
