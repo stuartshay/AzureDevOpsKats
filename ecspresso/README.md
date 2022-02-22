@@ -14,7 +14,9 @@
 
 ## deploy
 
-Depoly ECS task definitions
+Configure and Depoly ECS task definitions
+
+[Amazon ECS task definitions](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html)
 
 ecspresso is a deployment tool for Amazon ECS.
 
