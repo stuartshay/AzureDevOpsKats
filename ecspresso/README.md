@@ -51,12 +51,6 @@ Deploy ECS Fargate Container and task definition
 - [Set Environment Loggers](https://aws.amazon.com/cloudwatch/)
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
 
-#### Ecspresso Deployment Tool
-
-```
-https://github.com/kayac/ecspresso
-```
-
 #### develop branch
 
 - Git Event : Push
@@ -64,6 +58,12 @@ https://github.com/kayac/ecspresso
 #### master branch
 
 - Git Event : Push, Pull Request
+
+#### Ecspresso Deployment Tool
+
+```
+https://github.com/kayac/ecspresso
+```
 
 ### health-check
 
