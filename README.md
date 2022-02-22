@@ -4,15 +4,13 @@
 
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
 
-```
-master-devops-1727857016.us-east-1.elb.amazonaws.com
-```
+[AWS DevopsKats Website](http://master-devops-1727857016.us-east-1.elb.amazonaws.com)
 
 ## Purpose
 
 The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.
 
-The Kats Club is a Agile Development and DevOps team and has embraced the following technologies for there next generation platform C#, CI/CI, Containerization and the Cloud
+The Kats Club is a Agile Development and DevOps team and has embraced the following technologies for there next generation platform C#, CI/CD, Containerization and the Cloud
 
 ### AWSDevOpsKats
 
