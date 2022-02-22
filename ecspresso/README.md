@@ -40,6 +40,6 @@ https://github.com/kayac/ecspresso
 
 - Application Smoke and UI Testing
 
-| Test Type                                  | Docker Image                                                                                                                                                                 |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [selenium-screenshot](../docker/selenium/) | [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats-selenium.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats-selenium/tags) |
+| Test Type                                  | Workflow | Docker Image                                                                                                                                                                 |
+| ------------------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [selenium-screenshot](../docker/selenium/) | XXXXXXX  | [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats-selenium.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats-selenium/tags) |
