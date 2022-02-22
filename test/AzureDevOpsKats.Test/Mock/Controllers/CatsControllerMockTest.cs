@@ -33,10 +33,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Fact]
         public void Given_NullParameter_Constructor_ShouldThrow_ArgumentNullException()
         {
-            // Arrange
-            ICatService catService = null;
-
-            // Action
+            // Act
             Action action = () =>
             {
                 var catsController = new CatsController(null, null, null, null, null);
@@ -50,7 +47,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Get_Cats_List_ReturnsData()
         {
-            // Arrange 
+            // Arrange
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCats())
                 .ReturnsAsync(new List<CatModel>()
@@ -61,8 +58,10 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
 
             var controller = GetCatsController(mockCatService.Object);
 
+            // Act
             var sut = await controller.Get();
 
+            // Assert
             Assert.NotNull(sut);
             Assert.IsType<OkObjectResult>(sut.Result);
 
@@ -81,15 +80,17 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Get_Cat_ReturnsData()
         {
-            // Arrange 
+            // Arrange
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(1))
                 .ReturnsAsync(new CatModel { Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1" });
 
             var controller = GetCatsController(mockCatService.Object);
 
+            // Act
             var sut = await controller.GetById(1);
 
+            // Assert
             Assert.NotNull(sut);
             Assert.IsType<OkObjectResult>(sut.Result);
 
@@ -106,15 +107,17 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Get_Cat_ReturnsNull()
         {
-            // Arrange 
+            // Arrange
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(It.IsAny<int>()))
                 .ReturnsAsync((CatModel)null);
 
             var controller = GetCatsController(mockCatService.Object);
 
+            // Act
             var sut = await controller.GetById(1);
 
+            // Assert
             Assert.NotNull(sut);
             Assert.IsType<NotFoundResult>(sut.Result);
         }
@@ -123,7 +126,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Create_Cat()
         {
-            // Arrange 
+            // Arrange
             var name = "Fun Cat";
             var description = "The Fun Cat";
             var id = 9999;
@@ -158,7 +161,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Create_Cat_Invalid_ModelState()
         {
-            // Arrange 
+            // Arrange
             var cat = new CatCreateModel { Name = "Cat", Bytes = CreateSpecialByteArray(7000) };
 
             var controller = GetCatsController();
@@ -176,7 +179,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Update_Cat_BadRequest()
         {
-            // Arrange 
+            // Arrange
             var dataSet = new CatModel { Id = 1, Description = "Description" };
 
             var mockCatService = new Mock<ICatService>();
@@ -244,7 +247,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Delete_Cat()
         {
-            // Arrange 
+            // Arrange
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(1))
                 .ReturnsAsync(new CatModel { Id = 1, Description = "My Cat 1", Name = "Cat 1", Photo = "MyPhoto 1" });
@@ -270,7 +273,7 @@ namespace AzureDevOpsKats.Test.Mock.Controllers
         [Trait("Category", "Mock")]
         public async Task Delete_Cat_NotFoundRequest()
         {
-            // Arrange 
+            // Arrange
             var mockCatService = new Mock<ICatService>();
             mockCatService.Setup(b => b.GetCat(It.IsAny<int>()))
                 .ReturnsAsync((CatModel)null);

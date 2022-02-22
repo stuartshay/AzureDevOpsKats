@@ -4,17 +4,30 @@
 
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
 
-```
-master-devops-1727857016.us-east-1.elb.amazonaws.com
-```
+[AWS DevopsKats Website](http://master-devops-1727857016.us-east-1.elb.amazonaws.com)
 
 ## Purpose
 
 The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.
 
-The Requirements for this project can be viewed at the following.
+The Kats Club is a Agile Development and DevOps team and has embraced the following technologies for there next generation platform C#, CI/CD, Containerization and the Cloud
 
-- [Business Requirements](/docfx/articles/requirements.md)
+### AWSDevOpsKats
+
+The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s infrastructure and is utilizing the following technologies in their development and release pipeline.
+
+- [Terraform Infrastructure](/terraform)
+- [ECS Service Tasks Deployment](/ecspresso)
+- [GitHub Actions Workflows](https://github.com/stuartshay/AzureDevOpsKats/actions)
+
+### Containerization
+
+Docker Containers and Docker Compose have been adopted by the team giving the ability to run multiple environment configurations from their local development workstation.
+
+- [Docker Images](/docker)
+
+### Development
+
 - [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
 - [Developer DocFx Documentation](https://stuartshay.github.io/AzureDevOpsKats/)
 
@@ -64,9 +77,3 @@ http://localhost:5000/
 | ----------------- | ---------------------------- | ----------------------------- |
 | CI Build          | ./build.sh --target=CI-Build | .\build.ps1 --target=CI-Build |
 | SonarQube Testing | ./build.sh --target=sonar    | .\build.ps1 --target=sonar    |
-
-### Documentation
-
-```
-https://stuartshay.github.io/AzureDevOpsKats/
-```
