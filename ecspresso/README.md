@@ -4,7 +4,16 @@
 
 ![](../assets/ecs-service-workflow.png)
 
+## Workflow Dispatch
+
+Overide Workflow Defaults
+
+![](../assets/ecs-service-workflow-dispatch.png)
+
 ## test-coverage
+
+- .NET Build & Lint
+- .NET Unit Testing and Code Coverage
 
 ### build
 
