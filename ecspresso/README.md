@@ -32,7 +32,7 @@ https://github.com/kayac/ecspresso
 
 ## health-check
 
-- Check Infrastructure and Application & Health
+- Check ECS Deployment and Application & Health
 
 [Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
 
