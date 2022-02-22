@@ -4,6 +4,7 @@
 
 ECS Service Tasks Workflow Deployment
 
+
 ![](../assets/ecs-service-workflow.png)
 
 ## Workflow Dispatch
@@ -36,6 +37,41 @@ Master Branch Deployment override
 - .NET Unit Testing and Code Coverage
 - Image Vulnerability Scanning
 
+![](../assets/ecs-service-workflow.png)
+
+## Workflow Dispatch
+
+Overide Workflow Defaults
+
+![](../assets/ecs-service-workflow-dispatch.png)
+
+ECS Cluster Deployment
+
+| Branch               | ECS Cluster    |
+| -------------------- | -------------- |
+| master               | master-devops  |
+| devlop, feature, fix | develop-devops |
+
+Master Branch Deployment override
+
+| ECS Desired Count |                             |
+| ----------------- | --------------------------- |
+| 1,2,5             | Number of Fargate ECS Tasks |
+| 0                 | Terminate all Tasks         |
+
+## Workflow Steps
+
+### test-coverage
+
+[![CI/CD Build/Test/Deploy](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml)
+
+- .NET Build & Lint
+- .NET Unit Testing and Code Coverage
+
+![](../assets/ecs-service-workflow.png)
+
+### test-coverage
+
 ### build
 
 - .NET Build
@@ -43,6 +79,7 @@ Master Branch Deployment override
 - Push Image to Amazon ECR
 
 ### deploy
+
 
 Configure and Deploy ECS Fargate Container and definition
 
@@ -53,9 +90,35 @@ Configure and Deploy ECS Fargate Container and definition
 Depoly ECS task definitions
 ecspresso is a deployment tool for Amazon ECS.
 
+Configure and Depoly ECS Container and definition
+
+- [Set Fargate task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
+- Set Container Secrets & Environment Variables
+- [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
+
+### deploy
+
+
+Depoly ECS task definitions
+ecspresso is a deployment tool for Amazon ECS.
 ```
 https://github.com/kayac/ecspresso
 ```
+#### develop branch
+
+- Git Event : Push
+
+#### master branch
+
+- Git Event : Push, Pull Request
+
+### health-check
+
+- Check ECS Deployment and Application Health
+
+[Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
+
+### selenium-test
 
 #### develop branch
 
