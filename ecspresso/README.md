@@ -10,9 +10,18 @@ Overide Workflow Defaults
 
 ![](../assets/ecs-service-workflow-dispatch.png)
 
+ECS Cluster Deployment
+
+| Branch               | ECS Cluster    |
+| -------------------- | -------------- |
+| master               | master-devops  |
+| devlop, feature, fix | develop-devops |
+
+Master Branch Deployment override
+
 | ECS Desired Count |                             |
 | ----------------- | --------------------------- |
-| 1,3,5             | Number of Fargate ECS Tasks |
+| 1,2,5             | Number of Fargate ECS Tasks |
 | 0                 | Terminate all Tasks         |
 
 ## test-coverage
