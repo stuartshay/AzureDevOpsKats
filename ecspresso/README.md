@@ -14,6 +14,14 @@
 
 ## deploy
 
+Depoly ECS task definitions
+
+ecspresso is a deployment tool for Amazon ECS.
+
+```
+https://github.com/kayac/ecspresso
+```
+
 ### develop branch
 
 - Git Event : Push
@@ -29,9 +37,3 @@
 [Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
 
 ## selenium-test
-
-ecspresso is a deployment tool for Amazon ECS.
-
-```
-https://github.com/kayac/ecspresso
-```
