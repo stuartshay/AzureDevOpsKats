@@ -14,6 +14,14 @@
 
 ## deploy
 
+### develop branch
+
+- Git Event : Push
+
+### master branch
+
+- Git Event : Push, Pull Request
+
 ## health-check
 
 ## selenium-test
