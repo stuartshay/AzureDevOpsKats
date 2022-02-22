@@ -77,9 +77,3 @@ http://localhost:5000/
 | ----------------- | ---------------------------- | ----------------------------- |
 | CI Build          | ./build.sh --target=CI-Build | .\build.ps1 --target=CI-Build |
 | SonarQube Testing | ./build.sh --target=sonar    | .\build.ps1 --target=sonar    |
-
-### Documentation
-
-```
-https://stuartshay.github.io/AzureDevOpsKats/
-```
