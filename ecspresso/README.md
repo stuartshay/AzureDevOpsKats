@@ -24,7 +24,11 @@ Master Branch Deployment override
 | 1,2,5             | Number of Fargate ECS Tasks |
 | 0                 | Terminate all Tasks         |
 
-## test-coverage
+## Workflow Steps
+
+### test-coverage
+
+[![CI/CD Build/Test/Deploy](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml)
 
 - .NET Build & Lint
 - .NET Unit Testing and Code Coverage
@@ -35,7 +39,7 @@ Master Branch Deployment override
 - Create Docker Image
 - Push Image to Amazon ECR
 
-## deploy
+### deploy
 
 Configure and Depoly ECS task definitions
 
@@ -47,21 +51,21 @@ ecspresso is a deployment tool for Amazon ECS.
 https://github.com/kayac/ecspresso
 ```
 
-### develop branch
+#### develop branch
 
 - Git Event : Push
 
-### master branch
+#### master branch
 
 - Git Event : Push, Pull Request
 
-## health-check
+### health-check
 
 - Check ECS Deployment and Application Health
 
 [Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
 
-## selenium-test
+### selenium-test
 
 - Application Smoke and UI Testing
 
