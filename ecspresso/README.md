@@ -24,11 +24,9 @@
 
 ## health-check
 
-- Check Deployment Health Check Status
+- Check Infrastructure and Application & Health
 
-```
-http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health
-```
+[Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
 
 ## selenium-test
 
