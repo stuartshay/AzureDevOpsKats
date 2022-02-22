@@ -44,9 +44,9 @@ Master Branch Deployment override
 
 ### deploy
 
-Configure and Deploy ECS Fargate Container and definition
+Deploy ECS Fargate Container and task definition
 
-- [Set Fargate task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
+- [Set Fargate service/task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
 - [Set Container Secrets & Environment Variables](https://aws.amazon.com/systems-manager/)
 - [Set Environment Loggers](https://aws.amazon.com/cloudwatch/)
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
