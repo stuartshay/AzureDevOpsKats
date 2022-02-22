@@ -34,6 +34,10 @@ Master Branch Deployment override
 
 - .NET Build & Lint
 - .NET Unit Testing and Code Coverage
+=======
+![](../assets/ecs-service-workflow.png)
+
+### test-coverage
 
 ### build
 
@@ -49,12 +53,13 @@ Configure and Depoly ECS Container and definition
 - Set Container Secrets & Environment Variables
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
 
-ecspresso is a deployment tool for Amazon ECS.
+### deploy
 
+Depoly ECS task definitions
+ecspresso is a deployment tool for Amazon ECS.
 ```
 https://github.com/kayac/ecspresso
 ```
-
 #### develop branch
 
 - Git Event : Push
@@ -70,6 +75,22 @@ https://github.com/kayac/ecspresso
 [Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
 
 ### selenium-test
+
+### develop branch
+
+- Git Event : Push
+
+### master branch
+
+- Git Event : Push, Pull Request
+
+## health-check
+
+- Check ECS Deployment and Application & Health
+
+[Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
+
+## selenium-test
 
 - Application Smoke and UI Testing
 
