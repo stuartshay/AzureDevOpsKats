@@ -2,6 +2,8 @@
 
 [![Deploy ECS Service Tasks](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-ecs-service-tasks.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-ecs-service-tasks.yml)
 
+ECS Service Tasks Workflow Deployment
+
 ![](../assets/ecs-service-workflow.png)
 
 ## Workflow Dispatch
@@ -44,6 +46,10 @@ Master Branch Deployment override
 Configure and Depoly ECS task definitions
 
 [Amazon ECS task definitions](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html)
+
+- Set Fargate task definition
+- Set Container Secrets & Environment Variables
+- Mount Common EFS Storage Volume
 
 ecspresso is a deployment tool for Amazon ECS.
 
