@@ -10,6 +10,11 @@ Overide Workflow Defaults
 
 ![](../assets/ecs-service-workflow-dispatch.png)
 
+| ECS Desired Count |                             |
+| ----------------- | --------------------------- |
+| 1,3,5             | Number of Fargate ECS Tasks |
+| 0                 | Terminate all Tasks         |
+
 ## test-coverage
 
 - .NET Build & Lint
