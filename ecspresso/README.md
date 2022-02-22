@@ -4,6 +4,20 @@
 
 ![](../assets/ecs-service-workflow.png)
 
+## test-coverage
+
+## build
+
+-- .NET Build
+-- Create Docker Image
+-- Push Image to Amazon ECR
+
+## deploy
+
+## health-check
+
+## selenium-test
+
 ecspresso is a deployment tool for Amazon ECS.
 
 ```
