@@ -36,8 +36,6 @@ Master Branch Deployment override
 - .NET Unit Testing and Code Coverage
 - Image Vulnerability Scanning
 
-![](../assets/ecs-service-workflow.png)
-
 ### build
 
 - .NET Build
@@ -51,8 +49,6 @@ Configure and Depoly ECS Container and definition
 - [Set Fargate task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
 - Set Container Secrets & Environment Variables
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
-
-### deploy
 
 Depoly ECS task definitions
 ecspresso is a deployment tool for Amazon ECS.
