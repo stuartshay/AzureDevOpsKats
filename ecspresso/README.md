@@ -6,11 +6,11 @@
 
 ## test-coverage
 
-## build
+### build
 
--- .NET Build
--- Create Docker Image
--- Push Image to Amazon ECR
+- .NET Build
+- Create Docker Image
+- Push Image to Amazon ECR
 
 ## deploy
 
