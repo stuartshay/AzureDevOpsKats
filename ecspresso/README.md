@@ -4,6 +4,7 @@
 
 ECS Service Tasks Workflow Deployment
 
+
 ![](../assets/ecs-service-workflow.png)
 
 ## Workflow Dispatch
@@ -43,7 +44,6 @@ Master Branch Deployment override
 - Push Image to Amazon ECR
 
 ### deploy
-
 Configure and Deploy ECS Fargate Container and definition
 
 - [Set Fargate task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
@@ -51,11 +51,9 @@ Configure and Deploy ECS Fargate Container and definition
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
 
 #### Ecspresso Deployment Tool
-
 ```
 https://github.com/kayac/ecspresso
 ```
-
 #### develop branch
 
 - Git Event : Push
