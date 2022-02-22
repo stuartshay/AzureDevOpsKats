@@ -43,11 +43,9 @@ Master Branch Deployment override
 
 ### deploy
 
-Configure and Depoly ECS task definitions
+Configure and Depoly ECS Container and definition
 
-[Amazon ECS task definitions](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html)
-
-- Set Fargate task definition
+- [Set Fargate task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
 - Set Container Secrets & Environment Variables
 - Mount Common EFS Storage Volume
 
