@@ -1,4 +1,4 @@
-name: CI/CD Build/Test/Deploy
+name: CI/CD Build/Test/Scan
 env:
   SERVICE: azuredevopskats
   DH_DOCKER_IMAGE: stuartshay/azuredevopskats

@@ -34,6 +34,7 @@ Master Branch Deployment override
 
 - .NET Build & Lint
 - .NET Unit Testing and Code Coverage
+- Image Vulnerability Scanning
 
 ### build
 
