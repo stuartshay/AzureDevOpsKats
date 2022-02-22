@@ -22,7 +22,7 @@ The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s
 
 ## Containerization
 
-Docker Containers and Docker Compose have been adopted by the team giving the ability to run multiple environment configurations all from their local development workstation.
+Docker Containers and Docker Compose have been adopted by the team giving the ability to run multiple environment configurations from their local development workstation.
 
 - [Docker Images](/docker)
 
