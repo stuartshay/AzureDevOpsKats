@@ -24,6 +24,12 @@
 
 ## health-check
 
+- Check Deployment Health Check Status
+
+```
+http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health
+```
+
 ## selenium-test
 
 ecspresso is a deployment tool for Amazon ECS.
