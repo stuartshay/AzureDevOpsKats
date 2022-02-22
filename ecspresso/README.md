@@ -44,7 +44,7 @@ Master Branch Deployment override
 
 ### deploy
 
-Configure and Depoly ECS Container and definition
+Configure and Deploy ECS Fargate Container and definition
 
 - [Set Fargate task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
 - Set Container Secrets & Environment Variables
@@ -67,7 +67,8 @@ https://github.com/kayac/ecspresso
 
 ## health-check
 
-- Check ECS Deployment and Application & Health
+- Check ECS Deployment and Application Health
+- Validate Release Tag Matches Running Container Tag
 
 [Health Check Endpoint](http://master-devops-1727857016.us-east-1.elb.amazonaws.com/health)
 
