@@ -47,9 +47,29 @@ Master Branch Deployment override
 Deploy ECS Fargate Container and task definition
 
 - [Set Fargate service/task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
+
 - [Set Container Secrets & Environment Variables](https://aws.amazon.com/systems-manager/)
+
+| Variable Type            | Name                              |
+| -----------------------  | ----------------------------------|
+| Environment              |  ASPNETCORE_ENVIRONMENT           |
+| Environment              |  CLUSTER_NAME                     |
+| Secret                   |  /devopskats/{ENVIRONMENT}/secret |
+
 - [Set Environment Loggers](https://aws.amazon.com/cloudwatch/)
+
+| Log Type                 | Log Group                 |
+| -----------------------  | ------------------------- |
+| Container Logger         |  devopskats-{ENVIRONMENT} |
+
+
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
+
+| Container Path       | Storage Type   | Volume Name        |
+| -------------------- | -------------- | ------------------ |
+| /images              | EFS            |  efs-{ENVIRONMENT} |
+
+
 
 #### develop branch
 
