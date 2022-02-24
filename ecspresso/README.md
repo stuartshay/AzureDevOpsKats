@@ -19,6 +19,8 @@ ECS Cluster Deployment
 | master               | master-devops  |
 | devlop, feature, fix | develop-devops |
 
+#### Modify ====>  devopskats-{ENVIRONMENT}
+
 Master Branch Deployment override
 
 | ECS Desired Count |                             |
@@ -69,6 +71,13 @@ Deploy ECS Fargate Container and task definition
 | -------------------- | -------------- | ------------------ |
 | /images              | EFS            |  efs-{ENVIRONMENT} |
 
+#### Modify ====>  efs-devopskats-{ENVIRONMENT}-images
+
+- [Terraform State]()
+
+|  Build Assets        | Storage Type   | Bucket                               |
+| -------------------- | -------------- | ------------------------------------ |
+| tfstate              | S3 Bucket      |  /devops/aws/us-east-1/s3/devopskats |
 
 
 #### develop branch
