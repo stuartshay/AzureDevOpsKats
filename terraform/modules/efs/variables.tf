@@ -5,7 +5,7 @@ variable "name" {
 
 variable "subnet_id" {
   description = "A VPC subnet for EFS"
-  type        = list(string)
+  type        = string
 }
 
 variable "security_group_ids" {

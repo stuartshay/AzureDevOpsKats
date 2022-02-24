@@ -1,6 +1,6 @@
 locals {
   name       = "devopskats"
-  env        = "shared"
+  env        = "develop"
   region     = "us-east-1"
   realm_name = "${local.name}-${local.env}"
 

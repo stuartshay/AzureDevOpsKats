@@ -11,29 +11,18 @@ data "terraform_remote_state" "shared" {
 }
 
 # Security groups
-module "security_group_alb" {
-  source = "../modules/security-group//modules/http"
-
-  name   = "${local.realm_name}-for-alb"
-  vpc_id = local.vpc_id
-
-  cidr_ingresses = [
-    "0.0.0.0/0"
-  ]
-}
-
 module "security_group_ecs_tasks" {
   source = "../modules/security-group"
 
   name   = "${local.realm_name}-for-api"
   vpc_id = local.vpc_id
 
-  sg_ingresses = {
-    "ecs_tasks" = {
+  cidr_ingresses = {
+    "all" = {
       from_port         = 5000
       to_port           = 5000
       protocol          = "tcp"
-      security_group_id = module.security_group_alb.id
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
 }
@@ -60,17 +49,6 @@ module "security_group_efs" {
   }
 }
 
-# ALB
-module "alb" {
-  source = "../modules/alb"
-
-  name               = local.realm_name
-  vpc_id             = local.vpc_id
-  subnet_ids         = local.subnet_ids
-  security_group_ids = [module.security_group_alb.id]
-  enable_https       = false
-}
-
 # ECS
 module "ecs" {
   source = "../modules/ecs"
@@ -89,12 +67,4 @@ module "efs" {
   name               = local.realm_name
   subnet_id          = local.subnet_ids[0]
   security_group_ids = [module.security_group_efs.id]
-}
-
-# Lambda function
-module "lambda" {
-  source = "../modules/lambda"
-
-  name               = local.realm_name
-  ecs_cluster_name = module.ecs.cluster_name
 }

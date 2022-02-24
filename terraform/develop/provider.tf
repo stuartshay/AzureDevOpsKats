@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket  = "devops-team-tfstate"
     encrypt = true
-    key     = "devops/aws/us-east-1/s3/devopskats/shared"
+    key     = "devops/aws/us-east-1/s3/devopskats/develop"
     region  = "us-east-1"
     profile = "stuartshay"
   }

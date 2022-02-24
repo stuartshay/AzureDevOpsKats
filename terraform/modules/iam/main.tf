@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecs_task_execution" {
-  name = "${var.name}-execution"
+  name = "${var.name}-ecs-execution"
 
   assume_role_policy = <<EOF
 {
@@ -10,8 +10,7 @@ resource "aws_iam_role" "ecs_task_execution" {
      "Principal": {
        "Service": "ecs-tasks.amazonaws.com"
      },
-     "Effect": "Allow",
-     "Sid": ""
+     "Effect": "Allow"
    }
  ]
 }

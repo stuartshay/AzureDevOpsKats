@@ -1,21 +1,15 @@
 locals {
-  name        = "devopskats"
-  env         = "production"
-  region      = "ap-southeast-1"
+  name       = "devopskats"
+  env        = "master"
+  region     = "us-east-1"
   realm_name = "${local.name}-${local.env}"
 
   tags = {
-    application   = local.name
-    env   = local.environment
-    owner         = "devops"
+    application = local.name
+    env         = local.env
+    owner       = "devops"
   }
 
-  vpc_id             = ""
-  public_subnet_ids  = []
-  private_subnet_ids = []
-
-  sg_cidr_blocks = []
-
-  other_sg_ids = [
-  ]
+  vpc_id     = data.aws_vpc.default.id
+  subnet_ids = data.aws_subnets.public.ids
 }
