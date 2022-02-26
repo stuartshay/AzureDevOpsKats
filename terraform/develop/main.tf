@@ -6,7 +6,7 @@ data "terraform_remote_state" "shared" {
     bucket = "devops-team-tfstate"
     key    = "devops/aws/us-east-1/s3/devopskats/shared"
     region = "${local.region}"
-    profile = "stuartshay"
+    profile = "awsdevopskats"
   }
 }
 

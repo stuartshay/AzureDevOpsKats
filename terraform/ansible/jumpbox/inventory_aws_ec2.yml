@@ -5,9 +5,8 @@ aws_profile: awsdevopskats
 filters:
   instance-state-name : running
   tag:application: devopskats
-  tag:env: development
-  tag:Env: develop
-  tag:owner: culiops
-  tag:Name: devops-jumpbox
+  tag:env: shared
+  tag:owner: devops
+  tag:Name: devopskats-jumpbox
 compose:
   ansible_host: public_ip_address
