@@ -3,9 +3,9 @@ data "terraform_remote_state" "shared" {
   backend = "s3"
 
   config = {
-    bucket = "devops-team-tfstate"
-    key    = "devops/aws/us-east-1/s3/devopskats/shared"
-    region = "${local.region}"
+    bucket  = "devops-team-tfstate"
+    key     = "devops/aws/us-east-1/s3/devopskats/shared"
+    region  = "${local.region}"
     profile = "awsdevopskats"
   }
 }
@@ -95,6 +95,6 @@ module "efs" {
 module "lambda" {
   source = "../modules/lambda"
 
-  name               = local.realm_name
+  name             = local.realm_name
   ecs_cluster_name = module.ecs.cluster_name
 }

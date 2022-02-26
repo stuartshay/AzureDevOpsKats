@@ -3,9 +3,9 @@ data "terraform_remote_state" "shared" {
   backend = "s3"
 
   config = {
-    bucket = "devops-team-tfstate"
-    key    = "devops/aws/us-east-1/s3/devopskats/shared"
-    region = "${local.region}"
+    bucket  = "devops-team-tfstate"
+    key     = "devops/aws/us-east-1/s3/devopskats/shared"
+    region  = "${local.region}"
     profile = "awsdevopskats"
   }
 }
@@ -19,9 +19,9 @@ module "security_group_ecs_tasks" {
 
   cidr_ingresses = {
     "all" = {
-      from_port         = 5000
-      to_port           = 5000
-      protocol          = "tcp"
+      from_port   = 5000
+      to_port     = 5000
+      protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
