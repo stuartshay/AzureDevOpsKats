@@ -1,0 +1,4 @@
+tmp/
+.terraform.lock.hcl
+builds
+.terraform

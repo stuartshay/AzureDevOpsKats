@@ -1,9 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
-
   traefik:
-    image: "traefik:v2.4"
+    image: "traefik:v2.6"
     container_name: "traefik"
     command:
       - "--log.level=DEBUG"
@@ -22,7 +21,7 @@ services:
 
   azuredevopskats-web:
     hostname: azuredevopskats-web
-    image: "stuartshay/azuredevopskats:5.1-buildx-01"
+    image: "stuartshay/azuredevopskats:latest"
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
     labels:
@@ -52,9 +51,7 @@ services:
       - elastic
 
 volumes:
-  redis-data:
-
-    null
+  redis-data: null
 networks:
   azuredevopskats-network: null
   elastic:

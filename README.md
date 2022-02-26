@@ -20,6 +20,12 @@ The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s
 - [ECS Service Tasks Deployment](/ecspresso)
 - [GitHub Actions Workflows](https://github.com/stuartshay/AzureDevOpsKats/actions)
 
+### Containerization
+
+Docker Containers and Docker Compose have been adopted by the team giving the ability to run multiple environment configurations from their local development workstation.
+
+- [Docker Images](/docker)
+
 ### Development
 
 - [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
@@ -71,9 +77,3 @@ http://localhost:5000/
 | ----------------- | ---------------------------- | ----------------------------- |
 | CI Build          | ./build.sh --target=CI-Build | .\build.ps1 --target=CI-Build |
 | SonarQube Testing | ./build.sh --target=sonar    | .\build.ps1 --target=sonar    |
-
-### Documentation
-
-```
-https://stuartshay.github.io/AzureDevOpsKats/
-```

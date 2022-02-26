@@ -1,0 +1,65 @@
+name: Config Jumpbox
+
+env:
+  ANSIBLE_CHDIR: terraform/ansible/jumpbox
+  AWS_REGION: us-east-1
+  AWS_PROFILE_NAME: awsdevopskats
+
+on:
+  workflow_dispatch:
+    inputs:
+      ansible_action:
+        type: choice
+        description: Ansible Action
+        required: true
+        default: check_diff
+        options:
+          - apply
+          - check_diff
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add profile credentials to ~/.aws/credentials
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+        run: |
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile ${{ env.AWS_PROFILE_NAME }}
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile ${{ env.AWS_PROFILE_NAME }}
+
+      - name: Setup python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3
+
+      - name: Install python boto3, ansible
+        run: |
+          pip install boto3 ansible==2.9.2 requests
+      
+      - name: set ansible config secrets
+        env:
+          SSH_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -pv ${{ env.ANSIBLE_CHDIR }}/.ssh
+          echo "$SSH_KEY" >  ${{ env.ANSIBLE_CHDIR }}/.ssh/id_rsa
+          chmod 600  ${{ env.ANSIBLE_CHDIR }}/.ssh/id_rsa
+
+      - name: Lint Ansible Playbook
+        uses: ansible/ansible-lint-action@master
+        with:
+          targets: "${{ env.ANSIBLE_CHDIR }}/tasks.yaml"
+
+      - name: Run ansible playbook check diff
+        if: ${{ github.event.inputs.terraform_action }} == 'check_diff'
+        run: |
+          cd ${{ env.ANSIBLE_CHDIR }}
+          ansible-playbook tasks.yaml -u ${{ secrets.ANSIBLE_SSH_USER }} -i inventory_aws_ec2.yml --private-key .ssh/id_rsa --check --diff -vv
+      
+      - name: Run ansible playbook apply
+        if: ${{ github.event.inputs.terraform_action }} == 'apply'
+        run: |
+          cd ${{ env.ANSIBLE_CHDIR }}
+          ansible-playbook tasks.yaml -u ${{ secrets.ANSIBLE_SSH_USER }} -i inventory_aws_ec2.yml --private-key .ssh/id_rsa -vv
