@@ -74,14 +74,14 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        if: ${{ github.event.inputs.terraform_action }} == 'apply'
+        if: github.event.inputs.terraform_action == 'apply'
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} apply -auto-approve
         env:
           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Destroy
-        if: ${{ github.event.inputs.terraform_action }} == 'destroy'
+        if: github.event.inputs.terraform_action == 'destroy'
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} destroy -auto-approve
         env:
           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
