@@ -9,7 +9,7 @@ module "iam" {
 module "jumpbox" {
   source = "../modules/jumpbox"
 
-  name = "${local.name}-jumpbox"
-  vpc_id = local.vpc_id
+  name      = "${local.name}-jumpbox"
+  vpc_id    = local.vpc_id
   subnet_id = local.subnet_ids[0]
 }
