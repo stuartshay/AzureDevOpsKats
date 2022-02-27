@@ -128,15 +128,15 @@ jobs:
         with:
           version: v1.7.5
 
-      - name: Set ECS cluster and service
-        run: |
-          if [ "$BRANCH_NAME" != "master" ]
-          then
-              echo "Set new ECS cluster and service to develop..."
-              echo "ECS_CLUSTER=develop-devops" >> $GITHUB_ENV
-              echo "ECS_SERVICE=develop-devops" >> $GITHUB_ENV
-              echo "BRANCH_NAME=develop" >> $GITHUB_ENV
-          fi
+      # - name: Set ECS cluster and service
+      #   run: |
+      #     if [ "$BRANCH_NAME" != "master" ]
+      #     then
+      #         echo "Set new ECS cluster and service to develop..."
+      #         echo "ECS_CLUSTER=develop-devops" >> $GITHUB_ENV
+      #         echo "ECS_SERVICE=develop-devops" >> $GITHUB_ENV
+      #         echo "BRANCH_NAME=develop" >> $GITHUB_ENV
+      #     fi
       - name: ECS deploy
         id: ecs_deploy
         env:
