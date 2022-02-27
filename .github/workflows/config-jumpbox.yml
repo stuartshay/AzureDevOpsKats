@@ -50,6 +50,7 @@ jobs:
       - name: Lint Ansible Playbook
         run: |
           pwd
+          ls -al
           ansible-lint -x 403 ${{ env.ANSIBLE_CHDIR }}/tasks.yml
 
       - name: Run ansible playbook check diff
