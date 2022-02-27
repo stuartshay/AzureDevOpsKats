@@ -38,7 +38,7 @@ jobs:
       - name: Install python boto3, ansible
         run: |
           pip install boto3 requests 
-          apt-get update && apt-get install ansible ansible-lint
+          sudo apt-get update && apt-get install ansible ansible-lint
 
       - name: set ansible config secrets
         env:
