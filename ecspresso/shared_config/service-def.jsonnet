@@ -18,7 +18,7 @@
         "AwsvpcConfiguration": {
             "AssignPublicIp": "ENABLED",
             "SecurityGroups": [
-                "{{ tfstate `aws_security_group.ecs_tasks.id` }}"
+                "{{ tfstate `module.security_group_ecs_tasks.aws_security_group.this.id` }}"
             ],
             "Subnets": [
                 "{{ tfstate `data.aws_subnets.public.ids[0]` }}",
@@ -29,7 +29,7 @@
     "loadBalancers": [
     ] + (
         if std.extVar('branch_name') == "master" then [
-            { "targetGroupArn": "{{ tfstate `module.alb_master.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
+            { "targetGroupArn": "{{ tfstate `module.alb.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
         ] else []
     ),
     "enableECSManagedTags": true,

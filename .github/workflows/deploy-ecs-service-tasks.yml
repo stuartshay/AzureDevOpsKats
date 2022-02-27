@@ -5,8 +5,8 @@ env:
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   AWS_ECR_DOCKER_IMAGE_TAG: 6.0-${{ github.run_number }}-buildx-${{ github.sha }}
   BRANCH_NAME: "${{ github.ref_name }}"
-  ECS_SERVICE: "${{ github.ref_name }}-devops"
-  ECS_CLUSTER: "${{ github.ref_name }}-devops"
+  ECS_SERVICE: "devopskats-${{ github.ref_name }}"
+  ECS_CLUSTER: "devopskats-${{ github.ref_name }}"
   S3_STATE_BUCKET_NAME: "devops-team-tfstate"
   BUILD_NUMBER: ${{ github.run_number }}
   DEFAULT_ECS_DESIRED_COUNT: 1
@@ -42,9 +42,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_DEPLOY }}
-          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -86,8 +86,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_DEPLOY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -117,8 +117,8 @@ jobs:
         id: aws-cred
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEPLOY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_DEPLOY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - uses: actions/checkout@v2
@@ -132,8 +132,8 @@ jobs:
           if [ "$BRANCH_NAME" != "master" ]
           then
               echo "Set new ECS cluster and service to develop..."
-              echo "ECS_CLUSTER=develop-devops" >> $GITHUB_ENV
-              echo "ECS_SERVICE=develop-devops" >> $GITHUB_ENV
+              echo "ECS_CLUSTER=devopskats-develop" >> $GITHUB_ENV
+              echo "ECS_SERVICE=devopskats-develop" >> $GITHUB_ENV
               echo "BRANCH_NAME=develop" >> $GITHUB_ENV
           fi
       - name: ECS deploy
