@@ -211,7 +211,7 @@ resource "aws_iam_role_policy" "ecs_execution_ssm" {
           "ssm:GetParameter"
         ]
         Resource = [
-          "arn:aws:ssm:us-east-1:816939196156:parameter/devopskats/*"
+          "arn:aws:ssm:us-east-1:816939196156:parameter/*"
         ]
       }
     ]
