@@ -4,7 +4,7 @@
   vars_files:
     - vars.yml
 
-  tasks:  
+  tasks:
   - name: Install dependency packages
     apt:
       name: "{{ basic_packages }}"
@@ -41,11 +41,12 @@
     ansible.builtin.apt:
       deb: "{{ item }}"
     loop: "{{ find_result | json_query('files[*].path') }}"
-    
+
   - name: Check aws cli executable is present
-    shell: "which aws"
+    command: "which aws"
     register: aws_cli_result
     ignore_errors: true
+    changed_when: false
 
   - name: Install AWS CLI v2
     shell: cd /tmp && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && ./aws/install
@@ -63,7 +64,7 @@
 
   - name: Install vscode
     apt:
-      name: "{{item}}"
+      name: "{{ item }}"
       state: latest
       update_cache: yes
     loop:
@@ -81,7 +82,7 @@
 
   - name: Install docker
     apt:
-      name: "{{item}}"
+      name: "{{ item }}"
       state: latest
       update_cache: yes
     loop:
@@ -96,13 +97,16 @@
       enabled: yes
 
   - name: Install docker compose
-    shell: curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    get_url:
+      url : https://github.com/docker/compose/releases/download/1.22.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+      dest: /usr/local/bin/docker-compose
+      mode: 'u+x,g+x'
 
   - name: Change docker-compose permissions
     ansible.builtin.file:
       path: /usr/local/bin/docker-compose
       mode: '0755'
-  
+
   - name: Copy startup to /home/ubuntu/startup.sh
     copy:
       src: "startup.sh"
