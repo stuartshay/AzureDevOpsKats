@@ -11,13 +11,13 @@ terraform {
     encrypt = true
     key     = "devops/aws/us-east-1/s3/devopskats/develop"
     region  = "us-east-1"
-    profile = "stuartshay"
+    profile = "awsdevopskats"
   }
 }
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "stuartshay"
+  profile = "awsdevopskats"
 
   default_tags {
     tags = local.tags
