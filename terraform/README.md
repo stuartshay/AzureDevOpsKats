@@ -14,14 +14,18 @@ https://app.terraform.io/app/DevOpsKats/workspaces
 
 ├── ansible
 │
-├── environments
-│   ├── develop
-│   │   └── main.tf
-│   └── master
-│       └── main.tf
+├── develop
+|    └── main.tf
+|
+│── master
+│    └── main.tf
 |
 ├── modules
+│   ├── alb
+│   │   └── main.tf
 │   ├── ecs
+│   │   └── main.tf
+│   ├── efs
 │   │   └── main.tf
 │   ├── iam
 │   │   └── main.tf
@@ -29,15 +33,10 @@ https://app.terraform.io/app/DevOpsKats/workspaces
 │   │   └── main.tf
 │   ├── lambda
 │   │   └── main.tf
-│   ├── management
+│   ├── security-group
 │   │   └── main.tf
-│   ├── networking
-│   │   └── main.tf
-│   ├── storage
-│   │   └── main.tf
-|
-├── templates
-├── main.tf
-├── variables.tf
+│   └── ssm
+|       └── main.tf
+├── shared
 
 ```
