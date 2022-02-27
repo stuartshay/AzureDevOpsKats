@@ -50,16 +50,17 @@ jobs:
       - name: Lint Ansible Playbook
         run: |
           cd ${{ env.ANSIBLE_CHDIR }}
+          pwd
           ansible-lint -x 403 tasks.yaml
 
       - name: Run ansible playbook check diff
-        if: github.event.inputs.terraform_action == 'check_diff'
+        if: github.event.inputs.ansible_action == 'check_diff'
         run: |
           cd ${{ env.ANSIBLE_CHDIR }}
           ansible-playbook tasks.yaml -u ${{ secrets.ANSIBLE_SSH_USER }} -i inventory_aws_ec2.yml --private-key .ssh/id_rsa --check --diff -vv
 
       - name: Run ansible playbook apply
-        if: github.event.inputs.terraform_action == 'apply'
+        if: github.event.inputs.ansible_action == 'apply'
         run: |
           cd ${{ env.ANSIBLE_CHDIR }}
           ansible-playbook tasks.yaml -u ${{ secrets.ANSIBLE_SSH_USER }} -i inventory_aws_ec2.yml --private-key .ssh/id_rsa -vv
