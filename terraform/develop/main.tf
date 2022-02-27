@@ -73,5 +73,5 @@ module "efs" {
 module "ssm" {
   source = "../modules/ssm"
 
-  name               = local.realm_name
+  name = local.realm_name
 }
