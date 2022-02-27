@@ -44,19 +44,19 @@
             "secrets": [
                 {
                 "name": "SMTP_PASSWORD",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/password"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats-{{ must_env `BRANCH_NAME` }}/smtp/password"
                 },
                 {
                 "name": "SMTP_PORT",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/port"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats-{{ must_env `BRANCH_NAME` }}/smtp/port"
                 },
                 {
                 "name": "SMTP_SERVER",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/server"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats-{{ must_env `BRANCH_NAME` }}/smtp/server"
                 },
                 {
                 "name": "SMTP_USERNAME",
-                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats/{{ must_env `BRANCH_NAME` }}/smtp/username"
+                "valueFrom": "arn:aws:ssm:{{ must_env `AWS_REGION` }}:816939196156:parameter/devopskats-{{ must_env `BRANCH_NAME` }}/smtp/username"
                 }
             ]
         }
@@ -65,15 +65,15 @@
         {
             "name": "efs-{{ must_env `BRANCH_NAME` }}",
             "efsVolumeConfiguration": {
-                "fileSystemId": if std.extVar('branch_name') == "master" then "{{ tfstate `aws_efs_file_system.master.id` }}" else "{{ tfstate `aws_efs_file_system.develop.id` }}"
+                "fileSystemId": "{{ tfstate `module.efs.id` }}"
             }
         }
     ],
     "family": "{{ must_env `ECS_SERVICE` }}",
     "networkMode": "awsvpc",
     "placementConstraints": [],
-    "executionRoleArn": "{{ tfstate `aws_iam_role.ecs_task_execution_role.arn` }}",
-    "taskRoleArn": "{{ tfstate `aws_iam_role.container.arn` }}",
+    "executionRoleArn": "{{ tfstate `data.terraform_remote_state.shared.outputs.ecs_task_execution_role_arn` }}",
+    "taskRoleArn": "{{ tfstate `data.terraform_remote_state.shared.outputs.ecs_container_role_arn` }}",
     "Tags": [
         {
             "Key": "Env",

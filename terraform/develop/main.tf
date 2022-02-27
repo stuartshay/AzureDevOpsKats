@@ -68,3 +68,10 @@ module "efs" {
   subnet_id          = local.subnet_ids[0]
   security_group_ids = [module.security_group_efs.id]
 }
+
+# SSM Params
+module "ssm" {
+  source = "../modules/ssm"
+
+  name               = local.realm_name
+}

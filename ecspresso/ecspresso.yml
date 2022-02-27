@@ -7,5 +7,5 @@ timeout: 10m0s
 plugins:
   - name: tfstate
     config:
-      url: s3://{{ must_env `S3_STATE_BUCKET_NAME` }}/devops/aws/us-east-1/s3/devopskats
+      url: s3://{{ must_env `S3_STATE_BUCKET_NAME` }}/devops/aws/us-east-1/s3/devopskats/{{ must_env `BRANCH_NAME` }}
 appspec: null
