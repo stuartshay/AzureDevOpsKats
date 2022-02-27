@@ -53,6 +53,10 @@ jobs:
         run: |
           ansible-lint -x 403 ${{ env.ANSIBLE_CHDIR }}/tasks.yml
 
+      - name: List host ready for Ansible Playbook
+        run: |
+          ansible-playbook ${{ env.ANSIBLE_CHDIR }}/tasks.yml -u ${{ secrets.ANSIBLE_SSH_USER }} -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml
+
       - name: Run ansible playbook check diff
         if: github.event.inputs.ansible_action == 'check_diff'
         run: |
