@@ -1,15 +1,25 @@
-# IAM
-module "iam" {
-  source = "../modules/iam"
-
-  name = local.name
+terraform {
+  required_version = "> 0.15"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.67"
+    }
+  }
+  backend "s3" {
+    bucket  = "devops-team-tfstate"
+    encrypt = true
+    key     = "devops/aws/us-east-1/s3/devopskats/master"
+    region  = "us-east-1"
+    profile = "awsdevopskats"
+  }
 }
 
-# Jumpbox
-module "jumpbox" {
-  source = "../modules/jumpbox"
+provider "aws" {
+  region  = "us-east-1"
+  profile = "awsdevopskats"
 
-  name      = "${local.name}-jumpbox"
-  vpc_id    = local.vpc_id
-  subnet_id = local.subnet_ids[0]
+  default_tags {
+    tags = local.tags
+  }
 }

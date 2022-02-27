@@ -1,11 +1,7 @@
 module "security_group_jumpbox" {
   source = "../security-group"
 
-<<<<<<< HEAD
   name   = var.name
-=======
-  name   = "${var.name}"
->>>>>>> origin/master
   vpc_id = var.vpc_id
 
   cidr_ingresses = {
