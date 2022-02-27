@@ -49,8 +49,7 @@ jobs:
 
       - name: Lint Ansible Playbook
         run: |
-          ansible-playbook "${{ env.ANSIBLE_CHDIR }}/tasks.yaml" --syntax-check
-          ansible-lint "${{ env.ANSIBLE_CHDIR }}/tasks.yaml"
+          ansible-lint ${{ env.ANSIBLE_CHDIR }}/tasks.yaml
 
       - name: Run ansible playbook check diff
         if: github.event.inputs.terraform_action == 'check_diff'
