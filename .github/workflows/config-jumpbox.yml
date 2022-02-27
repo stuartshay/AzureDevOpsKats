@@ -37,7 +37,7 @@ jobs:
 
       - name: Install python boto3, ansible
         run: |
-          pip install boto3 requests ansible=2.9.6 ansible-lint=4.2.0
+          pip install boto3 requests ansible==2.9.6 ansible-lint==4.2.0
 
       - name: set ansible config secrets
         env:
