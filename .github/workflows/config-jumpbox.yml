@@ -29,6 +29,8 @@ jobs:
         run: |
           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile ${{ env.AWS_PROFILE_NAME }}
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile ${{ env.AWS_PROFILE_NAME }}
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Setup python 3
         uses: actions/setup-python@v2
@@ -49,17 +51,18 @@ jobs:
 
       - name: Lint Ansible Playbook
         run: |
-          pwd
           ansible-lint -x 403 ${{ env.ANSIBLE_CHDIR }}/tasks.yml
+
+      - name: List host ready for Ansible Playbook
+        run: |
+          ansible-inventory --graph -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml
 
       - name: Run ansible playbook check diff
         if: github.event.inputs.ansible_action == 'check_diff'
         run: |
-          pwd
           ansible-playbook ${{ env.ANSIBLE_CHDIR }}/tasks.yml -u ${{ secrets.ANSIBLE_SSH_USER }} -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml --private-key ${{ env.ANSIBLE_CHDIR }}/.ssh/id_rsa --check --diff -vv
 
       - name: Run ansible playbook apply
         if: github.event.inputs.ansible_action == 'apply'
         run: |
-          pwd
           ansible-playbook ${{ env.ANSIBLE_CHDIR }}/tasks.yml -u ${{ secrets.ANSIBLE_SSH_USER }} -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml --private-key ${{ env.ANSIBLE_CHDIR }}/.ssh/id_rsa -vv
