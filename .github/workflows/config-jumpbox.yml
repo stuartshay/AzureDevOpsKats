@@ -37,7 +37,7 @@ jobs:
 
       - name: Install python boto3, ansible
         run: |
-          pip install boto3 ansible==2.9.2 requests
+          pip install boto3 ansible==2.9.2 requests ansible-lint
       
       - name: set ansible config secrets
         env:
@@ -48,9 +48,9 @@ jobs:
           chmod 600  ${{ env.ANSIBLE_CHDIR }}/.ssh/id_rsa
 
       - name: Lint Ansible Playbook
-        uses: ansible/ansible-lint-action@master
-        with:
-          targets: "${{ env.ANSIBLE_CHDIR }}/tasks.yaml"
+        run: |
+          ansible-playbook "${{ env.ANSIBLE_CHDIR }}/tasks.yaml" --syntax-check
+          ansible-lint "${{ env.ANSIBLE_CHDIR }}/tasks.yaml"
 
       - name: Run ansible playbook check diff
         if: github.event.inputs.terraform_action == 'check_diff'
