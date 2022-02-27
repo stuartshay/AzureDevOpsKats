@@ -36,12 +36,7 @@ https://app.terraform.io/app/DevOpsKats/workspaces
 │   ├── security-group
 │   │   └── main.tf
 │   └── ssm
-│       └── main.tf
-
-
-|
-├── templates
-├── main.tf
-├── variables.tf
+|       └── main.tf
+├── shared
 
 ```
