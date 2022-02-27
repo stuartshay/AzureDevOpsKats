@@ -49,7 +49,7 @@ jobs:
 
       - name: Lint Ansible Playbook
         run: |
-          ansible-lint ${{ env.ANSIBLE_CHDIR }}/tasks.yaml
+          ansible-lint -x 403 ${{ env.ANSIBLE_CHDIR }}/tasks.yaml
 
       - name: Run ansible playbook check diff
         if: github.event.inputs.terraform_action == 'check_diff'
