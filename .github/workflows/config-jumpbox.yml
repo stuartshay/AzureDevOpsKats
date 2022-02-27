@@ -49,18 +49,17 @@ jobs:
 
       - name: Lint Ansible Playbook
         run: |
-          cd ${{ env.ANSIBLE_CHDIR }}
           pwd
-          ansible-lint -x 403 tasks.yml
+          ansible-lint -x 403 ${{ env.ANSIBLE_CHDIR }}/tasks.yml
 
       - name: Run ansible playbook check diff
         if: github.event.inputs.ansible_action == 'check_diff'
         run: |
-          cd ${{ env.ANSIBLE_CHDIR }}
-          ansible-playbook tasks.yml -u ${{ secrets.ANSIBLE_SSH_USER }} -i inventory_aws_ec2.yml --private-key .ssh/id_rsa --check --diff -vv
+          pwd
+          ansible-playbook ${{ env.ANSIBLE_CHDIR }}/tasks.yml -u ${{ secrets.ANSIBLE_SSH_USER }} -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml --private-key ${{ env.ANSIBLE_CHDIR }}/.ssh/id_rsa --check --diff -vv
 
       - name: Run ansible playbook apply
         if: github.event.inputs.ansible_action == 'apply'
         run: |
-          cd ${{ env.ANSIBLE_CHDIR }}
-          ansible-playbook tasks.yml -u ${{ secrets.ANSIBLE_SSH_USER }} -i inventory_aws_ec2.yml --private-key .ssh/id_rsa -vv
+          pwd
+          ansible-playbook ${{ env.ANSIBLE_CHDIR }}/tasks.yml -u ${{ secrets.ANSIBLE_SSH_USER }} -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml --private-key ${{ env.ANSIBLE_CHDIR }}/.ssh/id_rsa -vv
