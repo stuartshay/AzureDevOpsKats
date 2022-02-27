@@ -55,7 +55,7 @@ jobs:
 
       - name: List host ready for Ansible Playbook
         run: |
-          ansible-playbook --graph -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml
+          ansible-inventory --graph -i ${{ env.ANSIBLE_CHDIR }}/inventory_aws_ec2.yml
 
       - name: Run ansible playbook check diff
         if: github.event.inputs.ansible_action == 'check_diff'
