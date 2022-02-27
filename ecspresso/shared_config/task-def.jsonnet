@@ -65,7 +65,7 @@
         {
             "name": "efs-{{ must_env `BRANCH_NAME` }}",
             "efsVolumeConfiguration": {
-                "fileSystemId": "{{ tfstate `module.efs.id` }}"
+                "fileSystemId": "{{ tfstate `module.efs.aws_efs_file_system.this.id` }}"
             }
         }
     ],
