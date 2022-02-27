@@ -23,12 +23,12 @@ jobs:
     steps:
       - name: Add profile credentials to ~/.aws/credentials
         env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
         run: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile ${{ env.AWS_PROFILE_NAME }}
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile ${{ env.AWS_PROFILE_NAME }}
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile ${{ env.AWS_PROFILE_NAME }}
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile ${{ env.AWS_PROFILE_NAME }}
 
       - name: Setup python 3
         uses: actions/setup-python@v2
@@ -38,7 +38,7 @@ jobs:
       - name: Install python boto3, ansible
         run: |
           pip install boto3 ansible==2.9.2 requests ansible-lint
-      
+
       - name: set ansible config secrets
         env:
           SSH_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
@@ -57,7 +57,7 @@ jobs:
         run: |
           cd ${{ env.ANSIBLE_CHDIR }}
           ansible-playbook tasks.yaml -u ${{ secrets.ANSIBLE_SSH_USER }} -i inventory_aws_ec2.yml --private-key .ssh/id_rsa --check --diff -vv
-      
+
       - name: Run ansible playbook apply
         if: github.event.inputs.terraform_action == 'apply'
         run: |
