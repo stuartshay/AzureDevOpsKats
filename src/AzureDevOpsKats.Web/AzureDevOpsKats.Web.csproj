@@ -5,7 +5,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-    <Version>5.0.1.1</Version>
+    <Version>6.0.1.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="6.0.1" />
