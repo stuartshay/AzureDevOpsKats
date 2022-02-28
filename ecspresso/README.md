@@ -40,7 +40,11 @@ Master Branch Deployment override
 
 - .NET Build
 - Create Docker Image
-- Push Image to Amazon ECR
+- [Push Image to Amazon ECR](https://aws.amazon.com/ecr/)
+
+| Repository      | Tag Format                                                     |                                                        |
+| --------------- | -------------------------------------------------------------- | ------------------------------------------------------ |
+| azuredevopskats | { net_core_ver }.0-{ github.run_number }-buildx-{ github.sha } | 6.0.17-buildx-232b92de90ff348f0b1b3894ec64624768bd7c14 |
 
 ### deploy
 
