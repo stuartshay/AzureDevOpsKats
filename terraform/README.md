@@ -1,12 +1,6 @@
 # AWSDevOpsKats Terraform
 
-AWS ECS Infrastructure Deployment using Terraform Cloud, Ansibile and GitHub Actions
-
-### Terraform Cloud Workspaces
-
-```
-https://app.terraform.io/app/DevOpsKats/workspaces
-```
+AWS ECS Infrastructure Deployment using Terraform, Ansibile and GitHub Actions
 
 ### Project Structure
 

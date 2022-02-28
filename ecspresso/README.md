@@ -14,12 +14,10 @@ Overide Workflow Defaults
 
 ECS Cluster Deployment
 
-| Branch               | ECS Cluster    |
-| -------------------- | -------------- |
-| master               | master-devops  |
-| devlop, feature, fix | develop-devops |
-
-#### Modify ====> devopskats-{ENVIRONMENT}
+| Branch               | ECS Cluster        |
+| -------------------- | ------------------ |
+| master               | devopskats-master  |
+| devlop, feature, fix | devopskats-develop |
 
 Master Branch Deployment override
 
