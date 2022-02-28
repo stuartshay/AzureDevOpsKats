@@ -18,6 +18,7 @@ The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s
 
 - [Terraform Infrastructure](/terraform)
 - [ECS Service Tasks Deployment](/ecspresso)
+- [Ansible Configuration](/terraform/ansible/)
 - [GitHub Actions Workflows](https://github.com/stuartshay/AzureDevOpsKats/actions)
 
 ### Containerization
