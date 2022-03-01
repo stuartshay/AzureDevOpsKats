@@ -9,7 +9,7 @@
             "name": "devopskats",
             "dockerLabels": {
               "name": "devopskats.web",
-              "aws_ecr_docker_image_tag" : {{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}
+              "aws_ecr_docker_image_tag" : "{{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}"
             },
             "portMappings": [
                 {
