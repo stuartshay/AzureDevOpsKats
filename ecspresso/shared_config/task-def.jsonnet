@@ -8,7 +8,8 @@
             "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/{{ must_env `AWS_ECR_REPOSITORY` }}:{{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}",
             "name": "devopskats",
             "dockerLabels": {
-              "Name": "devopskats"
+              "name": "devopskats.web",
+              "aws_ecr_docker_image_tag" : {{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}
             },
             "portMappings": [
                 {
