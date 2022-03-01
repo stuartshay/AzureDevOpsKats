@@ -7,6 +7,9 @@
             "essential": true,
             "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/{{ must_env `AWS_ECR_REPOSITORY` }}:{{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}",
             "name": "devopskats",
+            "dockerLabels": {
+              "Name": "devopskats"
+            },
             "portMappings": [
                 {
                     "containerPort": 5000,
