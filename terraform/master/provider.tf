@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.67"
     }
+
+    local = {
+      source = "hashicorp/local"
+    }
   }
   backend "s3" {
     bucket  = "devops-team-tfstate"
