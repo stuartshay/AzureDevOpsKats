@@ -1,12 +1,10 @@
 # AWSDevOpsKats Terraform
 
-AWS ECS Infrastructure Deployment using Terraform Cloud, Ansibile and GitHub Actions
+AWS ECS Infrastructure Deployment using Terraform, Ansibile and GitHub Actions
 
-### Terraform Cloud Workspaces
+[![Deploy Core Infrastructures](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-core-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-core-infra.yml)
 
-```
-https://app.terraform.io/app/DevOpsKats/workspaces
-```
+[![Deploy Shared Infrastructure](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-shared-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-shared-infra.yml)
 
 ### Project Structure
 

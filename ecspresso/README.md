@@ -14,12 +14,10 @@ Overide Workflow Defaults
 
 ECS Cluster Deployment
 
-| Branch               | ECS Cluster    |
-| -------------------- | -------------- |
-| master               | master-devops  |
-| devlop, feature, fix | develop-devops |
-
-#### Modify ====> devopskats-{ENVIRONMENT}
+| Branch               | ECS Cluster        |
+| -------------------- | ------------------ |
+| master               | devopskats-master  |
+| devlop, feature, fix | devopskats-develop |
 
 Master Branch Deployment override
 
@@ -42,7 +40,11 @@ Master Branch Deployment override
 
 - .NET Build
 - Create Docker Image
-- Push Image to Amazon ECR
+- [Push Image to Amazon ECR](https://aws.amazon.com/ecr/)
+
+| Repository      | Tag Format                                                   | Example                     |
+| --------------- | ------------------------------------------------------------ | --------------------------- |
+| azuredevopskats | { net_core_ver }.{ github.run_number }-buildx-{ github.sha } | 6.0.17-buildx-232b92de90ff3 |
 
 ### deploy
 
