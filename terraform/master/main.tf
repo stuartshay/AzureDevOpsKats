@@ -91,14 +91,6 @@ module "efs" {
   security_group_ids = [module.security_group_efs.id]
 }
 
-# Lambda function
-module "lambda" {
-  source = "../modules/lambda"
-
-  name             = local.realm_name
-  ecs_cluster_name = module.ecs.cluster_name
-}
-
 # SSM Params
 module "ssm" {
   source = "../modules/ssm"

@@ -99,7 +99,8 @@ data "aws_iam_policy_document" "github_action" {
 
   statement {
     actions = [
-      "s3:GetObject"
+      "s3:GetObject",
+      "s3:PutObject"
     ]
 
     resources = [
@@ -139,8 +140,16 @@ module "github_action_group" {
       policy = data.aws_iam_policy_document.github_action.json
     },
   ]
-}
 
+  custom_group_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+    "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess",
+    "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
+    "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
+    "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
+    "arn:aws:iam::aws:policy/AmazonEventBridgeFullAccess"
+  ]
+}
 
 resource "aws_iam_role" "ecs_container" {
   name = "${var.name}-ecs-container"

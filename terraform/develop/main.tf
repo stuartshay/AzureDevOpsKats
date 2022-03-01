@@ -75,3 +75,11 @@ module "ssm" {
 
   name = local.realm_name
 }
+
+# Lambda function
+module "lambda" {
+  source = "../modules/lambda"
+
+  name             = local.realm_name
+  ecs_cluster_name = module.ecs.cluster_name
+}
