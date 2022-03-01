@@ -42,9 +42,9 @@ Master Branch Deployment override
 - Create Docker Image
 - [Push Image to Amazon ECR](https://aws.amazon.com/ecr/)
 
-| Repository      | Tag Format                                                     |                             |
-| --------------- | -------------------------------------------------------------- | --------------------------- |
-| azuredevopskats | { net_core_ver }.0-{ github.run_number }-buildx-{ github.sha } | 6.0.17-buildx-232b92de90ff3 |
+| Repository      | Tag Format                                                   | Example                     |
+| --------------- | ------------------------------------------------------------ | --------------------------- |
+| azuredevopskats | { net_core_ver }.{ github.run_number }-buildx-{ github.sha } | 6.0.17-buildx-232b92de90ff3 |
 
 ### deploy
 
