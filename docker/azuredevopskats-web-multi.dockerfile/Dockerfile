@@ -3,8 +3,16 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 RUN dotnet --version
 RUN cat /etc/os-release
 
+ARG APPLICATION_NAME='azuredevopskats.web'
 ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
+
+ARG BUILD_DATE='1/1/2022'
+ENV BUILD_DATE ${BUILD_DATE}
+
+LABEL org.label-schema.application=$APPLICATION_NAME
+LABEL org.label-schema.build-date=$BUILD_DATE
+LABEL org.label-schema.version=6.0.1.$BUILD_NUMBER
 
 COPY src /app/src
 # COPY scripts /
