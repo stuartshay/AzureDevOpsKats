@@ -94,6 +94,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%SZ')"
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
@@ -103,7 +107,7 @@ jobs:
         run: |
           docker buildx create --name mybuilder --use
           docker buildx build -f ${{ env.DOCKER_FILE }} --platform linux/amd64 --load  \
-               --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')  \
+               --build-arg BUILD_DATE=${{ steps.date.outputs.date }} \
                --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"

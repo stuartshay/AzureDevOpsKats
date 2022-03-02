@@ -80,12 +80,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%SZ')"
+
       - name: Build image
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           build-args: |
             BUILD_NUMBER=${{ env.BUILD_NUMBER }}
+            BUILD_DATE=${{ steps.date.outputs.date }}
           file: ${{ env.DOCKER_FILE }}
           tags: ${{ env.DH_DOCKER_IMAGE }}:${{ env.DOCKER_IMAGE_TAG}},${{ env.DH_DOCKER_IMAGE }}:latest
           outputs: type=docker,dest=image.tar

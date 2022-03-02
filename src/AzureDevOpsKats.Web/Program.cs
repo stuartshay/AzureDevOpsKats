@@ -49,8 +49,8 @@ namespace AzureDevOpsKats.Web
             {
                 if (context.HostingEnvironment.EnvironmentName == "AwsEcs")
                 {
-                    var clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME");
-                    builder.AddSystemsManager($"/{ApplicationConstants.SystemsManagerName}/{clusterName}", optional: false, reloadAfter: TimeSpan.FromMinutes(2));
+                    var clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME").ToLower();
+                    builder.AddSystemsManager($"/{ApplicationConstants.SystemsManagerName}-{clusterName}", optional: false, reloadAfter: TimeSpan.FromMinutes(2));
                 }
             })
             .UseSerilog(Logging.ConfigureLogger);
