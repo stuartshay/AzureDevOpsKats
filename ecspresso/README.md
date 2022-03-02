@@ -52,6 +52,12 @@ Deploy ECS Fargate Container and task definition
 
 - [Set Fargate service/task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
 
+#### Ecspresso Deployment Tool
+
+```
+https://github.com/kayac/ecspresso
+```
+
 - [Set Container Secrets & Environment Variables](https://aws.amazon.com/systems-manager/)
 
 | Variable Type | Name                             |                           |
@@ -68,11 +74,9 @@ Deploy ECS Fargate Container and task definition
 
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
 
-| Container Path | Storage Type | Volume Name       |
-| -------------- | ------------ | ----------------- |
-| /images        | EFS          | efs-{ENVIRONMENT} |
-
-#### Modify ====> efs-devopskats-{ENVIRONMENT}-images
+| Container Path | Storage Type | Volume Name                         |
+| -------------- | ------------ | ----------------------------------- |
+| /images        | EFS          | efs-devopskats-{ENVIRONMENT}-images |
 
 - [Terraform State]()
 
@@ -87,12 +91,6 @@ Deploy ECS Fargate Container and task definition
 #### master branch
 
 - Git Event : Push, Pull Request
-
-#### Ecspresso Deployment Tool
-
-```
-https://github.com/kayac/ecspresso
-```
 
 ### health-check
 
