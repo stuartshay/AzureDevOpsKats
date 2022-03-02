@@ -1,5 +1,8 @@
 resource "aws_efs_file_system" "this" {
   creation_token = var.name
+  tags = {
+    Name = "efs-${var.name}-images"
+  }
 }
 
 resource "aws_efs_mount_target" "this" {

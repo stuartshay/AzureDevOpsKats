@@ -40,6 +40,7 @@ jobs:
       - name: Install python boto3, ansible
         run: |
           pip install boto3 requests ansible==2.9.6 ansible-lint==4.2.0
+          ansible-galaxy collection install community.aws
 
       - name: set ansible config secrets
         env:
