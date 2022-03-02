@@ -1,0 +1,7 @@
+#!/bin/bash
+
+{% for item in efs_ids %}
+sudo mkdir -pv /mnt/{{ item.creation_token }}
+sudo mount -t efs {{ item.file_system_id }} /mnt/{{ item.creation_token }}
+{% endfor %}
+
