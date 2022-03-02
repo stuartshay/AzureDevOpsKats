@@ -26,11 +26,6 @@
     register: result_efs_info
     tags: ["get_efs"]
 
-  # - name: Print return information from the previous task
-  #   ansible.builtin.debug:
-  #     var: result_efs_info.efs | json_query('results[*].file_system_id')
-  #   tags: ["get_efs"]
-
   - name: Setting efs IDs
     set_fact: efs_ids="{{ result_efs_info.efs }}"
     tags: ["get_efs"]
