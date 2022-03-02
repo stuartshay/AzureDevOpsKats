@@ -54,11 +54,11 @@ Deploy ECS Fargate Container and task definition
 
 - [Set Container Secrets & Environment Variables](https://aws.amazon.com/systems-manager/)
 
-| Variable Type | Name                             |
-| ------------- | -------------------------------- |
-| Environment   | ASPNETCORE_ENVIRONMENT           |
-| Environment   | CLUSTER_NAME                     |
-| Secret        | /devopskats/{ENVIRONMENT}/secret |
+| Variable Type | Name                             |                           |
+| ------------- | -------------------------------- | ------------------------- |
+| Environment   | ASPNETCORE_ENVIRONMENT           | AwsEcs                    |
+| Environment   | CLUSTER_NAME                     | master, develop           |
+| Secret        | /devopskats-{ENVIRONMENT}/secret | /devopskats-master/secret |
 
 - [Set Environment Loggers](https://aws.amazon.com/cloudwatch/)
 
