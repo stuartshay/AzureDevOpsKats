@@ -68,11 +68,9 @@ Deploy ECS Fargate Container and task definition
 
 - [Mount Common EFS Storage Volumes](https://aws.amazon.com/efs/)
 
-| Container Path | Storage Type | Volume Name       |
-| -------------- | ------------ | ----------------- |
-| /images        | EFS          | efs-{ENVIRONMENT} |
-
-#### Modify ====> efs-devopskats-{ENVIRONMENT}-images
+| Container Path | Storage Type | Volume Name                         |
+| -------------- | ------------ | ----------------------------------- |
+| /images        | EFS          | efs-devopskats-{ENVIRONMENT}-images |
 
 - [Terraform State]()
 
