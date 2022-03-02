@@ -1,9 +1,10 @@
+ARG APPLICATION_NAME='azuredevopskats.web'
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 
 RUN dotnet --version
 RUN cat /etc/os-release
 
-ARG APPLICATION_NAME='azuredevopskats.web'
 ARG BUILD_NUMBER=0
 ENV BUILD_NUMBER ${BUILD_NUMBER}
 
@@ -34,6 +35,8 @@ RUN dotnet publish AzureDevOpsKats.Web.csproj -o /publish -c Release -f net6.0
 
 # Runtime Image Stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
+
+ARG APPLICATION_NAME
 
 LABEL org.label-schema.application=${APPLICATION_NAME}
 LABEL org.label-schema.build-date=${BUILD_DATE}
