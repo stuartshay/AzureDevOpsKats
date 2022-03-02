@@ -17,6 +17,19 @@
       path: /tmp/efs-utils
       state: directory
 
+  - name: Searching EFS develop instances
+    community.aws.efs_info:
+      tags:
+          application: devopskats
+          owner: devops
+      region: us-east-1
+    register: result_efs_info
+    tags: ["get_efs"]
+
+  - name: Setting efs IDs
+    set_fact: efs_ids="{{ result_efs_info.efs }}"
+    tags: ["get_efs"]
+
   - name: Download a tarball of the aws/efs-utils repository
     ansible.builtin.unarchive:
       src: https://github.com/aws/efs-utils/tarball/master
@@ -108,12 +121,13 @@
       mode: '0755'
 
   - name: Copy startup to /home/ubuntu/startup.sh
-    copy:
-      src: "startup.sh"
+    template:
+      src: "startup.sh.j2"
       dest: "/home/ubuntu/startup.sh"
       owner: ubuntu
       group: ubuntu
       mode: '0755'
+    tags: ["get_efs"]
 
   - name: Install ubuntu-desktop
     apt:

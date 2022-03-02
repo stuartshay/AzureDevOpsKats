@@ -4,6 +4,8 @@ basic_packages:
 - apt-transport-https
 - ca-certificates
 - curl
+- python3-botocore
+- python3-boto3
 - gnupg-agent
 - software-properties-common
 - net-tools
