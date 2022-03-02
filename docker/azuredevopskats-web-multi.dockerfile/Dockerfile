@@ -35,9 +35,9 @@ RUN dotnet publish AzureDevOpsKats.Web.csproj -o /publish -c Release -f net6.0
 # Runtime Image Stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 
-LABEL org.label-schema.application=$APPLICATION_NAME
-LABEL org.label-schema.build-date=$BUILD_DATE
-LABEL org.label-schema.version=6.0.1.$BUILD_NUMBER
+LABEL org.label-schema.application=${APPLICATION_NAME}
+LABEL org.label-schema.build-date=${BUILD_DATE}
+LABEL org.label-schema.version=6.0.1.${BUILD_NUMBER}
 
 RUN cat /etc/os-release
 
