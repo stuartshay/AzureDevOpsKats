@@ -57,8 +57,6 @@ namespace AzureDevOpsKats.Web
         /// </summary>
         public IWebHostEnvironment Environment { get; }
 
-
-
         /// <summary>
         ///
         /// </summary>
@@ -132,7 +130,6 @@ namespace AzureDevOpsKats.Web
                 c.TimeZoneInfo = TimeZoneInfo.Local;
                 c.CronExpression = @"50 12 * * *";
             });
-
 
             //Health Checks
             services
