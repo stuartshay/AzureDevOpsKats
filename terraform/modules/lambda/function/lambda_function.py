@@ -10,6 +10,7 @@ logger.setLevel(logging.INFO)
 ecs = boto3.client('ecs', region_name="us-east-1")
 
 def get_hour_diff(from_time):
+    logger.info("Get hour diff from ECS task created at: %s" % from_time)
     from_time = from_time.replace(tzinfo=None)
     now  = datetime.now()
     duration = now - from_time
@@ -17,6 +18,7 @@ def get_hour_diff(from_time):
 
 def get_ecs_service(cluster_name, service_name):
     try:
+        logger.info("Get ECS service info from cluster: %s and service: %s" % (cluster_name, service_name))
         response = ecs.describe_services(
             cluster=cluster_name,
             services=[
@@ -32,17 +34,53 @@ def get_ecs_service(cluster_name, service_name):
         
     except ClientError as error:
         logger.error(error)
-        
-def update_ecs_service(cluster_name, service_name, remove_after_hours):
-    try:
-        ecs_service = get_ecs_service(cluster_name, service_name)
 
-        if not ecs_service:
-            logger.info("Can not find out the service %s from cluster %s" % (service_name, cluster_name))
+def get_ecs_tasks_by_service(cluster_name, service_name):
+    try:
+        logger.info("Get ECS tasks from cluster: %s and service: %s" % (cluster_name, service_name))
+        response = ecs.list_tasks(
+            cluster=cluster_name,
+            serviceName=service_name
+        )
+        if not response['taskArns'] or len(response['taskArns']) < 1:
+            logger.info("No tasks in cluster")
+            return False
+        return response['taskArns'] 
+    except ClientError as error:
+        logger.error(error)
+
+def describe_ecs_tasks(cluster_name, tasks):
+    try:
+        logger.info("Found ECS tasks from cluster %s: %s" % (cluster_name, tasks))
+        response = ecs.describe_tasks(
+            cluster=cluster_name,
+            tasks=tasks
+        )
+
+        if not response['tasks']:
+            logger.info("No tasks in cluster")
             return False
 
-        if  get_hour_diff(ecs_service['createdAt']) < int(remove_after_hours):
-            logger.info("Not yet reach %sh(current: %s) of ECS service %s tasks from cluster %s" % (remove_after_hours, get_hour_diff(ecs_service['createdAt']), service_name, cluster_name))
+        tasks_create_at = [item['createdAt'] for item in response['tasks']]
+        return tasks_create_at[0]
+    except ClientError as error:
+        logger.error(error)
+
+def update_ecs_service(cluster_name, service_name, remove_after_hours):
+    try:
+        ecs_tasks = get_ecs_tasks_by_service(cluster_name, service_name)
+        if not ecs_tasks:
+            logger.info("Can not find out the tasks from cluster: %s and service: %s" % (service_name, cluster_name))
+            return False
+        
+        task_created_at = describe_ecs_tasks(cluster_name, ecs_tasks)
+        if not task_created_at:
+            logger.info("Can not find out the task created at %s" % task_created_at)
+            return False
+        
+        task_created_hour_diff = get_hour_diff(task_created_at)
+        if  task_created_hour_diff < int(remove_after_hours):
+            logger.info("Not yet reach timeout of %sh(current: %s), skip to remove tasks" % (remove_after_hours, task_created_hour_diff))
             return False
 
         ecs.update_service(
@@ -50,6 +88,8 @@ def update_ecs_service(cluster_name, service_name, remove_after_hours):
             service=service_name,
             desiredCount=0
         )
+
+        logger.info("Removed tasks after reached timeout of %sh(current: %s)" % (remove_after_hours, task_created_hour_diff))
     except ClientError as error:
         logger.error(error)
 
