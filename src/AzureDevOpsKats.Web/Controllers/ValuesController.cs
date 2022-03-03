@@ -22,7 +22,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// 
         /// </summary>
         /// <param name="settings"></param>
-        public ValuesController(IOptions<SmtpConfiguration> settings)
+        public ValuesController(IOptionsSnapshot<SmtpConfiguration> settings)
         {
             _smtpConfiguration = settings.Value;
         }
