@@ -14,6 +14,15 @@ managing the infrastructure that runs them.
 
 [![Deploy Shared Infrastructure](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-shared-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-shared-infra.yml)
 
+### Infrastructure
+
+- ECS Clusters
+- Application Load Balancer (Public facing)
+- EFS Volumes
+- IAM Roles and policies for ECS Tasks
+- EC2 Jumpbox Instance
+- Parameter Store Variables and Secrets
+
 ### Project Structure
 
 ```
