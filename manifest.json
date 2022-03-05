@@ -16,6 +16,18 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "articles/ansible.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ansible.html",
+          "hash": "D4gdFuuijyMIHJd9YIrU42BiAD9gs7e6c4e2zxBPLgM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Resource",
       "source_relative_path": "articles/assets/app-service-config.PNG",
       "output": {
@@ -94,6 +106,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/conda.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/conda.html",
+          "hash": "x9blKqpPa5NgPMPU65vKE35sJmpvlT1scwLWAsltNBM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/csharp_coding_standards.md",
       "output": {
         ".html": {
@@ -135,6 +159,18 @@
         ".html": {
           "relative_path": "articles/docfx.html",
           "hash": "tiyR96y/C6x7RbKgoraY186mbQH6J+/2Rh2IiuOrx3E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/ecs-cli.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/ecs-cli.html",
+          "hash": "PuOLXBodABvW8WIhciN1Fv8lP0yCBfHGIeB02V9guqA="
         }
       },
       "is_incremental": false,
@@ -254,7 +290,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "r4jnqRjNle4kQOO9RTLz4HODkUl+OrJruZcmjRx1sDg="
+          "hash": "RapNPHKpEE6vg56j4WNyjcncVZPz08DBcTolsepai9g="
         }
       },
       "is_incremental": false,
@@ -341,7 +377,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 15,
+          "total_file_count": 18,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
