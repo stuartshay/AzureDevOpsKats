@@ -1,14 +1,14 @@
 - name: Introduction
   href: intro.md
-- name: C# Coding Standards
-  href: csharp_coding_standards.md
-- name: Business Requirements
-  href: requirements.md
+- name: AWS ECS CLI
+  href: ecs-cli.md
+- name: Conda Python Setup
+  href: conda.md
 - name: Developer Onboarding
   href: onboarding.md
 - name: docFx
   href: docfx.md
-- name: Swagger 
+- name: Swagger
   href: swagger.md
 - name: SonarQube
   href: sonarqube.md
@@ -18,6 +18,9 @@
   href: details1.md
 - name: Details 2
   href: details2.md
+- name: C# Coding Standards
+  href: csharp_coding_standards.md
+
 - name: How-to tutorials
   href: howto/overview.md
   topicHref: howto/overview.md
