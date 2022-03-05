@@ -65,7 +65,7 @@ module "efs" {
   source = "../modules/efs"
 
   name               = local.realm_name
-  subnet_id          = local.subnet_ids[0]
+  subnet_ids         = local.subnet_ids
   security_group_ids = [module.security_group_efs.id]
 }
 
