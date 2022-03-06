@@ -10,7 +10,7 @@ containerName="devopskats"
 dockerImage="stuartshay/azuredevopskats:latest"
 ```
 
-### Resouce Group
+### Resource Group
 
 Create a resource group that serves as the container for the deployed resources.
 
