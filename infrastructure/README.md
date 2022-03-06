@@ -10,6 +10,11 @@ containerName="devopskats"
 dockerImage="stuartshay/azuredevopskats:latest"
 ```
 
+```
+az config param-persist on
+```
+
+
 ### Resource Group
 
 Create a resource group that serves as the container for the deployed resources.
