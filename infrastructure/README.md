@@ -1,13 +1,53 @@
-1. Create a resource group that serves as the container for the deployed resources.
+## AzureDevOpsKats CLI Script Deployment
+
+### Create Shell Variables
 
 ```
-az group create --name AzureDevOpsKats-RG --location "Central US"
+resourceGroup=AzureDevOpsKats-RG
+location="eastus"
+dnsNameLabel="azuredevopskats"
+containerName="devopskats"
+dockerImage="stuartshay/azuredevopskats:latest"
 ```
+
+### Resource Group
+
+Create a resource group that serves as the container for the deployed resources.
+
+```
+az group create --name $resourceGroup --location $location
+```
+
+## Container instance
+
+https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
+
+```
+az container create
+    --resource-group $resourceGroup \
+    --name $containerName \
+    --image $dockerImage \
+    --dns-name-label $dnsNameLabel \
+    --ports 5000
+```
+
+### Attach output streams
+
+```
+az container attach --resource-group $resourceGroup --name $containerName
+```
+
+### Cleanup
+
+```
+az container delete --resource-group $resourceGroup --name $containerName
+```
+
+## AppService
 
 2. Deploy to the resource group the template that defines the resources to create
 
-
-* AppService
+- AppService
 
 ```
 az group deployment create \
@@ -17,7 +57,7 @@ az group deployment create \
   --parameters "@arm_release/AppServiceARM.parameters.json"
 ```
 
-* WebSite
+- WebSite
 
 ```
 az group deployment create \
@@ -27,7 +67,7 @@ az group deployment create \
   --parameters "@arm_release/WebSitesARMTemplate.parameters.json"
 ```
 
-* Storage Account & Blob Storage
+- Storage Account & Blob Storage
 
 ```
 az group deployment create \
@@ -37,7 +77,7 @@ az group deployment create \
   --parameters "@arm_release/StorageAccountTemplate.parameters.json"
 ```
 
-* Key Vault
+- Key Vault
 
 ```
 az group deployment create \
@@ -47,7 +87,7 @@ az group deployment create \
   --parameters "@arm_release/KeyVaultTemplate.parameters.json"
 ```
 
-* Create & Deploy Azure Container Services
+- Create & Deploy Azure Container Services
 
 ```
 az ad sp create-for-rbac --role="Contributor" \

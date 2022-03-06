@@ -36,6 +36,14 @@ aws ecs list-tasks --cluster <cluster>
 aws ecs list-tasks --cluster devopskats-master
 ```
 
+- List Container Instances<br/>
+  https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/list-container-instances.html
+
+```
+aws ecs list-container-instances --cluster <cluster>
+aws ecs list-container-instances --cluster devopskats-master
+```
+
 ## Amazon ECS Exec to access your containers
 
 ```
