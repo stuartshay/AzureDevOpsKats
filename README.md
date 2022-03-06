@@ -5,6 +5,7 @@
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
 
 [AWS DevopsKats Website](http://devopskats-master-918290632.us-east-1.elb.amazonaws.com/)
+[Azure DevopsKats Website](azuredevopskats.eastus.azurecontainer.io:5000)
 
 ## Purpose
 
@@ -20,6 +21,12 @@ The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s
 - [ECS Service Tasks Deployment](/ecspresso)
 - [Ansible Configuration](/terraform/ansible/)
 - [GitHub Actions Workflows](https://github.com/stuartshay/AzureDevOpsKats/actions)
+
+### AzureDevOpsKats
+
+The Team also likes many of the Cloud Features of Azure and it is CLI
+
+- [Azure Container Instances](/infastrucure)
 
 ### Containerization
 
