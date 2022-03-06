@@ -26,7 +26,7 @@ The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s
 
 The Team also likes many of the Cloud Features of Azure and it is CLI
 
-- [Azure Container Instances](/infastrucure)
+- [Azure Container Instances](/infrastructure)
 
 ### Containerization
 
