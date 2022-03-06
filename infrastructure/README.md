@@ -1,4 +1,4 @@
-## AzureDevOps Kats Azure CLI Script Deployment
+## AzureDevOpsKats CLI Script Deployment
 
 ### Create Shell Variables
 
@@ -18,7 +18,7 @@ Create a resource group that serves as the container for the deployed resources.
 az group create --name $resourceGroup --location $location
 ```
 
-## Container instance
+### Container instance
 
 https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
