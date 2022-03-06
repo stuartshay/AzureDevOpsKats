@@ -23,7 +23,12 @@ az group create --name $resourceGroup --location $location
 https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
 ```
-az container create --resource-group $resourceGroup --name $containerName --image $dockerImage --dns-name-label $dnsNameLabel --ports 5000
+az container create
+    --resource-group $resourceGroup \
+    --name $containerName \
+    --image $dockerImage \
+    --dns-name-label $dnsNameLabel \
+    --ports 5000
 ```
 
 ### Attach output streams
