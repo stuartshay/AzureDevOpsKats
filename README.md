@@ -5,7 +5,7 @@
 [![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
 
 [AWS DevopsKats Website](http://devopskats-master-918290632.us-east-1.elb.amazonaws.com/)
-[Azure DevopsKats Website](azuredevopskats.eastus.azurecontainer.io:5000)
+[Azure DevopsKats Website](http://azuredevopskats.eastus.azurecontainer.io:5000)
 
 ## Purpose
 
