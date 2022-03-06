@@ -10,7 +10,9 @@ containerName="devopskats"
 dockerImage="stuartshay/azuredevopskats:latest"
 ```
 
-1. Create a resource group that serves as the container for the deployed resources.
+### Resouce Group
+
+Create a resource group that serves as the container for the deployed resources.
 
 ```
 az group create --name $resourceGroup --location $location
@@ -21,7 +23,7 @@ az group create --name $resourceGroup --location $location
 https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
 ```
-az container create --resource-group $resourceGroup --name $containerName --image stuartshay/azuredevopskats:latest --dns-name-label $dnsNameLabel --ports 5000
+az container create --resource-group $resourceGroup --name $containerName --image $dockerImage --dns-name-label $dnsNameLabel --ports 5000
 ```
 
 ### Attach output streams
@@ -30,7 +32,7 @@ az container create --resource-group $resourceGroup --name $containerName --imag
 az container attach --resource-group $resourceGroup --name $containerName
 ```
 
-Cleanup
+### Cleanup
 
 ```
 az container delete --resource-group $resourceGroup --name $containerName
