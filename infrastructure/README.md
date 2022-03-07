@@ -8,6 +8,14 @@ location="eastus"
 dnsNameLabel="azuredevopskats"
 containerName="devopskats"
 dockerImage="stuartshay/azuredevopskats:latest"
+storageAccount="azurekatsimages01"
+shareName="devopskatsimages"
+```
+
+Turn on persisted parameter
+
+```
+az config param-persist on
 ```
 
 ### Resource Group
@@ -18,17 +26,48 @@ Create a resource group that serves as the container for the deployed resources.
 az group create --name $resourceGroup --location $location
 ```
 
+### Storage Account
+
+```
+az storage account create --resource-group $resourceGroup \
+        --name $storageAccount \
+        --location $location \
+        --sku Standard_LRS
+```
+
+File Share
+
+```
+az storage share create \
+  --name $shareName \
+  --account-name $storageAccount
+```
+
 ## Container instance
 
 https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
+Get Storage Account Key
+
 ```
-az container create
-    --resource-group $resourceGroup \
-    --name $containerName \
-    --image $dockerImage \
-    --dns-name-label $dnsNameLabel \
-    --ports 5000
+STORAGE_KEY=$(az storage account keys list --resource-group $resourceGroup \
+--account-name $storageAccount --query "[0].value" --output tsv)
+
+echo $STORAGE_KEY
+```
+
+Create Container
+
+```
+az container create --resource-group $resourceGroup \
+      --name $containerName \
+      --image $dockerImage \
+      --dns-name-label $dnsNameLabel \
+      --azure-file-volume-account-name $storageAccount \
+      --azure-file-volume-account-key $STORAGE_KEY \
+      --azure-file-volume-share-name $shareName \
+      --azure-file-volume-mount-path /images \
+      --ports 5000
 ```
 
 ### Attach output streams
