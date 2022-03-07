@@ -12,6 +12,8 @@ storageAccount="azurekatsimages01"
 shareName="devopskatsimages"
 ```
 
+Turn on persisted parameter
+
 ```
 az config param-persist on
 ```
@@ -48,7 +50,9 @@ https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 Get Storage Account Key
 
 ```
-STORAGE_KEY=$(az storage account keys list --resource-group $resourceGroup --account-name $storageAccount --query "[0].value" --output tsv)
+STORAGE_KEY=$(az storage account keys list --resource-group $resourceGroup \
+--account-name $storageAccount --query "[0].value" --output tsv)
+
 echo $STORAGE_KEY
 ```
 
