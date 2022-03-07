@@ -12,6 +12,11 @@ storageAccount="azurekatsimages01"
 shareName="devopskatsimages"
 ```
 
+```
+az config param-persist on
+```
+
+
 ### Resource Group
 
 Create a resource group that serves as the container for the deployed resources.
