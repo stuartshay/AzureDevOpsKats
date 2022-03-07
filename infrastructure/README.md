@@ -8,6 +8,8 @@ location="eastus"
 dnsNameLabel="azuredevopskats"
 containerName="devopskats"
 dockerImage="stuartshay/azuredevopskats:latest"
+storageAccount="azurekatsimages01"
+shareName="devopskatsimages"
 ```
 
 ### Resource Group
@@ -16,6 +18,23 @@ Create a resource group that serves as the container for the deployed resources.
 
 ```
 az group create --name $resourceGroup --location $location
+```
+
+### Storage Account
+
+```
+az storage account create --resource-group $resourceGroup \
+        --name $storageAccount \
+        --location $location \
+        --sku Standard_LRS
+```
+
+File Share
+
+```
+az storage share create \
+  --name $shareName \
+  --account-name $storageAccount
 ```
 
 ## Container instance
