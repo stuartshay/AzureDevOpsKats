@@ -74,15 +74,16 @@ namespace AzureDevOpsKats.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<string>> KeyVaultItems()
         {
+            var secretValue = string.Empty;
+
             if(_keyVaultConfiguration.Enabled)
             {
-                //TODO
+                var client = new SecretClient(new Uri(_keyVaultConfiguration.Uri), new DefaultAzureCredential());
+                var secret = await client.GetSecretAsync("AzureDevopsConnectionString");
+                secretValue = secret.Value.ToString();
             }
 
-             var client = new SecretClient(new Uri(_keyVaultConfiguration.Uri), new DefaultAzureCredential());
-             var secret = await client.GetSecretAsync("AzureDevopsConnectionString");
-
-            return Ok(secret);
+            return Ok(secretValue);
         }
 
 
