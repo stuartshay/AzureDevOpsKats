@@ -43,9 +43,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   build-docker:
-    needs: test-netcore
     runs-on: ubuntu-latest
-
+    needs: test-netcore
+    steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
