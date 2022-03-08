@@ -48,13 +48,14 @@ az storage share create \
 ### Create Key Vault
 
 ```bash
-az keyvault create --name $keyVaultName --resource-group $resourceGroup --location $location
+az keyvault create  --resource-group $resourceGroup --name $keyVaultName --location $location
 ```
 
 Create Secret
 
 ```bash
-az keyvault secret set --vault-name $keyVaultName --name "AzureDevopsConnectionString" --value "db='localhost:username:password'"
+az keyvault secret set --vault-name $keyVaultName \
+  --name "AzureDevopsConnectionString" --value "db='localhost:username:password'"
 ```
 
 Create Key Vault Identity
