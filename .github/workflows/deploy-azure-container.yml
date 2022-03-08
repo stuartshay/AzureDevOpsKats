@@ -52,5 +52,5 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -f ${{ env.DOCKER_FILE }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ AZURE_REPOSITORY }}:${{ github.sha }} .
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ AZURE_REPOSITORY }}:${{ github.sha }}
+          docker build -f ${{ env.DOCKER_FILE }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ github.sha }} .
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ github.sha }}
