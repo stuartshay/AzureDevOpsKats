@@ -3,7 +3,7 @@
 ### Create Shell Variables
 
 ```bash
-resourceGroup=AzureDevOpsKats-RG
+resourceGroup="AzureDevOpsKats-RG"
 location="eastus"
 dnsNameLabel="azuredevopskats"
 containerName="devopskats"
@@ -11,6 +11,7 @@ dockerImage="stuartshay/azuredevopskats:latest"
 storageAccount="azurekatsimages01"
 shareName="devopskatsimages"
 keyVaultName="devopskatskeyVault"
+keyVaultIdentity="devopskatsIdentity"
 ```
 
 Turn on persisted parameter
@@ -56,13 +57,49 @@ Create Secret
 az keyvault secret set --vault-name $keyVaultName --name "AzureDevopsConnectionString" --value "db='localhost:username:password'"
 ```
 
+Create Key Vault Identity
+
+```bash
+az identity create --resource-group $resourceGroup \
+  --name $keyVaultIdentity
+```
+
+Get service principal ID of the user-assigned identity
+
+```bash
+spID=$(az identity show --resource-group $resourceGroup \
+  --name $keyVaultIdentity \
+  --query principalId --output tsv)
+
+echo $spID
+```
+
+Grant Permission to Azure Key Vault
+
+```bash
+ az keyvault set-policy --resource-group $resourceGroup \
+    --name $keyVaultName \
+    --object-id $spID \
+    --secret-permissions get
+```
+
 ## Container instance
 
 https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
+Get resource ID of the user-assigned identity
+
+```bash
+resourceID=$(az identity show --resource-group $resourceGroup \
+  --name $keyVaultIdentity \
+  --query id --output tsv)
+
+echo $resourceID
+```
+
 Get Storage Account Key
 
-```
+```bash
 STORAGE_KEY=$(az storage account keys list --resource-group $resourceGroup \
 --account-name $storageAccount --query "[0].value" --output tsv)
 
@@ -80,7 +117,8 @@ az container create --resource-group $resourceGroup \
       --azure-file-volume-account-key $STORAGE_KEY \
       --azure-file-volume-share-name $shareName \
       --azure-file-volume-mount-path /images \
-      --environment-variables ASPNETCORE_ENVIRONMENT=AzureContainer key2=value2 \
+      --environment-variables ASPNETCORE_ENVIRONMENT=AzureContainer \
+      --assign-identity $resourceID \
       --ports 5000
 ```
 
