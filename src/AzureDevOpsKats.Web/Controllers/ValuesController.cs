@@ -4,6 +4,7 @@ using AzureDevOpsKats.Common.Configuration;
 using AzureDevOpsKats.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
@@ -23,15 +24,18 @@ namespace AzureDevOpsKats.Web.Controllers
 
         private readonly KeyVaultConfiguration _keyVaultConfiguration;
 
+        private readonly ILogger<ValuesController> _logger;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="settings"></param>
         /// <param name="vault"></param>
-        public ValuesController(IOptionsSnapshot<SmtpConfiguration> settings, IOptionsSnapshot<KeyVaultConfiguration> vault)
+        public ValuesController(IOptionsSnapshot<SmtpConfiguration> settings, IOptionsSnapshot<KeyVaultConfiguration> vault, ILogger<ValuesController> logger)
         {
             _smtpConfiguration = settings.Value;
             _keyVaultConfiguration = vault.Value;
+            _logger = logger;
         }
 
         /// <summary>
@@ -78,6 +82,8 @@ namespace AzureDevOpsKats.Web.Controllers
 
             if(_keyVaultConfiguration.Enabled)
             {
+                _logger.LogInformation("KeyVault:{uri}:", _keyVaultConfiguration.Uri);
+
                 var client = new SecretClient(new Uri(_keyVaultConfiguration.Uri), new DefaultAzureCredential());
                 var secret = await client.GetSecretAsync("AzureDevopsConnectionString");
                 secretValue = secret.Value.Value;

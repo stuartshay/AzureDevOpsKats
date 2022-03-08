@@ -123,6 +123,11 @@ az container create --resource-group $resourceGroup \
       --ports 5000
 ```
 
+```bash
+az container show --resource-group $resourceGroup \
+  --name $containerName
+```
+
 ### Attach output streams
 
 ```bash
