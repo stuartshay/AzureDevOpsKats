@@ -5,6 +5,9 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
+using AzureDevOpsKats.Common.Configuration;
 
 namespace AzureDevOpsKats.Common.HealthChecks
 {
@@ -26,7 +29,12 @@ namespace AzureDevOpsKats.Common.HealthChecks
         private readonly string _systemsManagerReload;
 
         private readonly string _osNameAndVersion;
-        public VersionHealthCheck()
+
+        private readonly ILogger<VersionHealthCheck> _logger;
+
+        private readonly KeyVaultConfiguration _keyVaultConfiguration;
+
+        public VersionHealthCheck(ILogger<VersionHealthCheck> logger, IOptions<ApplicationOptions> settings)
         {
             _applicationVersionNumber = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             _applicationBuildDate = GetAssemblyLastModifiedDate();
@@ -35,6 +43,8 @@ namespace AzureDevOpsKats.Common.HealthChecks
             _systemsManagerReload = Environment.GetEnvironmentVariable("SYSTEMS_MANAGER_RELOAD");
             _dnsHostName = Dns.GetHostName();
             _osNameAndVersion = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+            _logger = logger;
+            _keyVaultConfiguration = settings?.Value?.KeyVaultConfiguration != null ? settings?.Value?.KeyVaultConfiguration : new KeyVaultConfiguration();
         }
 
         /// <summary>
@@ -54,6 +64,7 @@ namespace AzureDevOpsKats.Common.HealthChecks
                 {"Cluster Name", _clusterName},
                 {"Systems Manager Reload", _systemsManagerReload},
                 {"OsNameAndVersion", _osNameAndVersion},
+                {"KeyStoreEnabled", _keyVaultConfiguration.Enabled},
             };
 
             var healthStatus = !string.IsNullOrEmpty(_applicationVersionNumber) ? HealthStatus.Healthy : HealthStatus.Degraded;

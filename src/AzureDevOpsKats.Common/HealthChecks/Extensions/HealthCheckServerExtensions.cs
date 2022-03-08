@@ -9,7 +9,7 @@ namespace AzureDevOpsKats.Common.HealthChecks.Extensions
 {
     public static class HealthCheckServerExtensions
     {
-        public static IHealthChecksBuilder AddVersionHealthCheck(this IHealthChecksBuilder builder)
+        public static IHealthChecksBuilder AddVersionHealthCheck(this IHealthChecksBuilder builder, KeyVaultConfiguration configuration)
         {
             builder.AddCheck<VersionHealthCheck>("Version Health Check",
                 tags: new[] { HealthCheckType.System.ToString() });
