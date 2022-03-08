@@ -80,7 +80,7 @@ namespace AzureDevOpsKats.Web.Controllers
             {
                 var client = new SecretClient(new Uri(_keyVaultConfiguration.Uri), new DefaultAzureCredential());
                 var secret = await client.GetSecretAsync("AzureDevopsConnectionString");
-                secretValue = secret.Value.ToString();
+                secretValue = secret.Value.Value;
             }
 
             return Ok(secretValue);
