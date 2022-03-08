@@ -123,15 +123,26 @@ az container create --resource-group $resourceGroup \
       --ports 5000
 ```
 
+Show Resources
+
 ```bash
 az container show --resource-group $resourceGroup \
   --name $containerName
 ```
 
-### Attach output streams
+Attach output streams
 
 ```bash
-az container attach --resource-group $resourceGroup --name $containerName
+az container attach --resource-group $resourceGroup \
+  --name $containerName
+```
+
+Exec Bash in Container
+
+```bash
+az container exec --resource-group $resourceGroup \
+  --name $containerName \
+  --exec-command "/bin/bash"
 ```
 
 ### Cleanup

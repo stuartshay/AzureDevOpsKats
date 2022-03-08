@@ -51,6 +51,7 @@ RUN cat /etc/os-release
 
 RUN apt-get update && apt-get install -y \
     curl \
+    jq \
     procps \
     tree \
     && rm -rf /var/lib/apt/lists/* \
