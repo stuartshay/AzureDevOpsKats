@@ -1,14 +1,10 @@
 name: Deploy Azure Linux Container
 env:
-  AWS_ECR_REPOSITORY: azuredevopskats
-  AWS_REGION: us-east-1
-  DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
-  AWS_ECR_DOCKER_IMAGE_TAG: 6.0.${{ github.run_number }}-buildx-${{ github.sha }}
-  BRANCH_NAME: "${{ github.ref_name }}"
-  ECS_SERVICE: "devopskats-${{ github.ref_name }}"
-  ECS_CLUSTER: "devopskats-${{ github.ref_name }}"
-  S3_STATE_BUCKET_NAME: "devops-team-tfstate"
+  AZURE_REPOSITORY: azuredevopskats.web
   BUILD_NUMBER: ${{ github.run_number }}
+  AZURE_DOCKER_IMAGE_TAG: 6.0.${{ github.run_number }}-buildx-${{ github.sha }}
+  DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
+  BRANCH_NAME: "${{ github.ref_name }}"
   DEFAULT_ECS_DESIRED_COUNT: 1
 
 on:
@@ -16,7 +12,7 @@ on:
     inputs:
       desired_count:
         type: choice
-        description: ECS Desired Count
+        description: Container Desired Count
         required: true
         default: 1
         options:
@@ -34,7 +30,7 @@ on:
       - develop
 
 jobs:
-  test-coverage:
+  docker-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout GitHub Action"
@@ -44,3 +40,20 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%SZ')"
+
+      - name: "Build and push image"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build -f ${{ env.DOCKER_FILE }} \
+                --build-arg BUILD_DATE=${{ steps.date.outputs.date }} \
+                --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
+                -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }} .
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
