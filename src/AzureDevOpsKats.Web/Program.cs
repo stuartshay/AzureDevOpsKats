@@ -1,5 +1,6 @@
 ﻿using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.Logging;
+using Azure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -52,6 +53,9 @@ namespace AzureDevOpsKats.Web
                     var clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME").ToLower();
                     var systemsManagerReloadSeconds = Convert.ToDouble(Environment.GetEnvironmentVariable("SYSTEMS_MANAGER_RELOAD"));
                     builder.AddSystemsManager($"/{ApplicationConstants.SystemsManagerName}-{clusterName}", optional: false, reloadAfter: TimeSpan.FromSeconds(systemsManagerReloadSeconds));
+                }
+                if (context.HostingEnvironment.EnvironmentName == "AzureContainer")
+                {
                 }
             })
             .UseSerilog(Logging.ConfigureLogger);
