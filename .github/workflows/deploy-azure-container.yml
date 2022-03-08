@@ -1,0 +1,46 @@
+name: Deploy Azure Linux Container
+env:
+  AWS_ECR_REPOSITORY: azuredevopskats
+  AWS_REGION: us-east-1
+  DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
+  AWS_ECR_DOCKER_IMAGE_TAG: 6.0.${{ github.run_number }}-buildx-${{ github.sha }}
+  BRANCH_NAME: "${{ github.ref_name }}"
+  ECS_SERVICE: "devopskats-${{ github.ref_name }}"
+  ECS_CLUSTER: "devopskats-${{ github.ref_name }}"
+  S3_STATE_BUCKET_NAME: "devops-team-tfstate"
+  BUILD_NUMBER: ${{ github.run_number }}
+  DEFAULT_ECS_DESIRED_COUNT: 1
+
+on:
+  workflow_dispatch:
+    inputs:
+      desired_count:
+        type: choice
+        description: ECS Desired Count
+        required: true
+        default: 1
+        options:
+          - 0
+          - 1
+          - 2
+          - 5
+
+  push:
+    paths:
+      - "src/**"
+      - "test/**"
+    branches:
+      - master
+      - develop
+
+jobs:
+  test-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@v2
+
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace AzureDevOpsKats.Web.Controllers
@@ -31,6 +30,7 @@ namespace AzureDevOpsKats.Web.Controllers
         /// </summary>
         /// <param name="settings"></param>
         /// <param name="vault"></param>
+        /// <param name="logger"></param>
         public ValuesController(IOptionsSnapshot<SmtpConfiguration> settings, IOptionsSnapshot<KeyVaultConfiguration> vault, ILogger<ValuesController> logger)
         {
             _smtpConfiguration = settings.Value;
@@ -91,7 +91,5 @@ namespace AzureDevOpsKats.Web.Controllers
 
             return Ok(secretValue);
         }
-
-
     }
 }
