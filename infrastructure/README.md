@@ -58,7 +58,7 @@ az keyvault secret set --vault-name $keyVaultName \
   --name "AzureDevopsConnectionString" --value "db='localhost:username:password'"
 ```
 
-Create Key Vault Identity
+### Create Key Vault Identity
 
 ```bash
 az identity create --resource-group $resourceGroup \
