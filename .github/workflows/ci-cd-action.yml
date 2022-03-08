@@ -84,7 +84,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [build, test-netcore]
+    needs: [build-docker, test-netcore]
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
