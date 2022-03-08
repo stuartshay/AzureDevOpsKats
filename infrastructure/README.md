@@ -2,19 +2,21 @@
 
 ### Create Shell Variables
 
-```
-resourceGroup=AzureDevOpsKats-RG
+```bash
+resourceGroup="AzureDevOpsKats-RG"
 location="eastus"
 dnsNameLabel="azuredevopskats"
 containerName="devopskats"
 dockerImage="stuartshay/azuredevopskats:latest"
 storageAccount="azurekatsimages01"
 shareName="devopskatsimages"
+keyVaultName="devopskatskeyVault"
+keyVaultIdentity="devopskatsIdentity"
 ```
 
 Turn on persisted parameter
 
-```
+```bash
 az config param-persist on
 ```
 
@@ -22,13 +24,13 @@ az config param-persist on
 
 Create a resource group that serves as the container for the deployed resources.
 
-```
+```bash
 az group create --name $resourceGroup --location $location
 ```
 
 ### Storage Account
 
-```
+```bash
 az storage account create --resource-group $resourceGroup \
         --name $storageAccount \
         --location $location \
@@ -37,19 +39,68 @@ az storage account create --resource-group $resourceGroup \
 
 File Share
 
-```
+```bash
 az storage share create \
   --name $shareName \
   --account-name $storageAccount
+```
+
+### Create Key Vault
+
+```bash
+az keyvault create  --resource-group $resourceGroup --name $keyVaultName --location $location
+```
+
+Create Secret
+
+```bash
+az keyvault secret set --vault-name $keyVaultName \
+  --name "AzureDevopsConnectionString" --value "db='localhost:username:password'"
+```
+
+### Create Key Vault Identity
+
+```bash
+az identity create --resource-group $resourceGroup \
+  --name $keyVaultIdentity
+```
+
+Get service principal ID of the user-assigned identity
+
+```bash
+spID=$(az identity show --resource-group $resourceGroup \
+  --name $keyVaultIdentity \
+  --query principalId --output tsv)
+
+echo $spID
+```
+
+Grant Permission to Azure Key Vault
+
+```bash
+ az keyvault set-policy --resource-group $resourceGroup \
+    --name $keyVaultName \
+    --object-id $spID \
+    --secret-permissions get
 ```
 
 ## Container instance
 
 https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
+Get resource ID of the user-assigned identity
+
+```bash
+resourceID=$(az identity show --resource-group $resourceGroup \
+  --name $keyVaultIdentity \
+  --query id --output tsv)
+
+echo $resourceID
+```
+
 Get Storage Account Key
 
-```
+```bash
 STORAGE_KEY=$(az storage account keys list --resource-group $resourceGroup \
 --account-name $storageAccount --query "[0].value" --output tsv)
 
@@ -58,7 +109,7 @@ echo $STORAGE_KEY
 
 Create Container
 
-```
+```bash
 az container create --resource-group $resourceGroup \
       --name $containerName \
       --image $dockerImage \
@@ -67,12 +118,14 @@ az container create --resource-group $resourceGroup \
       --azure-file-volume-account-key $STORAGE_KEY \
       --azure-file-volume-share-name $shareName \
       --azure-file-volume-mount-path /images \
+      --environment-variables ASPNETCORE_ENVIRONMENT=AzureContainer \
+      --assign-identity $resourceID \
       --ports 5000
 ```
 
 ### Attach output streams
 
-```
+```bash
 az container attach --resource-group $resourceGroup --name $containerName
 ```
 

@@ -149,7 +149,7 @@ namespace AzureDevOpsKats.Web.Extensions
             string imagesRoot = Path.Combine(Directory.GetCurrentDirectory(), config.FileStorage.FilePath).Replace('\\', '/'); ;
             
             services.AddHealthChecks()
-                    .AddVersionHealthCheck()
+                    .AddVersionHealthCheck(commonConfig.KeyVaultConfiguration)
                     .AddFolderHealthCheck(imagesRoot, "Images Path")
                     .AddCheck<StartupTasksHealthCheck>("Startup Health Check", tags: new[] { HealthCheckType.ReadinessCheck.ToString(), HealthCheckType.System.ToString() })
                     .AddApiEndpointHealthChecks(commonConfig.ApiHealthConfiguration)

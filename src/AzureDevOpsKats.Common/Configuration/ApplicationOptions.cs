@@ -8,5 +8,7 @@
 
         public ElasticSearchConfiguration ElasticSearchConfiguration { get; set; }
 
+        public KeyVaultConfiguration KeyVaultConfiguration { get; set; }
+
     }
 }
