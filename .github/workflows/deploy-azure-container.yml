@@ -1,6 +1,6 @@
 name: Deploy Azure Linux Container
 env:
-  AWS_ECR_REPOSITORY: azuredevopskats
+  AZURE_REPOSITORY: azuredevopskats.web
   AWS_REGION: us-east-1
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   AWS_ECR_DOCKER_IMAGE_TAG: 6.0.${{ github.run_number }}-buildx-${{ github.sha }}
@@ -34,7 +34,7 @@ on:
       - develop
 
 jobs:
-  build-and-deploy:
+  docker-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout GitHub Action"
@@ -52,5 +52,5 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -f ${{ env.DOCKER_FILE }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }} .
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+          docker build -f ${{ env.DOCKER_FILE }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ AZURE_REPOSITORY }}:${{ github.sha }} .
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ AZURE_REPOSITORY }}:${{ github.sha }}
