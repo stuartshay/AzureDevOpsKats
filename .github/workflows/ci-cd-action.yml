@@ -1,6 +1,5 @@
 name: CI/CD Build/Test/Scan
 env:
-  SERVICE: azuredevopskats
   DH_DOCKER_IMAGE: stuartshay/azuredevopskats
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   DOCKER_IMAGE_TAG: 6.0-buildx-${{ github.run_number }}-${{ github.sha }}
@@ -43,29 +42,9 @@ jobs:
           fail_build_on_failed_tests: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  build:
+  build-docker:
     needs: test-netcore
     runs-on: ubuntu-latest
-    outputs:
-      dotnet: ${{ steps.dotnet-version.outputs.dotnet }}
-    strategy:
-      matrix:
-        dotnet: [6.0.x]
-
-    steps:
-      - id: dotnet-version
-        run: echo "::set-output name=dotnet::${{ matrix.dotnet }}"
-
-      - uses: actions/checkout@v2
-
-      - name: Setup dotnet ${{ matrix.dotnet }}
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ matrix.dotnet }}
-          include-prerelease: true
-
-      - name: Install dependencies
-        run: dotnet restore
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
