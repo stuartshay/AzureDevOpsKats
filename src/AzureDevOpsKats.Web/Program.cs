@@ -57,14 +57,6 @@ namespace AzureDevOpsKats.Web
                 }
                 if (context.HostingEnvironment.EnvironmentName == "AzureContainer")
                 {
-                    var keyVaultEndpoint = Environment.GetEnvironmentVariable("KEY_VAULT_ENDPOINT").ToLower();
-                    if (!string.IsNullOrEmpty(keyVaultEndpoint))
-                    {
-                        //https://medium.com/@alexandre.malavasi/secure-secrets-for-net-apps-using-azure-key-vault-and-managed-identities-8c68ae52248e
-                        var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                        //var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-                        //config.AddAzureKeyVault(keyVaultEndpoint, keyVaultClient, new DefaultKeyVaultSecretManager());
-                    }
                 }
             })
             .UseSerilog(Logging.ConfigureLogger);
