@@ -34,7 +34,7 @@ on:
       - develop
 
 jobs:
-  test-coverage:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout GitHub Action"
@@ -45,15 +45,15 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'build-and-deploy'
+      - name: "Build and push image"
           uses: azure/docker-login@v1
           with:
             login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
-        - run: |
-            docker build -f ${{ env.DOCKER_FILE }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }} .
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+      - run: |
+          docker build -f ${{ env.DOCKER_FILE }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }} .
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
 
 
 
