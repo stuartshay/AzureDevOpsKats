@@ -2,7 +2,7 @@
 
 ### Create Shell Variables
 
-```
+```bash
 resourceGroup=AzureDevOpsKats-RG
 location="eastus"
 dnsNameLabel="azuredevopskats"
@@ -10,11 +10,12 @@ containerName="devopskats"
 dockerImage="stuartshay/azuredevopskats:latest"
 storageAccount="azurekatsimages01"
 shareName="devopskatsimages"
+keyVaultName="devopskatskeyVault"
 ```
 
 Turn on persisted parameter
 
-```
+```bash
 az config param-persist on
 ```
 
@@ -22,13 +23,13 @@ az config param-persist on
 
 Create a resource group that serves as the container for the deployed resources.
 
-```
+```bash
 az group create --name $resourceGroup --location $location
 ```
 
 ### Storage Account
 
-```
+```bash
 az storage account create --resource-group $resourceGroup \
         --name $storageAccount \
         --location $location \
@@ -37,10 +38,22 @@ az storage account create --resource-group $resourceGroup \
 
 File Share
 
-```
+```bash
 az storage share create \
   --name $shareName \
   --account-name $storageAccount
+```
+
+### Create Key Vault
+
+```bash
+az keyvault create --name $keyVaultName --resource-group $resourceGroup --location $location
+```
+
+Create Secret
+
+```bash
+az keyvault secret set --vault-name $keyVaultName --name "AzureDevopsConnectionString" --value "db='localhost:username:password'"
 ```
 
 ## Container instance
@@ -58,7 +71,7 @@ echo $STORAGE_KEY
 
 Create Container
 
-```
+```bash
 az container create --resource-group $resourceGroup \
       --name $containerName \
       --image $dockerImage \
@@ -67,12 +80,13 @@ az container create --resource-group $resourceGroup \
       --azure-file-volume-account-key $STORAGE_KEY \
       --azure-file-volume-share-name $shareName \
       --azure-file-volume-mount-path /images \
+      --environment-variables ASPNETCORE_ENVIRONMENT=AzureContainer key2=value2 \
       --ports 5000
 ```
 
 ### Attach output streams
 
-```
+```bash
 az container attach --resource-group $resourceGroup --name $containerName
 ```
 
