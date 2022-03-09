@@ -57,3 +57,16 @@ jobs:
                 --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
                 -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }} .
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
+
+      - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: test-container-9993233
+            image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
+            cpu: 1   #Optional
+            memory: 0.1   #Optional
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: test-container
+            location: 'eastus'
