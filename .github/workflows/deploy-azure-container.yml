@@ -62,11 +62,16 @@ jobs:
         uses: "azure/aci-deploy@v1"
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: test-container-9993233
+          location: "eastus"
+          dns-name-label: test-container-999323
           image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
           cpu: 1 #Optional
           memory: 0.1 #Optional
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: test-container
-          location: "eastus"
+          azure-file-volume-share-name: "devopskatsimages"
+          azure-file-volume-account-name: "azurekatsimages01"
+          azure-file-volume-account-key: ${{ secrets.AZURE_FILE_VOLUME_KEY }}
+          azure-file-volume-mount-path: /images
+          ports: 5000
