@@ -63,7 +63,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           location: "eastus"
-          dns-name-label: azuredevopskats-container-999323
+          dns-name-label: azuredevopskats999323
           image: stuartshay/azuredevopskats
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
