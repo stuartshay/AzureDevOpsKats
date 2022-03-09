@@ -63,13 +63,11 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           location: "eastus"
-          dns-name-label: test-container-999323
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
-          cpu: 1 #Optional
-          memory: 0.1 #Optional
+          dns-name-label: azuredevopskats-container-999323
+          image: stuartshay/azuredevopskats
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: test-container
+          name: azuredevopskats-container
           azure-file-volume-share-name: "devopskatsimages"
           azure-file-volume-account-name: "azurekatsimages01"
           azure-file-volume-account-key: ${{ secrets.AZURE_FILE_VOLUME_KEY }}
