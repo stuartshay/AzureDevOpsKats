@@ -71,5 +71,8 @@ jobs:
           azure-file-volume-account-key: ${{ secrets.AZURE_FILE_VOLUME_KEY }}
           azure-file-volume-mount-path: /images
           environment-variables: ASPNETCORE_ENVIRONMENT=AzureContainer
-          assign-identity: ${{ secrets.AZURE_IDENTITY_ID }}
+          log-analytics-workspace: ${{ secrets.LOG_ANALYTICS_WORKSPACE }}
+          log-analytics-workspace-key: ${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }}
+          log-type: "ContainerInstanceLogs"
+          #assign-identity: ${{ secrets.AZURE_IDENTITY_ID }}
           ports: 5000

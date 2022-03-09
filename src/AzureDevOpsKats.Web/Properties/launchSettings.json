@@ -12,14 +12,18 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://devopskatskeyvault.vault.azure.net/",
+        "AZURE_USERNAME": "stuartshay@hotmail.com"
       }
     },
     "AzureDevOpsKats.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://devopskatskeyvault.vault.azure.net/",
+        "AZURE_USERNAME": "stuartshay@hotmail.com"
       },
       "applicationUrl": "http://localhost:5000"
     },
@@ -29,7 +33,9 @@
       "launchUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_URLS": "http://localhost:5000",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://devopskatskeyvault.vault.azure.net/",
+        "AZURE_USERNAME": "stuartshay@hotmail.com"
       },
       "distributionName": ""
     }
