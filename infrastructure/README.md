@@ -1,5 +1,7 @@
 ## AzureDevOpsKats CLI Script Deployment
 
+[![Deploy Azure Linux Container](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-azure-container.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-azure-container.yml)
+
 ### Create Shell Variables
 
 ```bash
@@ -114,9 +116,9 @@ az container create --resource-group $resourceGroup \
       --name $containerName \
       --image $dockerImage \
       --dns-name-label $dnsNameLabel \
+      --azure-file-volume-share-name $shareName \
       --azure-file-volume-account-name $storageAccount \
       --azure-file-volume-account-key $STORAGE_KEY \
-      --azure-file-volume-share-name $shareName \
       --azure-file-volume-mount-path /images \
       --environment-variables ASPNETCORE_ENVIRONMENT=AzureContainer \
       --assign-identity $resourceID \
