@@ -14,6 +14,8 @@ storageAccount="azurekatsimages01"
 shareName="devopskatsimages"
 keyVaultName="devopskatskeyVault"
 keyVaultIdentity="devopskatsIdentity"
+logAnalyticsWorkspace=""
+logAnalyticsWorkspaceKey=""
 ```
 
 Turn on persisted parameter
@@ -122,6 +124,8 @@ az container create --resource-group $resourceGroup \
       --azure-file-volume-mount-path /images \
       --environment-variables ASPNETCORE_ENVIRONMENT=AzureContainer \
       --assign-identity $resourceID \
+      --log-analytics-workspace $logAnalyticsWorkspace \
+      --log-analytics-workspace-key $logAnalyticsWorkspaceKey \
       --ports 5000
 ```
 

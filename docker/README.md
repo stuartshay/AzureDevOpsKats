@@ -2,7 +2,7 @@
 
 Setup
 
-Windows Host File: `C:\Windows\System32\drivers\etc\hosts`
+Windows Host File: `C:\Windows\System32\drivers\etc\hosts`</br>
 Mac/Linux: `/etc/hosts`
 
 ```
