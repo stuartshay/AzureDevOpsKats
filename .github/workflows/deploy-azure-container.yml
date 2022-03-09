@@ -65,8 +65,6 @@ jobs:
           location: "eastus"
           dns-name-label: azuredevopskats999323
           image: stuartshay/azuredevopskats
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: azuredevopskats-container
           azure-file-volume-share-name: "devopskatsimages"
           azure-file-volume-account-name: "azurekatsimages01"
