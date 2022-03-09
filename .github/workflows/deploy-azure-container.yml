@@ -57,3 +57,19 @@ jobs:
                 --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
                 -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }} .
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
+
+      - name: "Deploy to Azure Container Instances"
+        uses: "azure/aci-deploy@v1"
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          location: "eastus"
+          dns-name-label: azuredevopskats999323
+          image: stuartshay/azuredevopskats
+          name: azuredevopskats-container
+          azure-file-volume-share-name: "devopskatsimages"
+          azure-file-volume-account-name: "azurekatsimages01"
+          azure-file-volume-account-key: ${{ secrets.AZURE_FILE_VOLUME_KEY }}
+          azure-file-volume-mount-path: /images
+          environment-variables: ASPNETCORE_ENVIRONMENT=AzureContainer
+          assign-identity: ${{ secrets.AZURE_IDENTITY_ID }}
+          ports: 5000
