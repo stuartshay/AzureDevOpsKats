@@ -47,7 +47,6 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%SZ')"
 
       - name: Docker Image Uri
-        id: date
         run: echo $AZURE_DOCKER_IMAGE
 
       - name: "Build and push image"
