@@ -70,7 +70,7 @@ jobs:
                 --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
                 -t ${{ env.AZURE_DOCKER_IMAGE_DEFAULT }} \
                 -t ${{ env.AZURE_DOCKER_IMAGE }} .
-          docker push ${{ env.AZURE_DOCKER_IMAGE }} --all-tags
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY}} --all-tags
 
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
