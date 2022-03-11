@@ -3,6 +3,7 @@ env:
   AZURE_REPOSITORY: azuredevopskats.web
   AZURE_DOCKER_IMAGE_TAG: 6.0.${{ github.run_number }}-buildx-${{ github.sha }}
   AZURE_DOCKER_IMAGE: ${{ secrets.REGISTRY_LOGIN_SERVER }}/azuredevopskats.web:6.0.${{ github.run_number }}-buildx-${{ github.sha }}
+  AZURE_DOCKER_IMAGE_DEFAULT: ${{ secrets.REGISTRY_LOGIN_SERVER }}/azuredevopskats.web:lattest
   BUILD_NUMBER: ${{ github.run_number }}
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   BRANCH_NAME: "${{ github.ref_name }}"
@@ -67,8 +68,9 @@ jobs:
           docker build -f ${{ env.DOCKER_FILE }} \
                 --build-arg BUILD_DATE=${{ steps.date.outputs.date }} \
                 --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
+                -t ${{ env.AZURE_DOCKER_IMAGE_DEFAULT }} \
                 -t ${{ env.AZURE_DOCKER_IMAGE }} .
-          docker push ${{ env.AZURE_DOCKER_IMAGE }}
+          docker push ${{ env.AZURE_DOCKER_IMAGE }} --all-tags
 
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
