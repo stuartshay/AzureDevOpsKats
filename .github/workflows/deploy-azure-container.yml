@@ -50,7 +50,7 @@ jobs:
         run: echo $AZURE_DOCKER_IMAGE
 
       - name: Azure Container Registry Login
-      - uses: azure/docker-login@v1
+        uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
