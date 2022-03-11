@@ -2,7 +2,7 @@ name: Deploy Azure Linux Container
 env:
   AZURE_REPOSITORY: azuredevopskats.web
   AZURE_DOCKER_IMAGE_TAG: 6.0.${{ github.run_number }}-buildx-${{ github.sha }}
-  AZURE_DOCKER_IMAGE: "${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}"
+  AZURE_DOCKER_IMAGE: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
   BUILD_NUMBER: ${{ github.run_number }}
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   BRANCH_NAME: "${{ github.ref_name }}"
