@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using StackExchange.Redis;
 using System;
+using System.Collections;
 using System.IO;
 
 namespace AzureDevOpsKats.Web.Extensions
@@ -47,6 +48,11 @@ namespace AzureDevOpsKats.Web.Extensions
             Console.WriteLine($"Elastic Uri: {elasticUrl}");
             Console.WriteLine($"Elastic Enabled: {elasticEnabled}");
             Console.WriteLine("MemoryHealth - Healthy:{0}", config.MemoryHealthConfiguration.Healthy);
+
+            foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
+            {
+                Console.WriteLine($"{0}={1}", (string)env.Key, (string)env.Value);
+            }
         }
 
         public static IServiceCollection AddCustomDataProtection(this IServiceCollection services, IConfiguration configuration)

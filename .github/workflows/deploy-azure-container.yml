@@ -74,5 +74,7 @@ jobs:
           log-analytics-workspace: ${{ secrets.LOG_ANALYTICS_WORKSPACE }}
           log-analytics-workspace-key: ${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }}
           log-type: "ContainerInstanceLogs"
-          #assign-identity: ${{ secrets.AZURE_IDENTITY_ID }}
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           ports: 5000

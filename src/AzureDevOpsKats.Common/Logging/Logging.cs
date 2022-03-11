@@ -22,7 +22,7 @@ namespace AzureDevOpsKats.Common.Logging
 
                loggerConfiguration.MinimumLevel.Information()
                    .Enrich.FromLogContext()
-                   .Enrich.WithExceptionDetails()
+                   .Enrich.WithAssemblyName()
                    .Enrich.WithMachineName()
                    .Enrich.WithProperty("Version", Assembly.GetEntryAssembly()?.GetName().Version)
                    .Enrich.WithProperty("ApplicationName", env.ApplicationName)
