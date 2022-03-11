@@ -1,8 +1,9 @@
 name: Deploy Azure Linux Container
 env:
   AZURE_REPOSITORY: azuredevopskats.web
-  BUILD_NUMBER: ${{ github.run_number }}
   AZURE_DOCKER_IMAGE_TAG: 6.0.${{ github.run_number }}-buildx-${{ github.sha }}
+  AZURE_DOCKER_IMAGE: "${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}"
+  BUILD_NUMBER: ${{ github.run_number }}
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   BRANCH_NAME: "${{ github.ref_name }}"
   DEFAULT_ECS_DESIRED_COUNT: 1
@@ -46,6 +47,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%SZ')"
 
       - name: "Build and push image"
+        id: build-image
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
@@ -55,8 +57,8 @@ jobs:
           docker build -f ${{ env.DOCKER_FILE }} \
                 --build-arg BUILD_DATE=${{ steps.date.outputs.date }} \
                 --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
-                -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }} .
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY }}:${{ env.AZURE_DOCKER_IMAGE_TAG }}
+                -t ${{ env.AZURE_DOCKER_IMAGE }} .
+          docker push ${{ env.AZURE_DOCKER_IMAGE }}
 
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
@@ -64,7 +66,8 @@ jobs:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           location: "eastus"
           dns-name-label: azuredevopskats999323
-          image: stuartshay/azuredevopskats
+          image: ${{ env.AZURE_DOCKER_IMAGE }}
+          #image: stuartshay/azuredevopskats
           name: azuredevopskats-container
           azure-file-volume-share-name: "devopskatsimages"
           azure-file-volume-account-name: "azurekatsimages01"
