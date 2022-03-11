@@ -56,7 +56,6 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-
       - name: "Build and push image"
         id: build-image
         uses: azure/docker-login@v1
