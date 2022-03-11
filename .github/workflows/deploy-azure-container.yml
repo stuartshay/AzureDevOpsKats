@@ -33,6 +33,9 @@ on:
 jobs:
   docker-build-and-deploy:
     runs-on: ubuntu-latest
+    outputs:
+      app_url: ${{ steps.deploy-container.outputs.app_url }}
+
     steps:
       - name: "Checkout GitHub Action"
         uses: actions/checkout@v2
@@ -73,10 +76,11 @@ jobs:
 
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
+        id: deploy-container
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           location: "eastus"
-          dns-name-label: azuredevopskats999323
+          dns-name-label: devopskats
           image: ${{ env.AZURE_DOCKER_IMAGE }}
           #image: stuartshay/azuredevopskats
           name: azuredevopskats-container
@@ -92,3 +96,14 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           ports: 5000
+
+  health-check:
+    runs-on: ubuntu-latest
+    needs: docker-build-and-deploy
+    env:
+      url: ${{needs.deploy.outputs.app_url}}/health
+
+    steps:
+      - name: Application health check
+        run: |
+          echo "Container Public Url: ${{needs.deploy.outputs.app_url}}"
