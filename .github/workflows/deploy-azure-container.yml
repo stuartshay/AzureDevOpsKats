@@ -80,10 +80,9 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           location: "eastus"
-          dns-name-label: devopskats
+          dns-name-label: azuredevopskats
           image: ${{ env.AZURE_DOCKER_IMAGE }}
-          #image: stuartshay/azuredevopskats
-          name: azuredevopskats-container
+          name: devopskats
           azure-file-volume-share-name: "devopskatsimages"
           azure-file-volume-account-name: "azurekatsimages01"
           azure-file-volume-account-key: ${{ secrets.AZURE_FILE_VOLUME_KEY }}
