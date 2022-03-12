@@ -74,6 +74,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     outputs:
       app_url: ${{ steps.deploy-container.outputs.app_url }}
 
@@ -102,7 +103,7 @@ jobs:
 
   health-check:
     runs-on: ubuntu-latest
-    needs: docker-build-and-deploy
+    needs: deploy
     env:
       url: ${{needs.deploy.outputs.app_url}}/health
 
