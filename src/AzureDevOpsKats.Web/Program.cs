@@ -8,7 +8,6 @@ using Serilog;
 using System;
 using System.Diagnostics;
 using System.IO;
-using Microsoft.Azure.Services.AppAuthentication;
 
 namespace AzureDevOpsKats.Web
 {
@@ -43,7 +42,7 @@ namespace AzureDevOpsKats.Web
         /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-             .ConfigureWebHostDefaults(webBuilder =>
+            .ConfigureWebHostDefaults(webBuilder =>
              {
                  webBuilder.UseStartup<Startup>();
              })
@@ -57,6 +56,8 @@ namespace AzureDevOpsKats.Web
                 }
                 if (context.HostingEnvironment.EnvironmentName == "AzureContainer")
                 {
+                    //var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+                    //builder.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
                 }
             })
             .UseSerilog(Logging.ConfigureLogger);

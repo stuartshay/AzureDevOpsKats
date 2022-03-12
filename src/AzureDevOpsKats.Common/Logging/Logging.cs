@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
+using Serilog.Sinks.AzureAnalytics;
 using Serilog.Sinks.Elasticsearch;
 using System;
 using System.Reflection;
@@ -21,7 +22,7 @@ namespace AzureDevOpsKats.Common.Logging
 
                loggerConfiguration.MinimumLevel.Information()
                    .Enrich.FromLogContext()
-                   .Enrich.WithExceptionDetails()
+                   .Enrich.WithAssemblyName()
                    .Enrich.WithMachineName()
                    .Enrich.WithProperty("Version", Assembly.GetEntryAssembly()?.GetName().Version)
                    .Enrich.WithProperty("ApplicationName", env.ApplicationName)
@@ -50,7 +51,14 @@ namespace AzureDevOpsKats.Common.Logging
                    var workspaceId = "32c00bc5-41f2-43f9-8178-d05040780d39"; // Environment.GetEnvironmentVariable("WORKSPACE_ID");
                    var primaryKey = "33H34XMVI3Cm3TAZykqTzsidOt/zQM+bs8pVKe6fQXpPnhzx3VQbk8RLVdvo9pI3cEy0F5RVgP5yGjXI4oW2iw=="; //Environment.GetEnvironmentVariable("PRIMARY_KEY");
 
-                   loggerConfiguration.WriteTo.AzureAnalytics(workspaceId, primaryKey, env.ApplicationName);
+                   loggerConfiguration.WriteTo.AzureAnalytics(workspaceId, primaryKey, new ConfigurationSettings
+                   {
+                       Flatten = false,
+                       LogName = $"{env.ApplicationName}{env.EnvironmentName}",
+                       BufferSize = 1,
+                       BatchSize = 1
+                   },
+                   restrictedToMinimumLevel: LogEventLevel.Information);
                }
 
                var elasticUrl = hostingContext.Configuration.GetValue<string>("Logging:ElasticSearchConfiguration:ElasticUrl");
