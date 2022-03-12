@@ -6,7 +6,7 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
   DOCKER_FILE: docker/azuredevopskats-web-multi.dockerfile/Dockerfile
   BRANCH_NAME: "${{ github.ref_name }}"
-  DEFAULT_ECS_DESIRED_COUNT: 1
+  DEFAULT_ECS_DESIRED_COUNT: 2
 
 on:
   workflow_dispatch:
