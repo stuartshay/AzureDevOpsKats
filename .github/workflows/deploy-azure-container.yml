@@ -70,7 +70,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-
+    outputs:
+      app-url: ${{ steps.deploy-container.outputs.app-url }}
 
     steps:
       - name: "Login via Azure CLI"
@@ -100,7 +101,7 @@ jobs:
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           ports: 5000
 
-       - name: Echo
+      - name: Echo
          env:
           URL: ${{ steps.deploy-container.outputs.app-url }}
         run: |
