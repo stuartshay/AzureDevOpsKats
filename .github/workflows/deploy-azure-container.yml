@@ -102,12 +102,11 @@ jobs:
           ports: 5000
 
       - name: Echo
-         env:
+        env:
           URL: ${{ steps.deploy-container.outputs.app-url }}
         run: |
           echo "Container Public Url: ${{steps.deploy-container.outputs.app-url}}"
           echo $URL
-
 
   health-check:
     runs-on: ubuntu-latest
