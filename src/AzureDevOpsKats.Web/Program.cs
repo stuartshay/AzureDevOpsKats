@@ -60,12 +60,12 @@ namespace AzureDevOpsKats.Web
                 {
                     var keyVaultEndpoint = Environment.GetEnvironmentVariable("AZURE_VAULT_URI");
                     
-                    var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                    var keyVaultClient = new KeyVaultClient(
-                        new KeyVaultClient.AuthenticationCallback(
-                            azureServiceTokenProvider.KeyVaultTokenCallback));
+                    //var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                    //var keyVaultClient = new KeyVaultClient(
+                    //    new KeyVaultClient.AuthenticationCallback(
+                    //        azureServiceTokenProvider.KeyVaultTokenCallback));
 
-                    builder.AddAzureKeyVault(keyVaultEndpoint,keyVaultClient, new DefaultKeyVaultSecretManager());
+                    //builder.AddAzureKeyVault(keyVaultEndpoint,keyVaultClient, new DefaultKeyVaultSecretManager());
                 }
             })
             .UseSerilog(Logging.ConfigureLogger);
