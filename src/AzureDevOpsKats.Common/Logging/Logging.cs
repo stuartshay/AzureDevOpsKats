@@ -48,10 +48,10 @@ namespace AzureDevOpsKats.Common.Logging
 
                if (hostingContext.HostingEnvironment.EnvironmentName == "AzureContainer")
                {
-                   var workspaceId = "32c00bc5-41f2-43f9-8178-d05040780d39"; // Environment.GetEnvironmentVariable("WORKSPACE_ID");
-                   var primaryKey = "33H34XMVI3Cm3TAZykqTzsidOt/zQM+bs8pVKe6fQXpPnhzx3VQbk8RLVdvo9pI3cEy0F5RVgP5yGjXI4oW2iw=="; //Environment.GetEnvironmentVariable("PRIMARY_KEY");
+                   var workspaceId = Environment.GetEnvironmentVariable("WORKSPACE_ID");
+                   var workspaceKey = Environment.GetEnvironmentVariable("WORKSPACE_KEY");
 
-                   loggerConfiguration.WriteTo.AzureAnalytics(workspaceId, primaryKey, new ConfigurationSettings
+                   loggerConfiguration.WriteTo.AzureAnalytics(workspaceId, workspaceKey, new ConfigurationSettings
                    {
                        Flatten = false,
                        LogName = $"{env.ApplicationName}{env.EnvironmentName}",
