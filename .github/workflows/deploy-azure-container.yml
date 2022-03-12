@@ -31,10 +31,8 @@ on:
       - develop
 
 jobs:
-  docker-build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      app_url: ${{ steps.deploy-container.outputs.app_url }}
 
     steps:
       - name: "Checkout GitHub Action"
@@ -74,6 +72,12 @@ jobs:
                 -t ${{ env.AZURE_DOCKER_IMAGE }} .
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY}} --all-tags
 
+  deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      app_url: ${{ steps.deploy-container.outputs.app_url }}
+
+    steps:
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
         id: deploy-container
