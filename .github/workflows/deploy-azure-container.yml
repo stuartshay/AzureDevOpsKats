@@ -118,4 +118,4 @@ jobs:
       - name: Application health check
         run: |
           echo "Container Public Url: ${{needs.deploy.outputs.app-url}}"
-          echo "Health Check $health-url"
+          echo $health-url
