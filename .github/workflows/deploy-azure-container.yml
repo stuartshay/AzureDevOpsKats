@@ -116,3 +116,33 @@ jobs:
         run: |
           echo "Container Public Url: $url"
           curl -v --fail -s --max-time 3 --connect-timeout ${{ env.connect-timeout }} --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} ${{ env.url }} -L  | jq
+
+  selenium-test:
+    needs: [health-check, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Selenium Test
+        uses: addnab/docker-run-action@v3
+        env:
+          TEST_URL: "${{needs.deploy.outputs.app-url}}"
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
+          image: stuartshay/azuredevopskats-selenium:latest
+          options: -v /tmp/assets:/tmp/assets -v /dev/shm:/dev/shm -e TEST_URL
+          run: |
+            echo "TEST URL: $TEST_URL"
+            python3 selenium_screenshot.py $TEST_URL /tmp/assets/devops.png "1000" "500" "//body" "//target"
+            ls -al /tmp/assets
+
+      - name: Archive test artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-screenshots
+          path: |
+            /tmp/assets
+
+      - name: Download a test artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: test-screenshots
