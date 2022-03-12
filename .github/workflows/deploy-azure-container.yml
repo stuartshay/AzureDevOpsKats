@@ -112,7 +112,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     env:
-      url: ${{needs.deploy.outputs.app-url}}/health
+      url: ${{needs.deploy.outputs.app-url}}health
       max-attempts: 15
       retry-delay-sec: 5
       connect-timeout: 1
