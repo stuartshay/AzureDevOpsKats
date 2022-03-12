@@ -92,21 +92,15 @@ jobs:
           azure-file-volume-account-name: "azurekatsimages01"
           azure-file-volume-account-key: ${{ secrets.AZURE_FILE_VOLUME_KEY }}
           azure-file-volume-mount-path: /images
-          environment-variables: ASPNETCORE_ENVIRONMENT=AzureContainer
           log-analytics-workspace: ${{ secrets.LOG_ANALYTICS_WORKSPACE }}
           log-analytics-workspace-key: ${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }}
           log-type: "ContainerInstanceLogs"
           registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          environment-variables: ASPNETCORE_ENVIRONMENT=AzureContainer
+          secure-environment-variables: WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE }} WORKSPACE_KEY=${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }}
           ports: 5000
-
-      - name: Echo
-        env:
-          URL: ${{ steps.deploy-container.outputs.app-url }}
-        run: |
-          echo "Container Public Url: ${{steps.deploy-container.outputs.app-url}}"
-          echo $URL
 
   health-check:
     runs-on: ubuntu-latest
@@ -120,6 +114,5 @@ jobs:
     steps:
       - name: Application health check
         run: |
-          echo "Container Public Url: ${{needs.deploy.outputs.app-url}}"
-          echo $url
+          echo "Container Public Url: $url"
           curl -v --fail -s --max-time 3 --connect-timeout ${{ env.connect-timeout }} --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} ${{ env.url }} -L  | jq
