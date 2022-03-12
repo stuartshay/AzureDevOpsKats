@@ -96,6 +96,10 @@ jobs:
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           ports: 5000
 
+      - name: health check
+        run: |
+          echo "Container Public Url: ${{needs.deploy.outputs.app_url}}"
+
   health-check:
     runs-on: ubuntu-latest
     needs: docker-build-and-deploy
