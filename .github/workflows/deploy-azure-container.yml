@@ -124,7 +124,7 @@ jobs:
       - name: Selenium Test
         uses: addnab/docker-run-action@v3
         env:
-          TEST_URL: "http://${{needs.deploy.outputs.app-url}}"
+          TEST_URL: "${{needs.deploy.outputs.app-url}}"
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
