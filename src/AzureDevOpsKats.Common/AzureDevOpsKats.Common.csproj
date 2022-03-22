@@ -12,7 +12,7 @@
     <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="6.0.3" />
     <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="6.0.2" />
-    <PackageReference Include="AWS.Logger.SeriLog" Version="3.1.1" />
+    <PackageReference Include="AWS.Logger.SeriLog" Version="3.2.0" />
     <PackageReference Include="Azure.Identity" Version="1.5.0" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.2.0" />
     <PackageReference Include="Flurl" Version="3.0.4" />
