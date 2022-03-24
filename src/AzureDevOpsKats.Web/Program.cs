@@ -1,6 +1,5 @@
 ﻿using AzureDevOpsKats.Common.Constants;
 using AzureDevOpsKats.Common.Logging;
-using Azure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +7,9 @@ using Serilog;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
 
 namespace AzureDevOpsKats.Web
 {
@@ -56,8 +58,14 @@ namespace AzureDevOpsKats.Web
                 }
                 if (context.HostingEnvironment.EnvironmentName == "AzureContainer")
                 {
-                    //var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-                    //builder.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+                    var keyVaultEndpoint = Environment.GetEnvironmentVariable("AZURE_VAULT_URI");
+                    
+                    //var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                    //var keyVaultClient = new KeyVaultClient(
+                    //    new KeyVaultClient.AuthenticationCallback(
+                    //        azureServiceTokenProvider.KeyVaultTokenCallback));
+
+                    //builder.AddAzureKeyVault(keyVaultEndpoint,keyVaultClient, new DefaultKeyVaultSecretManager());
                 }
             })
             .UseSerilog(Logging.ConfigureLogger);
