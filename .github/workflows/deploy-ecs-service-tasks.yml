@@ -110,6 +110,7 @@ jobs:
                --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
+  
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -189,44 +190,15 @@ jobs:
   health-check:
     needs: deploy
     if: needs.deploy.outputs.ecs_desired_count > 0
-    runs-on: ubuntu-latest
-    env:
-      url: ${{needs.deploy.outputs.app_url}}/health
-      max-attempts: 15
-      retry-delay-sec: 5
-      connect-timeout: 1
-    steps:
-      - name: Application health check
-        run: |
-          echo "ECS Task Public IP: ${{needs.deploy.outputs.app_url}}"
-          curl -v --fail -s --max-time 3 --connect-timeout ${{ env.connect-timeout }} --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} ${{ env.url }} -L  | jq
+    uses: stuartshay/WorkflowCommon/.github/workflows/health-check.yml@master
+    with:
+      test_url: ${{needs.deploy.outputs.app_url}}/health
 
   selenium-test:
     needs: [health-check, deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Selenium Test
-        uses: addnab/docker-run-action@v3
-        env:
-          TEST_URL: "http://${{needs.deploy.outputs.app_url}}"
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
-          image: stuartshay/azuredevopskats-selenium:latest
-          options: -v /tmp/assets:/tmp/assets -v /dev/shm:/dev/shm -e TEST_URL
-          run: |
-            echo "TEST URL: $TEST_URL"
-            python3 selenium_screenshot.py $TEST_URL /tmp/assets/devops.png "1000" "500" "//body" "//target"
-            ls -al /tmp/assets
-
-      - name: Archive test artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-screenshots
-          path: |
-            /tmp/assets
-
-      - name: Download a test artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: test-screenshots
+    uses: stuartshay/WorkflowCommon/.github/workflows/selenium-test.yml@master
+    with:
+      test_url: "http://${{needs.deploy.outputs.app_url}}"
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
