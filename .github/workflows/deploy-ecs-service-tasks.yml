@@ -172,7 +172,7 @@ jobs:
   post-deploy:
     needs: deploy
     if: needs.deploy.outputs.ecs_desired_count > 0
-    uses: stuartshay/WorkflowCommon/.github/workflows/get-ecs-app-url.yml@master
+    uses: stuartshay/WorkflowCommon/.github/workflows/post-deploy.yml@master
     with:
       ecs_cluster: ${{ needs.deploy.outputs.ecs_cluster }}
       ecs_service: ${{ needs.deploy.outputs.ecs_service }}
