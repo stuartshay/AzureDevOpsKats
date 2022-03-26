@@ -165,30 +165,33 @@ jobs:
             ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT diff
             ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy
           fi
-      - name: Set Task Public IP
-        if: ${{ env.ECS_DESIRED_COUNT > 0 }}
-        run: |
-          #if (( ${{ env.ECS_DESIRED_COUNT }} > 0 )); then
-          TASK_ARN=$(aws ecs list-tasks --cluster $ECS_CLUSTER --service-name $ECS_SERVICE --query 'taskArns[0]' --output text)
-          TASK_DETAILS=$(aws ecs describe-tasks --cluster $ECS_CLUSTER --task "${TASK_ARN}" --query 'tasks[0].attachments[0].details')
-          ENI=$(echo $TASK_DETAILS | jq -r '.[] | select(.name=="networkInterfaceId").value')
-          PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
-          echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
-          #fi
+      # - name: Set Task Public IP
+      #   if: ${{ env.ECS_DESIRED_COUNT > 0 }}
+      #   run: |
+      #     TASK_ARN=$(aws ecs list-tasks --cluster $ECS_CLUSTER --service-name $ECS_SERVICE --query 'taskArns[0]' --output text)
+      #     TASK_DETAILS=$(aws ecs describe-tasks --cluster $ECS_CLUSTER --task "${TASK_ARN}" --query 'tasks[0].attachments[0].details')
+      #     ENI=$(echo $TASK_DETAILS | jq -r '.[] | select(.name=="networkInterfaceId").value')
+      #     PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "${ENI}" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
+      #     echo "TASK_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
+      # - name: Get Task Public IP
+      #   if: ${{ env.ECS_DESIRED_COUNT > 0 }}
+      #   id: set_app_url
+      #   run: |
+      #     echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
+      #     if [ "$BRANCH_NAME" != "master" ]
+      #     then
+      #       echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}:5000"
+      #     else
+      #       APP_URL=$(aws elbv2 describe-load-balancers --names $ECS_CLUSTER --query 'LoadBalancers[0].DNSName' --output text)
+      #       echo "::set-output name=app_url::$APP_URL"
+      #     fi
       - name: Get Task Public IP
         if: ${{ env.ECS_DESIRED_COUNT > 0 }}
         id: set_app_url
-        run: |
-          #if (( ${{ env.ECS_DESIRED_COUNT }} > 0 )); then
-          echo "ECS Task Public IP: ${{ env.TASK_PUBLIC_IP }}"
-          if [ "$BRANCH_NAME" != "master" ]
-          then
-            echo "::set-output name=app_url::${{ env.TASK_PUBLIC_IP }}:5000"
-          else
-            APP_URL=$(aws elbv2 describe-load-balancers --names $ECS_CLUSTER --query 'LoadBalancers[0].DNSName' --output text)
-            echo "::set-output name=app_url::$APP_URL"
-          fi
-          #fi
+        uses: stuartshay/WorkflowCommon/.github/workflows/get-ecs-app-url.yml@master
+        with:
+          ecs_cluster: $ECS_CLUSTER
+          ecs_service: $ECS_SERVICE
 
   health-check:
     needs: deploy
