@@ -66,7 +66,7 @@ namespace AzureDevOpsKats.Web
                     var azAppConfigConnection = configuration["AppConfig"] != null ?
                        configuration["AppConfig"] : Environment.GetEnvironmentVariable("ENDPOINTS_APPCONFIG");
                     
-                    builder.AddAzureAppConfiguration(azAppConfigConnection);
+                    //builder.AddAzureAppConfiguration(azAppConfigConnection);
                 }
 
             })
