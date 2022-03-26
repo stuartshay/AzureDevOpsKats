@@ -31,7 +31,6 @@ on:
       - "test/**"
     branches:
       - master
-      - develop
 
 jobs:
   test-coverage:
@@ -111,7 +110,7 @@ jobs:
                --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$AWS_ECR_DOCKER_IMAGE_TAG"
-  
+
   deploy:
     needs: build
     runs-on: ubuntu-latest

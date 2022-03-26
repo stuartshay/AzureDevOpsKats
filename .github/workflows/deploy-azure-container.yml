@@ -28,7 +28,6 @@ on:
       - "test/**"
     branches:
       - master
-      - develop
 
 jobs:
   build:
