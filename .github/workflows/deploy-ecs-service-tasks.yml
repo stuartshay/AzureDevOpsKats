@@ -186,13 +186,13 @@ jobs:
       #       echo "::set-output name=app_url::$APP_URL"
       #     fi
 
-    post-deploy:
-      needs: deploy
-      if: needs.deploy.outputs.ecs_desired_count > 0
-      uses: stuartshay/WorkflowCommon/.github/workflows/get-ecs-app-url.yml@master
-      with:
-        ecs_cluster: $ECS_CLUSTER
-        ecs_service: $ECS_SERVICE
+  post-deploy:
+    needs: deploy
+    if: needs.deploy.outputs.ecs_desired_count > 0
+    uses: stuartshay/WorkflowCommon/.github/workflows/get-ecs-app-url.yml@master
+    with:
+      ecs_cluster: $ECS_CLUSTER
+      ecs_service: $ECS_SERVICE
 
   health-check:
     needs: post-deploy
