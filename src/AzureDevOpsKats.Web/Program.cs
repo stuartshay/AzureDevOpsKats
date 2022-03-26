@@ -58,9 +58,9 @@ namespace AzureDevOpsKats.Web
                 }
                 if (context.HostingEnvironment.EnvironmentName == "AzureContainer")
                 {
-                    var configuration = context.Configuration; 
-                    var azAppConfigConnection = configuration["AppConfig"] != null ?
-                       configuration["AppConfig"] : Environment.GetEnvironmentVariable("ENDPOINTS_APPCONFIG");
+                    //var configuration = context.Configuration; 
+                    //var azAppConfigConnection = configuration["AppConfig"] != null ?
+                    //   configuration["AppConfig"] : Environment.GetEnvironmentVariable("ENDPOINTS_APPCONFIG");
 
                     //var keyVaultEndpoint = Environment.GetEnvironmentVariable("AZURE_VAULT_URI");
 
