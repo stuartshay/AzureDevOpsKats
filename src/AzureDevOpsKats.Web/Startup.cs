@@ -161,6 +161,7 @@ namespace AzureDevOpsKats.Web
             });
 
             startupHealthCheck.StartupTaskCompleted = true;
+            //services.AddAzureAppConfiguration();
         }
 
         /// <summary>
@@ -189,6 +190,7 @@ namespace AzureDevOpsKats.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            //app.UseAzureAppConfiguration();
 
             app.UseRouting();
             app.UseAuthorization();
