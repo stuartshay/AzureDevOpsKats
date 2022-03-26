@@ -102,19 +102,10 @@ jobs:
           ports: 5000
 
   health-check:
-    runs-on: ubuntu-latest
     needs: deploy
-    env:
-      url: ${{needs.deploy.outputs.app-url}}health
-      max-attempts: 15
-      retry-delay-sec: 5
-      connect-timeout: 1
-
-    steps:
-      - name: Application health check
-        run: |
-          echo "Container Public Url: $url"
-          curl -v --fail -s --max-time 3 --connect-timeout ${{ env.connect-timeout }} --retry ${{ env.max-attempts }} --retry-delay ${{ env.retry-delay-sec }} ${{ env.url }} -L  | jq
+    uses: stuartshay/WorkflowCommon/.github/workflows/health-check.yml@master
+    with:
+      test_url: ${{needs.deploy.outputs.app_url}}health
 
   selenium-test:
     needs: [health-check, deploy]
