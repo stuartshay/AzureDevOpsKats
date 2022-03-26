@@ -118,6 +118,8 @@ jobs:
     outputs:
       app_url: ${{ steps.set_app_url.outputs.app_url }}
       ecs_desired_count: ${{ steps.ecs_deploy.outputs.ecs_desired_count }}
+      ecs_cluster: ${{ steps.ecs_deploy.outputs.ecs_cluster }}
+      ecs_service: ${{ steps.ecs_deploy.outputs.ecs_service }}
     steps:
       - name: Configure AWS credentials
         id: aws-cred
@@ -153,6 +155,8 @@ jobs:
               ECS_DESIRED_COUNT=${{ env.DEFAULT_ECS_DESIRED_COUNT }}
           fi
           echo "::set-output name=ecs_desired_count::$ECS_DESIRED_COUNT"
+          echo "::set-output name=ecs_cluster::$ECS_CLUSTER"
+          echo "::set-output name=ecs_service::$ECS_SERVICE"
           echo "ECS_DESIRED_COUNT=$ECS_DESIRED_COUNT" >> $GITHUB_ENV
           cd ecspresso
           ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT verify
@@ -191,12 +195,11 @@ jobs:
     if: needs.deploy.outputs.ecs_desired_count > 0
     uses: stuartshay/WorkflowCommon/.github/workflows/get-ecs-app-url.yml@master
     with:
-      ecs_cluster: $ECS_CLUSTER
-      ecs_service: $ECS_SERVICE
+      ecs_cluster: ${{ needs.deploy.outputs.ecs_cluster }}
+      ecs_service: ${{ needs.deploy.outputs.ecs_service }}
 
   health-check:
     needs: post-deploy
-    #if: needs.deploy.outputs.ecs_desired_count > 0
     uses: stuartshay/WorkflowCommon/.github/workflows/health-check.yml@master
     with:
       test_url: ${{ needs.post-deploy.outputs.app_url }}/health
