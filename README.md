@@ -32,7 +32,9 @@ The Team also likes many of the Cloud Features of Azure and it is CLI
 
 The Team has embraced Microservices and the flexibility to deploy fully tested code to production in a matter of minutes.
 
-By Using Common Workflow component, the team can get up and running quicker then they have ever done before.
+By Using Common Workflow components, the team can get up and running quicker then they have ever done before.
+
+- [Common Workflows](/https://github.com/stuartshay/WorkflowCommon)
 
 ### Containerization
 
