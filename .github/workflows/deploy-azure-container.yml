@@ -98,7 +98,7 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           environment-variables: ASPNETCORE_ENVIRONMENT=AzureContainer
-          secure-environment-variables: WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE }} WORKSPACE_KEY=${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }} AZURE_VAULT_URI=${{ secrets.AZURE_VAULT_URI }}
+          secure-environment-variables: WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE }} WORKSPACE_KEY=${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }} AZURE_VAULT_URI=${{ secrets.AZURE_VAULT_URI }} ENDPOINTS_APPCONFIG=${{ secrets.ENDPOINTS_APPCONFIG }}
           ports: 5000
 
   health-check:
