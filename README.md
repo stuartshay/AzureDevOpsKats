@@ -28,6 +28,12 @@ The Team also likes many of the Cloud Features of Azure and it is CLI
 
 - [Azure Container Instances](/infrastructure)
 
+### Github Actions/Workflows
+
+The Team has embraced Microservices and the flexibility to deploy fully tested code to production in a matter of minutes.
+
+By Using Common Workflow component, the team can get up and running quicker then they have ever done before.
+
 ### Containerization
 
 Docker Containers and Docker Compose have been adopted by the team giving the ability to run multiple environment configurations from their local development workstation.
