@@ -185,26 +185,27 @@ jobs:
       #       APP_URL=$(aws elbv2 describe-load-balancers --names $ECS_CLUSTER --query 'LoadBalancers[0].DNSName' --output text)
       #       echo "::set-output name=app_url::$APP_URL"
       #     fi
-      - name: Get Task Public IP
-        if: ${{ env.ECS_DESIRED_COUNT > 0 }}
-        id: set_app_url
-        uses: ./.github/workflows/get-ecs-app-url
-        with:
-          ecs_cluster: $ECS_CLUSTER
-          ecs_service: $ECS_SERVICE
+
+    post-deploy:
+      needs: deploy
+      if: needs.deploy.outputs.ecs_desired_count > 0
+      uses: stuartshay/WorkflowCommon/.github/workflows/get-ecs-app-url.yml@master
+      with:
+        ecs_cluster: $ECS_CLUSTER
+        ecs_service: $ECS_SERVICE
 
   health-check:
-    needs: deploy
-    if: needs.deploy.outputs.ecs_desired_count > 0
+    needs: post-deploy
+    #if: needs.deploy.outputs.ecs_desired_count > 0
     uses: stuartshay/WorkflowCommon/.github/workflows/health-check.yml@master
     with:
-      test_url: ${{needs.deploy.outputs.app_url}}/health
+      test_url: ${{ needs.post-deploy.outputs.app_url }}/health
 
   selenium-test:
-    needs: [health-check, deploy]
+    needs: [health-check, post-deploy]
     uses: stuartshay/WorkflowCommon/.github/workflows/selenium-test.yml@master
     with:
-      test_url: "http://${{needs.deploy.outputs.app_url}}"
+      test_url: "http://${{needs.post-deploy.outputs.app_url}}"
     secrets:
       dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
       dockerhub_password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
