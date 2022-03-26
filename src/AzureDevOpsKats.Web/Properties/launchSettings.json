@@ -22,7 +22,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "VaultUri": "https://devopskatskeyvault.vault.azure.net/",
+        "AZURE_VAULT_URI": "https://devopskatskeyvault.vault.azure.net/",
         "AZURE_USERNAME": "stuartshay@hotmail.com"
       },
       "applicationUrl": "http://localhost:5000"

@@ -63,7 +63,7 @@ jobs:
           docker build -f ${{ env.DOCKER_FILE }} \
                 --build-arg BUILD_DATE=${{ steps.date.outputs.date }} \
                 --build-arg BUILD_NUMBER=${{ env.BUILD_NUMBER }} \
-                -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY}}:lattest \
+                -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY}}:latest \
                 -t ${{ env.AZURE_DOCKER_IMAGE }} .
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AZURE_REPOSITORY}} --all-tags
 

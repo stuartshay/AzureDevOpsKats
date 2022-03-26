@@ -10,6 +10,7 @@ using System.IO;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
+using Azure.Identity;
 
 namespace AzureDevOpsKats.Web
 {
@@ -50,23 +51,24 @@ namespace AzureDevOpsKats.Web
              })
             .ConfigureAppConfiguration((context, builder) =>
             {
+                var configuration = builder.Build();
+
                 if (context.HostingEnvironment.EnvironmentName == "AwsEcs")
                 {
                     var clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME").ToLower();
                     var systemsManagerReloadSeconds = Convert.ToDouble(Environment.GetEnvironmentVariable("SYSTEMS_MANAGER_RELOAD"));
                     builder.AddSystemsManager($"/{ApplicationConstants.SystemsManagerName}-{clusterName}", optional: false, reloadAfter: TimeSpan.FromSeconds(systemsManagerReloadSeconds));
                 }
-                if (context.HostingEnvironment.EnvironmentName == "AzureContainer")
+                if (context.HostingEnvironment.EnvironmentName == "AzureContainer" || context.HostingEnvironment.IsDevelopment())
                 {
-                    var keyVaultEndpoint = Environment.GetEnvironmentVariable("AZURE_VAULT_URI");
-                    
-                    //var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                    //var keyVaultClient = new KeyVaultClient(
-                    //    new KeyVaultClient.AuthenticationCallback(
-                    //        azureServiceTokenProvider.KeyVaultTokenCallback));
+                    //var keyVaultEndpoint = Environment.GetEnvironmentVariable("AZURE_VAULT_URI");
 
-                    //builder.AddAzureKeyVault(keyVaultEndpoint,keyVaultClient, new DefaultKeyVaultSecretManager());
+                    var azAppConfigConnection = configuration["AppConfig"] != null ?
+                       configuration["AppConfig"] : Environment.GetEnvironmentVariable("ENDPOINTS_APPCONFIG");
+                    
+                    builder.AddAzureAppConfiguration(azAppConfigConnection);
                 }
+
             })
             .UseSerilog(Logging.ConfigureLogger);
     }

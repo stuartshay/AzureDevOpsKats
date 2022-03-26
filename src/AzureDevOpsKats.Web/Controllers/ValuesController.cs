@@ -80,14 +80,15 @@ namespace AzureDevOpsKats.Web.Controllers
         {
             var secretValue = string.Empty;
 
-            if(_keyVaultConfiguration.Enabled)
-            {
+            // if(_keyVaultConfiguration.Enabled)
+            // {
+                _keyVaultConfiguration.Uri = "https://devopskatskeyvault.vault.azure.net/";
                 _logger.LogInformation("KeyVault:{uri}:", _keyVaultConfiguration.Uri);
 
                 var client = new SecretClient(new Uri(_keyVaultConfiguration.Uri), new DefaultAzureCredential());
                 var secret = await client.GetSecretAsync("AzureDevopsConnectionString");
                 secretValue = secret.Value.Value;
-            }
+           // }
 
             return Ok(secretValue);
         }

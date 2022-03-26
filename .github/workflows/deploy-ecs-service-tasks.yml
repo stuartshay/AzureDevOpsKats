@@ -31,7 +31,6 @@ on:
       - "test/**"
     branches:
       - master
-      - develop
 
 jobs:
   test-coverage:
