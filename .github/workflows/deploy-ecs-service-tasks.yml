@@ -188,7 +188,7 @@ jobs:
       - name: Get Task Public IP
         if: ${{ env.ECS_DESIRED_COUNT > 0 }}
         id: set_app_url
-        uses: stuartshay/WorkflowCommon/.github/workflows/get-ecs-app-url.yml@master
+        uses: ./.github/workflows/get-ecs-app-url
         with:
           ecs_cluster: $ECS_CLUSTER
           ecs_service: $ECS_SERVICE
