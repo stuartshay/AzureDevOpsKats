@@ -114,10 +114,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{E7416C7C-91B7-4E4D-AAE7-9A6FAF4058B8}</ProjectGuid>
-<<<<<<< HEAD
-    <UserSecretsId>5459cbaf-2fdb-4cfa-9596-f0aa6b02eaa7</UserSecretsId>
-=======
     <UserSecretsId>ecc41304-5515-4b1a-bd42-0bbb510ebe05</UserSecretsId>
->>>>>>> origin/master
   </PropertyGroup>
 </Project>
