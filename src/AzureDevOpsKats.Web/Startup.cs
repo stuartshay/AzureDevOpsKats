@@ -162,6 +162,7 @@ namespace AzureDevOpsKats.Web
 
             startupHealthCheck.StartupTaskCompleted = true;
             //services.AddAzureAppConfiguration();
+
         }
 
         /// <summary>
