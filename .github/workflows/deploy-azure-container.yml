@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     outputs:
-      app-url: ${{ steps.deploy-container.outputs.app-url }}
+      app_url: ${{ steps.deploy-container.outputs.app-url }}
 
     steps:
       - name: "Login via Azure CLI"
@@ -98,7 +98,7 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           environment-variables: ASPNETCORE_ENVIRONMENT=AzureContainer
-          secure-environment-variables: WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE }} WORKSPACE_KEY=${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }} AZURE_VAULT_URI=${{ secrets.AZURE_VAULT_URI }}
+          secure-environment-variables: WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE }} WORKSPACE_KEY=${{ secrets.LOG_ANALYTICS_WORKSPACE_KEY }} AZURE_VAULT_URI=${{ secrets.AZURE_VAULT_URI }} ENDPOINTS_APPCONFIG=${{ secrets.ENDPOINTS_APPCONFIG }}
           ports: 5000
 
   health-check:
@@ -109,30 +109,9 @@ jobs:
 
   selenium-test:
     needs: [health-check, deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Selenium Test
-        uses: addnab/docker-run-action@v3
-        env:
-          TEST_URL: "${{needs.deploy.outputs.app-url}}"
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
-          image: stuartshay/azuredevopskats-selenium:latest
-          options: -v /tmp/assets:/tmp/assets -v /dev/shm:/dev/shm -e TEST_URL
-          run: |
-            echo "TEST URL: $TEST_URL"
-            python3 selenium_screenshot.py $TEST_URL /tmp/assets/devops.png "1000" "500" "//body" "//target"
-            ls -al /tmp/assets
-
-      - name: Archive test artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-screenshots
-          path: |
-            /tmp/assets
-
-      - name: Download a test artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: test-screenshots
+    uses: stuartshay/WorkflowCommon/.github/workflows/selenium-test.yml@master
+    with:
+      test_url: "${{needs.deploy.outputs.app_url}}"
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_TOKEN_AZUREKATS }}
