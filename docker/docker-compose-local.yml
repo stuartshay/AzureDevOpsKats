@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   azuredevopskats-web:
-    hostname: azuredevopskats-web
+    hostname: devopskats-web
     image: "stuartshay/azuredevopskats:latest"
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker

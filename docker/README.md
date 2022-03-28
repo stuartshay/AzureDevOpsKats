@@ -70,6 +70,14 @@ cd AzureDevOpsKats
 docker build -f docker/azuredevopskats-web-multi.dockerfile/Dockerfile -t stuartshay/azuredevopskats  .
 ```
 
+Kompose
+
+```
+kompose convert -f docker-compose-local.yml
+``` 
+
+
+
 ### Reference
 
 .NET Docker Images
