@@ -28,3 +28,9 @@ Dribbble: https://dribbble.com/mdbootstrap
 
 Contact:
 office@mdbootstrap.com
+
+
+//////////////   MULTI-THEME   /////////////// 
+npm run aws     =>   black theme
+npm run azure   =>   blue theme
+npm start       =>   green theme

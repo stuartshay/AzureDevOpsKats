@@ -112,11 +112,11 @@ const Navbar = (props) => {
       
     return (
       <div> <h1>Hello</h1>
-        <MDBNavbar className="header-position" color="header-bg" dark expand="md" fixed="top" scrolling>
+        <MDBNavbar className="header-position" color={!props.theme?"green":props.theme} dark expand="md" fixed="top" scrolling>
           <MDBContainer>
             <MDBNavbarBrand onClick={() => navigate("")} style={{cursor: 'pointer'}}>
               <Logo  className= "name-logo"/>
-              Azure DevOpsKats
+              {props.env} DevOpsKats
             </MDBNavbarBrand>
             <MDBNavbarToggler onClick={() => toggleCollapse("mainNavbarCollapse")} />
             <MDBCollapse

@@ -128,7 +128,7 @@ const HomePage = (props) => {
           <MDBRow>
               <MDBCol>
                   <MDBPagination className="d-flex justify-content-center">
-                      <MDBPageItem onClick={() => clickFirstPage()} disabled={0 === current_page}>
+                      <MDBPageItem onClick={() => clickFirstPage()} disabled={0 === current_page} color="blue">
                           <MDBPageNav aria-label="Previous">
                            <MDBIcon icon="angle-double-left" />
                        </MDBPageNav>

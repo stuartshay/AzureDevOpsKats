@@ -1,11 +1,11 @@
 import React from 'react';
 import  {MDBFooter}  from "mdbreact";
 
-const Footer = () => {
+const Footer = (props) => {
     return (
-      < MDBFooter color="footer-bg" style={{ position: "absolute", width: '100%' }}>
+      < MDBFooter color={!props.theme?"green":props.theme} style={{ position: "absolute", width: '100%' }}>
         <p className="footer-copyright mb-0 py-3 text-center">
-          &copy; {new Date().getFullYear()} Copyright: Azure DevOpsKats
+          &copy; {new Date().getFullYear()} Copyright: {props.env} DevOpsKats
         </p>
       </MDBFooter >
     )

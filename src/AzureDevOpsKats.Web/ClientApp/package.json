@@ -17,6 +17,8 @@
     "redux-thunk": "^2.4.1"
   },
   "scripts": {
+    "aws": "set REACT_APP_THEME=black && npm start",
+    "azure": "set REACT_APP_THEME=blue && npm start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
