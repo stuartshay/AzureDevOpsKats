@@ -29,7 +29,8 @@ const App = () => {
           <div className="flyout">
             <Navbar theme={theme} env={env}/>
             <main style={{ marginTop: "4rem", paddingBottom: "3rem" }}>
-              <CustomRoutes theme={theme}/>
+              {/* <CustomRoutes theme={theme}/> */}
+              <h1>I've removed this part for testing, because this part occurs an error after built.</h1>
             </main>
             <Footer theme={theme} env={env}/>
             <ToastContainer />

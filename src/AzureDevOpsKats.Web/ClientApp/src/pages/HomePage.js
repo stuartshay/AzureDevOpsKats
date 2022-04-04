@@ -156,6 +156,7 @@ const HomePage = (props) => {
   }
 
   const renderCatsList = (props) => {
+    console.log(props);
     return (
       <div className="row" id="cat-list">
 
