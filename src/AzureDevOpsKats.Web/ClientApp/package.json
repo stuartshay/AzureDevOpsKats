@@ -17,12 +17,12 @@
     "redux-thunk": "^2.4.1"
   },
   "scripts": {
-    "aws": "set REACT_APP_THEME=black && npm start",
-    "azure": "set REACT_APP_THEME=blue && npm start",
+    "start:aws": "set REACT_APP_ENV=AWS && npm start",
+    "start:azure": "set REACT_APP_ENV=AZURE && npm start",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:aws": "set REACT_APP_THEME=black && react-scripts build",
-    "build:azure": "set REACT_APP_THEME=blue && react-scripts build",
+    "build:aws": "set REACT_APP_ENV=AWS && react-scripts build",
+    "build:azure": "set REACT_APP_ENV=AZURE && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

@@ -9,15 +9,18 @@ import Footer from "./components/Footer";
 
 const App = () => {  
   
-    const [env, setEnv] = useState("aaa");    
-    const theme = process.env.REACT_APP_THEME?.trim();
+    const [theme, setTheme] = useState("");    
+    const env = process.env.REACT_APP_ENV?.trim();
+
+    console.log("This is the REACT_APP_ENV : ", process.env.REACT_APP_ENV);
+
     useEffect(() => {
-      if (theme == 'black') 
-        setEnv("Aws");
-      else if (theme == "blue")
-        setEnv("Azure");
+      if (env == 'AWS') 
+        setTheme("black");
+      else if (env == "AZURE")
+        setTheme("blue");
       else
-        setEnv("");
+        setTheme("green");
     }, [])
 
     return (

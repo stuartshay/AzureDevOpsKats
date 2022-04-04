@@ -31,8 +31,8 @@ office@mdbootstrap.com
 
 
 //////////////   MULTI-THEME ( DEVELOPMENT )   /////////////// 
-npm run aws     =>   black theme
-npm run azure   =>   blue theme
+npm run start:aws     =>   black theme
+npm run start:azure   =>   blue theme
 npm start       =>   green theme
 
 //////////////   MULTI-THEME ( BUILD )   /////////////// 
