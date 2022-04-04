@@ -21,6 +21,8 @@
     "azure": "set REACT_APP_THEME=blue && npm start",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:aws": "set REACT_APP_THEME=black && react-scripts build",
+    "build:azure": "set REACT_APP_THEME=blue && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
