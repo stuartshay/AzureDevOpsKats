@@ -1,5 +1,5 @@
 {
-    "cpu": "512",
+    "cpu": "1024",
     "memory": "1024",
     "containerDefinitions": [
         {
