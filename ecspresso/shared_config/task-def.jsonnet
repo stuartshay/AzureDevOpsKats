@@ -3,6 +3,32 @@
     "memory": "1024",
     "containerDefinitions": [
         {
+            "name": "nginx",
+            "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/tls-sidecar:latest",
+            "memory": "256",
+            "cpu": "256",
+            "essential": true,
+            "portMappings": [
+                {
+                "containerPort": "443",
+                "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                  "name": "BACKEND_NAME",
+                  "value": "devopskats"
+                },
+                {
+                  "name": "BACKEND_PORT",
+                  "value": "5000"
+                }
+            ]
+            "links": [
+                "devopskats"
+            ]
+        },
+        {
             "cpu": 512,
             "essential": true,
             "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/{{ must_env `AWS_ECR_REPOSITORY` }}:{{ must_env `AWS_ECR_DOCKER_IMAGE_TAG` }}",
