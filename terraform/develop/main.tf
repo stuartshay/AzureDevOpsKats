@@ -18,12 +18,12 @@ module "security_group_ecs_tasks" {
   vpc_id = local.vpc_id
 
   cidr_ingresses = {
-    "5000" = {
-      from_port   = 5000
-      to_port     = 5000
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
+    # "5000" = {
+    #   from_port   = 5000
+    #   to_port     = 5000
+    #   protocol    = "tcp"
+    #   cidr_blocks = ["0.0.0.0/0"]
+    # },
     "80" = {
       from_port   = 80
       to_port     = 80
