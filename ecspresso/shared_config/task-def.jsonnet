@@ -99,6 +99,7 @@
     "family": "{{ must_env `ECS_SERVICE` }}",
     "networkMode": "awsvpc",
     "placementConstraints": [],
+    "requiresCompatibilities": ["FARGATE"],
     "executionRoleArn": "{{ tfstate `data.terraform_remote_state.shared.outputs.ecs_task_execution_role_arn` }}",
     "taskRoleArn": "{{ tfstate `data.terraform_remote_state.shared.outputs.ecs_container_role_arn` }}",
     "Tags": [
