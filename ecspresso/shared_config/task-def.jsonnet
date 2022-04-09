@@ -5,8 +5,7 @@
         {
             "name": "nginx",
             "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/tls-sidecar:latest",
-            "memory": "256",
-            "cpu": "256",
+            "cpu": 256,
             "essential": true,
             "portMappings": [
                 {
