@@ -22,9 +22,6 @@
                   "name": "BACKEND_PORT",
                   "value": "5000"
                 }
-            ],
-            "links": [
-                "devopskats"
             ]
         },
         {
