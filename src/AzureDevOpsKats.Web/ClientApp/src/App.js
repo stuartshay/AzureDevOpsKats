@@ -16,11 +16,11 @@ const App = () => {
 
     useEffect(() => {
       if (env == 'AWS') 
-        setTheme("black");
+        setTheme("green");
       else if (env == "AZURE")
         setTheme("blue");
       else
-        setTheme("green");
+        setTheme("black");
     }, [])
 
     return (
