@@ -1,6 +1,6 @@
 {
     "cpu": "1024",
-    "memory": "1024",
+    "memory": "2048",
     "containerDefinitions": [
         {
             "name": "nginx",
@@ -9,8 +9,12 @@
             "essential": true,
             "portMappings": [
                 {
-                "containerPort": 443,
-                "protocol": "tcp"
+                    "containerPort": 443,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 80,
+                    "protocol": "tcp"
                 }
             ],
             "environment": [
