@@ -16,7 +16,7 @@
             "environment": [
                 {
                   "name": "BACKEND_NAME",
-                  "value": "devopskats"
+                  "value": "localhost"
                 },
                 {
                   "name": "BACKEND_PORT",
