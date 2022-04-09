@@ -9,7 +9,7 @@
             "essential": true,
             "portMappings": [
                 {
-                "containerPort": "443",
+                "containerPort": 443,
                 "protocol": "tcp"
                 }
             ],
