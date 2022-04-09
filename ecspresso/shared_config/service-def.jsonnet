@@ -21,9 +21,8 @@
                 "{{ tfstate `module.security_group_ecs_tasks.aws_security_group.this.id` }}"
             ],
             "Subnets": [
-                "subnet-01de9b42119d76488",
-                "subnet-07f8a3ee025eb1efa",
-                "subnet-0965059b9436655f4"
+                "{{ tfstate `data.aws_subnets.public.ids[0]` }}",
+                "{{ tfstate `data.aws_subnets.public.ids[1]` }}"
             ]
         }
     },
