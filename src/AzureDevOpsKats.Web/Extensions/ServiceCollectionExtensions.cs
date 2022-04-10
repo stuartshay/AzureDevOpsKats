@@ -51,7 +51,7 @@ namespace AzureDevOpsKats.Web.Extensions
 
             foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
             {
-                Console.WriteLine($"{0}={1}", (string)env.Key, (string)env.Value);
+                Console.WriteLine("{0}={1}", (string)env.Key, (string)env.Value);
             }
         }
 
