@@ -1,7 +1,33 @@
 {
-    "cpu": "512",
-    "memory": "1024",
+    "cpu": "1024",
+    "memory": "2048",
     "containerDefinitions": [
+        {
+            "name": "nginx",
+            "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.{{ must_env `AWS_REGION` }}.amazonaws.com/tls-sidecar:latest",
+            "cpu": 256,
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 443,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                  "name": "BACKEND_NAME",
+                  "value": "localhost"
+                },
+                {
+                  "name": "BACKEND_PORT",
+                  "value": "5000"
+                }
+            ]
+        },
         {
             "cpu": 512,
             "essential": true,
@@ -77,6 +103,7 @@
     "family": "{{ must_env `ECS_SERVICE` }}",
     "networkMode": "awsvpc",
     "placementConstraints": [],
+    "requiresCompatibilities": ["FARGATE"],
     "executionRoleArn": "{{ tfstate `data.terraform_remote_state.shared.outputs.ecs_task_execution_role_arn` }}",
     "taskRoleArn": "{{ tfstate `data.terraform_remote_state.shared.outputs.ecs_container_role_arn` }}",
     "Tags": [

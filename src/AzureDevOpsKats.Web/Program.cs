@@ -10,6 +10,7 @@ using System.IO;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
+using Azure.Identity;
 
 namespace AzureDevOpsKats.Web
 {
@@ -28,7 +29,7 @@ namespace AzureDevOpsKats.Web
             .Build();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="args"></param>
         public static void Main(string[] args)
@@ -38,7 +39,7 @@ namespace AzureDevOpsKats.Web
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
@@ -50,15 +51,17 @@ namespace AzureDevOpsKats.Web
              })
             .ConfigureAppConfiguration((context, builder) =>
             {
+                var configuration = builder.Build();
+
                 if (context.HostingEnvironment.EnvironmentName == "AwsEcs")
                 {
                     var clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME").ToLower();
                     var systemsManagerReloadSeconds = Convert.ToDouble(Environment.GetEnvironmentVariable("SYSTEMS_MANAGER_RELOAD"));
                     builder.AddSystemsManager($"/{ApplicationConstants.SystemsManagerName}-{clusterName}", optional: false, reloadAfter: TimeSpan.FromSeconds(systemsManagerReloadSeconds));
                 }
-                if (context.HostingEnvironment.EnvironmentName == "AzureContainer")
+                if (context.HostingEnvironment.EnvironmentName == "AzureContainer" || context.HostingEnvironment.IsDevelopment())
                 {
-                    //var configuration = context.Configuration; 
+                    //var configuration = context.Configuration;
                     //var azAppConfigConnection = configuration["AppConfig"] != null ?
                     //   configuration["AppConfig"] : Environment.GetEnvironmentVariable("ENDPOINTS_APPCONFIG");
 
@@ -71,6 +74,7 @@ namespace AzureDevOpsKats.Web
 
                     //builder.AddAzureKeyVault(keyVaultEndpoint,keyVaultClient, new DefaultKeyVaultSecretManager());
                 }
+
             })
             .UseSerilog(Logging.ConfigureLogger);
     }

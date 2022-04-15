@@ -151,6 +151,8 @@ az container exec --resource-group $resourceGroup \
   --exec-command "/bin/bash"
 ```
 
+az keyvault set-policy --name $keyVaultName --object-id {OBJECT ID} --secret-permissions get list
+
 ### Cleanup
 
 ```

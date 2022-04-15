@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+
+  azuredevopskats-web:
+    hostname: devopskats-web
+    image: "stuartshay/azuredevopskats:latest"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - NODE_ENV=production
+    ports:
+      - "5000:5000"
+    networks:
+      - azuredevopskats-network
+
+
+networks:
+  azuredevopskats-network:
+    driver: bridge
