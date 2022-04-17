@@ -29,9 +29,15 @@ module "security_group_ecs_tasks" {
   vpc_id = local.vpc_id
 
   sg_ingresses = {
-    "ecs_tasks" = {
+    "5000" = {
       from_port         = 5000
       to_port           = 5000
+      protocol          = "tcp"
+      security_group_id = module.security_group_alb.id
+    },
+    "80" = {
+      from_port         = 80
+      to_port           = 80
       protocol          = "tcp"
       security_group_id = module.security_group_alb.id
     }
