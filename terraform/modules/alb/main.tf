@@ -13,7 +13,7 @@ resource "aws_lb" "this" {
 resource "aws_lb_target_group" "this" {
   name                 = var.name
   target_type          = "ip"
-  port                 = "5000"
+  port                 = "80"
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
   deregistration_delay = 60
