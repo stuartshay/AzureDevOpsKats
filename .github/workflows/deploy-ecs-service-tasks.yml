@@ -176,6 +176,7 @@ jobs:
     with:
       ecs_cluster: ${{ needs.deploy.outputs.ecs_cluster }}
       ecs_service: ${{ needs.deploy.outputs.ecs_service }}
+      branch_name: $BRANCH_NAME
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
