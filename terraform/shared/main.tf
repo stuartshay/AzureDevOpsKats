@@ -6,10 +6,10 @@ module "iam" {
 }
 
 # Jumpbox
-module "jumpbox" {
-  source = "../modules/jumpbox"
+# module "jumpbox" {
+#   source = "../modules/jumpbox"
 
-  name      = "${local.name}-jumpbox"
-  vpc_id    = local.vpc_id
-  subnet_id = local.subnet_ids[0]
-}
+#   name      = "${local.name}-jumpbox"
+#   vpc_id    = local.vpc_id
+#   subnet_id = local.subnet_ids[0]
+# }
