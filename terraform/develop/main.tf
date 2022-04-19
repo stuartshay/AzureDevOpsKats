@@ -10,20 +10,36 @@ data "terraform_remote_state" "shared" {
   }
 }
 
+data "terraform_remote_state" "network" {
+  backend = "s3"
+
+  config = {
+    bucket  = "devops-team-tfstate"
+    key     = "devops/aws/us-east-1/s3/devopskats/common/network/${local.env}"
+    region  = "${local.region}"
+    profile = "awsdevopskats"
+  }
+}
+
+data "terraform_remote_state" "jumpbox" {
+  backend = "s3"
+
+  config = {
+    bucket  = "devops-team-tfstate"
+    key     = "devops/aws/us-east-1/s3/devopskats/common/jumpbox/${local.env}"
+    region  = "${local.region}"
+    profile = "awsdevopskats"
+  }
+}
+
 # Security groups
 module "security_group_ecs_tasks" {
   source = "../modules/security-group"
 
   name   = "${local.realm_name}-for-api"
-  vpc_id = local.vpc_id
+  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
 
   cidr_ingresses = {
-    # "5000" = {
-    #   from_port   = 5000
-    #   to_port     = 5000
-    #   protocol    = "tcp"
-    #   cidr_blocks = ["0.0.0.0/0"]
-    # },
     "80" = {
       from_port   = 80
       to_port     = 80
@@ -43,7 +59,7 @@ module "security_group_efs" {
   source = "../modules/security-group"
 
   name   = "${local.realm_name}-for-efs"
-  vpc_id = local.vpc_id
+  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
 
   sg_ingresses = {
     "ecs_tasks" = {
@@ -56,7 +72,7 @@ module "security_group_efs" {
       from_port         = 2049
       to_port           = 2049
       protocol          = "tcp"
-      security_group_id = data.terraform_remote_state.shared.outputs.jumpbox_sg_id
+      security_group_id = data.terraform_remote_state.jumpbox.outputs.security_group_id
     }
   }
 }
@@ -77,7 +93,7 @@ module "efs" {
   source = "../modules/efs"
 
   name               = local.realm_name
-  subnet_ids         = local.subnet_ids
+  subnet_ids         = data.terraform_remote_state.network.outputs.public_subnet_ids
   security_group_ids = [module.security_group_efs.id]
 }
 

@@ -21,8 +21,9 @@
                 "{{ tfstate `module.security_group_ecs_tasks.aws_security_group.this.id` }}"
             ],
             "Subnets": [
-                "{{ tfstate `data.aws_subnets.public.ids[0]` }}",
-                "{{ tfstate `data.aws_subnets.public.ids[1]` }}"
+                "{{ tfstate `module.sven.data.terraform_remote_state.network.outputs.private_subnet_ids['a']` }}",
+                "{{ tfstate `module.sven.data.terraform_remote_state.network.outputs.private_subnet_ids['b']` }}",
+                "{{ tfstate `module.sven.data.terraform_remote_state.network.outputs.private_subnet_ids['c']` }}"
             ]
         }
     },

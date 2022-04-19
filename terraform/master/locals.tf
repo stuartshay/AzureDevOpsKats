@@ -10,6 +10,6 @@ locals {
     owner       = "devops"
   }
 
-  vpc_id     = data.aws_vpc.default.id
-  subnet_ids = data.aws_subnets.public.ids
+  #vpc_id     = data.aws_vpc.default.id
+  #subnet_ids = data.aws_subnets.public.ids
 }
