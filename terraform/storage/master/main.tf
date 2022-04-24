@@ -29,12 +29,6 @@ module "security_group_efs" {
   vpc_id = data.terraform_remote_state.network.outputs.vpc_id
 
   sg_ingresses = {
-    # "ecs_tasks" = {
-    #   from_port         = 2049
-    #   to_port           = 2049
-    #   protocol          = "tcp"
-    #   security_group_id = module.security_group_ecs_tasks.id
-    # },
     "jumpbox" = {
       from_port         = 2049
       to_port           = 2049
