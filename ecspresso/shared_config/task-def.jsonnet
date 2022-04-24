@@ -96,7 +96,7 @@
         {
             "name": "efs-{{ must_env `BRANCH_NAME` }}",
             "efsVolumeConfiguration": {
-                "fileSystemId": "{{ tfstate `module.efs.aws_efs_file_system.this.id` }}"
+                "fileSystemId": "{{ tfstate `data.terraform_remote_state.storage.outputs.efs_id` }}"
             }
         }
     ],
