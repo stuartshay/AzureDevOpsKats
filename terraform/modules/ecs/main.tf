@@ -38,6 +38,12 @@ resource "aws_ecs_task_definition" "this" {
   {
     "name": "nginx",
     "image": "nginx",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "protocol": "tcp"
+      }
+    ],
     "cpu": 0,
     "memory": 128
   }
@@ -56,7 +62,7 @@ resource "aws_ecs_service" "this" {
   network_configuration {
     subnets          = var.subnets
     security_groups  = var.security_group_ids
-    assign_public_ip = true
+    assign_public_ip = length(var.load_balancers) > 0 ? false : true
   }
 
   dynamic "load_balancer" {
