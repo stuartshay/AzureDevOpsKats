@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = <<EOF
 [
   {
-    "name": "${var.name}-dummy",
+    "name": "nginx",
     "image": "nginx",
     "cpu": 0,
     "memory": 128
