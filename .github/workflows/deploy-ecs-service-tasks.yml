@@ -166,7 +166,7 @@ jobs:
             ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT create
           else
             ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT diff
-            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy --update-service
           fi
 
   post-deploy:

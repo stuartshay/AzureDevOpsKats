@@ -23,3 +23,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "subnets" {
+  description = "The VPC subnets"
+  type        = list(string)
+  default     = []
+}
+
+variable "security_group_ids" {
+  description = "The VPC security group ids"
+  type        = list(string)
+  default     = []
+}

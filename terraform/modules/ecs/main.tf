@@ -46,3 +46,24 @@ EOF
 
   tags = var.tags
 }
+
+resource "aws_ecs_service" "this" {
+  name            = var.name
+  cluster         = module.ecs.ecs_cluster_name
+  task_definition = aws_ecs_task_definition.this.arn
+  desired_count   = 0
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = var.security_group_ids
+    assign_public_ip = true
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count, task_definition, capacity_provider_strategy, ordered_placement_strategy, deployment_minimum_healthy_percent]
+  }
+
+  depends_on = [
+    module.ecs
+  ]
+}

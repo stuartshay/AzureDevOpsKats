@@ -95,6 +95,11 @@ module "ecs" {
 
   execution_role_arn = data.terraform_remote_state.shared.outputs.ecs_task_execution_role_arn
   task_role_arn      = data.terraform_remote_state.shared.outputs.ecs_container_role_arn
+
+  subnets = data.terraform_remote_state.network.outputs.public_subnet_ids
+  security_group_ids = [
+    module.security_group_ecs_tasks.id
+  ]
 }
 
 # SSM Params
