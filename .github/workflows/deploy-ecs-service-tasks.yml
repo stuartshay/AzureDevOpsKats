@@ -158,15 +158,15 @@ jobs:
           echo "::set-output name=ecs_service::$ECS_SERVICE"
           echo "ECS_DESIRED_COUNT=$ECS_DESIRED_COUNT" >> $GITHUB_ENV
           cd ecspresso
-          ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT --update-service verify
+          ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT verify
           SERVICE_STATUS=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE | jq --raw-output 'select(.services[].status != null ) | .services[].status')
           echo $SERVICE_STATUS
           if [ -z "$SERVICE_STATUS" ] || [ "$SERVICE_STATUS" == "INACTIVE" ]
           then
-            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT --update-service create
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT create
           else
-            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT --update-service diff
-            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT --update-service deploy
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT diff
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy --update-service
           fi
 
   post-deploy:
