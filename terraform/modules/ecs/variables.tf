@@ -35,3 +35,9 @@ variable "security_group_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "load_balancers" {
+  description = "The ALB for service"
+  type        = list(any)
+  default     = []
+}

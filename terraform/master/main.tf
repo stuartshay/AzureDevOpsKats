@@ -100,6 +100,14 @@ module "ecs" {
   security_group_ids = [
     module.security_group_ecs_tasks.id
   ]
+
+  load_balancers = [
+    {
+      target_group_arn = module.alb.target_group_arn
+      container_name   = "nginx"
+      container_port   = 80
+    }
+  ]
 }
 
 # SSM Params

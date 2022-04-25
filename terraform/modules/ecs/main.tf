@@ -59,6 +59,15 @@ resource "aws_ecs_service" "this" {
     assign_public_ip = true
   }
 
+  dynamic "load_balancer" {
+    for_each = var.load_balancers
+    content {
+      target_group_arn = load_balancer.value["target_group_arn"]
+      container_name   = load_balancer.value["container_name"]
+      container_port   = load_balancer.value["container_port"]
+    }
+  }
+
   lifecycle {
     ignore_changes = [desired_count, task_definition, capacity_provider_strategy, ordered_placement_strategy, deployment_minimum_healthy_percent]
   }
