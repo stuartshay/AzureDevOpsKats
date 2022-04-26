@@ -53,6 +53,16 @@ module "github_action_user" {
 data "aws_iam_policy_document" "github_action" {
   statement {
     actions = [
+      "iam:DetachRolePolicy",
+      "iam:Get*",
+      "iam:List*",
+      "iam:DeletePolicy",
+      "iam:DeleteRole",
+      "iam:CreateRole",
+      "iam:CreatePolicy",
+      "iam:AttachRolePolicy",
+      "iam:TagRole",
+      "iam:TagPolicy",
       "ecr:BatchCheckLayerAvailability",
       "ecr:BatchGetImage",
       "ecr:GetDownloadUrlForLayer",

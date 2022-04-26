@@ -21,15 +21,16 @@
                 "{{ tfstate `module.security_group_ecs_tasks.aws_security_group.this.id` }}"
             ],
             "Subnets": [
-                "{{ tfstate `data.aws_subnets.public.ids[0]` }}",
-                "{{ tfstate `data.aws_subnets.public.ids[1]` }}"
+                "{{ tfstate `data.terraform_remote_state.network.outputs.public_subnet_ids[0]` }}",
+                "{{ tfstate `data.terraform_remote_state.network.outputs.public_subnet_ids[1]` }}",
+                "{{ tfstate `data.terraform_remote_state.network.outputs.public_subnet_ids[2]` }}"
             ]
         }
     },
     "loadBalancers": [
     ] + (
         if std.extVar('branch_name') == "master" then [
-            { "targetGroupArn": "{{ tfstate `module.alb.aws_lb_target_group.this.arn` }}", "containerName": "devopskats", "containerPort": 5000 },
+            { "targetGroupArn": "{{ tfstate `module.alb.aws_lb_target_group.this.arn` }}", "containerName": "nginx", "containerPort": 80 },
         ] else []
     ),
     "enableECSManagedTags": true,

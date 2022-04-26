@@ -166,7 +166,7 @@ jobs:
             ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT create
           else
             ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT diff
-            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy
+            ecspresso --ext-str branch_name=$BRANCH_NAME --ext-code desired_count=$ECS_DESIRED_COUNT deploy --update-service
           fi
 
   post-deploy:
@@ -176,6 +176,7 @@ jobs:
     with:
       ecs_cluster: ${{ needs.deploy.outputs.ecs_cluster }}
       ecs_service: ${{ needs.deploy.outputs.ecs_service }}
+      branch_name: ${{ github.ref_name }}
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

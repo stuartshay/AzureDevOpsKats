@@ -36,8 +36,14 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = <<EOF
 [
   {
-    "name": "${var.name}-dummy",
+    "name": "nginx",
     "image": "nginx",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "protocol": "tcp"
+      }
+    ],
     "cpu": 0,
     "memory": 128
   }
@@ -45,4 +51,34 @@ resource "aws_ecs_task_definition" "this" {
 EOF
 
   tags = var.tags
+}
+
+resource "aws_ecs_service" "this" {
+  name            = var.name
+  cluster         = module.ecs.ecs_cluster_name
+  task_definition = aws_ecs_task_definition.this.arn
+  desired_count   = 0
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = var.security_group_ids
+    assign_public_ip = length(var.load_balancers) > 0 ? false : true
+  }
+
+  dynamic "load_balancer" {
+    for_each = var.load_balancers
+    content {
+      target_group_arn = load_balancer.value["target_group_arn"]
+      container_name   = load_balancer.value["container_name"]
+      container_port   = load_balancer.value["container_port"]
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count, task_definition, capacity_provider_strategy, ordered_placement_strategy, deployment_minimum_healthy_percent]
+  }
+
+  depends_on = [
+    module.ecs
+  ]
 }
