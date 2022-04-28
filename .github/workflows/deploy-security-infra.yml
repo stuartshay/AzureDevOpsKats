@@ -1,4 +1,4 @@
-name: "Deploy Shared Infrastructure"
+name: "Deploy Security Infrastructure"
 
 env:
   TERRAFORM_CHDIR: terraform/shared
@@ -8,6 +8,15 @@ env:
 on:
   workflow_dispatch:
     inputs:
+      environment:
+        type: choice
+        description: Environment
+        required: false
+        default: develop
+        options:
+          - develop
+          - qa
+          - master
       terraform_action:
         type: choice
         description: Terraform Action
@@ -34,12 +43,12 @@ jobs:
 
       - name: Add profile credentials to ~/.aws/credentials
         env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
         run: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile ${{ env.AWS_PROFILE_NAME }}
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile ${{ env.AWS_PROFILE_NAME }}
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile ${{ env.AWS_PROFILE_NAME }}
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile ${{ env.AWS_PROFILE_NAME }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -52,8 +61,8 @@ jobs:
         id: init
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} init
         env:
-          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Validate
         id: validate
@@ -64,8 +73,8 @@ jobs:
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} plan -no-color
         continue-on-error: true
         env:
-          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
@@ -75,12 +84,12 @@ jobs:
         if: github.event.inputs.terraform_action == 'apply'
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} apply -auto-approve
         env:
-          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       - name: Terraform Destroy
         if: github.event.inputs.terraform_action == 'destroy'
         run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} destroy -auto-approve
         env:
-          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
