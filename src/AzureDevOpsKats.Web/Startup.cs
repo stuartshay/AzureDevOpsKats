@@ -186,7 +186,7 @@ namespace AzureDevOpsKats.Web
             ConfigureSwagger(app, apiVersionDescriptionProvider);
             app.UseMiddleware(typeof(HttpHeaderMiddleware));
 
-            //app.UseAllElasticApm(Configuration);
+            app.UseAllElasticApm(Configuration);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

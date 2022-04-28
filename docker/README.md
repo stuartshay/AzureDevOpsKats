@@ -7,10 +7,11 @@ Mac/Linux: `/etc/hosts`
 
 ```
 127.0.0.1 azuredevopskats-web
-127.0.0.1 es01
-127.0.0.1 kib01
 127.0.0.1 traefik
 127.0.0.1 redis
+
+127.0.0.1 es01
+127.0.0.1 kib01
 ```
 
 ### Docker Compose
@@ -74,7 +75,7 @@ Kompose
 
 ```
 kompose convert -f docker-compose-local.yml
-``` 
+```
 
 
 
