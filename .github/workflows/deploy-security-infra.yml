@@ -1,4 +1,4 @@
-name: "Deploy Security Infrastructure"
+name: "Infrastructure - Deploy Security"
 
 env:
   TERRAFORM_CHDIR: terraform/shared
