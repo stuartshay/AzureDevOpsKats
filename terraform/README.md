@@ -14,11 +14,13 @@ managing the infrastructure that runs them.
 
 ### Storage
 
-[![Deploy Storage](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml)
+[![Infrastructure - Deploy Storage](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml)
 
 - EFS Volumes
 
 ### Security
+
+[![Infrastructure - Deploy Security](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-security-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-security-infra.yml)
 
 - IAM Roles and policies for ECS Tasks
 - Parameter Store Variables and Secrets
