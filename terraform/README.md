@@ -10,18 +10,25 @@ packing. AWS Fargate removes the need for you to interact with or think about se
 clusters. Fargate lets you focus on designing and building your applications instead of
 managing the infrastructure that runs them.
 
-[![Deploy Core Infrastructures](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-core-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-core-infra.yml)
+## Infrastructure
 
-[![Deploy Shared Infrastructure](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-shared-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-shared-infra.yml)
+### Storage
 
-### Infrastructure
+[![Deploy Storage](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml)
+
+- EFS Volumes
+
+### Security
+
+- IAM Roles and policies for ECS Tasks
+- Parameter Store Variables and Secrets
+
+### Infrastrure
 
 - ECS Clusters
 - Application Load Balancer (Public facing)
-- EFS Volumes
-- IAM Roles and policies for ECS Tasks
+
 - EC2 Jumpbox Instance
-- Parameter Store Variables and Secrets
 
 ### Project Structure
 
