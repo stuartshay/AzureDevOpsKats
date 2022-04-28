@@ -1,4 +1,4 @@
-name: "Deploy Storage"
+name: "Infrastructure - Deploy Storage"
 
 env:
   BRANCH_NAME: ${{ github.ref_name }}
