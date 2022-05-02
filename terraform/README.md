@@ -22,6 +22,11 @@ managing the infrastructure that runs them.
 
 - EFS Volumes
 
+| Name                      | Volume Size |
+| ------------------------- | ----------- |
+| devopskats-master-images  | 1 Gib       |
+| devopskats-develop-images | 1 Gib       |
+
 ### Security
 
 [![Infrastructure - Deploy Security](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-security-infra.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-security-infra.yml)
