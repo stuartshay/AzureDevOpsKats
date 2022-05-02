@@ -6,9 +6,14 @@
 
         public ApiHealthConfiguration ApiHealthConfiguration { get; set; }
 
-        public ElasticSearchConfiguration ElasticSearchConfiguration { get; set; }
+        public LoggingConfiguration Logging { get; set; }
 
         public KeyVaultConfiguration KeyVaultConfiguration { get; set; }
-
     }
+
+    public class LoggingConfiguration
+    {
+        public ElasticSearchConfiguration ElasticSearchConfiguration { get; set; }
+    }
+
 }

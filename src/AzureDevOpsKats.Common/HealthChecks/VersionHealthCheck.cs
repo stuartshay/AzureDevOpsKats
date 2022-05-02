@@ -30,11 +30,15 @@ namespace AzureDevOpsKats.Common.HealthChecks
 
         private readonly string _osNameAndVersion;
 
+        private readonly string _elasticUrl;
+
+        private readonly bool  _elasticEnabled;
+
         private readonly ILogger<VersionHealthCheck> _logger;
 
         private readonly KeyVaultConfiguration _keyVaultConfiguration;
 
-        public VersionHealthCheck(ILogger<VersionHealthCheck> logger, IOptions<ApplicationOptions> settings)
+        public VersionHealthCheck(ILogger<VersionHealthCheck> logger, IOptionsSnapshot<ApplicationOptions> settings)
         {
             _applicationVersionNumber = Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             _applicationBuildDate = GetAssemblyLastModifiedDate();
@@ -43,8 +47,10 @@ namespace AzureDevOpsKats.Common.HealthChecks
             _systemsManagerReload = Environment.GetEnvironmentVariable("SYSTEMS_MANAGER_RELOAD");
             _dnsHostName = Dns.GetHostName();
             _osNameAndVersion = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
-            _logger = logger;
             _keyVaultConfiguration = settings?.Value?.KeyVaultConfiguration != null ? settings?.Value?.KeyVaultConfiguration : new KeyVaultConfiguration();
+            _elasticUrl = settings?.Value.Logging.ElasticSearchConfiguration.ElasticUrl;
+            _elasticEnabled = settings.Value.Logging.ElasticSearchConfiguration.ElasticEnabled;
+            _logger = logger;
         }
 
         /// <summary>
@@ -65,6 +71,8 @@ namespace AzureDevOpsKats.Common.HealthChecks
                 {"Systems Manager Reload", _systemsManagerReload},
                 {"OsNameAndVersion", _osNameAndVersion},
                 {"KeyStoreEnabled", _keyVaultConfiguration.Enabled},
+                {"ElasticUrl", _elasticUrl},
+                {"ElasticEnabled", _elasticEnabled},
             };
 
             var healthStatus = !string.IsNullOrEmpty(_applicationVersionNumber) ? HealthStatus.Healthy : HealthStatus.Degraded;

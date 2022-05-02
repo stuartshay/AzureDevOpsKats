@@ -1,0 +1,96 @@
+name: "Infrastructure - Deploy Storage"
+
+env:
+  BRANCH_NAME: ${{ github.ref_name }}
+  TERRAFORM_CHDIR: terraform/storage/${{ github.ref_name }}
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_PROFILE_NAME: awsdevopskats
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Environment
+        required: false
+        default: develop
+        options:
+          - develop
+          - qa
+          - master
+      terraform_action:
+        type: choice
+        description: Terraform Action
+        required: true
+        default: plan
+        options:
+          - apply
+          - plan
+          - destroy
+
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: "x64"
+
+      - name: Add profile credentials to ~/.aws/credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile ${{ env.AWS_PROFILE_NAME }}
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile ${{ env.AWS_PROFILE_NAME }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} fmt -check
+
+      - name: Terraform Init
+        id: init
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} plan -no-color
+        continue-on-error: true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        if: github.event.inputs.terraform_action == 'apply'
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} apply -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Destroy
+        if: github.event.inputs.terraform_action == 'destroy'
+        run: terraform -chdir=${{ env.TERRAFORM_CHDIR }} destroy -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
