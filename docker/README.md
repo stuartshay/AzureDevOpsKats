@@ -12,6 +12,13 @@ Mac/Linux: `/etc/hosts`
 
 127.0.0.1 es01
 127.0.0.1 kib01
+127.0.0.1 apm-server
+```
+
+Reload Windows Cache
+
+```
+ipconfig /flushdns
 ```
 
 ### Docker Compose
@@ -25,9 +32,7 @@ docker-compose --file docker-compose.yml up  --scale azuredevopskats-web=5
 
 ```
 docker-compose --file docker-compose-elastic.yml up
-
-docker-compose --file docker-compose.yml --file docker-compose-elastic.yml pull
-docker-compose --file docker-compose.yml --file docker-compose-elastic.yml up --scale azuredevopskats-web=5
+docker-compose --file docker-compose-elastic.yml pull
 ```
 
 Azure Devops Website
@@ -36,10 +41,16 @@ Azure Devops Website
 http://azuredevopskats-web
 ```
 
-Elastic Search
+Kibana
 
 ```
 http://es01:5601/app/home#/
+```
+
+Elastic Search Endpoint
+
+```
+http://es01:9200/app/home#/
 ```
 
 Traefik
@@ -76,8 +87,6 @@ Kompose
 ```
 kompose convert -f docker-compose-local.yml
 ```
-
-
 
 ### Reference
 

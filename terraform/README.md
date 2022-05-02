@@ -12,6 +12,10 @@ managing the infrastructure that runs them.
 
 ## Infrastructure
 
+### VPC
+
+[![Deploy VPC resources](https://github.com/stuartshay/WorkflowCommon/actions/workflows/deploy-vpc.yml/badge.svg)](https://github.com/stuartshay/WorkflowCommon/actions/workflows/deploy-vpc.yml)
+
 ### Storage
 
 [![Infrastructure - Deploy Storage](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/deploy-storage.yml)
@@ -25,12 +29,14 @@ managing the infrastructure that runs them.
 - IAM Roles and policies for ECS Tasks
 - Parameter Store Variables and Secrets
 
-### Infrastrure
+### Configuration
+
+- TODO Move Parameter Store Variables and Secrets
+
+### Infrastructure
 
 - ECS Clusters
 - Application Load Balancer (Public facing)
-
-- EC2 Jumpbox Instance
 
 ### Project Structure
 

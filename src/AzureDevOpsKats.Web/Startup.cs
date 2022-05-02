@@ -143,7 +143,7 @@ namespace AzureDevOpsKats.Web
                 .Services
                 .AddCustomHealthCheck(Configuration)
                 .AddHealthChecks()
-                .AddElasticSearchHealthCheck(commonConfig.ElasticSearchConfiguration)
+                .AddElasticSearchHealthCheck(commonConfig.Logging.ElasticSearchConfiguration)
                 .AddCheck(name: "SQLite Database", new SqliteConnectionHealthCheck(connectionString: connection, testQuery: "Select 1"),
                    failureStatus: HealthStatus.Unhealthy, tags: new string[] { HealthCheckType.Database.ToString(), HealthCheckType.Infrastructure.ToString() })
                 .Services
@@ -184,9 +184,9 @@ namespace AzureDevOpsKats.Web
             }
 
             ConfigureSwagger(app, apiVersionDescriptionProvider);
-            app.UseMiddleware(typeof(HttpHeaderMiddleware));
+            ConfigureElasticSearch(app, Configuration);
 
-            app.UseAllElasticApm(Configuration);
+            app.UseMiddleware(typeof(HttpHeaderMiddleware));
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -247,6 +247,15 @@ namespace AzureDevOpsKats.Web
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"AzureDevOpsKats.Web - {description.GroupName.ToUpperInvariant()}");
                 }
             });
+        }
+
+        private static void ConfigureElasticSearch(IApplicationBuilder app, IConfiguration configuration)
+        {
+            var commonConfig = configuration.Get<Common.Configuration.ApplicationOptions>();
+            if (commonConfig.Logging.ElasticSearchConfiguration.ElasticEnabled)
+            {
+                app.UseAllElasticApm(configuration);
+            }
         }
     }
 }
