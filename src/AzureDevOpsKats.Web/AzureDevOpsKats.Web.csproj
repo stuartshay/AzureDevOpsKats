@@ -19,7 +19,7 @@
     <PackageReference Include="Cronos" Version="0.7.1" />
     <PackageReference Include="Elastic.Apm.Extensions.Hosting" Version="1.14.1" />
     <PackageReference Include="Elastic.Apm.NetCoreAll" Version="1.14.1" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.4" />
