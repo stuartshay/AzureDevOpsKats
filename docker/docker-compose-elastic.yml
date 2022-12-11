@@ -5,6 +5,7 @@ services:
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.2
     entrypoint: /scripts/entrypoint-elastic.sh
+    restart: always
     container_name: es01
     environment:
       - node.name=es01
@@ -17,7 +18,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - data01:/usr/share/elasticsearch/data
+      - /data/elastic/data:/usr/share/elasticsearch/data
       - ./elastic/scripts:/scripts
     ports:
       - 9200:9200
@@ -31,6 +32,7 @@ services:
   kib01:
     image: docker.elastic.co/kibana/kibana:${TAG}
     container_name: kib01
+    restart: always
     depends_on:
       es01:
         condition: service_healthy
@@ -47,21 +49,21 @@ services:
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null
         http://localhost:5601/api/status
 
-  logstash:
-    image: docker.elastic.co/logstash/logstash:${TAG}
-    container_name: logstash
+  #logstash:
+  #  image: docker.elastic.co/logstash/logstash:${TAG}
+  #  container_name: logstash
     ### command: ['/bin/bash', '-c', 'cat /usr/local/bin/setup-logstash.sh | tr -d "\r" | bash']
-    volumes:
-      - ./scripts/setup-logstash.sh:/usr/local/bin/setup-logstash.sh:ro
-      - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./logstash/pipeline:/usr/share/logstash/pipeline/
-    networks:
-      - elastic
-    depends_on:
-      es01:
-        condition: service_healthy
-      kib01:
-        condition: service_healthy
+  #  volumes:
+  #    - ./scripts/setup-logstash.sh:/usr/local/bin/setup-logstash.sh:ro
+  #    - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+  #    - ./logstash/pipeline:/usr/share/logstash/pipeline/
+  #  networks:
+  #    - elastic
+  #  depends_on:
+  #    es01:
+  #      condition: service_healthy
+  #    kib01:
+  #      condition: service_healthy
 
   filebeat:
     image: docker.elastic.co/beats/filebeat:${TAG}
@@ -168,6 +170,7 @@ services:
   apm-server:
     image: docker.elastic.co/apm/apm-server:${TAG}
     container_name: apm-server
+    restart: always
     depends_on:
       es01:
         condition: service_healthy
