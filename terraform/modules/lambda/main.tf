@@ -1,6 +1,6 @@
 module "package_in_docker" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "2.34.0"
+  version = "2.36.0"
 
   create_function = false
 
@@ -19,7 +19,7 @@ module "package_in_docker" {
 ## Deploy from packaged
 module "lambda_function" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "2.34.0"
+  version = "2.36.0"
 
   create_package                    = false
   local_existing_package            = module.package_in_docker.local_filename
