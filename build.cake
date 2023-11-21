@@ -16,7 +16,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #addin nuget:?package=Cake.MiniCover&version=0.29.0-next20180721071547&prerelease
-#addin nuget:?package=Cake.Sonar&version=1.1.29
+#addin nuget:?package=Cake.Sonar&version=1.1.33
 #addin nuget:?package=Cake.DocFx&version=1.0.0
 #addin "nuget:?package=Cake.OpenCoverToCoberturaConverter&version=0.1.10.11"
 
