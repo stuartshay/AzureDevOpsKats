@@ -118,9 +118,14 @@ configure_helm_repos() {
     section "Configuring Helm Repositories"
 
     declare -A HELM_REPOS=(
+        ["argo"]="https://argoproj.github.io/argo-helm"
+        ["bitnami"]="https://charts.bitnami.com/bitnami"
+        ["grafana"]="https://grafana.github.io/helm-charts"
         ["ingress-nginx"]="https://kubernetes.github.io/ingress-nginx"
         ["jetstack"]="https://charts.jetstack.io"
-        ["bitnami"]="https://charts.bitnami.com/bitnami"
+        ["metallb"]="https://metallb.github.io/metallb"
+        ["prometheus-community"]="https://prometheus-community.github.io/helm-charts"
+        ["sealed-secrets"]="https://bitnami-labs.github.io/sealed-secrets"
     )
 
     for repo_name in "${!HELM_REPOS[@]}"; do
