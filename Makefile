@@ -1,5 +1,9 @@
 .DEFAULT_GOAL := help
 
+# Ensure .NET SDK installed via setup.sh is on PATH
+export DOTNET_ROOT := $(HOME)/.dotnet
+export PATH := $(DOTNET_ROOT):$(PATH)
+
 PROJECT_NAME := AzureDevOpsKats
 VERSION := $(shell cat VERSION 2>/dev/null || echo "0.0.0")
 DOCKER_IMAGE := stuartshay/azuredevopskats
@@ -8,7 +12,7 @@ WEB_PROJECT := src/AzureDevOpsKats.Web/AzureDevOpsKats.Web.csproj
 TEST_PROJECT := tests/AzureDevOpsKats.Tests/AzureDevOpsKats.Tests.csproj
 
 .PHONY: help setup build dev start stop clean lint format test test-cov \
-        docker-build docker-run docker-push helm-lint helm-package verify health
+        docker-build docker-run docker-push helm-lint helm-package outdated verify health
 
 ## —— Setup ———————————————————————————————————————
 help: ## Show this help
@@ -72,6 +76,9 @@ helm-package: ## Package Helm chart
 	helm package charts/azuredevopskats
 
 ## —— Utility ——————————————————————————————————————
+outdated: ## Show outdated NuGet dependencies
+	dotnet list $(SOLUTION) package --outdated
+
 verify: ## Verify build, lint, and tests
 	$(MAKE) build
 	$(MAKE) lint
