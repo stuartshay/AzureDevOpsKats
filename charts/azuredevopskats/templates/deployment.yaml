@@ -23,7 +23,9 @@ spec:
       initContainers:
         - name: init-permissions
           image: busybox:1.37
-          command: ["sh", "-c", "chown 1654:1654 /app/data"]
+          command: ["sh", "-c", "chown {{ .Values.securityContext.fsGroup }}:{{ .Values.securityContext.fsGroup }} /app/data"]
+          securityContext:
+            runAsUser: 0
           volumeMounts:
             - name: data
               mountPath: /app/data

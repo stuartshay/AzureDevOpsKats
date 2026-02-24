@@ -73,7 +73,7 @@ kubectl delete namespace azuredevopskats
 | `image.tag`                      | `latest`                         | Image tag (override at install)    |
 | `ingress.enabled`                | `true`                           | Enable nginx ingress               |
 | `ingress.hosts[0].host`          | `kats.lab.informationcart.com`   | External hostname                  |
-| `ingress.annotations`            | `letsencrypt-dns01-production`   | Cert-manager cluster issuer        |
+| `ingress.annotations.cert-manager.io/cluster-issuer` | `letsencrypt-dns01-production` | Cert-manager cluster issuer |
 | `persistence.enabled`            | `true`                           | Enable PVC for SQLite data         |
 | `persistence.storageClass`       | `nfs-general`                    | NFS CSI storage class              |
 | `persistence.size`               | `1Gi`                            | PVC size                           |

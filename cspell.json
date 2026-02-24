@@ -15,6 +15,7 @@
     "buildtransitive",
     "buildx",
     "bunit",
+    "Cloudflare",
     "configmap",
     "contentfiles",
     "csdevkit",
