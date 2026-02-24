@@ -13,7 +13,7 @@
         "editor.defaultFormatter": "ms-dotnettools.csharp"
     },
     "[json]": {
-        "editor.tabSize": 4
+        "editor.tabSize": 2
     },
     "[yaml]": {
         "editor.tabSize": 2,
