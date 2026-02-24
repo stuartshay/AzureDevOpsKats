@@ -19,17 +19,17 @@ published to GitHub Container Registry (OCI), deployed to k8s-pi5-cluster via
 
 ## Target Infrastructure
 
-| Property      | Value                                          |
-| ------------- | ---------------------------------------------- |
-| Language      | C# / .NET 10 LTS / Blazor                     |
-| Database      | SQLite (PersistentVolume in K8s)               |
-| K8s Cluster   | k8s-pi5-cluster (ARM64)                        |
-| Namespace     | azuredevopskats                                |
-| Docker Image  | stuartshay/azuredevopskats (Docker Hub)        |
-| Helm Chart    | oci://ghcr.io/stuartshay/helm-charts           |
-| DNS           | kats.lab.informationcart.com                   |
-| Ingress       | ingress-nginx (192.168.1.100)                  |
-| Deployment    | Helm (self-contained, no Argo CD)              |
+| Property     | Value                                   |
+| ------------ | --------------------------------------- |
+| Language     | C# / .NET 10 LTS / Blazor               |
+| Database     | SQLite (PersistentVolume in K8s)        |
+| K8s Cluster  | k8s-pi5-cluster (ARM64)                 |
+| Namespace    | azuredevopskats                         |
+| Docker Image | stuartshay/azuredevopskats (Docker Hub) |
+| Helm Chart   | oci://ghcr.io/stuartshay/helm-charts    |
+| DNS          | kats.lab.informationcart.com            |
+| Ingress      | ingress-nginx (192.168.1.100)           |
+| Deployment   | Helm (self-contained, no Argo CD)       |
 
 ## Repository Structure
 
@@ -244,11 +244,11 @@ helm install azuredevopskats \
 
 Three workflows run on push/PR:
 
-| Workflow | File | Checks |
-|----------|------|--------|
-| Lint and Test | `lint.yml` | pre-commit, dotnet format, dotnet build (warnaserror), dotnet test (coverage), hadolint, helm lint |
-| Docker | `docker.yml` | Multi-arch build, push to Docker Hub on master |
-| Helm | `helm.yml` | Package + push chart to GHCR on master |
+| Workflow      | File         | Checks                                                                                             |
+| ------------- | ------------ | -------------------------------------------------------------------------------------------------- |
+| Lint and Test | `lint.yml`   | pre-commit, dotnet format, dotnet build (warnaserror), dotnet test (coverage), hadolint, helm lint |
+| Docker        | `docker.yml` | Multi-arch build, push to Docker Hub on master                                                     |
+| Helm          | `helm.yml`   | Package + push chart to GHCR on master                                                             |
 
 **Replicate CI locally before pushing:**
 

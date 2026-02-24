@@ -20,8 +20,8 @@ RUN dotnet publish src/AzureDevOpsKats.Web/AzureDevOpsKats.Web.csproj \
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-preview AS runtime
 
 LABEL org.opencontainers.image.title="AzureDevOpsKats" \
-      org.opencontainers.image.description="Cat photo gallery — .NET 10 Blazor" \
-      org.opencontainers.image.source="https://github.com/stuartshay/AzureDevOpsKats"
+    org.opencontainers.image.description="Cat photo gallery — .NET 10 Blazor" \
+    org.opencontainers.image.source="https://github.com/stuartshay/AzureDevOpsKats"
 
 WORKDIR /app
 
