@@ -1,5 +1,9 @@
 .DEFAULT_GOAL := help
 
+# Ensure .NET SDK installed via setup.sh is on PATH
+export DOTNET_ROOT := $(HOME)/.dotnet
+export PATH := $(DOTNET_ROOT):$(PATH)
+
 PROJECT_NAME := AzureDevOpsKats
 VERSION := $(shell cat VERSION 2>/dev/null || echo "0.0.0")
 DOCKER_IMAGE := stuartshay/azuredevopskats
