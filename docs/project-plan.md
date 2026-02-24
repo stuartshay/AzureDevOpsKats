@@ -18,7 +18,7 @@ patterns for CI/CD, linting, and developer tooling.
 | Helm Repository | GitHub Container Registry (OCI) | Modern, no extra infrastructure |
 | Deployment | Direct `helm install` | Self-contained, no Argo CD dependency |
 | Docker Image | `stuartshay/azuredevopskats` (Docker Hub) | Existing registry |
-| Branch Strategy | `develop` → PR to `master` | Matches existing homelab repos |
+| Branch Strategy | `develop` → PR to `main` | Matches existing homelab repos |
 | Application Scope | Keep cat photo CRUD functionality | Full rewrite to modern patterns |
 
 ## What Gets Deleted
@@ -205,17 +205,17 @@ patterns.
 
 ### Workflows
 
-1. **`lint.yml`** — Triggers on push/PR to master and develop:
+1. **`lint.yml`** — Triggers on push/PR to main and develop:
    - Pre-commit checks
    - `dotnet format --verify-no-changes`
    - `dotnet build --warnaserror`
    - `dotnet test` with coverage threshold
    - Hadolint, Helm lint
-2. **`docker.yml`** — Triggers on push to master + workflow\_dispatch:
+2. **`docker.yml`** — Triggers on push to main + workflow\_dispatch:
    - QEMU + Docker Buildx
    - Version from `VERSION` + run number
    - Multi-platform build + push to Docker Hub
-3. **`helm.yml`** — Triggers on push to master when chart changes:
+3. **`helm.yml`** — Triggers on push to main when chart changes:
    - `helm package` + `helm push` to `oci://ghcr.io/stuartshay/helm-charts`
 
 ---

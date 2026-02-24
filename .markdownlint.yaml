@@ -7,8 +7,15 @@ MD013:
   code_blocks: false
   tables: false
 
+# MD024 - Allow duplicate headings in different sections
+MD024:
+  siblings_only: true
+
 # MD033 - Inline HTML
 MD033: false
 
 # MD041 - First line heading
 MD041: false
+
+# MD060 - Table column style
+MD060: false

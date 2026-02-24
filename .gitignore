@@ -19,7 +19,6 @@ TestResults/
 
 # IDE
 .idea/
-.vscode/
 *.swp
 *~
 

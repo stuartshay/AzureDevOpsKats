@@ -15,7 +15,7 @@ All automation, assistants, and developers must follow
 - **Language**: C# / .NET 10 LTS / Blazor Web App
 - **Database**: SQLite with Kubernetes PersistentVolume
 - **Development branch**: `develop` (default working branch)
-- **Production branch**: `master` (releases only, PR-only)
+- **Production branch**: `main` (releases only, PR-only)
 - **Lint before commit**: `pre-commit run -a`
 - **Build**: `make build`
 - **Run dev**: `make dev`
@@ -26,12 +26,12 @@ All automation, assistants, and developers must follow
 ## Development Workflow
 
 1. Switch to develop: `git checkout develop && git pull origin develop`
-2. **Rebase from master**: `git fetch origin master && git rebase origin/master`
+2. **Rebase from main**: `git fetch origin main && git rebase origin/main`
 3. Make changes to source in `src/` or `tests/`
 4. Run `pre-commit run -a`
 5. Run `make test`
 6. Commit and push to `develop` or `feature/*` branch
-7. Create PR to `master` when ready for production
+7. Create PR to `main` when ready for production
 
 ## Project Structure
 

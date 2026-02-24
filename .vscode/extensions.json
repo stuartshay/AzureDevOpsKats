@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-azuretools.vscode-docker",
+        "Tim-Koehler.helm-intellisense",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint",
+        "timonwong.shellcheck",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker"
+    ]
+}
