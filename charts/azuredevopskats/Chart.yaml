@@ -2,8 +2,8 @@ apiVersion: v2
 name: azuredevopskats
 description: Cat photo gallery — .NET 10 Blazor Web App
 type: application
-version: 1.0.0
-appVersion: "1.0"
+version: 10.0.0
+appVersion: "10.0"
 maintainers:
   - name: Stuart Shay
     url: https://github.com/stuartshay

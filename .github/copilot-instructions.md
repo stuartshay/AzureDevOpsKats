@@ -63,13 +63,13 @@ AzureDevOpsKats/
 
 ### Branch Strategy
 
-⚠️ **CRITICAL RULE**: NEVER commit directly to `master` branch. All changes
+⚠️ **CRITICAL RULE**: NEVER commit directly to `main` branch. All changes
 MUST go through `develop` or `feature/*` branches.
 
-- **master**: Protected branch, production-only (PR required, direct commits
+- **main**: Protected branch, production-only (PR required, direct commits
   FORBIDDEN)
 - **develop**: Primary development branch (work here by default)
-- **feature/\***: Feature branches (use for isolated features, PR to `master`)
+- **feature/\***: Feature branches (use for isolated features, PR to `main`)
 
 ### Before Starting Any Work
 
@@ -80,14 +80,14 @@ MUST go through `develop` or `feature/*` branches.
 git checkout develop && git fetch origin && git pull origin develop
 
 # If creating a new feature branch:
-git checkout master && git fetch origin && git pull origin master
+git checkout main && git fetch origin && git pull origin main
 git checkout -b feature/my-feature
 ```
 
 **ALWAYS rebase onto the latest protected branch before creating a PR:**
 
 ```bash
-git fetch origin master && git rebase origin/master
+git fetch origin main && git rebase origin/main
 ```
 
 ### Before Creating a PR
@@ -95,13 +95,13 @@ git fetch origin master && git rebase origin/master
 ⚠️ **ALWAYS check for and resolve conflicts before creating a PR:**
 
 1. Rebase onto the latest protected branch:
-   `git fetch origin master && git rebase origin/master`
+   `git fetch origin main && git rebase origin/main`
 2. Resolve any conflicts during rebase
 3. Force-push the rebased branch: `git push origin <branch> --force-with-lease`
 4. Verify the PR shows no conflicts on GitHub before requesting review
 
 This is especially important after squash merges, which cause develop to
-diverge from master.
+diverge from main.
 
 ### Daily Workflow
 
@@ -113,10 +113,10 @@ diverge from master.
 6. Run `pre-commit run -a` before commit
 7. Run `make test` to validate
 8. Commit and push to `develop` or `feature/*` branch
-9. **For feature branches**: rebase onto latest `master` before PR:
-   `git fetch origin master && git rebase origin/master`
-10. Create PR to `master` when ready for deployment
-11. **NEVER**: `git push origin master` or commit directly to master
+9. **For feature branches**: rebase onto latest `main` before PR:
+   `git fetch origin main && git rebase origin/main`
+10. Create PR to `main` when ready for deployment
+11. **NEVER**: `git push origin main` or commit directly to main
 
 ## Writing Code
 
@@ -247,8 +247,8 @@ Three workflows run on push/PR:
 | Workflow      | File         | Checks                                                                                             |
 | ------------- | ------------ | -------------------------------------------------------------------------------------------------- |
 | Lint and Test | `lint.yml`   | pre-commit, dotnet format, dotnet build (warnaserror), dotnet test (coverage), hadolint, helm lint |
-| Docker        | `docker.yml` | Multi-arch build, push to Docker Hub on master                                                     |
-| Helm          | `helm.yml`   | Package + push chart to GHCR on master                                                             |
+| Docker        | `docker.yml` | Multi-arch build, push to Docker Hub on main                                                       |
+| Helm          | `helm.yml`   | Package + push chart to GHCR on main                                                               |
 
 **Replicate CI locally before pushing:**
 
@@ -273,7 +273,7 @@ make test-cov      # Run tests with HTML coverage report
 
 ## Safety Rules (Do Not)
 
-- ⛔ **NEVER commit directly to master branch** - ALWAYS use develop or feature
+- ⛔ **NEVER commit directly to main branch** - ALWAYS use develop or feature
   branches
 - Do not commit secrets or `.env` files
 - Do not use `latest` Docker tags in deployments

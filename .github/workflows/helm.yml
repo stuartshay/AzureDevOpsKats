@@ -2,7 +2,7 @@ name: Helm Package and Push
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - "charts/**"
       - "VERSION"
@@ -25,7 +25,7 @@ jobs:
 
       - name: Read VERSION
         id: version
-        run: echo "version=$(cat VERSION | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(tr -d '[:space:]' < VERSION)" >> "$GITHUB_OUTPUT"
 
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ${{ env.OCI_REGISTRY }} -u ${{ github.actor }} --password-stdin

@@ -1,0 +1,46 @@
+{
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "[csharp]": {
+        "editor.tabSize": 4,
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    },
+    "[razor]": {
+        "editor.tabSize": 4,
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    },
+    "[json]": {
+        "editor.tabSize": 2
+    },
+    "[yaml]": {
+        "editor.tabSize": 2,
+        "editor.defaultFormatter": "redhat.vscode-yaml",
+        "editor.autoIndent": "full"
+    },
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "files.trimTrailingWhitespace": false
+    },
+    "[dockerfile]": {
+        "editor.tabSize": 4,
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "dotnet.defaultSolution": "AzureDevOpsKats.sln",
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.enableEditorConfigSupport": true,
+    "yaml.validate": true,
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.vs": true,
+        "**/TestResults": true
+    },
+    "search.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/TestResults": true
+    }
+}
