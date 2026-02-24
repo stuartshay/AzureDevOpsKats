@@ -3,7 +3,8 @@
 [![Lint and Test](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/lint.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/lint.yml)
 [![Docker Build and Push](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/docker.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/docker.yml)
 [![Helm Package and Push](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/helm.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/helm.yml)
-[![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-stuartshay%2Fazuredevopskats-blue?logo=docker)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
+[![Helm Chart](https://img.shields.io/badge/Helm%20Chart-GHCR-0F1689?logo=helm&logoColor=white)](https://github.com/stuartshay/AzureDevOpsKats/pkgs/container/helm-charts%2Fazuredevopskats)
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![Blazor](https://img.shields.io/badge/Blazor-Server-512BD4?logo=blazor&logoColor=white)](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
 
@@ -85,6 +86,11 @@ make docker-run    # Run container locally (port 8080)
 ```
 
 ## Helm Deployment
+
+| Package | Registry |
+|---------|----------|
+| [stuartshay/azuredevopskats](https://hub.docker.com/r/stuartshay/azuredevopskats/) | Docker Hub |
+| [helm-charts/azuredevopskats](https://github.com/stuartshay/AzureDevOpsKats/pkgs/container/helm-charts%2Fazuredevopskats) | GHCR OCI |
 
 ```bash
 # Install from GHCR OCI registry
