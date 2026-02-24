@@ -140,10 +140,40 @@ configure_helm_repos() {
 
     helm repo update
     success "Helm repos updated"
+}
+
+configure_ghcr_registry() {
+    section "Configuring GHCR OCI Registry"
+
+    echo "  OCI charts use 'helm registry login' (not 'helm repo add')"
+    echo "  They do NOT appear in 'helm repo list'"
+    echo ""
+
+    if helm registry login ghcr.io --username stuartshay --password-stdin < /dev/null 2>/dev/null; then
+        success "GHCR registry already authenticated"
+    else
+        if command -v gh &>/dev/null && gh auth status &>/dev/null 2>&1; then
+            local token
+            token=$(gh auth token 2>/dev/null)
+            if echo "$token" | helm registry login ghcr.io --username stuartshay --password-stdin 2>/dev/null; then
+                success "GHCR registry authenticated via GitHub CLI"
+            else
+                warn "GHCR login failed — run manually:"
+                echo "    echo \$GITHUB_TOKEN | helm registry login ghcr.io --username stuartshay --password-stdin"
+            fi
+        else
+            warn "GitHub CLI not authenticated — GHCR login skipped"
+            echo "  To authenticate manually:"
+            echo "    echo \$GITHUB_TOKEN | helm registry login ghcr.io --username stuartshay --password-stdin"
+        fi
+    fi
 
     echo ""
-    echo "  OCI Helm chart (no repo add needed):"
+    echo "  OCI chart URI:"
     echo "    oci://ghcr.io/stuartshay/helm-charts/azuredevopskats"
+    echo ""
+    echo "  Verify with:"
+    echo "    helm show chart oci://ghcr.io/stuartshay/helm-charts/azuredevopskats"
 }
 
 # =============================================================================
@@ -255,8 +285,12 @@ verify_installation() {
     fi
 
     echo ""
-    echo "OCI Helm Chart:"
-    echo "  oci://ghcr.io/stuartshay/helm-charts/azuredevopskats"
+    echo "GHCR OCI Registry:"
+    if helm show chart oci://ghcr.io/stuartshay/helm-charts/azuredevopskats &>/dev/null 2>&1; then
+        success "GHCR chart accessible: oci://ghcr.io/stuartshay/helm-charts/azuredevopskats"
+    else
+        warn "GHCR chart not accessible (run: echo \$GITHUB_TOKEN | helm registry login ghcr.io --username stuartshay --password-stdin)"
+    fi
 }
 
 # =============================================================================
@@ -289,6 +323,7 @@ main() {
     check_docker
     install_helm
     configure_helm_repos
+    configure_ghcr_registry
     install_kubeconform
     install_hadolint
     install_pre_commit
