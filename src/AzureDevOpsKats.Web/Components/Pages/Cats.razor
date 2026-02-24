@@ -1,0 +1,168 @@
+@page "/cats"
+@using AzureDevOpsKats.Web.Data
+@using AzureDevOpsKats.Web.Services
+@inject CatService CatService
+@rendermode InteractiveServer
+
+<PageTitle>Cats - AzureDevOpsKats</PageTitle>
+
+<h1>Cats</h1>
+
+<div class="toolbar">
+    <button class="btn" @onclick="ShowCreateForm">+ Add Cat</button>
+</div>
+
+@if (_showForm)
+{
+    <div class="card form-card">
+        <h2>@(_editingCat is null ? "Add New Cat" : "Edit Cat")</h2>
+        <EditForm Model="_formModel" OnValidSubmit="SaveCat" FormName="catForm">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Name</label>
+                <InputText @bind-Value="_formModel.Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <InputTextArea @bind-Value="_formModel.Description" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Photo</label>
+                <InputFile OnChange="OnPhotoSelected" accept="image/*" />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn">Save</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelForm">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+@if (_cats is null)
+{
+    <p>Loading...</p>
+}
+else if (_cats.Count == 0)
+{
+    <p>No cats yet. Add one!</p>
+}
+else
+{
+    <div class="cat-grid">
+        @foreach (var cat in _cats)
+        {
+            <div class="card cat-card">
+                @if (!string.IsNullOrEmpty(cat.Photo))
+                {
+                    <img src="uploads/@cat.Photo" alt="@cat.Name" class="cat-photo" />
+                }
+                else
+                {
+                    <div class="cat-photo placeholder">🐱</div>
+                }
+                <div class="cat-info">
+                    <h3>@cat.Name</h3>
+                    <p>@cat.Description</p>
+                    <div class="cat-actions">
+                        <button class="btn btn-small" @onclick="() => EditCat(cat)">Edit</button>
+                        <button class="btn btn-small btn-danger" @onclick="() => DeleteCat(cat.Id)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Cat>? _cats;
+    private bool _showForm;
+    private Cat? _editingCat;
+    private CatFormModel _formModel = new();
+    private IBrowserFile? _selectedPhoto;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _cats = await CatService.GetAllAsync();
+    }
+
+    private void ShowCreateForm()
+    {
+        _editingCat = null;
+        _formModel = new CatFormModel();
+        _selectedPhoto = null;
+        _showForm = true;
+    }
+
+    private void EditCat(Cat cat)
+    {
+        _editingCat = cat;
+        _formModel = new CatFormModel { Name = cat.Name, Description = cat.Description };
+        _selectedPhoto = null;
+        _showForm = true;
+    }
+
+    private void CancelForm()
+    {
+        _showForm = false;
+        _editingCat = null;
+    }
+
+    private void OnPhotoSelected(InputFileChangeEventArgs e)
+    {
+        _selectedPhoto = e.File;
+    }
+
+    private async Task SaveCat()
+    {
+        IFormFile? photo = null;
+        if (_selectedPhoto is not null)
+        {
+            photo = new BrowserFormFile(_selectedPhoto);
+        }
+
+        if (_editingCat is not null)
+        {
+            await CatService.UpdateAsync(_editingCat.Id, _formModel.Name, _formModel.Description, photo);
+        }
+        else
+        {
+            await CatService.CreateAsync(_formModel.Name, _formModel.Description, photo);
+        }
+
+        _showForm = false;
+        _editingCat = null;
+        _cats = await CatService.GetAllAsync();
+    }
+
+    private async Task DeleteCat(long id)
+    {
+        await CatService.DeleteAsync(id);
+        _cats = await CatService.GetAllAsync();
+    }
+
+    private sealed class CatFormModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+
+    private sealed class BrowserFormFile(IBrowserFile file) : IFormFile
+    {
+        public string ContentType => file.ContentType;
+        public string ContentDisposition => $"form-data; name=\"photo\"; filename=\"{file.Name}\"";
+        public IHeaderDictionary Headers { get; set; } = new HeaderDictionary();
+        public long Length => file.Size;
+        public string Name => "photo";
+        public string FileName => file.Name;
+
+        public void CopyTo(Stream target) => CopyToAsync(target).GetAwaiter().GetResult();
+
+        public async Task CopyToAsync(Stream target, CancellationToken cancellationToken = default)
+        {
+            await using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+            await stream.CopyToAsync(target, cancellationToken);
+        }
+
+        public Stream OpenReadStream() => file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+    }
+}

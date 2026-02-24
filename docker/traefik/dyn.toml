@@ -1,3 +1,0 @@
-[[tls.certificates]]
-  certFile = "/etc/traefik/certs/localhost.crt"
-  keyFile = "/etc/traefik/certs/localhost.key"

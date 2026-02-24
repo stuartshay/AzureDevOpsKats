@@ -1,0 +1,40 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "actionlint",
+    "appsettings",
+    "aspnet",
+    "azuredevopskats",
+    "blazor",
+    "bunit",
+    "buildx",
+    "csproj",
+    "dotnet",
+    "efcore",
+    "ghcr",
+    "hadolint",
+    "healthcheck",
+    "homelab",
+    "informationcart",
+    "kats",
+    "kestrel",
+    "kubeconform",
+    "kubernetes",
+    "markdownlint",
+    "nginx",
+    "pragmas",
+    "qemu",
+    "rendermode",
+    "shellcheck",
+    "sqlite",
+    "stuartshay",
+    "wasm"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "**/bin/**",
+    "**/obj/**",
+    "*.sln"
+  ]
+}

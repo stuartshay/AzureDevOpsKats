@@ -1,81 +1,45 @@
-﻿using AzureDevOpsKats.Common.Constants;
-using AzureDevOpsKats.Common.Logging;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Serilog;
-using System;
-using System.Diagnostics;
-using System.IO;
-using Microsoft.Azure.KeyVault;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
-using Microsoft.Azure.Services.AppAuthentication;
-using Azure.Identity;
+using AzureDevOpsKats.Web.Components;
+using AzureDevOpsKats.Web.Data;
+using AzureDevOpsKats.Web.Services;
+using Microsoft.EntityFrameworkCore;
 
-namespace AzureDevOpsKats.Web
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<CatDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? "Data Source=Data/cats.sqlite"));
+
+builder.Services.AddScoped<CatService>();
+
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<CatDbContext>("database");
+
+var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
 {
-    /// <summary>
-    ///
-    /// </summary>
-    public static class Program
-    {
-        /// <summary>
-        /// Gets Configuration
-        /// </summary>
-        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development"}.json", optional: false, reloadOnChange:true)
-            .Build();
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="args"></param>
-        public static void Main(string[] args)
-        {
-            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-             {
-                 webBuilder.UseStartup<Startup>();
-             })
-            .ConfigureAppConfiguration((context, builder) =>
-            {
-                var configuration = builder.Build();
-
-                if (context.HostingEnvironment.EnvironmentName == "AwsEcs")
-                {
-                    var clusterName = Environment.GetEnvironmentVariable("CLUSTER_NAME").ToLower();
-                    var systemsManagerReloadSeconds = Convert.ToDouble(Environment.GetEnvironmentVariable("SYSTEMS_MANAGER_RELOAD"));
-                    builder.AddSystemsManager($"/{ApplicationConstants.SystemsManagerName}-{clusterName}", optional: false, reloadAfter: TimeSpan.FromSeconds(systemsManagerReloadSeconds));
-                }
-                if (context.HostingEnvironment.EnvironmentName == "AzureContainer" || context.HostingEnvironment.IsDevelopment())
-                {
-                    //var configuration = context.Configuration;
-                    //var azAppConfigConnection = configuration["AppConfig"] != null ?
-                    //   configuration["AppConfig"] : Environment.GetEnvironmentVariable("ENDPOINTS_APPCONFIG");
-
-                    //var keyVaultEndpoint = Environment.GetEnvironmentVariable("AZURE_VAULT_URI");
-
-                    //var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                    //var keyVaultClient = new KeyVaultClient(
-                    //    new KeyVaultClient.AuthenticationCallback(
-                    //        azureServiceTokenProvider.KeyVaultTokenCallback));
-
-                    //builder.AddAzureKeyVault(keyVaultEndpoint,keyVaultClient, new DefaultKeyVaultSecretManager());
-                }
-
-            })
-            .UseSerilog(Logging.ConfigureLogger);
-    }
+    var db = scope.ServiceProvider.GetRequiredService<CatDbContext>();
+    await db.Database.EnsureCreatedAsync();
 }
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+}
+
+app.UseStaticFiles();
+app.UseAntiforgery();
+
+app.MapHealthChecks("/health");
+app.MapHealthChecks("/ready");
+
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode()
+    .AddAdditionalAssemblies(typeof(AzureDevOpsKats.Client._Imports).Assembly);
+
+app.Run();
+
+public partial class Program;

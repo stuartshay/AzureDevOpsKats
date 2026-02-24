@@ -1,95 +1,115 @@
 # AzureDevOpsKats
 
-[![CI/CD Build/Test/Deploy](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml/badge.svg)](https://github.com/stuartshay/AzureDevOpsKats/actions/workflows/ci-cd-action.yml)
+Cat photo gallery built with .NET 10 Blazor Web App (Interactive Server + WASM).
 
-[![This image on DockerHub](https://img.shields.io/docker/pulls/stuartshay/azuredevopskats.svg)](https://hub.docker.com/r/stuartshay/azuredevopskats/)
+## Features
 
-[AWS DevopsKats Website](http://devopskats-master-918290632.us-east-1.elb.amazonaws.com/)<br/>
-[Azure DevopsKats Website](http://azuredevopskats.eastus.azurecontainer.io:5000)
+- CRUD operations for cat photos
+- Photo upload with file storage
+- SQLite database with EF Core 10
+- Health check endpoints (`/health`, `/ready`)
+- Multi-arch Docker image (amd64 + arm64)
+- Helm chart published to GHCR OCI registry
 
-## Purpose
+## Tech Stack
 
-The Kats Club has an extensive collection of Kats Photos and is looking for a development platform where they can manage their large archive of photos.
+| Component | Technology |
+|-----------|-----------|
+| Runtime | .NET 10 LTS |
+| Frontend | Blazor Web App (Server + WASM) |
+| Database | SQLite + EF Core 10 |
+| Container | Docker (multi-arch) |
+| Orchestration | Kubernetes (Helm) |
+| CI/CD | GitHub Actions |
 
-The Kats Club is a Agile Development and DevOps team and has embraced the following technologies for there next generation platform C#, CI/CD, Containerization and the Cloud
+## Quick Start
 
-### AWSDevOpsKats
+```bash
+# Setup development environment
+./setup.sh
 
-The Team has chosen the AWS Elastic Container Service (ECS) to host the club’s infrastructure and is utilizing the following technologies in their development and release pipeline.
+# Start development server (hot reload)
+make dev
 
-- [Terraform Infrastructure](/terraform)
-- [ECS Service Tasks Deployment](/ecspresso)
-- [Ansible Configuration](/terraform/ansible/)
-- [GitHub Actions Workflows](https://github.com/stuartshay/AzureDevOpsKats/actions)
+# Run tests
+make test
 
-### AzureDevOpsKats
-
-The Team also likes many of the Cloud Features of Azure and it is CLI
-
-- [Azure Container Instances](/infrastructure)
-
-### Github Actions/Workflows
-
-The Team has embraced Microservices and the flexibility to deploy fully tested code to production in a matter of minutes.
-
-By Using Common Workflow components, the team can get up and running quicker then they have ever done before.
-
-- [Common Workflows](https://github.com/stuartshay/WorkflowCommon)
-
-### Containerization
-
-Docker Containers and Docker Compose have been adopted by the team giving the ability to run multiple environment configurations from their local development workstation.
-
-- [Docker Images](/docker)
-
-### Development
-
-- [C# Coding Standards](/docfx/articles/csharp_coding_standards.md)
-- [Developer DocFx Documentation](https://stuartshay.github.io/AzureDevOpsKats/)
-
-![](assets/web.png)
-
-## Builds
-
-| Job                           | Agent        | Status                                                                                                                                                                                                     |
-| ----------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Windows/Linux Automated Build | Appveyor     | [![Build status](https://ci.appveyor.com/api/projects/status/30ypdshgjhuhmhaw?svg=true)](https://ci.appveyor.com/project/StuartShay/azuredevopskats)                                                       |
-| Windows/Linux Automated Build | Azure Devops | [![Build Status](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_apis/build/status/stuartshay.AzureDevOpsKats)](https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_build/latest?definitionId=1) |
-| Docker x86/Arm7 Image         | Jenkins      | [![Build Status](https://jenkins.navigatorglass.com/buildStatus/icon?job=AzureDevOpsKats/AzureDevOpsKats-multi)](https://jenkins.navigatorglass.com/job/AzureDevOpsKats/job/AzureDevOpsKats-multi/)        |
-
-| Library                 | Nuget Repository                               | MyGet Repository                               |
-| ----------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| AzureDevOpsKats.Data    | [![Nuget][data-nuget-badge]][data-nuget]       | [![MyGet][data-myget-badge]][data-myget]       |
-| AzureDevOpsKats.Service | [![Nuget][service-nuget-badge]][service-nuget] | [![MyGet][service-myget-badge]][service-myget] |
-
-[data-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Data
-[data-myget-badge]: https://img.shields.io/myget/azuredevopskats/v/AzureDevOpsKats.Data.svg?label=AzureDevOpsKats.Data
-[data-nuget]: https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3&package=ba6134fb-0db5-4ffb-a27f-be12b753c8d3&preferRelease=true
-[data-nuget-badge]: https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178@cb8ef0ed-1b6f-446b-a654-7d71a3c6c5b3/Packages/ba6134fb-0db5-4ffb-a27f-be12b753c8d3/Badge
-[service-myget]: https://www.myget.org/feed/azuredevopskats/package/nuget/AzureDevOpsKats.Service
-[service-myget-badge]: https://img.shields.io/myget/azuredevopskats/v/AzureDevOpsKats.Service.svg?label=AzureDevOpsKats.Service
-[service-nuget]: https://dev.azure.com/AzureDevOpsKats/AzureDevOpsKats/_packaging?_a=package&feed=635e0ad8-8571-488f-82e0-3fb74d47f178&package=ba6134fb-0db5-4ffb-a27f-be12b753c8d3&preferRelease=true
-[service-nuget-badge]: https://feeds.dev.azure.com/AzureDevOpsKats/_apis/public/Packaging/Feeds/635e0ad8-8571-488f-82e0-3fb74d47f178/Packages/ba6134fb-0db5-4ffb-a27f-be12b753c8d3/Badge
-
-## Instalation & Run Instructions
-
-```
-git clone https://github.com/stuartshay/AzureDevOpsKats.git
-
-cd AzureDevOpsKats
-dotnet restore
-
-cd src\AzureDevOpsKats.Web\
-dotnet run
+# Build Docker image
+make docker-build
 ```
 
-```
-http://localhost:5000/
+## Project Structure
+
+```text
+AzureDevOpsKats/
+├── src/
+│   ├── AzureDevOpsKats.Web/        # Blazor Web App (Server + WASM host)
+│   │   ├── Components/             # Blazor components (pages, layout)
+│   │   ├── Data/                   # EF Core context, entities
+│   │   ├── Services/               # Business logic
+│   │   └── wwwroot/                # Static assets
+│   └── AzureDevOpsKats.Client/     # WASM interactive client
+├── tests/
+│   └── AzureDevOpsKats.Tests/      # xUnit + bUnit tests
+├── charts/
+│   └── azuredevopskats/            # Helm chart
+├── docs/                           # Documentation
+├── Dockerfile                      # Multi-stage, multi-arch
+├── Makefile                        # Build automation
+└── setup.sh                        # Dev environment bootstrap
 ```
 
-### Build Commands
+## Development
 
-| Build Type        | Linux/Mac                    | Windows                       |
-| ----------------- | ---------------------------- | ----------------------------- |
-| CI Build          | ./build.sh --target=CI-Build | .\build.ps1 --target=CI-Build |
-| SonarQube Testing | ./build.sh --target=sonar    | .\build.ps1 --target=sonar    |
+```bash
+make help          # Show all commands
+make dev           # Start dev server (hot reload on port 8080)
+make build         # Build solution
+make test          # Run tests with coverage
+make lint          # Check code formatting
+make format        # Format code
+```
+
+## Docker
+
+```bash
+make docker-build  # Build multi-arch image
+make docker-run    # Run container locally (port 8080)
+```
+
+## Helm Deployment
+
+```bash
+# Install from GHCR OCI registry
+helm install azuredevopskats \
+  oci://ghcr.io/stuartshay/helm-charts/azuredevopskats \
+  --namespace azuredevopskats --create-namespace \
+  --set image.tag=1.0.1
+
+# Upgrade
+helm upgrade azuredevopskats \
+  oci://ghcr.io/stuartshay/helm-charts/azuredevopskats \
+  --namespace azuredevopskats \
+  --set image.tag=<new-version>
+```
+
+## Endpoints
+
+| Path | Description |
+|------|-------------|
+| `/` | Home page |
+| `/cats` | Cat gallery (CRUD) |
+| `/health` | Liveness probe |
+| `/ready` | Readiness probe |
+
+## CI/CD
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `lint.yml` | Push/PR | Pre-commit, build, test, hadolint, helm lint |
+| `docker.yml` | Push to master | Multi-arch Docker build + push |
+| `helm.yml` | Push to master (charts/) | Helm package + push to GHCR |
+
+## License
+
+[MIT](LICENSE) © Stuart Shay

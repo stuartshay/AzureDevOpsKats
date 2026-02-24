@@ -1,0 +1,61 @@
+replicaCount: 1
+
+image:
+  repository: stuartshay/azuredevopskats
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: kats.lab.informationcart.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: kats-tls
+      hosts:
+        - kats.lab.informationcart.com
+
+persistence:
+  enabled: true
+  storageClass: nfs-client
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  mountPath: /app/data
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+healthCheck:
+  liveness:
+    path: /health
+    port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 30
+  readiness:
+    path: /ready
+    port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+serviceAccount:
+  create: true
+  name: ""
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

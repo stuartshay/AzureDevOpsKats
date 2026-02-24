@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+
+<div class="page">
+    <header>
+        <nav class="navbar">
+            <a class="brand" href="/">🐱 AzureDevOpsKats</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/cats">Cats</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="content">
+        @Body
+    </main>
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year AzureDevOpsKats</p>
+    </footer>
+</div>

@@ -1,0 +1,40 @@
+name: Helm Package and Push
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "charts/**"
+      - "VERSION"
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  CHART_PATH: charts/azuredevopskats
+  OCI_REGISTRY: ghcr.io
+  OCI_REPOSITORY: stuartshay/helm-charts
+
+jobs:
+  package:
+    name: Package and Push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read VERSION
+        id: version
+        run: echo "version=$(cat VERSION | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ${{ env.OCI_REGISTRY }} -u ${{ github.actor }} --password-stdin
+
+      - name: Lint chart
+        run: helm lint ${{ env.CHART_PATH }}
+
+      - name: Package chart
+        run: helm package ${{ env.CHART_PATH }} --version ${{ steps.version.outputs.version }}.${{ github.run_number }}
+
+      - name: Push to GHCR
+        run: helm push azuredevopskats-*.tgz oci://${{ env.OCI_REGISTRY }}/${{ env.OCI_REPOSITORY }}
