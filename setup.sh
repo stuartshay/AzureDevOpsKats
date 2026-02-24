@@ -64,9 +64,24 @@ SUDO=""
 install_dotnet() {
     section "Installing .NET SDK ${DOTNET_VERSION}"
 
+    local required_version=""
+    if [ -f "global.json" ] && command -v jq &>/dev/null; then
+        required_version=$(jq -r '.sdk.version // empty' global.json 2>/dev/null)
+    fi
+
     if command -v dotnet &>/dev/null; then
-        success "dotnet already installed: $(dotnet --version)"
-        return 0
+        local current_version
+        current_version=$(dotnet --version 2>/dev/null || echo "0")
+        local current_major="${current_version%%.*}"
+        local required_major="${DOTNET_VERSION%%.*}"
+
+        if [ "$current_major" = "$required_major" ]; then
+            success "dotnet ${current_version} already installed (matches ${DOTNET_VERSION}.x)"
+            return 0
+        else
+            warn "dotnet ${current_version} found but ${DOTNET_VERSION}.x required (global.json: ${required_version:-$DOTNET_VERSION})"
+            echo "  Installing .NET SDK ${DOTNET_VERSION} alongside existing SDK..."
+        fi
     fi
 
     curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin \
