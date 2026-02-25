@@ -61,6 +61,7 @@
     "qemu",
     "raquo",
     "rendermode",
+    "serilog",
     "serviceaccount",
     "shellcheck",
     "sqlite",

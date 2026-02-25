@@ -17,7 +17,8 @@
 @if (_showForm)
 {
     <div class="modal-overlay" @onclick="CancelForm">
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cat-modal-title" @onclick:stopPropagation="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cat-modal-title"
+             @onclick:stopPropagation="true">
             <div class="modal-header">
                 <h2 id="cat-modal-title">@(_editingCat is null ? "Add New Cat" : "Edit Cat")</h2>
                 <button type="button" class="modal-close" @onclick="CancelForm">&times;</button>

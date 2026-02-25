@@ -3,8 +3,12 @@ using AzureDevOpsKats.Web.Data;
 using AzureDevOpsKats.Web.Services;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -32,6 +36,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
