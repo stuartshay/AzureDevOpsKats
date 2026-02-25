@@ -26,7 +26,7 @@ build: ## Build the solution
 	dotnet build $(SOLUTION)
 
 dev: ## Start development server with hot reload
-	dotnet watch run --project $(WEB_PROJECT)
+	ASPNETCORE_ENVIRONMENT=Development dotnet watch run --project $(WEB_PROJECT)
 
 start: ## Start production server
 	dotnet run --project $(WEB_PROJECT) --configuration Release

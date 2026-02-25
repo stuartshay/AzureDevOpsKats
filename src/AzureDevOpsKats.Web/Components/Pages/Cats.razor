@@ -1,7 +1,9 @@
 @page "/cats"
+@using AzureDevOpsKats.Web.Components.Shared
 @using AzureDevOpsKats.Web.Data
+@using AzureDevOpsKats.Web.Models
 @using AzureDevOpsKats.Web.Services
-@inject CatService CatService
+@inject ICatService CatService
 @rendermode InteractiveServer
 
 <PageTitle>Cats - AzureDevOpsKats</PageTitle>
@@ -14,27 +16,36 @@
 
 @if (_showForm)
 {
-    <div class="card form-card">
-        <h2>@(_editingCat is null ? "Add New Cat" : "Edit Cat")</h2>
-        <EditForm Model="_formModel" OnValidSubmit="SaveCat" FormName="catForm">
-            <DataAnnotationsValidator />
-            <div class="form-group">
-                <label>Name</label>
-                <InputText @bind-Value="_formModel.Name" class="form-control" />
+    <div class="modal-overlay" @onclick="CancelForm">
+        <div class="modal" @onclick:stopPropagation="true">
+            <div class="modal-header">
+                <h2>@(_editingCat is null ? "Add New Cat" : "Edit Cat")</h2>
+                <button type="button" class="modal-close" @onclick="CancelForm">&times;</button>
             </div>
-            <div class="form-group">
-                <label>Description</label>
-                <InputTextArea @bind-Value="_formModel.Description" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label>Photo</label>
-                <InputFile OnChange="OnPhotoSelected" accept="image/*" />
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="btn">Save</button>
-                <button type="button" class="btn btn-secondary" @onclick="CancelForm">Cancel</button>
-            </div>
-        </EditForm>
+            <EditForm Model="_formModel" OnValidSubmit="SaveCat" FormName="catForm">
+                <FluentValidationValidator />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText @bind-Value="_formModel.Name" class="form-control" />
+                        <ValidationMessage For="() => _formModel.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <InputTextArea @bind-Value="_formModel.Description" class="form-control" />
+                        <ValidationMessage For="() => _formModel.Description" />
+                    </div>
+                    <div class="form-group">
+                        <label>Photo</label>
+                        <InputFile OnChange="OnPhotoSelected" accept="image/*" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CancelForm">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
     </div>
 }
 
@@ -49,7 +60,7 @@ else if (_cats.Count == 0)
 else
 {
     <div class="cat-grid">
-        @foreach (var cat in _cats)
+        @foreach (var cat in PagedCats)
         {
             <div class="card cat-card">
                 @if (!string.IsNullOrEmpty(cat.Photo))
@@ -71,18 +82,51 @@ else
             </div>
         }
     </div>
+
+    @if (TotalPages > 1)
+    {
+        <nav class="pagination">
+            <button class="btn btn-small" disabled="@(_currentPage <= 1)" @onclick="PreviousPage">&laquo; Prev</button>
+            @for (var i = 1; i <= TotalPages; i++)
+            {
+                var page = i;
+                <button class="btn btn-small" disabled="@(page == _currentPage)" @onclick="() => GoToPage(page)">@(page)</button>
+            }
+            <button class="btn btn-small" disabled="@(_currentPage >= TotalPages)" @onclick="NextPage">Next &raquo;</button>
+        </nav>
+    }
 }
 
 @code {
+    private const int PageSize = 9;
     private List<Cat>? _cats;
+    private int _currentPage = 1;
     private bool _showForm;
     private Cat? _editingCat;
     private CatFormModel _formModel = new();
     private IBrowserFile? _selectedPhoto;
 
+    private int TotalPages => _cats is null ? 1 : (int)Math.Ceiling(_cats.Count / (double)PageSize);
+    private List<Cat> PagedCats => _cats?.Skip((_currentPage - 1) * PageSize).Take(PageSize).ToList() ?? [];
+
     protected override async Task OnInitializedAsync()
     {
         _cats = await CatService.GetAllAsync();
+    }
+
+    private void GoToPage(int page)
+    {
+        _currentPage = page;
+    }
+
+    private void PreviousPage()
+    {
+        if (_currentPage > 1) _currentPage--;
+    }
+
+    private void NextPage()
+    {
+        if (_currentPage < TotalPages) _currentPage++;
     }
 
     private void ShowCreateForm()
@@ -138,12 +182,6 @@ else
     {
         await CatService.DeleteAsync(id);
         _cats = await CatService.GetAllAsync();
-    }
-
-    private sealed class CatFormModel
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
     }
 
     private sealed class BrowserFormFile(IBrowserFile file) : IFormFile

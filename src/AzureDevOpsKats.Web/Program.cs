@@ -1,6 +1,7 @@
 using AzureDevOpsKats.Web.Components;
 using AzureDevOpsKats.Web.Data;
 using AzureDevOpsKats.Web.Services;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,11 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 builder.Services.AddDbContext<CatDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")
         ?? "Data Source=Data/cats.sqlite"));
 
-builder.Services.AddScoped<CatService>();
+builder.Services.AddScoped<ICatService, CatService>();
 
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<CatDbContext>("database");

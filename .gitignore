@@ -43,6 +43,9 @@ TestResults/
 # Helm
 charts/azuredevopskats/charts/
 
+# Uploads
+src/AzureDevOpsKats.Web/wwwroot/uploads/
+
 # Misc
 node_modules/
 .dotnet/
