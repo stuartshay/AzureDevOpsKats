@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AzureDevOpsKats.Web.Services;
 
-public class CatService(CatDbContext db, IWebHostEnvironment env, ILogger<CatService> logger)
+public class CatService(CatDbContext db, IWebHostEnvironment env, ILogger<CatService> logger) : ICatService
 {
     private readonly string _uploadPath = Path.Combine(env.WebRootPath, "uploads");
 
