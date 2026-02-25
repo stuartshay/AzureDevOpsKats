@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace AzureDevOpsKats.Web.Components.Shared;
 
-public class FluentValidationValidator : ComponentBase
+public class FluentValidationValidator : ComponentBase, IDisposable
 {
     [CascadingParameter]
     private EditContext? EditContext { get; set; }
@@ -17,11 +17,25 @@ public class FluentValidationValidator : ComponentBase
     protected override void OnInitialized()
     {
         if (EditContext is null)
-            return;
+        {
+            throw new InvalidOperationException(
+                $"{nameof(FluentValidationValidator)} requires a cascading parameter of type {nameof(EditContext)}. " +
+                "Ensure this component is used inside an EditForm or that an EditContext is provided.");
+        }
 
         _messageStore = new ValidationMessageStore(EditContext);
         EditContext.OnValidationRequested += HandleValidationRequested;
         EditContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    public void Dispose()
+    {
+        if (EditContext is not null)
+        {
+            EditContext.OnValidationRequested -= HandleValidationRequested;
+            EditContext.OnFieldChanged -= HandleFieldChanged;
+            _messageStore?.Clear();
+        }
     }
 
     private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs e)
