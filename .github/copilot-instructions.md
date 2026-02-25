@@ -8,6 +8,8 @@ Web App development with Helm-based Kubernetes deployment.
 - **README**: Read `README.md` for project overview and architecture
 - **Plan**: Check `docs/project-plan.md` for modernization phases and decisions
 - **env**: Load `.env` for local configuration (gitignored)
+- **bootstrap**: Run `make setup` (or `./setup.sh`) once on a fresh environment to
+  install .NET SDK 10.0, Helm, pre-commit hooks, and other tooling
 - **pre-commit**: ALWAYS run `pre-commit run -a` before commit/PR
 
 ## Project Overview
@@ -107,16 +109,17 @@ diverge from main.
 
 1. **ALWAYS** start from `develop` or create a feature branch
 2. **Sync with remote** before making any changes (see above)
-3. Run `dotnet restore` to install dependencies
-4. Run `make dev` for development server (hot reload)
-5. Test endpoints: `curl http://localhost:8080/health`
-6. Run `pre-commit run -a` before commit
-7. Run `make test` to validate
-8. Commit and push to `develop` or `feature/*` branch
-9. **For feature branches**: rebase onto latest `main` before PR:
-   `git fetch origin main && git rebase origin/main`
-10. Create PR to `main` when ready for deployment
-11. **NEVER**: `git push origin main` or commit directly to main
+3. Run `make setup` if on a fresh environment (installs .NET SDK 10, Helm, pre-commit)
+4. Run `dotnet restore` to install dependencies
+5. Run `make dev` for development server (hot reload)
+6. Test endpoints: `curl http://localhost:8080/health`
+7. Run `pre-commit run -a` before commit
+8. Run `make test` to validate
+9. Commit and push to `develop` or `feature/*` branch
+10. **For feature branches**: rebase onto latest `main` before PR:
+    `git fetch origin main && git rebase origin/main`
+11. Create PR to `main` when ready for deployment
+12. **NEVER**: `git push origin main` or commit directly to main
 
 ## Writing Code
 
@@ -287,6 +290,7 @@ make test-cov      # Run tests with HTML coverage report
 
 ```bash
 make help          # Show all commands
+make setup         # Bootstrap environment (first-time: installs .NET SDK, Helm, pre-commit)
 make dev           # Start dev server (hot reload)
 make build         # Build solution
 make test          # Run tests with coverage
@@ -299,6 +303,10 @@ make helm-lint     # Lint Helm chart
 make helm-package  # Package Helm chart
 pre-commit run -a  # Pre-commit checks
 ```
+
+> **Note**: The Makefile automatically sets `DOTNET_ROOT=$HOME/.dotnet` and prepends it
+> to `PATH`. When running `dotnet` commands directly (not via `make`), export these
+> first: `export DOTNET_ROOT="$HOME/.dotnet" && export PATH="$DOTNET_ROOT:$PATH"`
 
 ## Related Repositories
 
